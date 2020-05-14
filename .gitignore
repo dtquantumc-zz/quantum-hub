@@ -1,3 +1,7 @@
 /.idea
 /sphinx/_build
 *.pyc
+
+# VS Code specific
+.vscode
+.history
