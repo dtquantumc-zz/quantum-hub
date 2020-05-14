@@ -46,7 +46,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Diversifying Talent in Quantum Computing Documentation'
+project = u'DTQC'
 copyright = u'2020, UBC'
 author = u'UBC'
 
