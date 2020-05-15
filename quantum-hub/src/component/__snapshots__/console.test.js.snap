@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks the same as last time (snapshot) 1`] = `
+<div
+  class="scroll_console"
+  id="console"
+>
+  <ul>
+    <li>
+      line1, line2
+    </li>
+    <li />
+  </ul>
+</div>
+`;
+
+exports[`looks the same as last time (snapshot) 2`] = `
+<div
+  class="scroll_console"
+  id="console"
+>
+  <ul>
+    <li>
+      line1, line2
+    </li>
+    <li />
+  </ul>
+</div>
+`;

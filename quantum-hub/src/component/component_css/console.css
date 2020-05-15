@@ -1,0 +1,27 @@
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.scroll_console{
+    overflow-y: visible;
+    overflow-x: hidden;
+    background-color: aliceblue;
+    color: navy;
+    font-family: monospace;
+    text-emphasis-color: #ffffff;
+    height: 300px;
+    width: 300px;
+    list-style-type: none;
+}
+
+.scroll_console::selection{
+    background-color: navy;
+    color: aliceblue;
+}
+
+.scroll_console::-moz-selection{
+    background-color: navy;
+    color: aliceblue;
+}

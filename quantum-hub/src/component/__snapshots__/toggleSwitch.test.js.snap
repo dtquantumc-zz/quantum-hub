@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks the same as last time (snapshot) 1`] = `
+HTMLCollection [
+  <div
+    class="toggle-switch"
+  >
+    <input
+      class="toggle-switch-checkbox"
+      id="mySwitch"
+      type="checkbox"
+    />
+    <label
+      class="toggle-switch-label"
+      for="mySwitch"
+    >
+      <span
+        class="toggle-switch-inner"
+        data-no="off"
+        data-yes="on"
+      />
+      <span
+        class="toggle-switch-switch"
+      />
+    </label>
+  </div>,
+]
+`;
