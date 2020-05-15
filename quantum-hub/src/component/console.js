@@ -10,18 +10,23 @@ import React, { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import './component_css/console.css'
 
+/**
+ * Console is a React component that displays lines of
+ * text, and when updated, scrolls to the bottom of its output
+ *
+ * Note: to change size, shape, and most non-scroll
+ * properties, modify the called css
+ *
+ *
+ * Example Use::
+ *
+ *  <Console textLines={['line1', 'line2']} />
+ *
+ * @param {Array(String)} textLines - A textLines property is required
+ *  Modify this variable in a parent's state to reload and update
+ *  the console.
+ */
 function Console (props) {
-  /* Console is a React component
-   * it requires a "textLines" property
-   * textLines should be an Array of strings
-   * example use:
-   *
-    <Console textLines={['line1', 'line2']} />
-   *
-   * Note: to change size, shape, and most non-scroll
-   * properties, modify the called css
-   */
-
   // This is a React Reference object, used for statically
   // referencing a particular element.
   const divBotRef = useRef(null)

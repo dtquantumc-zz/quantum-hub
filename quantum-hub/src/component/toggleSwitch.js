@@ -10,21 +10,25 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './component_css/toggleSwitch.css'
 
+/**
+ * ToggleSwitch is a simple React Component
+ * It is built to be useful anywhere you might want a
+ * nice sliding switch. It can have text for off/on,
+ * and can be disabled.
+ *
+ * To modify the look, please modify the css file.
+ *
+ * Example Use::
+ *
+ *  <ToggleSwitch
+ *    defaultChecked={false}
+ *    id='mySwitch'
+ *    Text={['QPU', 'Simulation']}
+ *    onChange={() => { this.do_something(with_something) }}
+ *    disabled={false}
+ *  />
+ */
 class ToggleSwitch extends React.Component {
-  /* ToggleSwitch is a simple React Component
-   * It is built to be useful anywhere you might want a
-   * nice sliding switch. It can have text for off/on,
-   * and can be disabled. Example use:
-    <ToggleSwitch
-      defaultChecked={false}
-      id='mySwitch'
-      Text={['QPU', 'Simulation']}
-      onChange={() => { this.do_something(with_something) }}
-      disabled={false}
-    />
-   * To modify the look, please modify the css file
-   */
-
   // The constructor for the toggle switch, sets initial state
   constructor (props) {
     super(props)
@@ -33,8 +37,13 @@ class ToggleSwitch extends React.Component {
     }
   }
 
-  // This gets called whenever the switch gets clicked, except
-  // if it's disabled
+  /**
+   * Changes the state of the switch.
+   * Used as the callback for onChange for the checkbox
+   * Calls this.props.onChange()
+   * @param {SyntheticEvent} e - used for e.target, which is the Element that changed to trigger this.
+   * @param {Element} me - Used as a replacement for "this" in the function
+   */
   onChange (e, me) {
     me.setState({
       checked: e.target.checked
@@ -42,7 +51,10 @@ class ToggleSwitch extends React.Component {
     if (typeof me.props.onChange === 'function') me.props.onChange()
   }
 
-  // Renderer
+  /**
+   * Renders the switch, should only be called by React as it does
+   * automatically
+   */
   render () {
     return (
       <div className='toggle-switch'>
@@ -82,15 +94,17 @@ class ToggleSwitch extends React.Component {
   }
 }
 
-/* These are the property requirements for passing to the
+/**
+ * These are the property requirements for passing to the
  * ToggleSwitch. If Text or Id are not passed, there should
- * be an error, and the component won't display
+ * be an error, and the component won't display.
  */
 ToggleSwitch.propTypes = {
+  /** This is the component id, and it is required */
   id: PropTypes.string.isRequired,
-  // This is the component id, and it is required
+  /** Example Text: ["On", "Off"]. To make empty, just provide empty strings. */
   Text: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // Example Text: ["On", "Off"]. To make empty, just provide empty strings.
+
   Name: PropTypes.string,
   // This is the name of the component. Useful for reference
   onChange: PropTypes.func,
