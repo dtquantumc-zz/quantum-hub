@@ -1,0 +1,7 @@
+<ToggleSwitch
+  defaultChecked={false}
+  id='mySwitch'
+  Text={['QPU', 'Simulation']}
+  onChange={() => { this.do_something(with_something) }}
+  disabled={false}
+/>

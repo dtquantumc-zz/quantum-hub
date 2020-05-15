@@ -154,5 +154,6 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-js_source_path = '../quantum-hub/src/'
+jsdoc_config_path = './conf.json'
+js_source_path = '../quantum-hub/src'
 
