@@ -13,13 +13,39 @@ import ToggleSwitch from './toggleSwitch'
  * APISwitch is a simple React Component
  * Like the toggleSwitch, but it has a textbox that's
  * active only if the switch itself is active.
+ * Passing it a function for setting API key lets it
+ * update a parent's API key (to '' if disabled or empty,
+ * otherwise to the exact inputted string).
+ *
+ * To modify the look of the textbox, modify APISwitch.css
+ * For the Switch, please look at ToggleSwitch
+ *
+ * Example Use::
+ *
+ *  <APISwitch
+ *    id='myAPISwitch'
+ *    switchText={['QPU2', 'Sim2']}
+ *    setAPIKey={(key) => {
+ *      console.log(key)
+ *    }}
+ *    defaultChecked={false}
+ *  />
+ *
+ * Properties:
+ * @prop {String} id - (Required) All Document ids should be different, this is no different.
+ * @prop {Array(String)} switchText - (Required) switchText controls the text on the actual switch.
+ * @prop {Func(String)} setAPIKey - (Required) Any time the API key is updated, this is called.
+ * Use it to set parent values, so parent has access to this textbox's values :D
+ * @prop {Bool} defaultChecked - Set if you want the switch to be on by default.
  */
 class APISwitch extends React.Component {
   static propTypes = {
     /** The inner switch and textbox have ids <id>+'_switch' and <id>+'_text' respectively. */
     id: PropTypes.string.isRequired,
-    /** switchText is required. */
-    switchText: PropTypes.arrayOf(PropTypes.string).isRequired
+    /** switchText is required. Eg. ['On', 'Off'] */
+    switchText: PropTypes.arrayOf(PropTypes.string).isRequired,
+    setAPIKey: PropTypes.func.isRequired,
+    default: PropTypes.bool
   }
 
   constructor (props) {

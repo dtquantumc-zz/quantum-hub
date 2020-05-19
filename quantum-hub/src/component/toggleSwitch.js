@@ -33,13 +33,13 @@ import './component_css/toggleSwitch.css'
  *  />
  *
  * Properties passable through HTML call:
- * @param {String} id - (Required) This is the component id.
- * @param {String} Text - (Required, must have at least 2 members) Text[0] is the switch ON text, and Text[1] is the switch OFF text.
- * @param {String} Name - This gets passed to the checkbox .name field. Useful for referencing textbox.
- * @param {switchCallBack} onChange - This callback function gets called every time the switch gets flipped.
+ * @prop {String} id - (Required) This is the component id.
+ * @prop {String} Text - (Required, must have at least 2 members) Text[0] is the switch ON text, and Text[1] is the switch OFF text.
+ * @prop {String} Name - This gets passed to the checkbox .name field. Useful for referencing textbox.
+ * @prop {switchCallBack} onChange - This callback function gets called every time the switch gets flipped.
  * It takes a single argument, the checkbox checked state at call.
- * @param {Bool} defaultChecked - This denotes whether the switch is on or off by default.
- * @param {Bool} disabled - This disables the switch if enabled.
+ * @prop {Bool} defaultChecked - This denotes whether the switch is on or off by default.
+ * @prop {Bool} disabled - This disables the switch if enabled.
  */
 class ToggleSwitch extends React.Component {
   // The constructor for the toggle switch, sets initial state

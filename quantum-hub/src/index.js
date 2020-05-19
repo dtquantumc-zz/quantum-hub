@@ -18,11 +18,11 @@ ReactDOM.render(
     <React.StrictMode>
       <APISwitch
         id='myAPISwitch'
-        innerText=''
         switchText={['QPU2', 'Sim2']}
         setAPIKey={(key) => {
           console.log(key)
         }}
+        defaultChecked={false}
       />
       <ToggleSwitch
         defaultChecked={false}
