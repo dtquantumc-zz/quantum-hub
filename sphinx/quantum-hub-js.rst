@@ -1,7 +1,6 @@
-QUANTUM HUB NodeJS documentation
+Quantum Hub NodeJS documentation
 ================================
 
-.. js:autoclass:: ToggleSwitch
-	:members:
+.. toctree::
+	q-hub-components	
 
-.. js:autofunction:: Console

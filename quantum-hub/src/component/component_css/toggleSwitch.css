@@ -10,7 +10,7 @@
 }
 
 .toggle-switch-checkbox {
-  display: none;
+  display: none;  
 }
 
 .toggle-switch-label {
@@ -89,3 +89,7 @@
 .toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-switch {
   right: 0px;
 }
+
+/* .toggle-switch-checkbox:focus {
+  outline: #3399FF auto 5px;
+} */

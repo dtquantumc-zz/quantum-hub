@@ -2,13 +2,17 @@
 /*
  * (C) Copyright 2020
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
- *    Author: Ari Blondal (ari.blondal@gmail.com)
- *    Author: Tanraj Saran ()
  */
 
 import React from 'react'
 import PropTypes from 'prop-types'
 import './component_css/toggleSwitch.css'
+
+/**
+ * This is a callback function, taking the simple checked argument
+ * @callback switchCallBack
+ * @param {Bool} checked - Corresponds to the checkbox checked state at call
+ */
 
 /**
  * ToggleSwitch is a simple React Component
@@ -27,6 +31,15 @@ import './component_css/toggleSwitch.css'
  *    onChange={() => { this.do_something(with_something) }}
  *    disabled={false}
  *  />
+ *
+ * Properties passable through HTML call:
+ * @param {String} id - (Required) This is the component id.
+ * @param {String} Text - (Required, must have at least 2 members) Text[0] is the switch ON text, and Text[1] is the switch OFF text.
+ * @param {String} Name - This gets passed to the checkbox .name field. Useful for referencing textbox.
+ * @param {switchCallBack} onChange - This callback function gets called every time the switch gets flipped.
+ * It takes a single argument, the checkbox checked state at call.
+ * @param {Bool} defaultChecked - This denotes whether the switch is on or off by default.
+ * @param {Bool} disabled - This disables the switch if enabled.
  */
 class ToggleSwitch extends React.Component {
   // The constructor for the toggle switch, sets initial state
@@ -42,13 +55,15 @@ class ToggleSwitch extends React.Component {
    * Used as the callback for onChange for the checkbox
    * Calls this.props.onChange()
    * @param {SyntheticEvent} e - used for e.target, which is the Element that changed to trigger this.
-   * @param {Element} me - Used as a replacement for "this" in the function
+   * @param {Element} me - Used as a replacement for "this" in the function.
    */
   onChange (e, me) {
     me.setState({
       checked: e.target.checked
     })
-    if (typeof me.props.onChange === 'function') me.props.onChange()
+    if (typeof me.props.onChange === 'function') {
+      me.props.onChange(e.target.checked)
+    }
   }
 
   /**

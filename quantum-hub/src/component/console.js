@@ -2,8 +2,6 @@
 /*
  * (C) Copyright 2020
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
- *    Author: Ari Blondal (ari.blondal@gmail.com)
- *    Author: Tanraj Saran ()
  */
 
 import React, { useRef, useEffect } from 'react'

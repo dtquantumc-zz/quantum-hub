@@ -22,7 +22,8 @@
   "standard": {
     "env": [
       "jest"
-    ]
+    ],
+    "parser": "babel-eslint"
   },
   "browserslist": {
     "production": [

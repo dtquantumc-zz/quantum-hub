@@ -1,0 +1,12 @@
+.api_text_box{
+  width: 150px;
+}
+
+.api_text_box:disabled{
+  cursor: not-allowed;
+  background-color: #EEEEEE;
+}
+
+.api_text_box:focus {
+  outline: #3399FF auto 5px;
+}
