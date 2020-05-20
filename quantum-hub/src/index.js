@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
-import Console from './component/console'
-import ToggleSwitch from './component/toggleSwitch'
-import APISwitch from './component/APISwitch'
+// import App from './App'
+// import Console from './component/console'
+// import ToggleSwitch from './component/toggleSwitch'
+// import APISwitch from './component/APISwitch'
+import TestComp from './component/testComp'
 import * as serviceWorker from './serviceWorker'
 
 var globalState = {
@@ -16,23 +17,7 @@ const globalStateContext = React.createContext(globalState)
 ReactDOM.render(
   <globalStateContext.Provider value={globalState}>
     <React.StrictMode>
-      <APISwitch
-        id='myAPISwitch'
-        switchText={['QPU2', 'Sim2']}
-        setAPIKey={(key) => {
-          console.log(key)
-        }}
-        defaultChecked={false}
-      />
-      <ToggleSwitch
-        defaultChecked={false}
-        id='mySwitch'
-        Text={['QPU', 'Simulation']}
-        onChange={() => { console.log('Switched') }}
-        disabled={false}
-      />
-      <Console textLines={globalState.textLines} />
-      <App />
+      <TestComp />
     </React.StrictMode>
   </globalStateContext.Provider>,
   document.getElementById('root')
