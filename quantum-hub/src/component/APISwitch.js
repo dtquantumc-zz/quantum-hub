@@ -60,7 +60,7 @@ class APISwitch extends React.Component {
     return (
       <div>
         {this.props.id ? (
-          <div>
+          <div id={this.props.id} class='api_switch'>
             <ToggleSwitch
               id={this.props.id + '_switch'}
               Text={this.props.switchText}
