@@ -4,7 +4,7 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Console from './console'
 // import ToggleSwitch from './toggleSwitch'
 import APISwitch from './APISwitch'
