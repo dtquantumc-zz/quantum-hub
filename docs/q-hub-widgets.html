@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Widgets &#8212; DTQC 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Components" href="q-hub-components.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="widgets">
+<h1>Widgets<a class="headerlink" href="#widgets" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Widget">
+<em class="property">class </em><code class="sig-name descname">Widget</code><span class="sig-paren">(</span><em class="sig-param">props</em><span class="sig-paren">)</span><a class="headerlink" href="#Widget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widget is meant to be an example base class.
+This should be able to be used to test other
+functionalities.</p>
+<p>Any more advanced widget implemented should
+have the same prop interface (or a larger one).
+This is so that all the widgets are interchangeable
+fairly easily. If different interfaces are needed,
+then a dictionary for default declaration types can
+be made. For now, that is unneeded.</p>
+<p>Originally, this Widget class was going to supply the description,
+but upon further consideration, it is best that descriptions
+be supplied in a JSON so rerendering this widget doesn’t constantly
+try to update upstream states and cause a whole lot of unnecessary
+computation.</p>
+<p>Example Use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="p">[</span><span class="n">APIKey</span><span class="p">,</span> <span class="n">setAPIKey</span><span class="p">]</span> <span class="o">=</span> <span class="n">useState</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">const</span> <span class="p">[</span><span class="n">textLines</span><span class="p">,</span> <span class="n">setTextLines</span><span class="p">]</span> <span class="o">=</span> <span class="n">useState</span><span class="p">([])</span>
+<span class="k">return</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="n">Widget</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;myWidget&#39;</span>
+    <span class="n">getAPIKey</span><span class="o">=</span><span class="p">{()</span> <span class="o">=&gt;</span> <span class="n">APIKey</span><span class="p">}</span>
+    <span class="n">outputToConsole</span><span class="o">=</span><span class="p">{(</span><span class="n">line</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="n">setTextLines</span><span class="p">(</span><span class="n">textLines</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+    <span class="p">}}</span>
+  <span class="o">/&gt;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Properties:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>string</em>) – (Required) This will get extended to serve as the id base string for all underlying components.</p></li>
+<li><p><strong>getAPIKey</strong> (<em>func()</em>) – (Required) This needs to be a function that can be called to return the current API key. NOTE: If it returns ‘’, this is equivalent to choosing the simulator.</p></li>
+<li><p><strong>outputToConsole</strong> (<em>func(string)</em>) – (Required) This function should take a single string (a line of text), and concatenate it to the current console output string array. If the Console is not being used, this can do anything you want with that string, but you should probably output it in some way.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="function">
+<dt id="Widget.callSolver">
+<code class="sig-prename descclassname">Widget.</code><code class="sig-name descname">callSolver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Widget.callSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>An example of a call to solve the widget puzzle</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Widget.pseudoHash">
+<code class="sig-prename descclassname">Widget.</code><code class="sig-name descname">pseudoHash</code><span class="sig-paren">(</span><em class="sig-param">toHash</em><span class="sig-paren">)</span><a class="headerlink" href="#Widget.pseudoHash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simply simulate an async call that may take a while to resolve
+WARNING: This is not a good hash function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Widget.render">
+<code class="sig-prename descclassname">Widget.</code><code class="sig-name descname">render</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Widget.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple renderer so all the utility of our example widget
+is visible.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Widget.resolveSolve">
+<code class="sig-prename descclassname">Widget.</code><code class="sig-name descname">resolveSolve</code><span class="sig-paren">(</span><em class="sig-param">result</em><span class="sig-paren">)</span><a class="headerlink" href="#Widget.resolveSolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>An example of what one might want to do with a result
+Also an example of interacting with console</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<em>String</em>) – The return value or result of the async solver call</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">DTQC</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="q-hub-components.html">Components</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Widgets</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a><ul>
+      <li>Previous: <a href="q-hub-components.html" title="previous chapter">Components</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, UBC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/q-hub-widgets.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
