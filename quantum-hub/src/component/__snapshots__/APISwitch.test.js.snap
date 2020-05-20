@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks the same as last time (snapshot) 1`] = `
+<span
+  id="mySwitch"
+>
+  <div
+    class="toggle-switch"
+  >
+    <input
+      class="toggle-switch-checkbox"
+      id="mySwitch_switch"
+      name="APISwitch"
+      type="checkbox"
+    />
+    <label
+      class="toggle-switch-label"
+      for="mySwitch_switch"
+    >
+      <span
+        class="toggle-switch-inner"
+        data-no="off"
+        data-yes="on"
+      />
+      <span
+        class="toggle-switch-switch"
+      />
+    </label>
+  </div>
+  <input
+    class="api_text_box"
+    disabled=""
+    id="mySwitch_text"
+    name="APIText"
+    type="text"
+  />
+</span>
+`;

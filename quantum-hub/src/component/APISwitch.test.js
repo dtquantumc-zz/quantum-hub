@@ -37,7 +37,7 @@ it('looks the same as last time (snapshot)', () => {
   expect(apiS).toMatchSnapshot()
 })
 
-it('can be typed in', async () => {
+it('can be typed in and disabled', async () => {
   const setAPI = jest.fn((key) => { return key })
   act(() => {
     render(
@@ -52,37 +52,65 @@ it('can be typed in', async () => {
 
   // get input element within APISwitch
   const inpBox = document.getElementById('mySwitch_text')
+  // const apiS = document.getElementById('mySwitch')
+  const togSwitch = document.getElementById('mySwitch_switch')
   expect(inpBox.value).toBe('')
 
   // trigger typing
   // Note, it types one character at a time :O
-  await userEvent.type(inpBox, "Key:234")
+  const testStr = 'Key:234'
+  await userEvent.type(inpBox, testStr)
 
-  expect(onChange).toHaveBeenCalledTimes(1)
-  expect(toggleS.checked).toBe(true)
+  // Check the right num of calls
+  expect(setAPI).toHaveBeenCalledTimes(testStr.length)
+
+  // Check each call input and output is correct
+  for (let i = 0; i < testStr.length; ++i) {
+    const testSlice = testStr.slice(0, i + 1)
+    expect(setAPI.mock.calls[i][0]).toBe(testSlice)
+    expect(setAPI.mock.results[i].value).toBe(testSlice)
+  }
+
+  // Click the switch to disable then enable the textbox
+  userEvent.click(togSwitch)
+  userEvent.click(togSwitch)
+
+  // Check that the number of calls has increased by two
+  expect(setAPI).toHaveBeenCalledTimes(testStr.length + 2)
+
+  // Check correctness of calls
+  expect(setAPI.mock.calls[testStr.length][0]).toBe('')
+  expect(setAPI.mock.results[testStr.length].value).toBe('')
+
+  expect(setAPI.mock.calls[testStr.length + 1][0]).toBe(testStr)
+  expect(setAPI.mock.results[testStr.length + 1].value).toBe(testStr)
 })
 
-it('doesn\'t change value when disabled', () => {
-  const onChange = jest.fn()
+it('doesn\'t get typed in when switched off', async () => {
+  const setAPI = jest.fn((key) => { return key })
   act(() => {
     render(
-      <ToggleSwitch
-        defaultChecked={false}
+      <APISwitch
         id='mySwitch'
-        Text={['on', 'off']}
-        onChange={onChange}
-        disabled
+        switchText={['on', 'off']}
+        setAPIKey={setAPI}
       />,
       container)
   })
 
+  const inpBox = document.getElementById('mySwitch_text')
+
   // get ToggleSwitch element (actually gets internal checkbox)
-  const toggleS = document.querySelector('[id=mySwitch]')
+  const toggleS = document.getElementById('mySwitch_switch')
   expect(toggleS.checked).toBe(false)
 
-  // trigger click, but now its disabled!
-  userEvent.click(toggleS)
+  // trigger type, but now its disabled!
+  const testStr = 'Key:234'
+  await userEvent.type(inpBox, testStr)
 
-  expect(onChange).toHaveBeenCalledTimes(0)
-  expect(toggleS.checked).toBe(false)
+  // Check the right num of calls
+  expect(setAPI).toHaveBeenCalledTimes(0)
+
+  // Check that there is no text typed
+  expect(inpBox.value).toBe('')
 })
