@@ -11,9 +11,11 @@ ul{
     color: navy;
     font-family: monospace;
     text-emphasis-color: #ffffff;
-    height: 300px;
-    width: 300px;
+    height: 428px;
+    width: 257px;
     list-style-type: none;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.12)
 }
 
 .scroll_console::selection{

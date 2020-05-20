@@ -1,11 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-// import App from './App'
-// import Console from './component/console'
-// import ToggleSwitch from './component/toggleSwitch'
-// import APISwitch from './component/APISwitch'
-import TestComp from './component/testComp'
+import App from './App'
+import APISwitch from './component/APISwitch'
 import * as serviceWorker from './serviceWorker'
 
 var globalState = {
@@ -17,7 +14,15 @@ const globalStateContext = React.createContext(globalState)
 ReactDOM.render(
   <globalStateContext.Provider value={globalState}>
     <React.StrictMode>
-      <TestComp />
+      <APISwitch
+        id='myAPISwitch'
+        switchText={['QPU2', 'Sim2']}
+        setAPIKey={(key) => {
+          console.log(key)
+        }}
+        defaultChecked={false}
+      />
+      <App isSudokuSolver />
     </React.StrictMode>
   </globalStateContext.Provider>,
   document.getElementById('root')
