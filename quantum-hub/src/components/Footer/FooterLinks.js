@@ -22,13 +22,17 @@ export default function FooterLinks (props) {
 
   const ubcTitle = 'UBC'
   const ubcLink = 'https://www.ubc.ca/'
+  const ubcDescription = 'Image of the UBC crest'
 
   const superclusterTitle = 'Digital Supercluster'
   const superclusterLink =
     'https://www.digitalsupercluster.ca/programs/capacity-building-program/diversifying-talent-in-quantum-computing/'
+  const superclusterDescription = 'Image of Digital Technology Supercluster\'s logo'
 
   const geeringupTitle = 'UBC Geering Up'
   const geeringupLink = 'https://geeringup.apsc.ubc.ca/'
+  const geeringupDescription = 'Image of Geering Up\'s logo'
+
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
@@ -44,7 +48,7 @@ export default function FooterLinks (props) {
             target='_blank'
             className={classes.navLink}
           >
-            <img src={UBC} style={{ height: '42px' }} />
+            <img src={UBC} alt={ubcDescription} style={{ height: '42px' }} />
           </Button>
         </Tooltip>
       </ListItem>
@@ -62,7 +66,7 @@ export default function FooterLinks (props) {
             target='_blank'
             className={classes.navLink}
           >
-            <img src={supercluster} style={{ height: '42px' }} />
+            <img src={supercluster} alt={superclusterDescription} style={{ height: '42px' }} />
           </Button>
         </Tooltip>
       </ListItem>
@@ -80,7 +84,7 @@ export default function FooterLinks (props) {
             target='_blank'
             className={classes.navLink}
           >
-            <img src={geeringupLogo} style={{ height: '42px' }} />
+            <img src={geeringupLogo} alt={geeringupDescription} style={{ height: '42px' }} />
           </Button>
         </Tooltip>
       </ListItem>
