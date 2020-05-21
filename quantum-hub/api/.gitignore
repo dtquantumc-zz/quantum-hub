@@ -1,0 +1,3 @@
+# Pythonic Gitignores
+venv
+__pycache__
