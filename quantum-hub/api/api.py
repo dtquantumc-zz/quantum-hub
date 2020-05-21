@@ -11,3 +11,9 @@ def test_server():
 @app.route('/')
 def my_index():
 	return app.send_static_file("index.html")
+
+if __name__ == '__main__':
+	# Run Flask App
+	port = int(os.getenv("PORT",5000))
+	print (port)
+	app.run(debug=True, port=port)
