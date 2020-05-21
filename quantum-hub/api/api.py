@@ -2,7 +2,7 @@ import time
 from flask import Flask, render_template
 import sys, os
 
-app = Flask(__name__, static_folder='../build', static_url_path='/')
+app = Flask(__name__, static_folder='./build', static_url_path='/')
 
 @app.route('/test_server')
 def test_server():
@@ -16,4 +16,4 @@ if __name__ == '__main__':
 	# Run Flask App
 	port = int(os.getenv("PORT",5000))
 	print (port)
-	app.run(debug=True, port=port)
+	app.run(debug=True, host='0.0.0.0', port=port)
