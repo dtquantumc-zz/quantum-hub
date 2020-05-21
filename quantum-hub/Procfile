@@ -1,0 +1,2 @@
+node_app: yarn start
+flask_app: yarn start-api
