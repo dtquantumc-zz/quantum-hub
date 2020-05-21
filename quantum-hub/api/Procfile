@@ -1,2 +1,1 @@
-node_app: yarn start
-flask_app: python api.py
+web: python api.py
