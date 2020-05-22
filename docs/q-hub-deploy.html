@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Deployment to Heroku &#8212; DTQC 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Widgets" href="q-hub-widgets.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="deployment-to-heroku">
+<h1>Deployment to Heroku<a class="headerlink" href="#deployment-to-heroku" title="Permalink to this headline">¶</a></h1>
+<p>At the moment (May 2020), the Quantum Hub is hosted
+on Heroku, using Flask. This means that the React
+App must be compiled and built before it can run.</p>
+<p>The Flask app will have two uses:
+- Serve the React app to users through index.html
+- Respond to Solve calls by invoking dimod or D-Wave’s QPU</p>
+<p>In order to make this run both on deployment and
+development, the responding to server calls should
+work normally because of the port 5000 proxy in
+package.json. In dev, simply connect to the React
+app opened automatically by “yarn start”. To run the
+Flask backend, use “yarn start-api”.</p>
+<p>To build for Heroku, call “yarn build”. This will
+build the React app using “react-scripts build”, and
+then move the build folder to quantum-hub/api. Then,
+we deploy that exact folder. We will use the new(ish)
+Git Subtree command to do so.</p>
+<p>Keep in mind this is based around a Unix-based Command
+Line, modify to the best of your own knowledge for
+Command Prompt (And write a tutorial here!)</p>
+<p>First, install Heroku Command Line Tools.
+Then, login:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>heroku login
+</pre></div>
+</div>
+<p>Go to the project root directory:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> sw
+</pre></div>
+</div>
+<p>Add a remote Heroku</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>heroku git:remote -a quantum-hub
+</pre></div>
+</div>
+<p>From the project root directory, push the api subtree</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>git subtree push --prefix quantum-hub/api heroku master
+</pre></div>
+</div>
+<p>Congratulations, this should have worked!</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">DTQC</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="q-hub-components.html">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="q-hub-widgets.html">Widgets</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Deployment to Heroku</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a><ul>
+      <li>Previous: <a href="q-hub-widgets.html" title="previous chapter">Widgets</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, UBC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/q-hub-deploy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
