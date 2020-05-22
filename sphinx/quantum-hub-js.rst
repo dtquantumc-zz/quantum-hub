@@ -5,3 +5,5 @@ Quantum Hub NodeJS documentation
 	q-hub-components	
 	
 	q-hub-widgets
+
+	q-hub-deploy
