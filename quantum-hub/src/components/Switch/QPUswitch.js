@@ -46,7 +46,7 @@ export default function QPUswitch (props) {
     if (checked) props.setAPIKey('')
   }
 
-  //let currentXhr = null
+  // let currentXhr = null
   const handleClick = () => {
     props.setAPIKey(token)
 

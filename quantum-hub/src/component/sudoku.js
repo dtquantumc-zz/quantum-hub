@@ -46,14 +46,13 @@ import styles from '../assets/jss/material-kit-react/views/app.js'
  * string, but you should probably output it in some way.
  */
 function SudokuGame (props) {
+  // The states for the Sudoku widget. These all use React hooks,
+  // so that when setWhatever is called, the sudoku game is queued
+  // for a rerender.
   const [sudokuGrid, setSudokuGrid] = useState(Array(81).fill(0))
   const [currentSquare, setCurrentSquare] = useState([0, 0])
   const [enabled, setEnabled] = useState(true)
   const [xhr, setXHR] = useState(null)
-
-  if (sudokuGrid.length === 0) {
-    resetSudokuGrid(setSudokuGrid)
-  }
 
   const useStyles = makeStyles(styles)
 
@@ -65,25 +64,25 @@ function SudokuGame (props) {
         <div
           className='gridGrid'
           onKeyPress={(event) => {
+            // Don't handle key presses if the whole app is disabled
             if (enabled) handleKeyPress(event, sudokuGrid, setSudokuGrid, currentSquare)
           }}
         >
           {
+            // Render each Sudoku square. They're tiled using CSS grid-template
             [0, 1, 2, 3, 4, 5, 6, 7, 8].map((y) => {
               return [0, 1, 2, 3, 4, 5, 6, 7, 8].map((x) => {
-                // console.log('rendering')
                 return (
                   <GridSquare
                     x={x}
                     y={y}
-                    key={x + 9 * y}
+                    key={x + 9 * y} // Keys should be unique for React rendered components on the same layer
                     value={sudokuGrid[x + 9 * y]}
                     enabled={enabled}
                     onClick={() => setCurrentSquare([x, y])}
                     focused={(currentSquare[0] === x && currentSquare[1] === y)}
                   />
                 )
-                // return <button key={x + 9 * y} className='gridSquare'>a</button>
               })
             })
           }
@@ -92,7 +91,7 @@ function SudokuGame (props) {
       <p>Click on the cells and use your keyboard numbers to fill them in!</p>
       <div className={classes.sudokuInput}>
         <Button
-          color='greeingup'
+          color='greeingup' // Not a typo, this is the actual color
           disabled={!enabled}
           onClick={() => {
             sendForSolve(sudokuGrid, setSudokuGrid, setEnabled, props.outputToConsole, xhr, setXHR, props.getAPIKey)
@@ -107,6 +106,8 @@ function SudokuGame (props) {
 
 /**
  * Draws a singular sudoku square, like you see 81 of in the whole 9x9 grid.
+ * Uses its x and y props to decide which of its grid borders should be bolded
+ * and how bold they should be. This is what gives the board its Sudoku look.
  * @prop {Integer} x - The x position of the Square in its grid
  * @prop {Integer} y - The y position of the Square in its grid
  * @prop {Boolean} focused - Marks whether the square should be in focus
@@ -143,6 +144,8 @@ function GridSquare (props) {
 
 /**
  * Handles key presses for the Sudoku Grid Component
+ * Sets the number in the currently selected slot of the sudoku grid
+ * to the number of the key just pressed.
  * @param {KeyPress} event - The keypres to be handled
  * @param {Array(81)} sudokuGrid - The current Sudoku grid
  * @param {Function} setSudokuGrid - The hook to set the Sudoku grid
@@ -165,6 +168,20 @@ function handleKeyPress (event, sudokuGrid, setSudokuGrid, cur) {
   }
 }
 
+/**
+ * This function does the XML HTTP request for the Sudoku Widget. It calls the
+ * backend, and once the data is returned, postSolve is called. This handles
+ * request creation, console logging, and some state validation.
+ * @param {Array(81)} sudokuGrid - This is the current Sudoku GameState grid
+ * @param {Function} setSudokuGrid - Hook to update Sudoku Grid
+ * @param {Function} setEnabled - Hook to update Enabled status of the whole widget
+ * @param {Function} outputToConsole - Hook to add a line of text to the Console (output)
+ * @param {XMLHttpRequest} xhr - The current HTTP XML request. We only allow one at a
+ * time for this widget, so the function only runs if it is null.
+ * @param {Function} setXHR - Hook to update the current HTTP XML request.
+ * @param {Function} getAPIKey - Returns the user's current API Key. If empty, assume
+ * a simulation is wanted.
+ */
 function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, getAPIKey) {
   if (xhr) return
   var sudokuArray = []
@@ -196,6 +213,19 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
   outputToConsole('Solving...')
 }
 
+/**
+ * postSolve is called after the call to the server is completed.
+ * It should handle any errors, set the grid to a solved state if solved,
+ * and report back to the user through the console.
+ *
+ * At the moment, it simply prints out the response text. This functionality
+ * will be improved in later versions.
+ * @param {Function} setSudokuGrid - Hook to update the Sudoku Grid.
+ * @param {Function} setEnabled - Hook to update enabled status of widget.
+ * @param {Function} outputToConsole - Output a line of text to the console.
+ * @param {XMLHttpRequest} xhr - The widget's current XML Http Request.
+ * @param {Function} setXHR - Hook to set xhr.
+ */
 function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR) {
   setEnabled(true)
   outputToConsole('Solved!')
@@ -214,92 +244,11 @@ function resetSudokuGrid (setSudokuGrid) {
   setSudokuGrid(newGrid)
 }
 
-// class SudokuGame extends React.Component {
-//   static propTypes = {
-//     id: PropTypes.string.isRequired,
-//     getAPIKey: PropTypes.func.isRequired,
-//     outputToConsole: PropTypes.func.isRequired
-//   }
-
-//   constructor (props) {
-//     super(props)
-//     this.state = {
-//       status: 'idle'
-//     }
-//   }
-
-//   /**
-//    * An example of a call to solve the widget puzzle
-//    */
-//   async callSolver () {
-//     if (this.state.status === 'waiting...') return
-//     const APIKey = this.props.getAPIKey()
-//     const consoleMsg = 'Making a call using the ' + (APIKey === '' ? 'simulator' : 'QPU')
-//     this.props.outputToConsole(consoleMsg)
-
-//     /* Example async call */
-//     this.pseudoHash(APIKey).then((result) => { this.resolveSolve(result) })
-//     /* This could be a fetch() call, or a classical solver, or anything in between */
-//     this.setState({
-//       status: 'waiting...'
-//     })
-//   }
-
-//   /** Simply simulate an async call that may take a while to resolve
-//    * WARNING: This is not a good hash function
-//    */
-//   async pseudoHash (toHash) {
-//     var hash = 0
-//     for (var i = 0; i < toHash.length; ++i) {
-//       hash += ((toHash.charCodeAt(i) * (i + 1)) % 127) * Math.pow(128, i)
-//     }
-//     var hashString = ''
-//     while (hash > 0) {
-//       var newChar
-//       if (hash % 36 < 10) newChar = String.fromCharCode(hash % 36 + '0'.charCodeAt(0))
-//       else newChar = String.fromCharCode(hash % 36 + 'a'.charCodeAt(0) - 10)
-//       hashString += newChar
-//       hash = Math.floor(hash / 36)
-//     }
-//     await new Promise(resolve => setTimeout(resolve, 1000))
-//     return hashString
-//   }
-
-//   /**
-//    * An example of what one might want to do with a result
-//    * Also an example of interacting with console
-//    * @param {String} result - The return value or result of the async solver call
-//    */
-//   async resolveSolve (result) {
-//     this.setState({
-//       status: 'Solved!'
-//     })
-//     this.props.outputToConsole('Problem was solved! Ans: ' + result)
-//   }
-
-//   /**
-//    * A simple renderer so all the utility of our example widget
-//    * is visible.
-//    */
-//   render () {
-//     return (
-//       <div>
-//         <button
-//           type='button'
-//           onClick={() => {
-//             this.callSolver()
-//           }}
-//           disabled={this.state.status === 'waiting...'}
-//           id={this.props.id + '_button'}
-//         >
-//           Click me to solve!
-//         </button>
-//         <p>
-//           {this.state.status}
-//         </p>
-//       </div>
-//     )
-//   }
-// }
+// Require the correct propTypes:
+SudokuGame.propTypes = {
+  id: PropTypes.string.isRequired,
+  getAPIKey: PropTypes.Function.isRequired,
+  outputToConsole: PropTypes.Function.isRequired
+}
 
 export default SudokuGame
