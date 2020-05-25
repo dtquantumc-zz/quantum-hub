@@ -1,0 +1,80 @@
+div, p {margin:0px; padding:0px;}
+
+.gridSquare{
+  display: block;
+  border: thin solid gray;
+  background-color: white;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  color: black;
+  font-weight: bold;
+  font-size: 2vw;
+}
+
+.gridSquare:disabled{
+  background-color: lightgray;
+}
+
+.gridLeft{
+  border-left: 2px solid black;
+}
+
+.gridLeftest{
+  border-left: 4px solid black;
+}
+
+.gridRight{
+  border-right: 2px solid black;
+}
+
+.gridRightest{
+  border-right: 4px solid black;
+}
+
+.gridTop{
+  border-top: 2px solid black;
+}
+
+.gridToppest{
+  border-top: 4px solid black;
+}
+
+.gridBottom{
+  border-bottom: 2px solid black;
+}
+
+.gridBottomest{
+  border-bottom: 4px solid black;
+}
+
+.gridSquare:focus{
+  z-index: 1000;
+}
+
+.focused{
+  background-color: lightgray;
+}
+
+.sudokuBox{
+  position: relative;
+  margin: auto;
+  width: 85%;
+  padding-top: 85%;
+}
+
+.gridGrid{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+}
+
+p{
+  margin-top: 10px;
+  margin-bottom: 5px;
+  text-align: center;
+}

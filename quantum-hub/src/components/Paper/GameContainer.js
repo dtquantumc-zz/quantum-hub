@@ -29,12 +29,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function GameContainer () {
+export default function GameContainer (props) {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
-      <Paper variant='outlined' />
+      <Paper variant='outlined' children={props.children} />
     </div>
   )
 }

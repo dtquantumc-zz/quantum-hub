@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 // core components
 import DescriptionCard from './components/Card/DescriptionCard'
@@ -13,6 +13,7 @@ import NurseField from './components/Inputs/NurseField'
 import RightHeaderLinks from './components/Header/RightHeaderLinks'
 import LeftHeaderLinks from './components/Header/LeftHeaderLinks'
 import FooterLinks from './components/Footer/FooterLinks'
+import SudokuGame from './component/sudoku'
 
 import { makeStyles } from '@material-ui/core/styles'
 import styles from './assets/jss/material-kit-react/views/app.js'
@@ -20,14 +21,29 @@ import styles from './assets/jss/material-kit-react/views/app.js'
 function App (props) {
   const useStyles = makeStyles(styles)
   const classes = useStyles()
+  const [APIKey, setAPIKey] = useState('test')
+  var [textLines, setTextLines] = useState([])
 
-  const userInput = getUserInput(props, classes)
   const appBrand = getAppBrand(props)
 
-  const terminalWindow = <Console textLines={['line1', 'line2']} />
+  const terminalWindow = <Console textLines={textLines} key='terminalWindow' />
+
+  // Eventually, set a way to change this based on URL parameters
+  // E.g. ?game=sudoku or ?game=nurse
+  const game =
+    <SudokuGame
+      id='myWidget'
+      getAPIKey={() => APIKey}
+      outputToConsole={(line) => {
+        setTextLines(textLines.concat(line))
+        textLines = textLines.concat(line)
+      }}
+      key='myGame'
+    />
+
   const gamePanel =
-    <div className='game'><GameContainer variant='outlined' />{userInput}</div>
-  const howItWorksCard = <DescriptionCard />
+    <div className='game' key='gamePanel'><GameContainer variant='outlined' children={game} /></div>
+  const howItWorksCard = <DescriptionCard key='howItWorksCard' />
   const gridContainerChildren = [terminalWindow, gamePanel, howItWorksCard]
 
   return (

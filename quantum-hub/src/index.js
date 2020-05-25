@@ -14,14 +14,6 @@ const globalStateContext = React.createContext(globalState)
 ReactDOM.render(
   <globalStateContext.Provider value={globalState}>
     <React.StrictMode>
-      <APISwitch
-        id='myAPISwitch'
-        switchText={['QPU2', 'Sim2']}
-        setAPIKey={(key) => {
-          console.log(key)
-        }}
-        defaultChecked={false}
-      />
       <App isSudokuSolver />
     </React.StrictMode>
   </globalStateContext.Provider>,
