@@ -1,11 +1,12 @@
 import time
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import sys, os
 
 app = Flask(__name__, static_folder='./build', static_url_path='/')
 
 @app.route('/test_server', methods = ['POST', 'GET'])
 def test_server():
+	print(request.get_json())
 	return {'test': 'complete'}
 
 @app.route('/')

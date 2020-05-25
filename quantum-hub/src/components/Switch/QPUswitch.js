@@ -1,4 +1,5 @@
 import React from 'react'
+import XMLHttpRequest from 'xhr2'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Switch from '@material-ui/core/Switch'
@@ -42,10 +43,13 @@ export default function QPUswitch (props) {
 
   const handleChange = () => {
     setChecked((prev) => !prev)
+    if (checked) props.setAPIKey('')
   }
 
   let currentXhr = null
   const handleClick = () => {
+    props.setAPIKey(token)
+
     if (currentXhr) {
       currentXhr.abort()
     }
@@ -77,15 +81,17 @@ export default function QPUswitch (props) {
           className={classes.formControlLabel}
           control={<Switch className={classes.switch} checked={checked} onChange={handleChange} />}
           label='QPU'
+          key='qpuSwitchControlLabel'
         />,
 
-        <div className={classes.container}>
+        <div className={classes.container} key='qpuSwitchActualSwitch'>
           <Fade in={checked}>
             <GridItem
               children={[
                 <CustomInput
                   labelText='API Token'
                   id='pass'
+                  key='qpuSwitchInputForm'
                   formControlProps={{
                     fullWidth: false
                   }}
@@ -107,6 +113,7 @@ export default function QPUswitch (props) {
                   size='sm'
                   style={{ margin: '28.5px 0 17px 9px', position: 'relative' }}
                   onClick={handleClick.bind(this)}
+                  key=''
                 >
                   Submit
                 </Button>

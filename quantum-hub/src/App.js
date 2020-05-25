@@ -23,7 +23,7 @@ import styles from './assets/jss/material-kit-react/views/app.js'
 function App (props) {
   const useStyles = makeStyles(styles)
   const classes = useStyles()
-  const [APIKey, setAPIKey] = useState('test')
+  const [APIKey, setAPIKey] = useState('')
   var [textLines, setTextLines] = useState([])
 
   const appBrand = getAppBrand(props)
@@ -32,7 +32,7 @@ function App (props) {
     isNurseScheduler: props.isNurseScheduler,
     isSudokuSolver: props.isSudokuSolver
   }
-  const qpuSwitch = <QPUswitch typeOfProblem={typeOfProblem} key='qpuSwitch' />
+  const qpuSwitch = <QPUswitch typeOfProblem={typeOfProblem} key='qpuSwitch' setAPIKey={setAPIKey} />
   const terminalWindow = <Console textLines={textLines} key='terminalWindow' />
 
   // Eventually, set a way to change this based on URL parameters
@@ -48,21 +48,10 @@ function App (props) {
       key='myGame'
     />
 
-  const apiSwitch =
-    <APISwitch
-      id='myAPISwitch'
-      switchText={['QPU', 'Simulator']}
-      setAPIKey={(key) => {
-        setAPIKey(key)
-      }}
-      defaultChecked={false}
-    />
-
   const gamePanel =
     <div className='game' key='gamePanel'><GameContainer variant='outlined' children={game} /></div>
   const howItWorksCard = <DescriptionCard key='howItWorksCard' />
   const gridContainerChildren = [qpuSwitch, terminalWindow, gamePanel, howItWorksCard]
-
 
   return (
     <div>
@@ -74,7 +63,6 @@ function App (props) {
         fixed
       />
       <div className={classes.container}>
-        {apiSwitch}
         <GridContainer
           className={classes.gridContainer}
           children={gridContainerChildren}
