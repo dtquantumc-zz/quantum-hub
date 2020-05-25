@@ -34,8 +34,7 @@ const footerStyle = {
   },
   right: {
     padding: '15px 0',
-    margin: '0',
-    float: 'right!important'
+    margin: 'auto 0 auto auto',
   },
   footer: {
     padding: '0.9375rem 0',
@@ -55,7 +54,10 @@ const footerStyle = {
       color: '#FFFFFF'
     }
   },
-  container,
+  container: {
+    display: 'flex',
+    ...container
+  },
   list: {
     marginBottom: '0',
     padding: '0',
