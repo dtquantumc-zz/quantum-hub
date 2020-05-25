@@ -13,6 +13,7 @@ import NurseField from './components/Inputs/NurseField'
 import RightHeaderLinks from './components/Header/RightHeaderLinks'
 import LeftHeaderLinks from './components/Header/LeftHeaderLinks'
 import FooterLinks from './components/Footer/FooterLinks'
+import QPUswitch from './components/Switch/QPUswitch.js'
 
 import { makeStyles } from '@material-ui/core/styles'
 import styles from './assets/jss/material-kit-react/views/app.js'
@@ -24,11 +25,16 @@ function App (props) {
   const userInput = getUserInput(props, classes)
   const appBrand = getAppBrand(props)
 
+  const typeOfProblem = {
+    isNurseScheduler: props.isNurseScheduler,
+    isSudokuSolver: props.isSudokuSolver
+  }
+  const qpuSwitch = <QPUswitch typeOfProblem={typeOfProblem} />
   const terminalWindow = <Console textLines={['line1', 'line2']} />
   const gamePanel =
     <div className='game'><GameContainer variant='outlined' />{userInput}</div>
   const howItWorksCard = <DescriptionCard />
-  const gridContainerChildren = [terminalWindow, gamePanel, howItWorksCard]
+  const gridContainerChildren = [qpuSwitch, terminalWindow, gamePanel, howItWorksCard]
 
   return (
     <div>
