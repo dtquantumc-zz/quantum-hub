@@ -34,7 +34,7 @@ const footerStyle = {
   },
   right: {
     padding: '15px 0',
-    margin: 'auto 0 auto auto',
+    margin: 'auto 0 auto auto'
   },
   footer: {
     padding: '0.9375rem 0',

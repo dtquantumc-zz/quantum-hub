@@ -15,6 +15,7 @@ import LeftHeaderLinks from './components/Header/LeftHeaderLinks'
 import FooterLinks from './components/Footer/FooterLinks'
 import SudokuGame from './component/sudoku'
 import APISwitch from './component/APISwitch'
+import QPUswitch from './components/Switch/QPUswitch.js'
 
 import { makeStyles } from '@material-ui/core/styles'
 import styles from './assets/jss/material-kit-react/views/app.js'
@@ -27,6 +28,11 @@ function App (props) {
 
   const appBrand = getAppBrand(props)
 
+  const typeOfProblem = {
+    isNurseScheduler: props.isNurseScheduler,
+    isSudokuSolver: props.isSudokuSolver
+  }
+  const qpuSwitch = <QPUswitch typeOfProblem={typeOfProblem} key='qpuSwitch' />
   const terminalWindow = <Console textLines={textLines} key='terminalWindow' />
 
   // Eventually, set a way to change this based on URL parameters
@@ -55,7 +61,8 @@ function App (props) {
   const gamePanel =
     <div className='game' key='gamePanel'><GameContainer variant='outlined' children={game} /></div>
   const howItWorksCard = <DescriptionCard key='howItWorksCard' />
-  const gridContainerChildren = [terminalWindow, gamePanel, howItWorksCard]
+  const gridContainerChildren = [qpuSwitch, terminalWindow, gamePanel, howItWorksCard]
+
 
   return (
     <div>
