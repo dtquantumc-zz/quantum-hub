@@ -17,6 +17,7 @@ from __future__ import print_function
 import dimod
 import math
 import sys
+import os
 
 from dimod.generators.constraints import combinations
 from hybrid.reference import KerberosSampler
@@ -54,7 +55,7 @@ def is_correct(matrix):
 
     Args:
       matrix(list of lists): list contains 'n' lists, where each of the 'n'
-        lists contains 'n' digits. 
+        lists contains 'n' digits.
     """
     n = len(matrix)        # Number of rows/columns
     m = int(math.sqrt(n))  # Number of subsquare rows/columns
@@ -86,14 +87,17 @@ def is_correct(matrix):
     return True
 
 
-def main():
-    # Note: for the purposes of a code example, main() is written as a script 
+def main(qpu_sampler):
+    # Note: for the purposes of a code example, main() is written as a script
 
     # Read user input
     if len(sys.argv) > 1:
         filename = sys.argv[1]
     else:
-        filename = "problem.txt"
+        filename = 'problem.txt'
+        dir_name = os.path.dirname(os.path.realpath(__file__))
+
+        filename = os.path.join(dir_name, filename)
         print("Warning: using default problem file, '{}'. Usage: python "
               "{} <sudoku filepath>".format(filename, sys.argv[0]))
 
@@ -165,7 +169,11 @@ def main():
                 bqm.fix_variable(get_label(row, col, value), 1)
 
     # Solve BQM
-    solution = KerberosSampler().sample(bqm, max_iter=10, convergence=3)
+    sampler = KerberosSampler()
+    solution = sampler.sample(bqm,
+                              max_iter=10,
+                              convergence=3,
+                              qpu_sampler=qpu_sampler)
     best_solution = solution.first.sample
 
     # Print solution
@@ -184,6 +192,8 @@ def main():
         print("The solution is correct")
     else:
         print("The solution is incorrect")
+
+    return matrix
 
 
 if __name__ == "__main__":
