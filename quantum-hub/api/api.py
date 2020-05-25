@@ -4,7 +4,7 @@ import sys, os
 
 app = Flask(__name__, static_folder='./build', static_url_path='/')
 
-@app.route('/test_server')
+@app.route('/test_server', methods = ['POST', 'GET'])
 def test_server():
 	return {'test': 'complete'}
 

@@ -14,6 +14,7 @@ import RightHeaderLinks from './components/Header/RightHeaderLinks'
 import LeftHeaderLinks from './components/Header/LeftHeaderLinks'
 import FooterLinks from './components/Footer/FooterLinks'
 import SudokuGame from './component/sudoku'
+import APISwitch from './component/APISwitch'
 
 import { makeStyles } from '@material-ui/core/styles'
 import styles from './assets/jss/material-kit-react/views/app.js'
@@ -41,6 +42,16 @@ function App (props) {
       key='myGame'
     />
 
+  const apiSwitch =
+    <APISwitch
+      id='myAPISwitch'
+      switchText={['QPU', 'Simulator']}
+      setAPIKey={(key) => {
+        setAPIKey(key)
+      }}
+      defaultChecked={false}
+    />
+
   const gamePanel =
     <div className='game' key='gamePanel'><GameContainer variant='outlined' children={game} /></div>
   const howItWorksCard = <DescriptionCard key='howItWorksCard' />
@@ -56,6 +67,7 @@ function App (props) {
         fixed
       />
       <div className={classes.container}>
+        {apiSwitch}
         <GridContainer
           className={classes.gridContainer}
           children={gridContainerChildren}
