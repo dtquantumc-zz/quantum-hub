@@ -46,31 +46,31 @@ export default function QPUswitch (props) {
     if (checked) props.setAPIKey('')
   }
 
-  let currentXhr = null
+  //let currentXhr = null
   const handleClick = () => {
     props.setAPIKey(token)
 
-    if (currentXhr) {
-      currentXhr.abort()
-    }
+    // if (currentXhr) {
+    //   currentXhr.abort()
+    // }
 
-    currentXhr = new XMLHttpRequest()
-    const url = '/api_token'
-    const params = {
-      token: token,
-      typeOfProblem: typeOfProblem
-    }
-    const async = true
+    // currentXhr = new XMLHttpRequest()
+    // const url = '/api_token'
+    // const params = {
+    //   token: token,
+    //   typeOfProblem: typeOfProblem
+    // }
+    // const async = true
 
-    currentXhr.open('POST', url, async)
+    // currentXhr.open('POST', url, async)
 
-    currentXhr.onload = () => {
-      console.log(currentXhr.responseText)
-      currentXhr = null
-    }
+    // currentXhr.onload = () => {
+    //   console.log(currentXhr.responseText)
+    //   currentXhr = null
+    // }
 
-    currentXhr.setRequestHeader('Content-type', 'application/json')
-    currentXhr.send(JSON.stringify(params))
+    // currentXhr.setRequestHeader('Content-type', 'application/json')
+    // currentXhr.send(JSON.stringify(params))
   }
 
   return (
