@@ -14,7 +14,7 @@
 
  */
 
-import { defaultFont } from '../../../../assets/jss/material-kit-react.js'
+import { defaultFont } from '../../material-kit-react.js'
 
 // TODO: Copied from headerLinksStyle.js, should instead re-use
 const footerLinksStyle = theme => ({
