@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography'
 import { red } from '@material-ui/core/colors'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
+import widgetList from '../Widget/Widget.json'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 259,
@@ -36,29 +38,38 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function DescriptionCard () {
+export default function DescriptionCard (props) {
   const classes = useStyles()
   const [expanded, setExpanded] = React.useState(false)
 
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
+  let widgetInfo
+  if (widgetList[props.widget]) {
+    widgetInfo = widgetList[props.widget]
+  } else {
+    widgetInfo = {
+      title: 'Title not found',
+      subheader: 'Subheader not found',
+      description: 'Description not found'
+    }
+  }
 
   return (
     <Card className={classes.root}>
       <CardHeader
-        title='How it works'
-        subheader='September 14, 2016'
+        title={widgetInfo.title}
+        subheader={widgetInfo.subheader}
       />
       <CardMedia
         className={classes.media}
-        image='/static/images/cards/paella.jpg'
+        // image='/static/images/cards/paella.jpg'
         title='Paella dish'
       />
       <CardContent>
         <Typography variant='body2' color='textSecondary' component='p'>
-          This impressive paella is a perfect party dish and a fun meal to cook together with your
-          guests. Add 1 cup of frozen peas along with the mussels, if you like.
+          {widgetInfo.description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

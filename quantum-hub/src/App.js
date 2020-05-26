@@ -32,6 +32,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import styles from './assets/jss/material-kit-react/views/app.js'
 
+import widgetList from './components/Widget/Widget.json'
+
 /**
  *
  * @param {object} props properties for the App
@@ -45,29 +47,43 @@ function App (props) {
 
   const appBrand = getAppBrand(props)
 
-  const typeOfProblem = {
-    isNurseScheduler: props.isNurseScheduler,
-    isSudokuSolver: props.isSudokuSolver
-  }
-  const qpuSwitch = <QPUswitch typeOfProblem={typeOfProblem} key='qpuSwitch' setAPIKey={setAPIKey} />
+  // const typeOfProblem = {
+  //   isNurseScheduler: props.isNurseScheduler,
+  //   isSudokuSolver: props.isSudokuSolver
+  // }
+
+  const qpuSwitch = <QPUswitch typeOfProblem='isSudokuSolver' key='qpuSwitch' setAPIKey={setAPIKey} />
   const terminalWindow = <Console textLines={textLines} key='terminalWindow' />
 
-  // Eventually, set a way to change this based on URL parameters
-  // E.g. ?game=sudoku or ?game=nurse
-  const game =
-    <SudokuGame
-      id='myWidget'
-      getAPIKey={() => APIKey}
-      outputToConsole={(line) => {
-        setTextLines(textLines.concat(line))
-        textLines = textLines.concat(line)
-      }}
-      key='myGame'
-    />
+  // widget is a string, a key to the widgetList JSON object describing the widget
+  let widget
+  if (widgetList[props.widget]) {
+    widget = props.widget
+  } else {
+    widget = 'default'
+  }
+
+  let widgetComponent
+  if (widget === 'sudoku') {
+    widgetComponent =
+      <SudokuGame
+        id='myWidget'
+        getAPIKey={() => APIKey}
+        outputToConsole={(line) => {
+          setTextLines(textLines.concat(line))
+          textLines = textLines.concat(line)
+        }}
+        key='myGame'
+      />
+  } else if (widget === 'nurse') {
+    widgetComponent = <p>No nurses yet</p>
+  } else {
+    widgetComponent = <p>Really nothing here :(</p>
+  }
 
   const gamePanel =
-    <div className='game' key='gamePanel'><GameContainer variant='outlined' children={game} /></div>
-  const howItWorksCard = <DescriptionCard key='howItWorksCard' />
+    <div className='game' key='gamePanel'><GameContainer variant='outlined' children={widgetComponent} /></div>
+  const howItWorksCard = <DescriptionCard widget={widget} key='howItWorksCard' />
   const gridContainerChildren = [qpuSwitch, terminalWindow, gamePanel, howItWorksCard]
 
   return (
@@ -118,6 +134,27 @@ function getUserInput (props, classes) {
 
   return userInput
 }
+
+// function loadWidget (props, classes) {
+//   let widget
+//   if (props.widget === 'sudoku') {
+//     widget =
+//       <SudokuGame
+//         id='myWidget'
+//         getAPIKey={() => APIKey}
+//         outputToConsole={(line) => {
+//           setTextLines(textLines.concat(line))
+//           textLines = textLines.concat(line)
+//         }}
+//         key='myGame'
+//       />
+//   } else if (props.widget === 'nurse') {
+//     widget = <p>Nothing here sorry</p>
+//   } else {
+//     widget = <p>Really nothing here :(</p>
+//   }
+//   return widget
+// }
 
 /**
  *

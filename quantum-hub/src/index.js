@@ -2,23 +2,26 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
-import APISwitch from './component/APISwitch'
 import * as serviceWorker from './serviceWorker'
 
-var globalState = {
-  textLines: ['l1', 'l2']
-}
-
-const globalStateContext = React.createContext(globalState)
-
 ReactDOM.render(
-  <globalStateContext.Provider value={globalState}>
-    <React.StrictMode>
-      <App isSudokuSolver />
-    </React.StrictMode>
-  </globalStateContext.Provider>,
+  <React.StrictMode>
+    <GenericApp />
+  </React.StrictMode>,
   document.getElementById('root')
 )
+
+/**
+ * Routes to different components based on window pathname
+ */
+function GenericApp () {
+  const route = window.location.pathname
+  if (route.startsWith('/app/')) {
+    return (<App widget={route.substr(5, route.length)} />)
+  } else {
+    return (<App />)
+  }
+}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

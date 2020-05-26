@@ -91,7 +91,7 @@ function SudokuGame (props) {
       <p>Click on the cells and use your keyboard numbers to fill them in!</p>
       <div className={classes.sudokuInput}>
         <Button
-          color='greeingup' // Not a typo, this is the actual color
+          color='geeringup' // Not a typo, this is the actual color
           disabled={!enabled}
           onClick={() => {
             sendForSolve(sudokuGrid, setSudokuGrid, setEnabled, props.outputToConsole, xhr, setXHR, props.getAPIKey)
@@ -247,8 +247,8 @@ function resetSudokuGrid (setSudokuGrid) {
 // Require the correct propTypes:
 SudokuGame.propTypes = {
   id: PropTypes.string.isRequired,
-  getAPIKey: PropTypes.Function.isRequired,
-  outputToConsole: PropTypes.Function.isRequired
+  getAPIKey: PropTypes.func.isRequired,
+  outputToConsole: PropTypes.func.isRequired
 }
 
 export default SudokuGame

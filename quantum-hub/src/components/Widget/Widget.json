@@ -1,0 +1,26 @@
+{
+  "sudoku": {
+    "enabler": "isSudokuSolver",
+    "route": "/app/sudoku",
+    "title": "How it works",
+    "subheader": "This is a subheader",
+    "description": "This sudoku game is really fun! :D",
+    "component": "SudokuGame"
+  },
+  "nurse": {
+    "enabler": "isNurseScheduler",
+    "route": "/app/nurse",
+    "title": "Nurse Scheduling",
+    "subheader": "How to schedule:",
+    "description": "We schedule nurses :O",
+    "component": ""
+  },
+  "default": {
+    "enabler": "isNothing",
+    "route": "/app/default",
+    "title": "No title found",
+    "subheader": "No subheader found",
+    "description": "No description found",
+    "component": ""
+  }
+}
