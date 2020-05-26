@@ -14,6 +14,12 @@ def test_server():
 def my_index():
 	return app.send_static_file("index.html")
 
+@app.route('/app/')
+@app.route('/app/<string:game>')
+def app_page(game):
+	print(game)
+	return app.send_static_file("index.html")
+
 if __name__ == '__main__':
 	# Run Flask App
 	port = int(os.getenv("PORT",5000))

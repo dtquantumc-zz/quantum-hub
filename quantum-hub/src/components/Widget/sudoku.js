@@ -6,12 +6,12 @@
 
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import './component_css/sudoku.css'
+import './sudoku.css'
 import XMLHttpRequest from 'xhr2'
 
-import Button from '../components/CustomButtons/Button'
+import Button from '../CustomButtons/Button'
 import { makeStyles } from '@material-ui/core/styles'
-import styles from '../assets/jss/material-kit-react/views/app.js'
+import styles from '../../assets/jss/material-kit-react/views/app.js'
 
 /**
  * SudokuGame is meant to make the Sudoku Solver tool
@@ -239,10 +239,10 @@ function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR) {
  * Sets the grid state using setSudokuGrid
  * @param {Function} setSudokuGrid - Sets an external Sudoku Grid variable
 */
-function resetSudokuGrid (setSudokuGrid) {
-  var newGrid = Array(9).fill(Array(9).fill(0))
-  setSudokuGrid(newGrid)
-}
+// function resetSudokuGrid (setSudokuGrid) {
+//   var newGrid = Array(9).fill(Array(9).fill(0))
+//   setSudokuGrid(newGrid)
+// }
 
 // Require the correct propTypes:
 SudokuGame.propTypes = {

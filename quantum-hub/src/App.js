@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 
 // core components
 import QPUswitch from './components/Switch/QPUswitch.js'
-import Console from './component/console.js'
+import Console from './components/CustomOutput/console.js'
 import GameContainer from './components/Paper/GameContainer.js'
 import DescriptionCard from './components/Card/DescriptionCard.js'
 
@@ -26,7 +26,7 @@ import FooterLinks from './components/Footer/FooterLinks.js'
 
 import Button from './components/CustomButtons/Button.js'
 
-import SudokuGame from './component/sudoku.js'
+import SudokuGame from './components/Widget/sudoku.js'
 // @material-ui/icons
 import { makeStyles } from '@material-ui/core/styles'
 
