@@ -63,7 +63,7 @@ function SudokuGame (props) {
       <div className='sudokuBox'>
         <div
           className='gridGrid'
-          onKeyPress={(event) => {
+          onKeyDown={(event) => {
             // Don't handle key presses if the whole app is disabled
             if (enabled) handleKeyPress(event, sudokuGrid, setSudokuGrid, currentSquare)
           }}
@@ -152,13 +152,15 @@ function GridSquare (props) {
  * @param {Array(2)} cur - The currently selected tile
  */
 function handleKeyPress (event, sudokuGrid, setSudokuGrid, cur) {
-  if (event.charCode >= 48 && event.charCode <= 57) {
+  // 8 is backspace, the others are the numbers
+  if ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8) {
     var newGrid = Array(81).fill(0)
+    const numRes = event.keyCode === 8 ? 0 : event.keyCode - 48
 
     for (var x = 0; x < 9; ++x) {
       for (var y = 0; y < 9; ++y) {
         if (cur[0] === x && cur[1] === y) {
-          newGrid[x + 9 * y] = event.charCode - 48
+          newGrid[x + 9 * y] = numRes
         } else {
           newGrid[x + 9 * y] = sudokuGrid[x + 9 * y]
         }
