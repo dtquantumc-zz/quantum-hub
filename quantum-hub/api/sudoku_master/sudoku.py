@@ -87,6 +87,20 @@ def is_correct(matrix):
     return True
 
 
+def get_result(matrix):
+    result = dict()
+    result["solved_board"] = matrix
+
+    # Verify
+    result["solution_message"] = ""
+    if is_correct(matrix):
+        result["solution_message"] = "The solution is correct"
+    else:
+        result["solution_message"] = "The solution is incorrect"
+
+    return result
+
+
 def main(qpu_sampler):
     # Note: for the purposes of a code example, main() is written as a script
 
@@ -184,16 +198,7 @@ def main(qpu_sampler):
         row, col = map(int, coord.split(','))
         matrix[row][col] = int(digit)
 
-    for line in matrix:
-        print(*line, sep=" ")   # Print list without commas or brackets
-
-    # Verify
-    if is_correct(matrix):
-        print("The solution is correct")
-    else:
-        print("The solution is incorrect")
-
-    return matrix
+    return get_result(matrix)
 
 
 if __name__ == "__main__":
