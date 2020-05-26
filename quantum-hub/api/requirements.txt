@@ -14,6 +14,7 @@ dwave-system==0.9.4
 dwave-tabu==0.2.2
 dwavebinarycsp==0.1.2
 Flask==1.1.2
+gunicorn==20.0.4
 homebase==1.0.1
 idna==2.9
 itsdangerous==1.1.0
