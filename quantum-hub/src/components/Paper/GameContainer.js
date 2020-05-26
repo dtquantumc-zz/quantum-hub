@@ -18,6 +18,9 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 
+// nodejs library to set properties for components
+import PropTypes from 'prop-types'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -37,4 +40,8 @@ export default function GameContainer (props) {
       <Paper variant='outlined' children={props.children} />
     </div>
   )
+}
+
+GameContainer.propTypes = {
+  children: PropTypes.node
 }

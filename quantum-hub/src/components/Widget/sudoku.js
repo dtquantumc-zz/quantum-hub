@@ -194,7 +194,7 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
     }
   }
   setEnabled(false)
-  outputToConsole('Sending this grid in for solving:')
+  outputToConsole('Sending in this grid:')
   sudokuArray.map((row) => outputToConsole(row.join(' ')))
 
   xhr = new XMLHttpRequest()
@@ -239,10 +239,11 @@ function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR) {
     const solvedBoard = xhr.response.solved_board
     if (solvedBoard) {
       solvedBoard.map((row) => outputToConsole(row.join(' ')))
+      const flattenedBoard = solvedBoard.flat()
+      setSudokuGrid(flattenedBoard)
     } else {
       outputToConsole(xhr.responseText)
     }
-
     outputToConsole(xhr.response.solution_message)
   } else {
     outputToConsole(xhr.statusText)

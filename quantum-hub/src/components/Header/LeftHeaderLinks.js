@@ -22,7 +22,7 @@ import dtqcLogo from "../../images/DTQC_with_background.svg"
 
 const useStyles = makeStyles(styles);
 
-export default function LeftHeaderLinks(props) {
+export default function LeftHeaderLinks() {
   const classes = useStyles();
 
   const dtqcTitle = "More info about DTQC"

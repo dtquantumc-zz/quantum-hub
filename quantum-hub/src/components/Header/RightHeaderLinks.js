@@ -16,10 +16,6 @@
 
 /*eslint-disable*/
 import React from "react";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-// react components for routing our app without refresh
-// import { Link } from "react-router-dom";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,10 +32,10 @@ import styles from "../../assets/jss/material-kit-react/components/headerLinksSt
 
 const useStyles = makeStyles(styles);
 
-export default function RightHeaderLinks(props) {
+export default function RightHeaderLinks() {
   const classes = useStyles();
 
-  const githubTitle = "Take a look at our github"
+  const githubTitle = "Check out our github"
   const githubLink = "https://github.com/dtquantumc/sw"
 
   const youtubeTitle = "Subscribe on youtube"
@@ -51,11 +47,6 @@ export default function RightHeaderLinks(props) {
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
-        {/*<Tooltip title="Delete">
-          <IconButton aria-label="Delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>*/}
         <Tooltip
           id="github-tooltip"
           title={githubTitle}

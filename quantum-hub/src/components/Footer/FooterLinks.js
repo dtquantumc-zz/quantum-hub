@@ -23,7 +23,7 @@ import styles from '../../assets/jss/material-kit-react/components/footerLinksSt
 
 const useStyles = makeStyles(styles)
 
-export default function FooterLinks (props) {
+export default function FooterLinks () {
   const classes = useStyles()
 
   const ubcTitle = 'UBC'

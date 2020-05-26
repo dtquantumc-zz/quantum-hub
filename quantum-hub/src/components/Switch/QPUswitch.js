@@ -1,6 +1,9 @@
 import React from 'react'
 import XMLHttpRequest from 'xhr2'
 
+// nodejs library to set properties for components
+import PropTypes from 'prop-types'
+
 import { makeStyles } from '@material-ui/core/styles'
 import Switch from '@material-ui/core/Switch'
 import Fade from '@material-ui/core/Fade'
@@ -124,4 +127,8 @@ export default function QPUswitch (props) {
       ]}
     />
   )
+}
+
+QPUswitch.propTypes = {
+  typeOfProblem: PropTypes.string
 }
