@@ -62,11 +62,11 @@ export default function DescriptionCard (props) {
         title={widgetInfo.title}
         subheader={widgetInfo.subheader}
       />
-      <CardMedia
+      {/* <CardMedia
         className={classes.media}
-        // image='/static/images/cards/paella.jpg'
+        image='/static/images/cards/paella.jpg'
         title='Paella dish'
-      />
+      /> */}
       <CardContent>
         <Typography variant='body2' color='textSecondary' component='p'>
           {widgetInfo.description}

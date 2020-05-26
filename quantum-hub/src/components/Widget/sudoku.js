@@ -231,16 +231,22 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
  */
 function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR) {
   setEnabled(true)
-  outputToConsole('Solved!')
 
-  const solved_board = xhr.response.solved_board
-  solved_board.map((row) => outputToConsole(row.join(' ')))
+  if (xhr.response) {
+    outputToConsole('Solved!')
+    const solvedBoard = xhr.response.solved_board
+    if (solvedBoard) {
+      solvedBoard.map((row) => outputToConsole(row.join(' ')))
+    } else {
+      outputToConsole(xhr.responseText)
+    }
 
-  outputToConsole(xhr.response.solution_message)
-
+    outputToConsole(xhr.response.solution_message)
+  } else {
+    outputToConsole(xhr.statusText)
+  }
   setXHR(null)
   xhr = null
-
 }
 
 /**

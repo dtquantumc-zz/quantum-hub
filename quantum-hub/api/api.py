@@ -17,7 +17,7 @@ app = Flask(__name__, static_folder='./build', static_url_path='/')
 def test_server():
     raw_data = request.get_json()
 
-    results = {'test': 'complete', 'token': raw_data['token']}
+    # results = {'test': 'complete', 'token': raw_data['token']}
     if request.method == 'POST':
         endpoint = 'https://cloud.dwavesys.com/sapi/'
         token = raw_data['token']
