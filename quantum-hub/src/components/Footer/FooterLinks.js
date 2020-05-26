@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: MIT
+/*
+ * (C) Copyright 2020
+ * Diversifying Talent in Quantum Computing, Geering Up, UBC
+ */
+
 import React from 'react'
 
 // @material-ui/core components
