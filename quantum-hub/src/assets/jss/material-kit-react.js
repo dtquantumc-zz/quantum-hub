@@ -77,6 +77,7 @@ const successColor = '#4caf50'
 const infoColor = '#00acc1'
 const roseColor = '#e91e63'
 const grayColor = '#999999'
+const geeringupColor = '#d96262'
 
 const primaryBoxShadow = {
   boxShadow:
@@ -101,6 +102,11 @@ const dangerBoxShadow = {
 const roseBoxShadow = {
   boxShadow:
     '0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(233, 30, 99, 0.4)'
+}
+
+const geeringupBoxShadow = {
+  boxShadow:
+  '0 12px 20px -10px rgba(217, 98, 98, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(217, 98, 98, 0.2)'
 }
 
 const warningCardHeader = {
@@ -132,6 +138,11 @@ const roseCardHeader = {
   color: '#fff',
   background: 'linear-gradient(60deg, #ec407a, #d81b60)',
   ...roseBoxShadow
+}
+const geeringupCardHeader = {
+  color: '#fff',
+  background: 'linear-gradient(60deg, #de7777, #d44d4d)', // 'linear-gradient(60deg, #dc8479, #c85f5f)',
+  ...geeringupBoxShadow
 }
 const cardActions = {
   margin: '0 20px 10px',
@@ -196,18 +207,21 @@ export {
   infoColor,
   roseColor,
   grayColor,
+  geeringupColor,
   primaryBoxShadow,
   infoBoxShadow,
   successBoxShadow,
   warningBoxShadow,
   dangerBoxShadow,
   roseBoxShadow,
+  geeringupBoxShadow,
   warningCardHeader,
   successCardHeader,
   dangerCardHeader,
   infoCardHeader,
   primaryCardHeader,
   roseCardHeader,
+  geeringupCardHeader,
   cardActions,
   cardHeader,
   defaultBoxShadow,

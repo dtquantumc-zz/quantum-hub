@@ -7,7 +7,8 @@ div, p {margin:0px; padding:0px;}
   cursor: pointer;
   text-align: center;
   position: relative;
-  color: black;
+  color: rgba(0, 0, 0, 0.87);
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: bold;
   font-size: 2vw;
 }
@@ -17,39 +18,56 @@ div, p {margin:0px; padding:0px;}
 }
 
 .gridLeft{
-  border-left: 2px solid black;
+  border-left: 2px solid rgba(0, 0, 0, 0.87);
 }
 
 .gridLeftest{
-  border-left: 4px solid black;
+  border-left: 4px solid rgba(0, 0, 0, 0.87);
+}
+
+.gridLeftest.gridToppest {
+  border-top-left-radius: 6px;
+}
+
+.gridLeftest.gridBottomest {
+  border-bottom-left-radius: 6px;
 }
 
 .gridRight{
-  border-right: 2px solid black;
+  border-right: 2px solid rgba(0, 0, 0, 0.87);
 }
 
 .gridRightest{
-  border-right: 4px solid black;
+  border-right: 4px solid rgba(0, 0, 0, 0.87);
+}
+
+.gridRightest.gridToppest {
+  border-top-right-radius: 6px;
+}
+
+.gridRightest.gridBottomest {
+  border-bottom-right-radius: 6px;
 }
 
 .gridTop{
-  border-top: 2px solid black;
+  border-top: 2px solid rgba(0, 0, 0, 0.87);
 }
 
 .gridToppest{
-  border-top: 4px solid black;
+  border-top: 4px solid rgba(0, 0, 0, 0.87);
 }
 
 .gridBottom{
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.87);
 }
 
 .gridBottomest{
-  border-bottom: 4px solid black;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.87);
 }
 
 .gridSquare:focus{
   z-index: 1000;
+  outline: none;
 }
 
 .focused{

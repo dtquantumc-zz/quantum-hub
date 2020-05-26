@@ -1,3 +1,8 @@
+# SPDX-License-Identifier: MIT
+#
+# (C) Copyright 2020
+# Diversifying Talent in Quantum Computing, Geering Up, UBC
+
 import time
 from flask import Flask, render_template, request
 import os
@@ -32,7 +37,8 @@ def test_server():
             results = str(nurse_scheduling.main(token=token,
                                                 qpu_sampler=sampler))
         else:
-            results = sudoku.main(qpu_sampler=sampler)
+            results = sudoku.main(qpu_sampler=sampler,
+                                  matrix=raw_data['sudokuArray'])
 
     return results
 

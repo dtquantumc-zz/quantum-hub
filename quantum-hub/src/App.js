@@ -9,7 +9,6 @@ import React, { useState } from 'react'
 // core components
 import QPUswitch from './components/Switch/QPUswitch.js'
 import Console from './components/CustomOutput/console.js'
-import GameContainer from './components/Paper/GameContainer.js'
 import DescriptionCard from './components/Card/DescriptionCard.js'
 
 import Header from './components/Header/Header.js'
@@ -81,10 +80,8 @@ function App (props) {
     widgetComponent = <p>Really nothing here :(</p>
   }
 
-  const gamePanel =
-    <div className='game' key='gamePanel'><GameContainer variant='outlined' children={widgetComponent} /></div>
   const howItWorksCard = <DescriptionCard widget={widget} key='howItWorksCard' />
-  const gridContainerChildren = [qpuSwitch, terminalWindow, gamePanel, howItWorksCard]
+  const gridContainerChildren = [qpuSwitch, terminalWindow, widgetComponent, howItWorksCard]
 
   return (
     <div>
