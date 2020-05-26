@@ -101,13 +101,10 @@ def get_result(matrix):
     return result
 
 
-def main(qpu_sampler):
+def main(qpu_sampler, matrix=None):
     # Note: for the purposes of a code example, main() is written as a script
 
-    # Read user input
-    if len(sys.argv) > 1:
-        filename = sys.argv[1]
-    else:
+    if matrix is None:
         filename = 'problem.txt'
         dir_name = os.path.dirname(os.path.realpath(__file__))
 
@@ -115,8 +112,7 @@ def main(qpu_sampler):
         print("Warning: using default problem file, '{}'. Usage: python "
               "{} <sudoku filepath>".format(filename, sys.argv[0]))
 
-    # Read sudoku problem
-    matrix = get_matrix(filename)
+        matrix = get_matrix(filename)
 
     # Set up
     n = len(matrix)          # Number of rows/columns in sudoku
