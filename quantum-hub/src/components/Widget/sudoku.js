@@ -204,6 +204,9 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
   }
   const async = true
   xhr.open('POST', url, async)
+
+  xhr.responseType = 'json'
+
   xhr.onload = () => {
     postSolve(setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR)
   }
@@ -229,9 +232,15 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
 function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR) {
   setEnabled(true)
   outputToConsole('Solved!')
-  outputToConsole(xhr.responseText)
+
+  const solved_board = xhr.response.solved_board
+  solved_board.map((row) => outputToConsole(row.join(' ')))
+
+  outputToConsole(xhr.response.solution_message)
+
   setXHR(null)
   xhr = null
+
 }
 
 /**
