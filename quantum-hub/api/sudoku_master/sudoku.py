@@ -182,7 +182,8 @@ def main(qpu_sampler, matrix=None):
     sampler = KerberosSampler()
     solution = sampler.sample(bqm,
                               max_iter=10,
-                              convergence=3,
+                              convergence=2,
+                              energy_threshold=0.1,
                               qpu_sampler=qpu_sampler)
     best_solution = solution.first.sample
 
