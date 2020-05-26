@@ -1,14 +1,14 @@
-ul{
+ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-.scroll_console{
+.scroll_console {
     overflow-y: visible;
     overflow-x: hidden;
-    background-color: aliceblue;
-    color: navy;
+    background-color: #67cfee;
+    color: #fff;
     font-family: monospace;
     text-emphasis-color: #ffffff;
     height: 428px;
@@ -18,12 +18,12 @@ ul{
     border: 1px solid rgba(0, 0, 0, 0.12)
 }
 
-.scroll_console::selection{
-    background-color: navy;
-    color: aliceblue;
+.scroll_console::selection {
+    background-color: #fff;
+    color: #67cfee;
 }
 
-.scroll_console::-moz-selection{
-    background-color: navy;
-    color: aliceblue;
+.scroll_console::-moz-selection {
+    background-color: #fff;
+    color: #67cfee;
 }
