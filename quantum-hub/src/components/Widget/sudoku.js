@@ -178,11 +178,22 @@ function handleKeyPress (event, state) {
   // 8 is backspace, the others are the numbers
   const x = state.cur[0]
   const y = state.cur[1]
-  if ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8) {
+  if (
+    (event.keyCode >= 48 && event.keyCode <= 57) ||
+    (event.keyCode >= 96 && event.keyCode <= 105) ||
+    event.keyCode === 8
+  ) {
+    event.preventDefault()
     // Copy grid state to new variables
     var newGrid = Array.from(state.grid)
     var newBold = Array.from(state.bold)
-    const numRes = event.keyCode === 8 ? 0 : event.keyCode - 48
+    const numRes = (
+      event.keyCode === 8
+        ? 0
+        : (event.keycode >= 96
+          ? event.keyCode - 96
+          : event.keyCode - 48)
+    )
     const boldRes = event.keyCode in [8, 48] ? 0 : 1
     newGrid[x + 9 * y] = numRes
     newBold[x + 9 * y] = boldRes
