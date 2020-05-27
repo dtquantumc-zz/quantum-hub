@@ -76,7 +76,7 @@ function SudokuGame (props) {
   const classes = useStyles()
 
   return (
-    <div>
+    <div className={classes.sudokuRoot}>
       <div className='sudokuBox'>
         <div
           className='gridGrid'

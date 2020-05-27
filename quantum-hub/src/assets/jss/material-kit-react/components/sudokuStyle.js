@@ -5,13 +5,19 @@
  */
 
 const sudokuStyle = theme => ({
-    sudokuInput: {
-        display: 'flex',
-        justifyContent: 'center',
-        '& > *': {
-          margin: theme.spacing(1)
-        }
-      }
+  sudokuRoot: {
+    margin: theme.spacing(1),
+    '& > *': {
+      color: 'rgba(0, 0, 0, 0.87)'
+    }
+  },
+  sudokuInput: {
+    display: 'flex',
+    justifyContent: 'center',
+    '& > *': {
+      margin: theme.spacing(1)
+    }
+  }
 })
 
 export default sudokuStyle
