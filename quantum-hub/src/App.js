@@ -111,26 +111,26 @@ function App (props) {
  * @param {object} classes styles for input field React Components
  * @returns {object} userInput React Component
  */
-function getUserInput (props, classes) {
-  let userInput
+// function getUserInput (props, classes) {
+//   let userInput
 
-  if (props.isNurseScheduler) {
-    userInput =
-      <div className={classes.nurseSchedulingInput}>
-        {/* TODO: Upcoming */}
-        {/* <NurseSchedulingInput /> */}
-      </div>
-  } else {
-    userInput =
-      <div className={classes.sudokuInput}>
-        <Button color='geeringup'>
-          Solve
-        </Button>
-      </div>
-  }
+//   if (props.isNurseScheduler) {
+//     userInput =
+//       <div className={classes.nurseSchedulingInput}>
+//         {/* TODO: Upcoming */}
+//         {/* <NurseSchedulingInput /> */}
+//       </div>
+//   } else {
+//     userInput =
+//       <div className={classes.sudokuInput}>
+//         <Button color='geeringup'>
+//           Solve
+//         </Button>
+//       </div>
+//   }
 
-  return userInput
-}
+//   return userInput
+// }
 
 // function loadWidget (props, classes) {
 //   let widget

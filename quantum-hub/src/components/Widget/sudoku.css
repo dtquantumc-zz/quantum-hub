@@ -9,8 +9,8 @@ div, p {margin:0px; padding:0px;}
   position: relative;
   color: rgba(0, 0, 0, 0.87);
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  font-weight: bold;
-  font-size: 2vw;
+  font-weight: normal;
+  font-size: 30px;
 }
 
 .gridSquare:disabled{
@@ -72,6 +72,10 @@ div, p {margin:0px; padding:0px;}
 
 .focused{
   background-color: lightgray;
+}
+
+.bolded{
+  font-weight: bold;
 }
 
 .sudokuBox{

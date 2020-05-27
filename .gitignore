@@ -5,3 +5,6 @@
 # VS Code specific
 .vscode
 .history
+
+# Deployment local script
+h_deploy.sh

@@ -50,6 +50,7 @@ function SudokuGame (props) {
   // so that when setWhatever is called, the sudoku game is queued
   // for a rerender.
   const [sudokuGrid, setSudokuGrid] = useState(Array(81).fill(0))
+  const [gridBold, setGridBold] = useState(Array(81).fill(0))
   const [currentSquare, setCurrentSquare] = useState([0, 0])
   const [enabled, setEnabled] = useState(true)
   const [xhr, setXHR] = useState(null)
@@ -65,7 +66,7 @@ function SudokuGame (props) {
           className='gridGrid'
           onKeyDown={(event) => {
             // Don't handle key presses if the whole app is disabled
-            if (enabled) handleKeyPress(event, sudokuGrid, setSudokuGrid, currentSquare)
+            if (enabled) handleKeyPress(event, sudokuGrid, setSudokuGrid, currentSquare, gridBold, setGridBold)
           }}
         >
           {
@@ -78,6 +79,7 @@ function SudokuGame (props) {
                     y={y}
                     key={x + 9 * y} // Keys should be unique for React rendered components on the same layer
                     value={sudokuGrid[x + 9 * y]}
+                    bolded={gridBold[x + 9 * y]}
                     enabled={enabled}
                     onClick={() => setCurrentSquare([x, y])}
                     focused={(currentSquare[0] === x && currentSquare[1] === y)}
@@ -113,6 +115,7 @@ function SudokuGame (props) {
  * @prop {Boolean} focused - Marks whether the square should be in focus
  * @prop {Function} onClick - Function to be called on button click
  * @prop {Integer} value - What will be displayed in the Square
+ * @prop {Boolean} bolded - Whether the square's text should be bolded
  * @prop {Boolean} enabled - Whether the button should be enabled
  */
 function GridSquare (props) {
@@ -129,6 +132,7 @@ function GridSquare (props) {
   if (props.y === 8) classes += ' gridBottomest'
   else if (props.y % 3 === 2) classes += ' gridBottom'
   if (props.focused) classes += ' focused'
+  if (props.bolded) classes += ' bolded'
 
   return (
     <button
@@ -151,22 +155,27 @@ function GridSquare (props) {
  * @param {Function} setSudokuGrid - The hook to set the Sudoku grid
  * @param {Array(2)} cur - The currently selected tile
  */
-function handleKeyPress (event, sudokuGrid, setSudokuGrid, cur) {
+function handleKeyPress (event, sudokuGrid, setSudokuGrid, cur, gridBold, setGridBold) {
   // 8 is backspace, the others are the numbers
   if ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8) {
     var newGrid = Array(81).fill(0)
+    var newBold = Array(81).fill(0)
     const numRes = event.keyCode === 8 ? 0 : event.keyCode - 48
+    const boldRes = event.keyCode in [8, 48] ? 0 : 1
 
     for (var x = 0; x < 9; ++x) {
       for (var y = 0; y < 9; ++y) {
         if (cur[0] === x && cur[1] === y) {
           newGrid[x + 9 * y] = numRes
+          newBold[x + 9 * y] = boldRes
         } else {
           newGrid[x + 9 * y] = sudokuGrid[x + 9 * y]
+          newBold[x + 9 * y] = gridBold[x + 9 * y]
         }
       }
     }
     setSudokuGrid(newGrid)
+    setGridBold(newBold)
   }
 }
 
