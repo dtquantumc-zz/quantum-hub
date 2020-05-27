@@ -63,3 +63,7 @@ if __name__ == '__main__':
 @app.route('/api_token', methods=['GET', 'POST'])
 def set_api_token():
     return {'given_token': request.get_json()['token']}
+
+@app.route('/get_ip', methods=['GET'])
+def get_ip():
+		return {'ip': request.remote_addr}

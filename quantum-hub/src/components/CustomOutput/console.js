@@ -4,8 +4,9 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import XMLHttpRequest from 'xhr2'
 import './component_css/console.css'
 
 /**
@@ -23,11 +24,31 @@ import './component_css/console.css'
  * @param {Array(String)} textLines - A textLines property is required
  *  Modify this variable in a parent's state to reload and update
  *  the console.
+ * @param {String} title - A title for the console
  */
 function Console (props) {
   // This is a React Reference object, used for statically
   // referencing a particular element.
   const divBotRef = useRef(null)
+
+  var [xhr, setXHR] = useState(null)
+  var [IP, setIP] = useState('')
+
+  if (!xhr) {
+    xhr = new XMLHttpRequest()
+    const url = '/get_ip'
+    const async = true
+    xhr.open('GET', url, async)
+    xhr.responseType = 'json'
+    xhr.onload = () => {
+      if (xhr.response) {
+        setIP(xhr.response.ip)
+      }
+    }
+    xhr.setRequestHeader('Content-type', 'application/json')
+    xhr.send()
+    setXHR(xhr)
+  }
 
   const lines = props.textLines
 
@@ -45,20 +66,26 @@ function Console (props) {
   // Reference attached. This means that scrolling to it
   // has the effect of scrolling to the bottom of the console.
   return (
-    <div id='console' className='scroll_console'>
-      <ul>
-        {lines.map((line, index) => {
-          return <li key={index}>{line}</li>
-        })}
-        <li ref={divBotRef} />
-      </ul>
+    <div>
+      <div id='console_head' className='scroll_head'>
+        {props.title ? props.title : 'Console'}{IP ? `@${IP}` : ''}
+      </div>
+      <div id='console' className='scroll_console'>
+        <ul>
+          {lines.map((line, index) => {
+            return <li key={index}>{line}</li>
+          })}
+          <li ref={divBotRef} />
+        </ul>
+      </div>
     </div>
   )
 }
 
 // Require the correct property to be passed
 Console.propTypes = {
-  textLines: PropTypes.arrayOf(PropTypes.string).isRequired
+  textLines: PropTypes.arrayOf(PropTypes.string).isRequired,
+  title: PropTypes.string
 }
 
 export default Console

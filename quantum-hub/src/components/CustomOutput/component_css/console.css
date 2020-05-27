@@ -8,22 +8,39 @@ ul {
     overflow-y: visible;
     overflow-x: hidden;
     background-color: #67cfee;
-    color: #fff;
+    color: #ffffff;
     font-family: monospace;
     text-emphasis-color: #ffffff;
-    height: 428px;
+    height: 412px;
     width: 257px;
     list-style-type: none;
-    border-radius: 6px;
-    border: 1px solid rgba(0, 0, 0, 0.12)
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    scroll-padding-bottom: 16px;
 }
 
 .scroll_console::selection {
-    background-color: #fff;
+    background-color: #ffffff;
     color: #67cfee;
 }
 
 .scroll_console::-moz-selection {
-    background-color: #fff;
+    background-color: #ffffff;
     color: #67cfee;
+}
+
+.scroll_head {
+    background-color: #67cfee;
+    color: #ffffff;
+    font-family: monospace;
+    text-emphasis-color: #ffffff;
+    height: 16px;
+    width: 257px;
+    list-style-type: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom-right-radius: 1px solid rgba(0, 0, 0, 0.5);
+    text-align: center;
 }

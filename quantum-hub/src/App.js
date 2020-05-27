@@ -51,9 +51,6 @@ function App (props) {
   //   isSudokuSolver: props.isSudokuSolver
   // }
 
-  const qpuSwitch = <QPUswitch typeOfProblem='isSudokuSolver' key='qpuSwitch' setAPIKey={setAPIKey} />
-  const terminalWindow = <Console textLines={textLines} key='terminalWindow' />
-
   // widget is a string, a key to the widgetList JSON object describing the widget
   let widget
   if (widgetList[props.widget]) {
@@ -80,6 +77,8 @@ function App (props) {
     widgetComponent = <p>Really nothing here :(</p>
   }
 
+  const qpuSwitch = <QPUswitch typeOfProblem='isSudokuSolver' key='qpuSwitch' setAPIKey={setAPIKey} />
+  const terminalWindow = <Console textLines={textLines} title={widgetList[widget].name} key='terminalWindow' />
   const howItWorksCard = <DescriptionCard widget={widget} key='howItWorksCard' />
   const gridContainerChildren = [qpuSwitch, terminalWindow, widgetComponent, howItWorksCard]
 
