@@ -11,7 +11,7 @@ import XMLHttpRequest from 'xhr2'
 
 import Button from '../CustomButtons/Button'
 import { makeStyles } from '@material-ui/core/styles'
-import styles from '../../assets/jss/material-kit-react/views/app.js'
+import styles from '../../assets/jss/material-kit-react/components/sudokuStyle.js'
 
 /**
  * SudokuGame is meant to make the Sudoku Solver tool
@@ -53,6 +53,7 @@ function SudokuGame (props) {
   const [gridBold, setGridBold] = useState(Array(81).fill(0))
   const [currentSquare, setCurrentSquare] = useState([0, 0])
   const [enabled, setEnabled] = useState(true)
+  const [empty, setEmpty] = useState(true)
   const [xhr, setXHR] = useState(null)
 
   var sudokuState = {
@@ -64,6 +65,8 @@ function SudokuGame (props) {
     setCur: setCurrentSquare,
     enabled: enabled,
     setEnabled: setEnabled,
+    empty: empty,
+    setEmpty: setEmpty,
     xhr: xhr,
     setXHR: setXHR
   }
@@ -114,10 +117,18 @@ function SudokuGame (props) {
           color='geeringup' // Not a typo, this is the actual color
           disabled={!enabled}
           onClick={() => {
-            sendForSolve(sudokuGrid, setSudokuGrid, setEnabled, props.outputToConsole, xhr, setXHR, props.getAPIKey)
+            sendForSolve(sudokuGrid, setSudokuGrid, setEnabled, props.outputToConsole, xhr, setXHR, props.getAPIKey, setEmpty)
           }}
         >
           Solve
+        </Button>
+        <Button
+          disabled={(empty || !enabled)}
+          onClick={() => {
+            emptySudokuGrid(sudokuState)
+          }}
+        >
+          Reset
         </Button>
       </div>
     </div>
@@ -180,8 +191,8 @@ function handleKeyPress (event, state) {
   const x = state.cur[0]
   const y = state.cur[1]
   if (
-    (event.keyCode >= 48 && event.keyCode <= 57) ||
-    (event.keyCode >= 96 && event.keyCode <= 105) ||
+    isNumberPress(event.keyCode) ||
+    isNumpadPress(event.keyCode) ||
     backspaces.includes(event.keyCode)
   ) {
     event.preventDefault()
@@ -198,8 +209,15 @@ function handleKeyPress (event, state) {
     newBold[x + 9 * y] = boldRes
 
     state.setGrid(newGrid)
+    /**
+     * TODO: Temporary; solution for automatically updating state
+     * object must be found
+     */
+    state.grid = newGrid
     state.setBold(newBold)
-  } else if (event.keyCode >= 37 && event.keyCode <= 40) {
+
+    updateEmptyState(state)
+  } else if (isArrowKeyPress(event.keyCode)) {
     event.preventDefault()
     // Copy cur to newCur
     var newCur = Array.from(state.cur)
@@ -223,6 +241,27 @@ function handleKeyPress (event, state) {
   }
 }
 
+function isNumberPress (keyCode) {
+  return (keyCode >= 48 && keyCode <= 57)
+}
+
+function isNumpadPress (keyCode) {
+  return (keyCode >= 96 && keyCode <= 105)
+}
+
+function isArrowKeyPress (keyCode) {
+  return (keyCode >= 37 && keyCode <= 40)
+}
+
+function updateEmptyState (state) {
+  const gridState = isGridAllZeros(state.grid)
+  state.setEmpty(gridState)
+}
+
+function isGridAllZeros (grid) {
+  return grid.every(gridItem => gridItem === 0)
+}
+
 /**
  * This function does the XML HTTP request for the Sudoku Widget. It calls the
  * backend, and once the data is returned, postSolve is called. This handles
@@ -236,8 +275,9 @@ function handleKeyPress (event, state) {
  * @param {Function} setXHR - Hook to update the current HTTP XML request.
  * @param {Function} getAPIKey - Returns the user's current API Key. If empty, assume
  * a simulation is wanted.
+ * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
  */
-function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, getAPIKey) {
+function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, getAPIKey, setEmpty) {
   if (xhr) return
   var sudokuArray = []
   for (var y = 0; y < 9; y++) {
@@ -263,7 +303,7 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
   xhr.responseType = 'json'
 
   xhr.onload = () => {
-    postSolve(setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR)
+    postSolve(setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, setEmpty)
   }
   xhr.setRequestHeader('Content-type', 'application/json')
   xhr.send(JSON.stringify(params))
@@ -284,7 +324,7 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
  * @param {XMLHttpRequest} xhr - The widget's current XML Http Request.
  * @param {Function} setXHR - Hook to set xhr.
  */
-function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR) {
+function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, setEmpty) {
   setEnabled(true)
 
   if (xhr.response) {
@@ -294,6 +334,7 @@ function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR) {
       solvedBoard.map((row) => outputToConsole(row.join(' ')))
       const flattenedBoard = solvedBoard.flat()
       setSudokuGrid(flattenedBoard)
+      setEmpty(isGridAllZeros(flattenedBoard))
     } else {
       outputToConsole(xhr.responseText)
     }
@@ -305,15 +346,23 @@ function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR) {
   xhr = null
 }
 
+function emptySudokuGrid (state) {
+  if (!state.empty) {
+    resetSudokuGrid(state.setGrid)
+    state.setCur([0, 0])
+    state.setEmpty(true)
+  }
+}
+
 /**
  * Fills the Sudoku grid with 0s
  * Sets the grid state using setSudokuGrid
  * @param {Function} setSudokuGrid - Sets an external Sudoku Grid variable
 */
-// function resetSudokuGrid (setSudokuGrid) {
-//   var newGrid = Array(9).fill(Array(9).fill(0))
-//   setSudokuGrid(newGrid)
-// }
+function resetSudokuGrid (setSudokuGrid) {
+  const newGrid = Array(81).fill(0)
+  setSudokuGrid(newGrid)
+}
 
 // Require the correct propTypes:
 SudokuGame.propTypes = {
