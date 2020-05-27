@@ -175,26 +175,25 @@ function GridSquare (props) {
  */
 function handleKeyPress (event, state) {
   console.log(`Key pressed is ${event.keyCode}`)
+  const backspaces = [8, 46, 110]
   // 8 is backspace, the others are the numbers
   const x = state.cur[0]
   const y = state.cur[1]
   if (
     (event.keyCode >= 48 && event.keyCode <= 57) ||
     (event.keyCode >= 96 && event.keyCode <= 105) ||
-    event.keyCode === 8
+    backspaces.includes(event.keyCode)
   ) {
     event.preventDefault()
     // Copy grid state to new variables
     var newGrid = Array.from(state.grid)
     var newBold = Array.from(state.bold)
-    const numRes = (
-      event.keyCode === 8
-        ? 0
-        : (event.keycode >= 96
-          ? event.keyCode - 96
-          : event.keyCode - 48)
-    )
-    const boldRes = event.keyCode in [8, 48] ? 0 : 1
+    var numRes
+    if (backspaces.includes(event.keyCode)) numRes = 0
+    else if (event.keyCode >= 96) numRes = event.keyCode - 96
+    else numRes = event.keyCode - 48
+
+    const boldRes = event.keyCode in [8, 48, 46, 96] ? 0 : 1
     newGrid[x + 9 * y] = numRes
     newBold[x + 9 * y] = boldRes
 
