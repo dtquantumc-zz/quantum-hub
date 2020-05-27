@@ -25,13 +25,14 @@ import FooterLinks from './components/Footer/FooterLinks.js'
 
 // import Button from './components/CustomButtons/Button.js'
 
-import SudokuGame from './components/Widget/sudoku.js'
+// import SudokuGame from './components/Widget/sudoku.js'
+// import Widget from './components/Widget/widget.js'
 // @material-ui/icons
 import { makeStyles } from '@material-ui/core/styles'
 
 import styles from './assets/jss/material-kit-react/views/app.js'
 
-import widgetList from './components/Widget/Widget.json'
+import widgetList from './components/Widget/widgetList'
 
 /**
  *
@@ -42,42 +43,58 @@ function App (props) {
   const useStyles = makeStyles(styles)
   const classes = useStyles()
   const [APIKey, setAPIKey] = useState('')
+  const [widgetOverride, overrideWidget] = useState('')
   var [textLines, setTextLines] = useState([])
 
-  const appBrand = getAppBrand(props)
+  // const appBrand = getAppBrand(props)
 
   // const typeOfProblem = {
   //   isNurseScheduler: props.isNurseScheduler,
   //   isSudokuSolver: props.isSudokuSolver
   // }
 
-  // widget is a string, a key to the widgetList JSON object describing the widget
+  // widget is a string, a key to the widgetList object describing the widget
   let widget
-  if (widgetList[props.widget]) {
+  if (widgetOverride && widgetList[widgetOverride]) {
+    widget = widgetOverride
+  } else if (widgetList[props.widget]) {
     widget = props.widget
   } else {
     widget = 'default'
   }
 
-  let widgetComponent
-  if (widget === 'sudoku') {
-    widgetComponent =
-      <SudokuGame
-        id='myWidget'
-        getAPIKey={() => APIKey}
-        outputToConsole={(line) => {
-          setTextLines(textLines.concat(line))
-          textLines = textLines.concat(line)
-        }}
-        key='myGame'
-      />
-  } else if (widget === 'nurse') {
-    widgetComponent = <p>No nurses yet</p>
-  } else {
-    widgetComponent = <p>Really nothing here :(</p>
-  }
+  const appBrand = widgetList[widget].brand
+  const WidgetTag = widgetList[widget].component
 
-  const qpuSwitch = <QPUswitch typeOfProblem='isSudokuSolver' key='qpuSwitch' setAPIKey={setAPIKey} />
+  const widgetComponent =
+    <WidgetTag
+      id='myWidget'
+      getAPIKey={() => APIKey}
+      outputToConsole={(line) => {
+        setTextLines(textLines.concat(line))
+        textLines = textLines.concat(line)
+      }}
+      key='myGame'
+    />
+  // if (widget === 'sudoku') {
+  //   widgetComponent =
+  //     <SudokuGame
+  //       id='myWidget'
+  //       getAPIKey={() => APIKey}
+  //       outputToConsole={(line) => {
+  //         setTextLines(textLines.concat(line))
+  //         textLines = textLines.concat(line)
+  //       }}
+  //       key='myGame'
+  //     />
+  // } else if (widget === 'nurse') {
+  //   widgetComponent = <p>No nurses yet</p>
+  // } else {
+  //   widgetComponent = <p>Really nothing here :(</p>
+  // }
+
+  // const qpuSwitch = <QPUswitch typeOfProblem='isSudokuSolver' key='qpuSwitch' setAPIKey={setAPIKey} />
+  const qpuSwitch = <QPUswitch key='qpuSwitch' setAPIKey={setAPIKey} />
   const terminalWindow = <Console textLines={textLines} title={widgetList[widget].name} key='terminalWindow' />
   const howItWorksCard = <DescriptionCard widget={widget} key='howItWorksCard' />
   const gridContainerChildren = [qpuSwitch, terminalWindow, widgetComponent, howItWorksCard]
@@ -97,6 +114,8 @@ function App (props) {
           children={gridContainerChildren}
         />
       </div>
+      <button onClick={() => overrideWidget('sudoku')}> switch to sudoku </button>
+      <button onClick={() => overrideWidget('nurse')}> switch to nurse </button>
       <Footer
         leftLinks={<FooterLinks />}
       />
@@ -157,16 +176,16 @@ function App (props) {
  * @param {object} props object from the App
  * @returns {string} brand for the App
  */
-function getAppBrand (props) {
-  let appBrand
+// function getAppBrand (props) {
+//   let appBrand
 
-  if (props.isNurseScheduler) {
-    appBrand = 'Nurse Scheduler'
-  } else {
-    appBrand = 'Sudoku Solver'
-  }
+//   if (props.isNurseScheduler) {
+//     appBrand = 'Nurse Scheduler'
+//   } else {
+//     appBrand = 'Sudoku Solver'
+//   }
 
-  return appBrand
-}
+//   return appBrand
+// }
 
 export default App

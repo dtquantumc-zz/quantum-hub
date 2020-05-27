@@ -15,7 +15,7 @@
     "title": "Nurse Scheduling",
     "subheader": "How to schedule:",
     "description": "We schedule nurses :O",
-    "component": ""
+    "component": "Widget"
   },
   "default": {
     "enabler": "isNothing",

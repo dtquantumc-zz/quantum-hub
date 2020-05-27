@@ -216,6 +216,8 @@ function handleKeyPress (event, state) {
       case 40: // Down
         newCur[1] = (y + 1) % 9
         break
+      default:
+        break
     }
     state.setCur(newCur)
   }

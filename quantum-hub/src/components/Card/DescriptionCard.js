@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography'
 import { red } from '@material-ui/core/colors'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-import widgetList from '../Widget/Widget.json'
+import widgetList from '../Widget/widgetList'
 
 const useStyles = makeStyles((theme) => ({
   root: {
