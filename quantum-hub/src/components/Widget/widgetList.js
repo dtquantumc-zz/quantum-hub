@@ -1,6 +1,6 @@
 // import React from 'react'
-import SudokuGame from './sudoku'
-import Widget from './widget'
+import SudokuGame from './Sudoku/Sudoku'
+import Widget from './EmptyWidget/EmptyWidget'
 
 const widgetList = {
   sudoku: {
