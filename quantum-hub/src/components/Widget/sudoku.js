@@ -11,7 +11,7 @@ import XMLHttpRequest from 'xhr2'
 
 import Button from '../CustomButtons/Button'
 import { makeStyles } from '@material-ui/core/styles'
-import styles from '../../assets/jss/material-kit-react/views/app.js'
+import styles from '../../assets/jss/material-kit-react/components/sudokuStyle.js'
 
 /**
  * SudokuGame is meant to make the Sudoku Solver tool

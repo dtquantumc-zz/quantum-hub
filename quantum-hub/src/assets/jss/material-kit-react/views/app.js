@@ -56,10 +56,6 @@ const appStyle = {
   },
   nurseSchedulingInput: {
     justifyContent: 'center'
-  },
-  sudokuInput: {
-    display: 'flex',
-    justifyContent: 'center'
   }
 }
 
