@@ -199,5 +199,6 @@ def main(qpu_sampler, matrix=None):
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    print("Please call the function main() with a sampler provided")
 

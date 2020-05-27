@@ -55,6 +55,19 @@ function SudokuGame (props) {
   const [enabled, setEnabled] = useState(true)
   const [xhr, setXHR] = useState(null)
 
+  var sudokuState = {
+    grid: sudokuGrid,
+    setGrid: setSudokuGrid,
+    bold: gridBold,
+    setBold: setGridBold,
+    cur: currentSquare,
+    setCur: setCurrentSquare,
+    enabled: enabled,
+    setEnabled: setEnabled,
+    xhr: xhr,
+    setXHR: setXHR
+  }
+
   const useStyles = makeStyles(styles)
 
   const classes = useStyles()
@@ -66,7 +79,12 @@ function SudokuGame (props) {
           className='gridGrid'
           onKeyDown={(event) => {
             // Don't handle key presses if the whole app is disabled
-            if (enabled) handleKeyPress(event, sudokuGrid, setSudokuGrid, currentSquare, gridBold, setGridBold)
+            if (enabled) {
+              handleKeyPress(
+                event,
+                sudokuState
+              )
+            }
           }}
         >
           {
@@ -155,27 +173,41 @@ function GridSquare (props) {
  * @param {Function} setSudokuGrid - The hook to set the Sudoku grid
  * @param {Array(2)} cur - The currently selected tile
  */
-function handleKeyPress (event, sudokuGrid, setSudokuGrid, cur, gridBold, setGridBold) {
+function handleKeyPress (event, state) {
+  console.log(`Key pressed is ${event.keyCode}`)
   // 8 is backspace, the others are the numbers
+  const x = state.cur[0]
+  const y = state.cur[1]
   if ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8) {
-    var newGrid = Array(81).fill(0)
-    var newBold = Array(81).fill(0)
+    // Copy grid state to new variables
+    var newGrid = Array.from(state.grid)
+    var newBold = Array.from(state.bold)
     const numRes = event.keyCode === 8 ? 0 : event.keyCode - 48
     const boldRes = event.keyCode in [8, 48] ? 0 : 1
+    newGrid[x + 9 * y] = numRes
+    newBold[x + 9 * y] = boldRes
 
-    for (var x = 0; x < 9; ++x) {
-      for (var y = 0; y < 9; ++y) {
-        if (cur[0] === x && cur[1] === y) {
-          newGrid[x + 9 * y] = numRes
-          newBold[x + 9 * y] = boldRes
-        } else {
-          newGrid[x + 9 * y] = sudokuGrid[x + 9 * y]
-          newBold[x + 9 * y] = gridBold[x + 9 * y]
-        }
-      }
+    state.setGrid(newGrid)
+    state.setBold(newBold)
+  } else if (event.keyCode >= 37 && event.keyCode <= 40) {
+    event.preventDefault()
+    // Copy cur to newCur
+    var newCur = Array.from(state.cur)
+    switch (event.keyCode) {
+      case 37: // Left
+        newCur[0] = (x + 8) % 9
+        break
+      case 38: // Up
+        newCur[1] = (y + 8) % 9
+        break
+      case 39: // Right
+        newCur[0] = (x + 1) % 9
+        break
+      case 40: // Down
+        newCur[1] = (y + 1) % 9
+        break
     }
-    setSudokuGrid(newGrid)
-    setGridBold(newBold)
+    state.setCur(newCur)
   }
 }
 
