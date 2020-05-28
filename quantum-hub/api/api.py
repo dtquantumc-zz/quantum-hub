@@ -10,6 +10,7 @@ import os
 # D-Wave Imports
 from dwave.cloud import Client
 from dwave.system import DWaveSampler
+from dwave.cloud import exceptions
 
 # D-Wave Code Example Imports
 from nurse_scheduling_master import nurse_scheduling
@@ -28,10 +29,17 @@ def test_server():
         token = raw_data['token']
         client = 'qpu'
         solver = 'DW_2000Q_6'
-        sampler = DWaveSampler(client=client,
-                               endpoint=endpoint,
-                               token=token,
-                               solver=solver)
+        try:
+            sampler = DWaveSampler(client=client,
+                                   endpoint=endpoint,
+                                   token=token,
+                                   solver=solver)
+        except ValueError:
+            return {'error':'Missing Token!'}, 400
+        except exceptions.SolverAuthenticationError:
+            return {'error':'Token Authentication Failed!'}, 400
+        except Exception as e:
+            return {'error':'Unexpected Error: ' + str(e)}, 400
 
         if raw_data['typeOfProblem'] == 'nurseScheduling':
             results = str(nurse_scheduling.main(token=token,

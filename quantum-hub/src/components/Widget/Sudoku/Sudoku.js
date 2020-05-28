@@ -278,7 +278,7 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
 function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, setEmpty) {
   setEnabled(true)
 
-  if (xhr.response) {
+  if (xhr.status === 200) {
     outputToConsole('Solved!')
     const solvedBoard = xhr.response.solved_board
     if (solvedBoard) {
@@ -290,8 +290,13 @@ function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, set
       outputToConsole(xhr.responseText)
     }
     outputToConsole(xhr.response.solution_message)
+    // outputToConsole(xhr.response.timing.stringify())
+  } else if (xhr.status === 400) {
+    outputToConsole(xhr.response.error)
   } else {
-    outputToConsole(xhr.statusText)
+    outputToConsole(xhr.status, xhr.statusText)
+    outputToConsole('Your Sudoku may have been too difficult and timed out.')
+    outputToConsole('Please save the Sudoku you were trying to solve and report the problem')
   }
   setXHR(null)
   xhr = null

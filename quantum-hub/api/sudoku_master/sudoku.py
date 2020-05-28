@@ -195,6 +195,9 @@ def main(qpu_sampler, matrix=None):
         row, col = map(int, coord.split(','))
         matrix[row][col] = int(digit)
 
+    # result = get_result(matrix)
+    # print(solution.info)
+    # result["timing"] = solution.record['timing']
     return get_result(matrix)
 
 
