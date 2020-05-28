@@ -1,0 +1,7 @@
+.nurseBox {
+  position: relative;
+  margin: auto;
+  width: 85%;
+  padding-top: 85%;
+  border: thin black solid;
+}

@@ -242,7 +242,7 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
   xhr = new XMLHttpRequest()
   const url = '/test_server'
   const params = {
-    token: getAPIKey(),
+    // token: getAPIKey(),
     typeOfProblem: 'sudoku',
     sudokuArray: sudokuArray
   }

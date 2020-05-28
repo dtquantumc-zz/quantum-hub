@@ -1,5 +1,6 @@
 // import React from 'react'
 import SudokuGame from './Sudoku/Sudoku'
+import NurseScheduler from './Nurse/NurseScheduler'
 import Widget from './EmptyWidget/EmptyWidget'
 
 const widgetList = {
@@ -21,7 +22,7 @@ const widgetList = {
     subheader: 'How to schedule:',
     description: 'We schedule nurses :O',
     brand: 'Nurse Scheduler',
-    component: Widget
+    component: NurseScheduler
   },
   default: {
     enabler: 'isNothing',

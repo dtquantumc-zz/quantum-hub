@@ -42,7 +42,7 @@ import widgetList from './components/Widget/widgetList'
 function App (props) {
   const useStyles = makeStyles(styles)
   const classes = useStyles()
-  const [APIKey, setAPIKey] = useState('')
+  // const [APIKey, setAPIKey] = useState('')
   const [widgetOverride, overrideWidget] = useState('')
   var [textLines, setTextLines] = useState([])
 
@@ -69,7 +69,7 @@ function App (props) {
   const widgetComponent =
     <WidgetTag
       id='myWidget'
-      getAPIKey={() => APIKey}
+      getAPIKey={() => ''}
       outputToConsole={(line) => {
         setTextLines(textLines.concat(line))
         textLines = textLines.concat(line)
@@ -77,10 +77,11 @@ function App (props) {
       key='myGame'
     />
 
-  const qpuSwitch = <QPUswitch key='qpuSwitch' setAPIKey={setAPIKey} />
+  // const qpuSwitch = <QPUswitch key='qpuSwitch' setAPIKey={setAPIKey} />
   const terminalWindow = <Console textLines={textLines} title={widgetList[widget].name} key='terminalWindow' />
   const howItWorksCard = <DescriptionCard widget={widget} key='howItWorksCard' />
-  const gridContainerChildren = [qpuSwitch, terminalWindow, widgetComponent, howItWorksCard]
+  // const gridContainerChildren = [qpuSwitch, terminalWindow, widgetComponent, howItWorksCard]
+  const gridContainerChildren = [terminalWindow, widgetComponent, howItWorksCard]
 
   return (
     <div>

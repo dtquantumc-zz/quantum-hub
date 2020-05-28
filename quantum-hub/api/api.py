@@ -26,7 +26,8 @@ def test_server():
     # results = {'test': 'complete', 'token': raw_data['token']}
     if request.method == 'POST':
         endpoint = 'https://cloud.dwavesys.com/sapi/'
-        token = raw_data['token']
+        # token = raw_data['token']
+        token = 'DEV-a141649cf7a24ed2fd84b5939533c9fcc2d99fb6'
         client = 'qpu'
         solver = 'DW_2000Q_6'
         try:
