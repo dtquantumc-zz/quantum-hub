@@ -127,9 +127,7 @@ function SudokuGame (props) {
  * Sets the number in the currently selected slot of the sudoku grid
  * to the number of the key just pressed.
  * @param {KeyPress} event - The keypres to be handled
- * @param {Array(81)} sudokuGrid - The current Sudoku grid
- * @param {Function} setSudokuGrid - The hook to set the Sudoku grid
- * @param {Array(2)} cur - The currently selected tile
+ * @param {Object} state - The complete state of the Sudoku board
  */
 function handleKeyPress (event, state) {
   console.log(`Key pressed is ${event.keyCode}`)

@@ -76,24 +76,7 @@ function App (props) {
       }}
       key='myGame'
     />
-  // if (widget === 'sudoku') {
-  //   widgetComponent =
-  //     <SudokuGame
-  //       id='myWidget'
-  //       getAPIKey={() => APIKey}
-  //       outputToConsole={(line) => {
-  //         setTextLines(textLines.concat(line))
-  //         textLines = textLines.concat(line)
-  //       }}
-  //       key='myGame'
-  //     />
-  // } else if (widget === 'nurse') {
-  //   widgetComponent = <p>No nurses yet</p>
-  // } else {
-  //   widgetComponent = <p>Really nothing here :(</p>
-  // }
 
-  // const qpuSwitch = <QPUswitch typeOfProblem='isSudokuSolver' key='qpuSwitch' setAPIKey={setAPIKey} />
   const qpuSwitch = <QPUswitch key='qpuSwitch' setAPIKey={setAPIKey} />
   const terminalWindow = <Console textLines={textLines} title={widgetList[widget].name} key='terminalWindow' />
   const howItWorksCard = <DescriptionCard widget={widget} key='howItWorksCard' />
