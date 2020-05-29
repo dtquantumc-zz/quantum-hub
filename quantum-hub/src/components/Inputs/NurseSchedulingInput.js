@@ -39,7 +39,7 @@ export default function NurseSchedulingInput (props) {
 
   return (
     <GridContainer justify='center'>
-      <GridItem xs={12} sm={12} md={4}>
+      <GridItem className={classes.gridItem}>
         <Card className={classes[cardAnimaton]}>
           <form className={classes.form}>
             <CardHeader color='geeringup' className={classes.cardHeader}>
