@@ -30,7 +30,7 @@ import styles from '../../assets/jss/material-kit-react/components/nurseScheduli
 
 const useStyles = makeStyles(styles)
 
-export default function NurseSchedulingInput () {
+export default function NurseSchedulingInput (props) {
   const classes = useStyles()
   const [cardAnimaton, setCardAnimation] = React.useState('cardHidden')
   setTimeout(function () {
@@ -55,7 +55,10 @@ export default function NurseSchedulingInput () {
                 inputProps={{
                   type: 'number',
                   max: 30,
-                  min: 0
+                  min: 0,
+                  onChange: (e) => {
+                    props.setNumNurses(e.target.value)
+                  }
                 }}
               />
               <CustomInput
@@ -67,12 +70,15 @@ export default function NurseSchedulingInput () {
                 inputProps={{
                   type: 'number',
                   max: 30,
-                  min: 0
+                  min: 0,
+                  onChange: (e) => {
+                    props.setNumDays(e.target.value)
+                  }
                 }}
               />
             </CardBody>
             <CardFooter className={classes.cardFooter}>
-              <Button color='geeringup'>
+              <Button color='geeringup' onClick={props.onSolve}>
                     Solve
               </Button>
             </CardFooter>

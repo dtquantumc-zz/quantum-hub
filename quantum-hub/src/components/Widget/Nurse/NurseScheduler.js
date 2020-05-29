@@ -8,7 +8,8 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import nurseSolveRequest from './nurseSolveRequest'
-import NurseSquare, { drawNurses } from './NurseSquare'
+import NurseSquare, { DrawNurses } from './NurseSquare'
+import nurseVars from './NurseVariables'
 
 import NurseSchedulingInput from '../../Inputs/NurseSchedulingInput'
 
@@ -53,17 +54,17 @@ function NurseScheduler (props) {
   // These use React Hooks, so rerendering is done
   // whenever the Set function for a variable is called.
   var [schedule, setSchedule] = useState([])
-  const [numNurses, setNumNurses] = useState(4)
-  const [numDays, setNumDays] = useState(7)
+  // const [numNurses, setNumNurses] = useState(4)
+  // const [numDays, setNumDays] = useState(7)
 
-  var nurseState = {
-    schedule: schedule,
-    setSchedule: setSchedule,
-    numNurses: numNurses,
-    setNumNurses: setNumNurses,
-    numDays: numDays,
-    setNumDays: setNumDays
-  }
+  // var nurseState = {
+  //   schedule: schedule,
+  //   setSchedule: setSchedule,
+  //   numNurses: numNurses,
+  //   setNumNurses: setNumNurses,
+  //   numDays: numDays,
+  //   setNumDays: setNumDays
+  // }
 
   const useStyles = makeStyles(styles)
 
@@ -87,12 +88,18 @@ function NurseScheduler (props) {
           className='nurseGrid'
         >
           {
-            drawNurses(schedule)
+            <DrawNurses schedule={schedule} />
           }
         </div>
       </div>
       <p>Please enter a number of nurses and days to be scheduled!</p>
-      <NurseSchedulingInput />
+      <NurseSchedulingInput
+        setNumDays={nurseVars.setNumDays}
+        setNumNurses={nurseVars.setNumNurses}
+        onSolve={
+          () => props.outputToConsole(`We are scheduling ${nurseVars.numNurses} nurse(s) over ${nurseVars.numDays} day(s)`)
+        }
+      />
     </div>
   )
 }

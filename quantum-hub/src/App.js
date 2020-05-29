@@ -66,14 +66,16 @@ function App (props) {
   const appBrand = widgetList[widget].brand
   const WidgetTag = widgetList[widget].component
 
+  const outputToConsole = (line) => {
+    setTextLines(textLines.concat(line))
+    textLines = textLines.concat(line)
+  }
+
   const widgetComponent =
     <WidgetTag
       id='myWidget'
       getAPIKey={() => ''}
-      outputToConsole={(line) => {
-        setTextLines(textLines.concat(line))
-        textLines = textLines.concat(line)
-      }}
+      outputToConsole={outputToConsole}
       key='myGame'
     />
 

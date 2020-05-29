@@ -41,7 +41,8 @@ function NurseSquare (props) {
   )
 }
 
-function drawNurses (schedule) {
+function DrawNurses (props) {
+  const schedule = props.schedule
   const nC = schedule[0].length
   const nR = schedule.length
 
@@ -66,12 +67,13 @@ function drawNurses (schedule) {
           content={content}
           nC={nC}
           nR={nR}
+          key={[row, col]}
         />
       )
     }
   }
-  return square.map(e => e)
+  return square
 }
 
 export default NurseSquare
-export { drawNurses }
+export { DrawNurses }
