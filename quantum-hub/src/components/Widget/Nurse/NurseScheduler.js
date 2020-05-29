@@ -8,9 +8,12 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import nurseSolveRequest from './nurseSolveRequest'
+import NurseSquare, { drawNurses } from './NurseSquare'
 
 import NurseSchedulingInput from '../../Inputs/NurseSchedulingInput'
 
+import { makeStyles } from '@material-ui/core/styles'
+import styles from '../../../assets/jss/material-kit-react/components/nurseStyle.js'
 import './nurseScheduler.css'
 
 /**
@@ -49,7 +52,7 @@ function NurseScheduler (props) {
   // States for Nurse Scheduling widget.
   // These use React Hooks, so rerendering is done
   // whenever the Set function for a variable is called.
-  const [schedule, setSchedule] = useState([])
+  var [schedule, setSchedule] = useState([])
   const [numNurses, setNumNurses] = useState(4)
   const [numDays, setNumDays] = useState(7)
 
@@ -62,11 +65,33 @@ function NurseScheduler (props) {
     setNumDays: setNumDays
   }
 
+  const useStyles = makeStyles(styles)
+
+  const classes = useStyles()
+
+  schedule = [
+    [0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
+    [1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0],
+    [0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1]
+  ]
+
+  const nC = schedule[0].length
+  const nR = schedule.length
+  document.documentElement.style.setProperty('--numCol', nC)
+  document.documentElement.style.setProperty('--numRow', nR)
+
   return (
-    <div>
+    <div className={classes.nurseRoot}>
       <div className='nurseBox'>
-        TEST
+        <div
+          className='nurseGrid'
+        >
+          {
+            drawNurses(schedule)
+          }
+        </div>
       </div>
+      <p>Please enter a number of nurses and days to be scheduled!</p>
       <NurseSchedulingInput />
     </div>
   )
