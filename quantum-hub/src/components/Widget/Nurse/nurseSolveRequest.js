@@ -62,14 +62,31 @@ function postSolve (setSchedule, outputToConsole) {
 
   if (xhr.status === 200) {
     outputToConsole('Solved!')
-    // outputToConsole(JSON.stringify(xhr.response))
-    // outputToConsole(xhr.response.solution_message)
-    // outputToConsole(xhr.response.timing.stringify())
+
+    // Create the new schedule. This is done in reverse to avoid
+    // changing the length of each array more than once
+    var newsched = new Array(xhr.response.n_nurses)
+    for (var row = xhr.response.n_nurses - 1; row >= 0; row--) {
+      newsched[row] = []
+      for (var col = xhr.response.n_days - 1; col >= 0; col--) {
+        newsched[row][col] = 0
+      }
+    }
+
+    for (var row = 0; row < xhr.response.schedule.length; ++row) {
+      for (var i = 0; i < xhr.response.schedule[row].length; ++i) {
+        const col = xhr.response.schedule[row][i]
+        newsched[row][col] = 1
+        console.log(row, col)
+      }
+    }
+
     outputToConsole('The returned nurse schedule is:')
-    const newsched = xhr.response.Schedule
     newsched.map((row) => outputToConsole(row.join(' ')))
+
     outputToConsole(xhr.response.HardNurseConstraint)
     outputToConsole(xhr.response.HardShiftConstraint)
+
     setSchedule(newsched)
   } else if (xhr.status === 400) {
     outputToConsole(xhr.response.error)

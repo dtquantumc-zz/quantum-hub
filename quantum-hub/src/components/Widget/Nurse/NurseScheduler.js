@@ -53,7 +53,7 @@ function NurseScheduler (props) {
   // States for Nurse Scheduling widget.
   // These use React Hooks, so rerendering is done
   // whenever the Set function for a variable is called.
-  var [schedule, setSchedule] = useState([[0]])
+  var [schedule, setSchedule] = useState([[false]])
   // const [numNurses, setNumNurses] = useState(4)
   // const [numDays, setNumDays] = useState(7)
 

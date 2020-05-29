@@ -184,10 +184,18 @@ def main(token, qpu_sampler, n_nurses=3, n_days=11):
 
     # Check the results by doing the sums directly
     # J sum
+    # sum_j = 0
+    # for i in range(size):
+    #     for j in range(size):
+    #         sum_j += J[i, j] * smpl[i] * smpl[j]
+    # print("Checking Hard nurse constraint ", sum_j)
+
+    # Removed that method, as it created too many empty elements in J
+    # This one only iterates over non-zero values in J
+
     sum_j = 0
-    for i in range(size):
-        for j in range(size):
-            sum_j += J[i, j] * smpl[i] * smpl[j]
+    for (i, j), val in J.items():
+        sum_j += val * smpl[i] * smpl[j]
     print("Checking Hard nurse constraint ", sum_j)
 
     ret_value["HardNurseConstraint"] = "Checking Hard nurse constraint " + str(sum_j)
@@ -233,6 +241,8 @@ def main(token, qpu_sampler, n_nurses=3, n_days=11):
             str_row += "  " + outcome
         print("Nurse ", n, str_row)
 
-    ret_value["Schedule"] = schedule_mat.tolist()
-
+    ret_value["n_days"] = n_days
+    ret_value["n_nurses"] = n_nurses
+    ret_value["schedule"] = [ np.where(row == 1)[0].tolist() for row in schedule_mat ]
+    # print(ret_value)
     return ret_value
