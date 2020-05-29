@@ -15,6 +15,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import UBC from '../../images/ubc-logo-2018-crest-blue-rgb72.svg'
 import supercluster from '../../images/DTS_Dark_00.svg'
 import geeringupLogo from '../../images/GU_Icon_Blue.svg'
+import microsoftLogo from '../../images/msft.svg'
 
 // core components
 import Button from '../../components/CustomButtons/Button.js'
@@ -38,6 +39,10 @@ export default function FooterLinks () {
   const geeringupTitle = 'UBC Geering Up'
   const geeringupLink = 'https://geeringup.apsc.ubc.ca/'
   const geeringupDescription = 'Image of Geering Up\'s logo'
+
+  const microsoftTitle = 'Microsoft'
+  const microsoftLink = 'https://www.microsoft.com/en-ca/'
+  const microsoftDescription = 'Image of Microsoft\'s logo'
 
   return (
     <List className={classes.list}>
@@ -91,6 +96,24 @@ export default function FooterLinks () {
             className={classes.navLink}
           >
             <img src={geeringupLogo} alt={geeringupDescription} style={{ height: '42px' }} />
+          </Button>
+        </Tooltip>
+      </ListItem>
+
+      <ListItem className={classes.listItem}>
+        <Tooltip
+          id='microsoft-tooltip'
+          title={microsoftTitle}
+          placement={window.innerWidth > 959 ? 'top' : 'left'}
+          classes={{ tooltip: classes.tooltip }}
+        >
+          <Button
+            color='transparent'
+            href={microsoftLink}
+            target='_blank'
+            className={classes.navLink}
+          >
+            <img src={microsoftLogo} alt={microsoftDescription} style={{ height: '34px' }} />
           </Button>
         </Tooltip>
       </ListItem>
