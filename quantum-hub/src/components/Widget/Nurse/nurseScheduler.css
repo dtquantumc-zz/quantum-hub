@@ -13,7 +13,7 @@ div, p {margin:0px; padding:0px;}
 
   border: thin solid gray;
   background-color: white;
-  
+
   text-align: center;
   color: rgba(0, 0, 0, 0.87);
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -88,9 +88,9 @@ div, p {margin:0px; padding:0px;}
 
 .nurseBox{
   position: relative;
-  margin: auto;
-  width: 85%;
-  padding-top: 85%;
+  margin: 0;
+  width: 100%;
+  padding-top: 65%;
 }
 
 .nurseGrid{

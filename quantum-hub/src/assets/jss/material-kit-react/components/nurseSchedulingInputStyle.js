@@ -17,13 +17,17 @@
 import { container } from '../../material-kit-react.js'
 
 const nurseSchedulingInputStyle = {
+  gridItem: {
+    width: 'inherit'
+  },
   container: {
     ...container,
     zIndex: '2',
     position: 'relative',
     paddingTop: '20vh',
     color: '#FFFFFF',
-    paddingBottom: '200px'
+    paddingBottom: '200px',
+    margin: '8px'
   },
   cardHidden: {
     opacity: '0',
@@ -69,7 +73,7 @@ const nurseSchedulingInputStyle = {
     marginLeft: '20px',
     marginRight: '20px',
     marginTop: '-40px',
-    padding: '20px 0',
+    padding: '15px 0',
     marginBottom: '0px',
     '& > *': {
       margin: '0'
