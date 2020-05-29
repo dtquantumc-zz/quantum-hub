@@ -4,7 +4,7 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import './nurseScheduler.css'
@@ -30,6 +30,9 @@ function NurseSquare (props) {
   }
   if (props.col === props.nC) {
     classes += ' gridRightest'
+  }
+  if (props.content === 'X') {
+    classes += ' focused'
   }
 
   return (

@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import nurseSolveRequest from './nurseSolveRequest'
-import NurseSquare, { DrawNurses } from './NurseSquare'
+import { DrawNurses } from './NurseSquare'
 import nurseVars from './NurseVariables'
 
 import NurseSchedulingInput from '../../Inputs/NurseSchedulingInput'
@@ -53,7 +53,7 @@ function NurseScheduler (props) {
   // States for Nurse Scheduling widget.
   // These use React Hooks, so rerendering is done
   // whenever the Set function for a variable is called.
-  var [schedule, setSchedule] = useState([])
+  var [schedule, setSchedule] = useState([[0]])
   // const [numNurses, setNumNurses] = useState(4)
   // const [numDays, setNumDays] = useState(7)
 
@@ -70,11 +70,11 @@ function NurseScheduler (props) {
 
   const classes = useStyles()
 
-  schedule = [
-    [0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
-    [1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0],
-    [0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1]
-  ]
+  // schedule = [
+  //   [0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+  //   [1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1],
+  //   [0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1]
+  // ]
 
   const nC = schedule[0].length
   const nR = schedule.length
@@ -97,7 +97,7 @@ function NurseScheduler (props) {
         setNumDays={nurseVars.setNumDays}
         setNumNurses={nurseVars.setNumNurses}
         onSolve={
-          () => props.outputToConsole(`We are scheduling ${nurseVars.numNurses} nurse(s) over ${nurseVars.numDays} day(s)`)
+          () => nurseSolveRequest(setSchedule, props.outputToConsole, props.getAPIKey)
         }
       />
     </div>

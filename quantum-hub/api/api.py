@@ -19,7 +19,7 @@ from sudoku_master import sudoku
 app = Flask(__name__, static_folder='./build', static_url_path='/')
 
 
-@app.route('/test_server', methods=['GET', 'POST'])
+@app.route('/qpu_request', methods=['POST'])
 def test_server():
     raw_data = request.get_json()
 
@@ -43,11 +43,15 @@ def test_server():
             return {'error':'Unexpected Error: ' + str(e)}, 400
 
         if raw_data['typeOfProblem'] == 'nurseScheduling':
-            results = str(nurse_scheduling.main(token=token,
-                                                qpu_sampler=sampler))
-        else:
+            results = nurse_scheduling.main(token=token,
+                                            qpu_sampler=sampler,
+                                            n_nurses=int(raw_data["n_nurses"]),
+                                            n_days=int(raw_data["n_days"]))
+            # print(results)
+        elif raw_data['typeOfProblem'] == 'sudokuSolving':
             results = sudoku.main(qpu_sampler=sampler,
                                   matrix=raw_data['sudokuArray'])
+        else: return {'error':'Invalid typeOfProblem'}, 400
 
     return results
 

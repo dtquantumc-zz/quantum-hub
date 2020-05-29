@@ -240,10 +240,10 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
   sudokuArray.map((row) => outputToConsole(row.join(' ')))
 
   xhr = new XMLHttpRequest()
-  const url = '/test_server'
+  const url = '/qpu_request'
   const params = {
     // token: getAPIKey(),
-    typeOfProblem: 'sudoku',
+    typeOfProblem: 'sudokuSolving',
     sudokuArray: sudokuArray
   }
   const async = true

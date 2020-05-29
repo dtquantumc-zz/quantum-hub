@@ -34,6 +34,8 @@ def main(token, qpu_sampler, n_nurses=3, n_days=11):
     n_days = n_days       # count scheduling days as d = 1 ... n_days
     size = n_days * n_nurses
 
+    print("solving with "+str(n_nurses)+" and "+str(n_days)+" nurses and days")
+
     # Parameters for hard nurse constraint
     # a is a positive correlation coefficient for implementing the hard nurse
     # constraint - value provided by Ikeda, Nakamura, Humble
@@ -231,6 +233,6 @@ def main(token, qpu_sampler, n_nurses=3, n_days=11):
             str_row += "  " + outcome
         print("Nurse ", n, str_row)
 
-    ret_value["Schedule"] = schedule_mat
+    ret_value["Schedule"] = schedule_mat.tolist()
 
     return ret_value

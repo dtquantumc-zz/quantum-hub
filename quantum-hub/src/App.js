@@ -7,7 +7,7 @@
 import React, { useState } from 'react'
 
 // core components
-import QPUswitch from './components/Switch/QPUswitch.js'
+// import QPUswitch from './components/Switch/QPUswitch.js'
 import Console from './components/CustomOutput/console.js'
 import DescriptionCard from './components/Card/DescriptionCard.js'
 
