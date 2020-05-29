@@ -5,9 +5,14 @@
  */
 
 import React, { useRef, useEffect, useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import XMLHttpRequest from 'xhr2'
+
+// styling
 import './component_css/console.css'
+import styles from '../../assets/jss/material-kit-react/components/consoleStyle.js'
+const useStyles = makeStyles(styles)
 
 /**
  * Console is a React component that displays lines of
@@ -27,6 +32,8 @@ import './component_css/console.css'
  * @param {String} title - A title for the console
  */
 function Console (props) {
+  const classes = useStyles()
+
   // This is a React Reference object, used for statically
   // referencing a particular element.
   const divBotRef = useRef(null)
@@ -66,7 +73,7 @@ function Console (props) {
   // Reference attached. This means that scrolling to it
   // has the effect of scrolling to the bottom of the console.
   return (
-    <div>
+    <div className={classes.console}>
       <div id='console_head' className='scroll_head'>
         {props.title ? props.title : 'Console'}{IP ? `@${IP}` : ''}
       </div>

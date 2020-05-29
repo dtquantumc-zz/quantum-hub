@@ -12,7 +12,6 @@ ul {
     font-family: monospace;
     text-emphasis-color: #ffffff;
     height: 412px;
-    width: 257px;
     list-style-type: none;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
@@ -36,7 +35,6 @@ ul {
     font-family: monospace;
     text-emphasis-color: #ffffff;
     height: 16px;
-    width: 257px;
     list-style-type: none;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
