@@ -26,7 +26,7 @@ import CardHeader from '../Card/CardHeader.js'
 import CardFooter from '../Card/CardFooter.js'
 import CustomInput from '../CustomInput/CustomInput'
 
-import styles from '../../assets/jss/material-kit-react/views/nurseSchedulingInput.js'
+import styles from '../../assets/jss/material-kit-react/components/nurseSchedulingInputStyle.js'
 
 const useStyles = makeStyles(styles)
 
