@@ -94,7 +94,7 @@ div, p {margin:0px; padding:0px;}
 }
 
 .nurseGrid{
-  overflow-x: scroll;
+  overflow: auto;
   position: absolute;
   top: 0;
   width: 100%;
