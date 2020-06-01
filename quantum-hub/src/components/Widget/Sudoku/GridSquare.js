@@ -32,6 +32,7 @@ function GridSquare (props) {
   return (
     <button
       type='button'
+      id={'button' + props.x + props.y}
       className={classes}
       onClick={props.onClick}
       disabled={!props.enabled}

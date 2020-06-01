@@ -17,9 +17,9 @@ ReactDOM.render(
 function GenericApp () {
   const route = window.location.pathname
   if (route.startsWith('/app/')) {
-    return (<App widget={route.substr(5, route.length)} />)
+    return (<App widget={route.substr(5, route.length)} live />)
   } else {
-    return (<App />)
+    return (<App live />)
   }
 }
 

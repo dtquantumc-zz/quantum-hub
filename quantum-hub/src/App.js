@@ -81,7 +81,7 @@ function App (props) {
     />
 
   // const qpuSwitch = <QPUswitch key='qpuSwitch' setAPIKey={setAPIKey} />
-  const terminalWindow = <Console textLines={textLines} title={widgetList[widget].name} key='terminalWindow' />
+  const terminalWindow = <Console textLines={textLines} title={widgetList[widget].name} key='terminalWindow' getIP={props.live} />
   const howItWorksCard = <DescriptionCard widget={widget} key='howItWorksCard' />
 
   const nurseSwitchButton =

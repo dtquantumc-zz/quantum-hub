@@ -71,6 +71,7 @@ function DrawNurses (props) {
           nC={nC}
           nR={nR}
           key={[row, col]}
+          id={'square' + row + col}
         />
       )
     }

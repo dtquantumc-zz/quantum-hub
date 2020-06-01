@@ -30,6 +30,7 @@ const useStyles = makeStyles(styles)
  *  Modify this variable in a parent's state to reload and update
  *  the console.
  * @param {String} title - A title for the console
+ * @param {Bool} getIP - Whether or not to try to get IP
  */
 function Console (props) {
   const classes = useStyles()
@@ -41,7 +42,7 @@ function Console (props) {
   var [xhr, setXHR] = useState(null)
   var [IP, setIP] = useState('')
 
-  if (!xhr) {
+  if (!xhr && props.getIP) {
     xhr = new XMLHttpRequest()
     const url = '/get_ip'
     const async = true
