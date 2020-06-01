@@ -13,6 +13,8 @@ import Button from '../../CustomButtons/Button'
 import { makeSudokuGrid } from './GridSquare'
 
 import { makeStyles } from '@material-ui/core/styles'
+import CircularProgress from '@material-ui/core/CircularProgress'
+
 import styles from '../../../assets/jss/material-kit-react/components/sudokuStyle.js'
 
 /**
@@ -57,6 +59,7 @@ function SudokuGame (props) {
   const [enabled, setEnabled] = useState(true)
   const [empty, setEmpty] = useState(true)
   const [xhr, setXHR] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   var sudokuState = {
     grid: sudokuGrid,
@@ -70,7 +73,9 @@ function SudokuGame (props) {
     empty: empty,
     setEmpty: setEmpty,
     xhr: xhr,
-    setXHR: setXHR
+    setXHR: setXHR,
+    loading: loading,
+    setLoading: setLoading
   }
 
   const useStyles = makeStyles(styles)
@@ -79,7 +84,7 @@ function SudokuGame (props) {
 
   return (
     <div className={classes.sudokuRoot}>
-      <div className='sudokuBox'>
+      <div className={loading ? 'sudokuBox loading' : 'sudokuBox'}>
         <div
           className='gridGrid'
           onKeyDown={(event) => {
@@ -97,6 +102,7 @@ function SudokuGame (props) {
             makeSudokuGrid(sudokuGrid, gridBold, [flatten(currentSquare)], enabled, setCurrentSquare)
           }
         </div>
+        {loading && <CircularProgress size={68} className={classes.sudokuProgress} />}
       </div>
       <p>Click on the cells and use your keyboard numbers to fill them in!</p>
       <div className={classes.sudokuInput}>
@@ -104,7 +110,7 @@ function SudokuGame (props) {
           color='geeringup' // Not a typo, this is the actual color
           disabled={!enabled}
           onClick={() => {
-            sendForSolve(sudokuGrid, setSudokuGrid, setEnabled, props.outputToConsole, xhr, setXHR, props.getAPIKey, setEmpty)
+            sendForSolve(sudokuGrid, setSudokuGrid, setEnabled, props.outputToConsole, xhr, setXHR, props.getAPIKey, setEmpty, setLoading)
           }}
         >
           Solve
@@ -225,8 +231,9 @@ function flatten (coords) {
  * @param {Function} getAPIKey - Returns the user's current API Key. If empty, assume
  * a simulation is wanted.
  * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
+ * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
  */
-function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, getAPIKey, setEmpty) {
+function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, getAPIKey, setEmpty, setLoading) {
   if (xhr) return
   var sudokuArray = []
   for (var y = 0; y < 9; y++) {
@@ -236,6 +243,7 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
     }
   }
   setEnabled(false)
+  setLoading(true)
   outputToConsole('Sending in this grid:')
   sudokuArray.map((row) => outputToConsole(row.join(' ')))
 
@@ -252,7 +260,7 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
   xhr.responseType = 'json'
 
   xhr.onload = () => {
-    postSolve(setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, setEmpty)
+    postSolve(setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, setEmpty, setLoading)
   }
   xhr.setRequestHeader('Content-type', 'application/json')
   xhr.send(JSON.stringify(params))
@@ -272,9 +280,12 @@ function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, x
  * @param {Function} outputToConsole - Output a line of text to the console.
  * @param {XMLHttpRequest} xhr - The widget's current XML Http Request.
  * @param {Function} setXHR - Hook to set xhr.
+ * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
+ * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
  */
-function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, setEmpty) {
+function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, setEmpty, setLoading) {
   setEnabled(true)
+  setLoading(false)
 
   if (xhr.status === 200) {
     outputToConsole('Solved!')

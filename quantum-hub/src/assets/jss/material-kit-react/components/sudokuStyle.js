@@ -17,6 +17,9 @@ const sudokuStyle = theme => ({
     '& > *': {
       margin: theme.spacing(1)
     }
+  },
+  sudokuProgress: {
+    color: '#fff'
   }
 })
 
