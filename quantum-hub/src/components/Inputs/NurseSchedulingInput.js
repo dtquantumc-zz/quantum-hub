@@ -32,20 +32,13 @@ const useStyles = makeStyles(styles)
 
 export default function NurseSchedulingInput (props) {
   const classes = useStyles()
-  const [cardAnimaton, setCardAnimation] = React.useState('cardHidden')
-  setTimeout(function () {
-    setCardAnimation('')
-  }, 700)
 
   return (
     <GridContainer justify='center'>
       <GridItem className={classes.gridItem}>
-        <Card className={classes[cardAnimaton]}>
+        <Card className={classes.nurseSchedulingInput}>
           <form className={classes.form}>
-            <CardHeader color='geeringup' className={classes.cardHeader}>
-              <h4>Input Fields</h4>
-            </CardHeader>
-            <CardBody>
+            <CardBody className={classes.cardBody}>
               <CustomInput
                 labelText='Nurses (Max 50)'
                 id='nurse'

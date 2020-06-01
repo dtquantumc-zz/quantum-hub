@@ -35,11 +35,6 @@ export default function DescriptionCard () {
   const [scroll, setScroll] = React.useState('paper')
   const descriptionElementRef = React.useRef(null)
 
-  const [cardAnimaton, setCardAnimation] = React.useState('cardHidden')
-  setTimeout(function () {
-    setCardAnimation('descriptionCard')
-  }, 700)
-
   React.useEffect(() => {
     if (open) {
       const { current: descriptionElement } = descriptionElementRef
@@ -72,11 +67,8 @@ export default function DescriptionCard () {
   return (
     <GridContainer className={classes.container} justify='center'>
       <GridItem>
-        <Card className={classes[cardAnimaton]}>
+        <Card className={classes.descriptionCard}>
           <form className={classes.form}>
-            <CardHeader color='geeringup' className={classes.cardHeader}>
-              How It Works
-            </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>The Sudoku Problem</h4>
               <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
