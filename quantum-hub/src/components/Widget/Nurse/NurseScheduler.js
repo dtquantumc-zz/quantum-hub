@@ -5,7 +5,7 @@
  */
 
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 
 import nurseSolveRequest from './nurseSolveRequest'
 import { DrawNurses } from './NurseSquare'

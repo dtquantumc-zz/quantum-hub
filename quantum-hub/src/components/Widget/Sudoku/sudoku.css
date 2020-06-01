@@ -81,8 +81,15 @@ div, p {margin:0px; padding:0px;}
 .sudokuBox{
   position: relative;
   margin: auto;
-  width: 85%;
-  padding-top: 85%;
+  width: 100%;
+  padding-top: 100%;
+}
+
+.sudokuBox.loading{
+  display: flex;
+  justify-content: center;
+  padding-top: calc((462.05px - 68px ) / 2);
+  padding-bottom: calc((462.05px - 68px ) / 2);
 }
 
 .gridGrid{

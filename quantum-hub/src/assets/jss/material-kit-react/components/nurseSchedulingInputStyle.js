@@ -29,9 +29,9 @@ const nurseSchedulingInputStyle = {
     paddingBottom: '200px',
     margin: '8px'
   },
-  cardHidden: {
-    opacity: '0',
-    transform: 'translate3d(0, -60px, 0)'
+  nurseSchedulingInput: {
+    marginTop: '0',
+    boxShadow: 'none'
   },
   pageHeader: {
     minHeight: '100vh',

@@ -23,6 +23,8 @@ import {
 } from './sudokuHelpers'
 
 import { makeStyles } from '@material-ui/core/styles'
+import CircularProgress from '@material-ui/core/CircularProgress'
+
 import styles from '../../../assets/jss/material-kit-react/components/sudokuStyle.js'
 
 /**
@@ -66,7 +68,7 @@ function SudokuGame (props) {
   const [currentSquare, setCurrentSquare] = useState([0, 0])
   const [enabled, setEnabled] = useState(true)
   const [empty, setEmpty] = useState(true)
-  const [xhr, setXHR] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   var sudokuState = {
     grid: sudokuGrid,
@@ -79,8 +81,8 @@ function SudokuGame (props) {
     setEnabled: setEnabled,
     empty: empty,
     setEmpty: setEmpty,
-    xhr: xhr,
-    setXHR: setXHR
+    loading: loading,
+    setLoading: setLoading
   }
 
   const useStyles = makeStyles(styles)
@@ -89,7 +91,7 @@ function SudokuGame (props) {
 
   return (
     <div className={classes.sudokuRoot}>
-      <div className='sudokuBox'>
+      <div className={loading ? 'sudokuBox loading' : 'sudokuBox'}>
         <div
           className='gridGrid'
           onKeyDown={(event) => {
@@ -107,6 +109,7 @@ function SudokuGame (props) {
             makeSudokuGrid(sudokuGrid, gridBold, [flatten(currentSquare)], enabled, setCurrentSquare)
           }
         </div>
+        {loading && <CircularProgress size={68} className={classes.sudokuProgress} />}
       </div>
       <p>Click on the cells and use your keyboard numbers to fill them in!</p>
       <div className={classes.sudokuInput}>
@@ -114,7 +117,7 @@ function SudokuGame (props) {
           color='geeringup' // Not a typo, this is the actual color
           disabled={!enabled}
           onClick={() => {
-            sudokuSolveRequest(sudokuGrid, setSudokuGrid, setEnabled, props.outputToConsole, xhr, setXHR, props.getAPIKey, setEmpty)
+            sudokuSolveRequest(sudokuGrid, setSudokuGrid, setEnabled, props.outputToConsole, props.getAPIKey, setEmpty, setLoading)
           }}
         >
           Solve

@@ -18,14 +18,12 @@ import {
  * @param {Function} setSudokuGrid - Hook to update Sudoku Grid
  * @param {Function} setEnabled - Hook to update Enabled status of the whole widget
  * @param {Function} outputToConsole - Hook to add a line of text to the Console (output)
- * @param {XMLHttpRequest} xhr - The current HTTP XML request. We only allow one at a
- * time for this widget, so the function only runs if it is null.
- * @param {Function} setXHR - Hook to update the current HTTP XML request.
  * @param {Function} getAPIKey - Returns the user's current API Key. If empty, assume
  * a simulation is wanted.
  * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
+ * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
  */
-function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, getAPIKey, setEmpty) {
+function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, getAPIKey, setEmpty, setLoading) {
   if (sudokuVars.xhr) return
   var sudokuArray = []
   for (var y = 0; y < 9; y++) {
@@ -35,6 +33,7 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
     }
   }
   setEnabled(false)
+  setLoading(true)
   outputToConsole('Sending in this grid:')
   sudokuArray.map((row) => outputToConsole(row.join(' ')))
 
@@ -52,7 +51,7 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
   xhr.responseType = 'json'
 
   xhr.onload = () => {
-    postSolve(setSudokuGrid, setEnabled, outputToConsole, setEmpty)
+    postSolve(setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading)
   }
   xhr.setRequestHeader('Content-type', 'application/json')
   xhr.send(JSON.stringify(params))
@@ -70,13 +69,14 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
  * @param {Function} setSudokuGrid - Hook to update the Sudoku Grid.
  * @param {Function} setEnabled - Hook to update enabled status of widget.
  * @param {Function} outputToConsole - Output a line of text to the console.
- * @param {XMLHttpRequest} xhr - The widget's current XML Http Request.
- * @param {Function} setXHR - Hook to set xhr.
+ * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
+ * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
  */
-function postSolve (setSudokuGrid, setEnabled, outputToConsole, setEmpty) {
+function postSolve (setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading) {
   const xhr = sudokuVars.xhr
 
   setEnabled(true)
+  setLoading(false)
 
   if (xhr.status === 200) {
     outputToConsole('Solved!')

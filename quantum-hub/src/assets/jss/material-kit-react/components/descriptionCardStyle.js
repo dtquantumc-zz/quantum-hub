@@ -4,7 +4,7 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import { cardHeader, cardTitle } from '../../material-kit-react.js'
+import { cardTitle } from '../../material-kit-react.js'
 
 const descriptionCardStyle = theme => ({
   container: {
@@ -12,12 +12,11 @@ const descriptionCardStyle = theme => ({
     margin: theme.spacing(1)
   },
   descriptionCard: {
-    marginTop: '30px'
+    marginTop: '0'
   },
   form: {
     margin: '0'
   },
-  cardHeader,
   cardTitle
 })
 
