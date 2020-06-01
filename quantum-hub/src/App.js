@@ -23,7 +23,8 @@ import FooterLinks from './components/Footer/FooterLinks.js'
 // TODO: Upcoming
 // import NurseSchedulingInput from './components/Inputs/NurseSchedulingInput.js'
 
-// import Button from './components/CustomButtons/Button.js'
+import Button from './components/CustomButtons/Button.js'
+import GridItem from './components/Grid/GridItem.js'
 
 // import SudokuGame from './components/Widget/sudoku.js'
 // import Widget from './components/Widget/widget.js'
@@ -82,8 +83,28 @@ function App (props) {
   // const qpuSwitch = <QPUswitch key='qpuSwitch' setAPIKey={setAPIKey} />
   const terminalWindow = <Console textLines={textLines} title={widgetList[widget].name} key='terminalWindow' />
   const howItWorksCard = <DescriptionCard widget={widget} key='howItWorksCard' />
+
+  const nurseSwitchButton =
+    <Button
+      className={classes.nurseSwitchButton}
+      onClick={() => overrideWidget('nurse')}
+      disabled={widget === 'nurse'} size='sm'
+    >
+    Switch to Nurse
+    </Button>
+
+  const sudokuSwitchButton =
+    <Button
+      className={classes.sudokuSwitchButton}
+      onClick={() => overrideWidget('sudoku')}
+      disabled={widget === 'sudoku'}
+      size='sm'
+    >
+    Switch to Sudoku
+    </Button>
+  const appSwitchButtons = <GridItem children={[nurseSwitchButton, sudokuSwitchButton]} />
   // const gridContainerChildren = [qpuSwitch, terminalWindow, widgetComponent, howItWorksCard]
-  const gridContainerChildren = [terminalWindow, widgetComponent, howItWorksCard]
+  const gridContainerChildren = [terminalWindow, widgetComponent, howItWorksCard, appSwitchButtons]
 
   return (
     <div>
@@ -100,8 +121,6 @@ function App (props) {
           children={gridContainerChildren}
         />
       </div>
-      <button onClick={() => overrideWidget('sudoku')}> switch to sudoku </button>
-      <button onClick={() => overrideWidget('nurse')}> switch to nurse </button>
       <Footer
         leftLinks={<FooterLinks />}
       />
