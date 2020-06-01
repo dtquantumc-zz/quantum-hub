@@ -7,10 +7,20 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import './sudoku.css'
-import XMLHttpRequest from 'xhr2'
+import sudokuSolveRequest from './sudokuSolveRequest'
 
 import Button from '../../CustomButtons/Button'
 import { makeSudokuGrid } from './GridSquare'
+import {
+  isNumberPress,
+  isNumpadPress,
+  isArrowKeyPress,
+  updateEmptyState,
+  // isGridAllZeros,
+  flatten,
+  emptySudokuGrid
+  // resetSudokuGrid
+} from './sudokuHelpers'
 
 import { makeStyles } from '@material-ui/core/styles'
 import styles from '../../../assets/jss/material-kit-react/components/sudokuStyle.js'
@@ -104,7 +114,7 @@ function SudokuGame (props) {
           color='geeringup' // Not a typo, this is the actual color
           disabled={!enabled}
           onClick={() => {
-            sendForSolve(sudokuGrid, setSudokuGrid, setEnabled, props.outputToConsole, xhr, setXHR, props.getAPIKey, setEmpty)
+            sudokuSolveRequest(sudokuGrid, setSudokuGrid, setEnabled, props.outputToConsole, xhr, setXHR, props.getAPIKey, setEmpty)
           }}
         >
           Solve
@@ -149,7 +159,7 @@ function handleKeyPress (event, state) {
     else if (event.keyCode >= 96) numRes = event.keyCode - 96
     else numRes = event.keyCode - 48
 
-    const boldRes = event.keyCode in [8, 48, 46, 96] ? 0 : 1
+    const boldRes = numRes !== 0
     newGrid[x + 9 * y] = numRes
     newBold[x + 9 * y] = boldRes
 
@@ -184,141 +194,6 @@ function handleKeyPress (event, state) {
     }
     state.setCur(newCur)
   }
-}
-
-function isNumberPress (keyCode) {
-  return (keyCode >= 48 && keyCode <= 57)
-}
-
-function isNumpadPress (keyCode) {
-  return (keyCode >= 96 && keyCode <= 105)
-}
-
-function isArrowKeyPress (keyCode) {
-  return (keyCode >= 37 && keyCode <= 40)
-}
-
-function updateEmptyState (state) {
-  const gridState = isGridAllZeros(state.grid)
-  state.setEmpty(gridState)
-}
-
-function isGridAllZeros (grid) {
-  return grid.every(gridItem => gridItem === 0)
-}
-
-function flatten (coords) {
-  return coords[0] + 9 * coords[1]
-}
-
-/**
- * This function does the XML HTTP request for the Sudoku Widget. It calls the
- * backend, and once the data is returned, postSolve is called. This handles
- * request creation, console logging, and some state validation.
- * @param {Array(81)} sudokuGrid - This is the current Sudoku GameState grid
- * @param {Function} setSudokuGrid - Hook to update Sudoku Grid
- * @param {Function} setEnabled - Hook to update Enabled status of the whole widget
- * @param {Function} outputToConsole - Hook to add a line of text to the Console (output)
- * @param {XMLHttpRequest} xhr - The current HTTP XML request. We only allow one at a
- * time for this widget, so the function only runs if it is null.
- * @param {Function} setXHR - Hook to update the current HTTP XML request.
- * @param {Function} getAPIKey - Returns the user's current API Key. If empty, assume
- * a simulation is wanted.
- * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
- */
-function sendForSolve (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, getAPIKey, setEmpty) {
-  if (xhr) return
-  var sudokuArray = []
-  for (var y = 0; y < 9; y++) {
-    sudokuArray.push([])
-    for (var x = 0; x < 9; x++) {
-      sudokuArray[y].push(sudokuGrid[x + y * 9])
-    }
-  }
-  setEnabled(false)
-  outputToConsole('Sending in this grid:')
-  sudokuArray.map((row) => outputToConsole(row.join(' ')))
-
-  xhr = new XMLHttpRequest()
-  const url = '/qpu_request'
-  const params = {
-    // token: getAPIKey(),
-    typeOfProblem: 'sudokuSolving',
-    sudokuArray: sudokuArray
-  }
-  const async = true
-  xhr.open('POST', url, async)
-
-  xhr.responseType = 'json'
-
-  xhr.onload = () => {
-    postSolve(setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, setEmpty)
-  }
-  xhr.setRequestHeader('Content-type', 'application/json')
-  xhr.send(JSON.stringify(params))
-  setXHR(xhr)
-  outputToConsole('Solving...')
-}
-
-/**
- * postSolve is called after the call to the server is completed.
- * It should handle any errors, set the grid to a solved state if solved,
- * and report back to the user through the console.
- *
- * At the moment, it simply prints out the response text. This functionality
- * will be improved in later versions.
- * @param {Function} setSudokuGrid - Hook to update the Sudoku Grid.
- * @param {Function} setEnabled - Hook to update enabled status of widget.
- * @param {Function} outputToConsole - Output a line of text to the console.
- * @param {XMLHttpRequest} xhr - The widget's current XML Http Request.
- * @param {Function} setXHR - Hook to set xhr.
- */
-function postSolve (setSudokuGrid, setEnabled, outputToConsole, xhr, setXHR, setEmpty) {
-  setEnabled(true)
-
-  if (xhr.status === 200) {
-    outputToConsole('Solved!')
-    const solvedBoard = xhr.response.solved_board
-    if (solvedBoard) {
-      solvedBoard.map((row) => outputToConsole(row.join(' ')))
-      const flattenedBoard = solvedBoard.flat()
-      setSudokuGrid(flattenedBoard)
-      setEmpty(isGridAllZeros(flattenedBoard))
-    } else {
-      outputToConsole(xhr.responseText)
-    }
-    outputToConsole(xhr.response.solution_message)
-    // outputToConsole(xhr.response.timing.stringify())
-  } else if (xhr.status === 400) {
-    outputToConsole(xhr.response.error)
-  } else {
-    outputToConsole(xhr.status, xhr.statusText)
-    outputToConsole('Your Sudoku may have been too difficult and timed out.')
-    outputToConsole('Please save the Sudoku you were trying to solve and report the problem')
-  }
-  setXHR(null)
-  xhr = null
-}
-
-function emptySudokuGrid (state) {
-  if (!state.empty) {
-    resetSudokuGrid(state.setGrid, state.setBold)
-    state.setCur([0, 0])
-    state.setEmpty(true)
-  }
-}
-
-/**
- * Fills the Sudoku grid with 0s
- * Sets the grid state using setSudokuGrid
- * @param {Function} setSudokuGrid - Sets an external Sudoku Grid variable
- * @param {Function} setBold - Sets a grid variable indicating boldness of square
-*/
-function resetSudokuGrid (setSudokuGrid, setBold) {
-  const newGrid = Array(81).fill(0)
-  setSudokuGrid(newGrid)
-  const newBold = Array(81).fill(false)
-  setBold(newBold)
 }
 
 // Require the correct propTypes:

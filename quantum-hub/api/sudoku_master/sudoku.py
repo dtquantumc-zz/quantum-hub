@@ -101,7 +101,7 @@ def get_result(matrix):
     return result
 
 
-def main(qpu_sampler, matrix=None):
+def main(qpu_sampler, matrix=None, token=None):
     # Note: for the purposes of a code example, main() is written as a script
 
     if matrix is None:

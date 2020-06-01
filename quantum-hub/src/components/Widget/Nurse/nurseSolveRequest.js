@@ -65,15 +65,16 @@ function postSolve (setSchedule, outputToConsole) {
 
     // Create the new schedule. This is done in reverse to avoid
     // changing the length of each array more than once
+    var row
     var newsched = new Array(xhr.response.n_nurses)
-    for (var row = xhr.response.n_nurses - 1; row >= 0; row--) {
+    for (row = xhr.response.n_nurses - 1; row >= 0; row--) {
       newsched[row] = []
       for (var col = xhr.response.n_days - 1; col >= 0; col--) {
         newsched[row][col] = 0
       }
     }
 
-    for (var row = 0; row < xhr.response.schedule.length; ++row) {
+    for (row = 0; row < xhr.response.schedule.length; ++row) {
       for (var i = 0; i < xhr.response.schedule[row].length; ++i) {
         const col = xhr.response.schedule[row][i]
         newsched[row][col] = 1
@@ -92,8 +93,8 @@ function postSolve (setSchedule, outputToConsole) {
     outputToConsole(xhr.response.error)
   } else {
     outputToConsole(`${xhr.status} ${xhr.statusText}`)
-    outputToConsole('Your Sudoku may have been too difficult and timed out.')
-    outputToConsole('Please save the Sudoku you were trying to solve and report the problem')
+    outputToConsole('Your Nurse Scheduling may have been too difficult and timed out.')
+    outputToConsole('Please save the configuration you were trying to solve and report the problem')
   }
   nurseVars.setXHR(null)
 }
