@@ -40,6 +40,7 @@ export default function LeftHeaderLinks() {
           <Button
             color="transparent"
             href={dtqcLink}
+            target='_blank'
             className={classes.navLink}
           >
             <img src={dtqcLogo} style={{ height: '32px', borderRadius: '3px'}}/>
