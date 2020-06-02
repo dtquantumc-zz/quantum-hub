@@ -28,6 +28,12 @@ function GridSquare (props) {
   else if (props.y % 3 === 2) classes += ' gridBottom'
   if (props.focused) classes += ' focused'
   if (props.bolded) classes += ' bolded'
+  if (props.rowInvalid) classes += ' rowInvalid'
+  if (props.colnInvalid) classes += ' colnInvalid'
+  if (props.blockInvalid) classes += ' blockInvalid'
+
+  const validValue = props.value === 0 ? '' : String(props.value)
+  const invalidValue = <div className='invalidOutline'>{validValue}</div>
 
   return (
     <button
@@ -37,7 +43,7 @@ function GridSquare (props) {
       onClick={props.onClick}
       disabled={!props.enabled}
     >
-      {props.value === 0 ? '' : String(props.value)}
+      {props.invalid ? invalidValue : validValue}
     </button>
   )
 }
@@ -55,10 +61,13 @@ function GridSquare (props) {
  * @param {Function} setCurrentSquare - A function to change the current selected
  * square to any clicked square
  */
-function makeSudokuGrid (sudokuGrid, gridBold, shaded, enabled, setCurrentSquare) {
+function makeSudokuGrid (sudokuGrid, gridBold, shaded, enabled, setCurrentSquare, gridInvalid, rowInvalid, colnInvalid, blockInvalid) {
   return (
     [0, 1, 2, 3, 4, 5, 6, 7, 8].map((y) => {
       return [0, 1, 2, 3, 4, 5, 6, 7, 8].map((x) => {
+        const blockRow = Math.floor(y / 3)
+        const blockColn = Math.floor(x / 3)
+        const blockKey = [blockRow, blockColn]
         return (
           <GridSquare
             x={x}
@@ -67,6 +76,10 @@ function makeSudokuGrid (sudokuGrid, gridBold, shaded, enabled, setCurrentSquare
             value={sudokuGrid[x + 9 * y]}
             bolded={gridBold[x + 9 * y]}
             enabled={enabled}
+            invalid={gridInvalid[y][x]}
+            rowInvalid={!!rowInvalid[y]}
+            colnInvalid={!!colnInvalid[x]}
+            blockInvalid={!!blockInvalid[blockKey]}
             onClick={() => setCurrentSquare([x, y])}
             focused={shaded.includes(x + 9 * y)}
           />

@@ -18,7 +18,7 @@ div, p {margin:0px; padding:0px;}
   color: rgba(0, 0, 0, 0.87);
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: normal;
-  font-size: 18px;
+  font-size: 24px;
 }
 
 .gridSquare:disabled{
