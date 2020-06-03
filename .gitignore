@@ -8,3 +8,4 @@
 
 # Deployment local script
 h_deploy.sh
+dump.rdb

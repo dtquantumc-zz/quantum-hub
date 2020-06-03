@@ -21,6 +21,8 @@ import os
 
 from dimod.generators.constraints import combinations
 from hybrid.reference import KerberosSampler
+from dwave.system import DWaveSampler
+
 
 
 def get_label(row, col, digit):
@@ -101,8 +103,21 @@ def get_result(matrix):
     return result
 
 
-def main(qpu_sampler, matrix=None, token=None):
+def main(matrix=None, token=None):
     # Note: for the purposes of a code example, main() is written as a script
+
+    endpoint = 'https://cloud.dwavesys.com/sapi/'
+    client = 'qpu'
+    solver = 'DW_2000Q_6'
+    try:
+        qpu_sampler = DWaveSampler(
+            client=client,
+            endpoint=endpoint,
+            token=token,
+            solver=solver)
+    except Exception as e:
+        print(e)
+        return {'error':'Token not accepted'}
 
     if matrix is None:
         filename = 'problem.txt'

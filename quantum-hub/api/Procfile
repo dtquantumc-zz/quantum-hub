@@ -1,1 +1,2 @@
 web: gunicorn api:app -t 29
+worker: rq worker qpu_tasks

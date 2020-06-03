@@ -6,6 +6,8 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
+import XMLHttpRequest from 'xhr2'
+import makeLongRequest from '../LongRequest'
 
 /**
  * Widget is meant to be an example base class.
@@ -72,12 +74,42 @@ class Widget extends React.Component {
    */
   async callSolver () {
     if (this.state.status === 'waiting...') return
-    const APIKey = this.props.getAPIKey()
-    const consoleMsg = 'Making a call using the ' + (APIKey === '' ? 'simulator' : 'QPU')
+
+    const consoleMsg = 'Making a call using LongRequest'
     this.props.outputToConsole(consoleMsg)
 
     /* Example async call */
-    this.pseudoHash(APIKey).then((result) => { this.resolveSolve(result) })
+    // this.pseudoHash(APIKey).then((result) => { this.resolveSolve(result) })
+
+    const params = {
+      time: 5,
+      typeOfProblem: 'nurseScheduling',
+      n_nurses: 5,
+      n_days: 4
+    }
+
+    makeLongRequest(
+      params,
+      (xhr) => { this.props.outputToConsole('Queued!') },
+      (xhr) => { this.props.outputToConsole(xhr.response.jobStatus) },
+      (xhr) => {
+        this.props.outputToConsole('Finished w result: ' + xhr.response.n)
+        this.props.outputToConsole(JSON.stringify(xhr.response))
+        this.setState({
+          status: 'Solved!'
+        })
+      },
+      (xhr) => {
+        this.props.outputToConsole('Something went wrong')
+        console.log(xhr)
+        this.props.outputToConsole(JSON.stringify(xhr))
+        this.setState({
+          status: 'oops!'
+        })
+      },
+      this.props.outputToConsole
+    )
+
     /* This could be a fetch() call, or a classical solver, or anything in between */
     this.setState({
       status: 'waiting...'
@@ -128,7 +160,7 @@ class Widget extends React.Component {
           onClick={() => {
             this.callSolver()
           }}
-          disabled={this.state.status === 'waiting...'}
+          // disabled={this.state.status === 'waiting...'}
           id={this.props.id + '_button'}
         >
           Click me to solve!

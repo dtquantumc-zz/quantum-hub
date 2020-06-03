@@ -5,6 +5,7 @@
  */
 
 import XMLHttpRequest from 'xhr2'
+import makeLongRequest from '../LongRequest'
 import nurseVars from './NurseVariables'
 
 /**
@@ -30,26 +31,42 @@ function nurseSolveRequest (setSchedule, outputToConsole, getAPIKey) {
   // setEnabled(false)
   outputToConsole(`Scheduling ${nurseVars.numNurses} nurses across ${nurseVars.numDays} days:`)
 
-  nurseVars.xhr = new XMLHttpRequest()
-  var xhr = nurseVars.xhr
-  const url = '/qpu_request'
+  // nurseVars.xhr = new XMLHttpRequest()
+  // var xhr = nurseVars.xhr
+  // const url = '/qpu_request'
   const params = {
     // token: getAPIKey(),
     typeOfProblem: 'nurseScheduling',
     n_nurses: Math.floor(nurseVars.numNurses),
     n_days: Math.floor(nurseVars.numDays)
   }
-  const async = true
-  xhr.open('POST', url, async)
+  // const async = true
+  // xhr.open('POST', url, async)
 
-  xhr.responseType = 'json'
+  // xhr.responseType = 'json'
 
-  xhr.onload = () => {
-    postSolve(setSchedule, outputToConsole)
-  }
-  xhr.setRequestHeader('Content-type', 'application/json')
-  xhr.send(JSON.stringify(params))
+  // xhr.onload = () => {
+  //   postSolve(setSchedule, outputToConsole)
+  // }
+  // xhr.setRequestHeader('Content-type', 'application/json')
+  // xhr.send(JSON.stringify(params))
   // nurseVars.setXHR(xhr)
+
+  makeLongRequest(
+    params,
+    (xhr) => { outputToConsole('The nurse problem has been queued for solving!') },
+    (xhr) => { outputToConsole(xhr.response.jobStatus) },
+    (xhr) => {
+      postSolve(xhr, setSchedule, outputToConsole)
+    },
+    (xhr) => {
+      outputToConsole('Something went wrong')
+      console.log(xhr)
+      outputToConsole(JSON.stringify(xhr))
+    },
+    outputToConsole
+  )
+
   outputToConsole('Solving...')
 }
 
@@ -57,8 +74,8 @@ function nurseSolveRequest (setSchedule, outputToConsole, getAPIKey) {
  * This is a function to do something after the solve has gone
  * through
  */
-function postSolve (setSchedule, outputToConsole) {
-  const xhr = nurseVars.xhr
+function postSolve (xhr, setSchedule, outputToConsole) {
+  // const xhr = nurseVars.xhr
 
   if (xhr.status === 200) {
     outputToConsole('Solved!')

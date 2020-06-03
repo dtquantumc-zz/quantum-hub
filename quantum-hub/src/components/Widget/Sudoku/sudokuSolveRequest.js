@@ -5,6 +5,7 @@
  */
 
 import XMLHttpRequest from 'xhr2'
+import makeLongRequest from '../LongRequest'
 import sudokuVars from './SudokuVariables'
 import {
   isGridAllZeros
@@ -37,24 +38,40 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
   outputToConsole('Sending in this grid:')
   sudokuArray.map((row) => outputToConsole(row.join(' ')))
 
-  sudokuVars.xhr = new XMLHttpRequest()
-  var xhr = sudokuVars.xhr
-  const url = '/qpu_request'
+  // sudokuVars.xhr = new XMLHttpRequest()
+  // var xhr = sudokuVars.xhr
+  // const url = '/qpu_request'
   const params = {
     // token: getAPIKey(),
     typeOfProblem: 'sudokuSolving',
     sudokuArray: sudokuArray
   }
-  const async = true
-  xhr.open('POST', url, async)
+  // const async = true
+  // xhr.open('POST', url, async)
 
-  xhr.responseType = 'json'
+  // xhr.responseType = 'json'
 
-  xhr.onload = () => {
-    postSolve(setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading)
-  }
-  xhr.setRequestHeader('Content-type', 'application/json')
-  xhr.send(JSON.stringify(params))
+  // xhr.onload = () => {
+  //   postSolve(setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading)
+  // }
+  // xhr.setRequestHeader('Content-type', 'application/json')
+  // xhr.send(JSON.stringify(params))
+
+  makeLongRequest(
+    params,
+    (xhr) => { outputToConsole('The sudoku has been queued for solving!') },
+    (xhr) => { outputToConsole(xhr.response.jobStatus) },
+    (xhr) => {
+      postSolve(xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading)
+    },
+    (xhr) => {
+      outputToConsole('Something went wrong')
+      console.log(xhr)
+      outputToConsole(JSON.stringify(xhr))
+    },
+    outputToConsole
+  )
+
   // setXHR(xhr)
   outputToConsole('Solving...')
 }
@@ -72,8 +89,8 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
  * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
  * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
  */
-function postSolve (setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading) {
-  const xhr = sudokuVars.xhr
+function postSolve (xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading) {
+  // const xhr = sudokuVars.xhr
 
   setEnabled(true)
   setLoading(false)
@@ -87,7 +104,7 @@ function postSolve (setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoa
       setSudokuGrid(flattenedBoard)
       setEmpty(isGridAllZeros(flattenedBoard))
     } else {
-      outputToConsole(xhr.responseText)
+      outputToConsole(JSON.stringify(xhr.response))
     }
     outputToConsole(xhr.response.solution_message)
     // outputToConsole(xhr.response.timing.stringify())

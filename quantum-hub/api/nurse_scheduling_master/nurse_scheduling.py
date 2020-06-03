@@ -20,14 +20,14 @@
 # License (To view a copy of this license, visit
 # http://creativecommons.org/licenses/by/4.0/).
 
-from dwave.system import LeapHybridSampler
+from dwave.system import LeapHybridSampler, DWaveSampler
 from dimod import BinaryQuadraticModel
 from collections import defaultdict
 from copy import deepcopy
 import numpy as np
 
 
-def main(token, qpu_sampler, n_nurses=3, n_days=11):
+def main(token, n_nurses=3, n_days=11):
     # Overall model variables: problem size
     # binary variable q_nd is the assignment of nurse n to day d
     n_nurses = n_nurses      # count nurses n = 1 ... n_nurses
@@ -168,6 +168,18 @@ def main(token, qpu_sampler, n_nurses=3, n_days=11):
     # Solve the problem, and use the offset to scale the energy
     e_offset = (lagrange_hard_shift * n_days * workforce ** 2) + (lagrange_soft_nurse * n_nurses * min_duty_days ** 2)
     bqm = BinaryQuadraticModel.from_qubo(Q, offset=e_offset)
+    
+    endpoint = 'https://cloud.dwavesys.com/sapi/'
+    client = 'qpu'
+    solver = 'DW_2000Q_6'
+    try:
+        qpu_sampler = DWaveSampler(
+            client=client,
+            endpoint=endpoint,
+            token=token,
+            solver=solver)
+    except:
+        return {'error':'Token not accepted'}
     sampler = LeapHybridSampler(token=token)
     results = sampler.sample(bqm, qpu_sampler=qpu_sampler)
 

@@ -6,6 +6,9 @@
 import time
 from flask import Flask, render_template, request
 import os
+from redis import Redis
+import redis
+import rq
 
 # D-Wave Imports
 from dwave.cloud import Client
@@ -16,46 +19,100 @@ from dwave.cloud import exceptions
 from nurse_scheduling_master import nurse_scheduling
 from sudoku_master import sudoku
 
-app = Flask(__name__, static_folder='./build', static_url_path='/')
+# Worker Code Imports
+import workers
 
+def create_app():
+    app = Flask(__name__, static_folder='./build', static_url_path='/')
+    app.redis = Redis.from_url(os.environ.get('REDIS_URL') or 'redis://')
+    app.task_queue = rq.Queue('qpu_tasks', connection = app.redis)
+    return app
 
-@app.route('/qpu_request', methods=['POST'])
-def test_server():
+app = create_app()
+
+# @app.route('/qpu_request', methods=['POST'])
+# def test_server():
+#     raw_data = request.get_json()
+
+#     # results = {'test': 'complete', 'token': raw_data['token']}
+#     if request.method == 'POST':
+#         endpoint = 'https://cloud.dwavesys.com/sapi/'
+#         # token = raw_data['token']
+#         token = 'DEV-a141649cf7a24ed2fd84b5939533c9fcc2d99fb6' # Haris
+#         # token = 'DEV-98f37d3736d62d7061eaa5e68214a92eadb2393b' # Ari
+#         client = 'qpu'
+#         solver = 'DW_2000Q_6'
+#         try:
+#             sampler = DWaveSampler(client=client,
+#                                    endpoint=endpoint,
+#                                    token=token,
+#                                    solver=solver)
+#         except ValueError:
+#             return {'error':'Missing Token!'}, 400
+#         except exceptions.SolverAuthenticationError:
+#             return {'error':'Token Authentication Failed!'}, 400
+#         except Exception as e:
+#             return {'error':'Unexpected Error: ' + str(e)}, 400
+
+#         if raw_data['typeOfProblem'] == 'nurseScheduling':
+#             results = nurse_scheduling.main(token=token,
+#                                             qpu_sampler=sampler,
+#                                             n_nurses=int(raw_data["n_nurses"]),
+#                                             n_days=int(raw_data["n_days"]))
+#             # print(results)
+#         elif raw_data['typeOfProblem'] == 'sudokuSolving':
+#             results = sudoku.main(qpu_sampler=sampler,
+#                                   matrix=raw_data['sudokuArray'],
+#                                   token=token)
+#         else: return {'error':'Invalid typeOfProblem'}, 400
+
+#     return results
+
+@app.route('/make_worker', methods=['POST'])
+def make_worker():
+    
     raw_data = request.get_json()
 
-    # results = {'test': 'complete', 'token': raw_data['token']}
-    if request.method == 'POST':
-        endpoint = 'https://cloud.dwavesys.com/sapi/'
-        # token = raw_data['token']
-        token = 'DEV-a141649cf7a24ed2fd84b5939533c9fcc2d99fb6' # Haris
-        # token = 'DEV-98f37d3736d62d7061eaa5e68214a92eadb2393b' # Ari
-        client = 'qpu'
-        solver = 'DW_2000Q_6'
-        try:
-            sampler = DWaveSampler(client=client,
-                                   endpoint=endpoint,
-                                   token=token,
-                                   solver=solver)
-        except ValueError:
-            return {'error':'Missing Token!'}, 400
-        except exceptions.SolverAuthenticationError:
-            return {'error':'Token Authentication Failed!'}, 400
-        except Exception as e:
-            return {'error':'Unexpected Error: ' + str(e)}, 400
+    # job = app.task_queue.enqueue('workers.foo', args = [int(request.get_json()['time']), 2])
 
-        if raw_data['typeOfProblem'] == 'nurseScheduling':
-            results = nurse_scheduling.main(token=token,
-                                            qpu_sampler=sampler,
-                                            n_nurses=int(raw_data["n_nurses"]),
-                                            n_days=int(raw_data["n_days"]))
-            # print(results)
-        elif raw_data['typeOfProblem'] == 'sudokuSolving':
-            results = sudoku.main(qpu_sampler=sampler,
-                                  matrix=raw_data['sudokuArray'],
-                                  token=token)
-        else: return {'error':'Invalid typeOfProblem'}, 400
+    token = 'DEV-a141649cf7a24ed2fd84b5939533c9fcc2d99fb6' # Haris
+    # token = 'DEV-98f37d3736d62d7061eaa5e68214a92eadb2393b' # Ari
 
-    return results
+    if raw_data['typeOfProblem'] == 'nurseScheduling':
+        args = [token, raw_data['n_nurses'], raw_data['n_days']]
+        job = app.task_queue.enqueue('nurse_scheduling_master.nurse_scheduling.main', args=args)
+    elif raw_data['typeOfProblem'] == 'sudokuSolving':
+        args = [raw_data['sudokuArray'], token]
+        job = app.task_queue.enqueue('sudoku_master.sudoku.main', args=args)
+
+    return {'jobStatus':'enqueued', 'jobID':job.get_id()}
+
+
+@app.route('/check_worker', methods=['POST'])
+def check_worker():
+    # Get relevant request data
+    raw_data = request.get_json()
+    jobID = raw_data['jobID']
+
+    # Fetch the job whose ID was passed.
+    try:
+        job = rq.job.Job.fetch(jobID, connection = app.redis)
+    except redis.exceptions.ConnectionError:
+        return {'error':'Invalid Job ID'}, 400
+    except Exception as e:
+        print(e)
+        return {'error':'Uncaught'}, 400
+
+    # Prepare result for output
+    if job.get_status() != 'finished':
+        res = {}
+        res['meta'] = job.meta
+    else:
+        res = job.result
+    res['jobStatus'] = job.get_status()
+    res['jobID'] = job.get_id()
+    return res
+
 
 @app.route('/')
 def my_index():
