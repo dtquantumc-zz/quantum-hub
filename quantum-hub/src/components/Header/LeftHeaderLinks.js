@@ -18,7 +18,7 @@ import Button from "../../components/CustomButtons/Button.js";
 
 import styles from "../../assets/jss/material-kit-react/components/headerLinksStyle.js";
 
-import dtqcLogo from "../../images/DTQC_with_background.svg"
+import dtqcLogo from "../../images/DTQC_Logo0.svg"
 
 const useStyles = makeStyles(styles);
 
