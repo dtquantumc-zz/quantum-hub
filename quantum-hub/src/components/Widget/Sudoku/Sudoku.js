@@ -199,11 +199,9 @@ function getSudokuValidationResults (sudokuGrid) {
   const N = 9
   const M = 9
 
-  const seen = new Set()
-
-  let duplicatesInRow = {}
-  let duplicatesInColn = {}
-  let duplicatesInBlock = {}
+  let seenInRow = {}
+  let seenInColn = {}
+  let seenInBlock = {}
 
   const sudokuBoard = getUnflattenedSudokuBoard(sudokuGrid)
 
@@ -222,32 +220,66 @@ function getSudokuValidationResults (sudokuGrid) {
       const blockColumn = Math.floor(j / 3)
       const inBlock = current + ' in block ' + blockRow + ' - ' + blockColumn
 
-      if (seen.has(inRow)) {
-        duplicatesInRow = addKeyValToObject(i, j, duplicatesInRow)
-      }
-      seen.add(inRow)
-
-      if (seen.has(inColn)) {
-        duplicatesInColn = addKeyValToObject(j, i, duplicatesInColn)
-      }
-      seen.add(inColn)
-
-      if (seen.has(inBlock)) {
-        const key = [Math.floor(i / 3), Math.floor(j / 3)]
-        const val = [i, j]
-        duplicatesInBlock = addKeyValToObject(key, val, duplicatesInBlock)
-      }
-      seen.add(inBlock)
+      seenInRow = addKeyValToObject(inRow, [i, j], seenInRow)
+      seenInColn = addKeyValToObject(inColn, [i, j], seenInColn)
+      seenInBlock = addKeyValToObject(inBlock, [i, j], seenInBlock)
     }
   }
 
   const validationResult = {
-    duplicatesInRow: duplicatesInRow,
-    duplicatesInColn: duplicatesInColn,
-    duplicatesInBlock: duplicatesInBlock
+    duplicatesInRow: getDuplicatesInRow(seenInRow),
+    duplicatesInColn: getDuplicatesInColn(seenInColn),
+    duplicatesInBlock: getDuplicatesInBlock(seenInBlock)
   }
 
   return validationResult
+}
+
+function getDuplicatesInRow (seenInRow) {
+  let duplicatesInRow = {}
+
+  Object.keys(seenInRow).forEach(row => {
+    if (hasDuplicates(seenInRow, row)) {
+      seenInRow[row].forEach((coord) => {
+        duplicatesInRow = addKeyValToObject(coord[0], coord[1], duplicatesInRow)
+      })
+    }
+  })
+
+  return duplicatesInRow
+}
+
+function getDuplicatesInColn (seenInColn) {
+  let duplicatesInColn = {}
+
+  Object.keys(seenInColn).forEach(coln => {
+    if (hasDuplicates(seenInColn, coln)) {
+      seenInColn[coln].forEach((coord) => {
+        duplicatesInColn = addKeyValToObject(coord[1], coord[0], duplicatesInColn)
+      })
+    }
+  })
+
+  return duplicatesInColn
+}
+
+function getDuplicatesInBlock (seenInBlock) {
+  let duplicatesInBlock = {}
+
+  Object.keys(seenInBlock).forEach(block => {
+    if (hasDuplicates(seenInBlock, block)) {
+      seenInBlock[block].forEach((coord) => {
+        const key = [Math.floor(coord[0] / 3), Math.floor(coord[1] / 3)]
+        duplicatesInBlock = addKeyValToObject(key, coord, duplicatesInBlock)
+      })
+    }
+  })
+
+  return duplicatesInBlock
+}
+
+function hasDuplicates (object, key) {
+  return object[key].length > 1
 }
 
 function getUnflattenedSudokuBoard (flattenedSudokuBoard) {
