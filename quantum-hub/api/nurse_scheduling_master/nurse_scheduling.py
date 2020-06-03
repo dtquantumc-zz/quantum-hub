@@ -27,7 +27,7 @@ from copy import deepcopy
 import numpy as np
 
 
-def main(token, n_nurses=3, n_days=11):
+def main(token=None, n_nurses=3, n_days=11):
     # Overall model variables: problem size
     # binary variable q_nd is the assignment of nurse n to day d
     n_nurses = n_nurses      # count nurses n = 1 ... n_nurses

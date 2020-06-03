@@ -9,25 +9,47 @@
  * Reason for this is to provide static variables that don't
  * refresh React
  */
-export default class NurseVariables {
+class NurseVariables {
+  /**
+   * The number of nurses for the next solve request
+   */
   static numNurses = 3
+
+  /**
+   * The number of days for the next solve request
+   */
   static numDays = 7
+
+  /**
+   * The latest XML Http Request. Currently unused
+   */
   static xhr = null
+
+  /**
+   * The state of the latest LongRequest answer.
+   * Used in nurseSolveRequest's LongRequest callbacks.
+   */
   static state = ''
 
+  /** */
   static setNumNurses (num) {
     NurseVariables.numNurses = num
   }
 
+  /** */
   static setNumDays (num) {
     NurseVariables.numDays = num
   }
 
+  /** */
   static setXHR (newXHR) {
     NurseVariables.xhr = newXHR
   }
 
+  /** */
   static setState (newState) {
     NurseVariables.state = newState
   }
 }
+
+export default NurseVariables

@@ -9,10 +9,11 @@ import makeLongRequest from '../LongRequest'
 import nurseVars from './NurseVariables'
 
 /**
- * This is a function to send a solve request to the backend
- * @param {Object} nurseState - .schedule, .setSchedule,
- * .numNurses, .setNumNurses, .numDays, .setNumDays
+ * This is a function to send a solve request to the backend.
+ * Uses LongRequest to achieve this with background processes.
+ * @param {Function} setSchedule - Sets the Schedule
  * @param {Function} outputToConsole - Output to Console
+ * @param {Function} appendToConsole - Append to Console
  * @param {Function} getAPIKey - Get the API Key
  */
 function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAPIKey) {
@@ -28,29 +29,14 @@ function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAP
     return
   }
 
-  // setEnabled(false)
   outputToConsole(`Scheduling ${nurseVars.numNurses} nurses across ${nurseVars.numDays} days:`)
 
-  // nurseVars.xhr = new XMLHttpRequest()
-  // var xhr = nurseVars.xhr
-  // const url = '/qpu_request'
   const params = {
     // token: getAPIKey(),
     typeOfProblem: 'nurseScheduling',
     n_nurses: Math.floor(nurseVars.numNurses),
     n_days: Math.floor(nurseVars.numDays)
   }
-  // const async = true
-  // xhr.open('POST', url, async)
-
-  // xhr.responseType = 'json'
-
-  // xhr.onload = () => {
-  //   postSolve(setSchedule, outputToConsole)
-  // }
-  // xhr.setRequestHeader('Content-type', 'application/json')
-  // xhr.send(JSON.stringify(params))
-  // nurseVars.setXHR(xhr)
 
   makeLongRequest(
     params,
@@ -80,17 +66,20 @@ function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAP
     },
     outputToConsole
   )
-
-  // outputToConsole('Solving...')
 }
 
 /**
  * This is a function to do something after the solve has gone
- * through
+ * through. It decodes the grid configuration sent, and
+ * then sets it as the current grid.
+ * @param {XMLHTTPRequest} xhr - This is the response containing the results
+ * of the nurse scheduling job. The "encoded" schedule is in here. Encoded
+ * simply means a sparse matrix representation, as opposed to a complete
+ * matrix.
+ * @param {Function} setSchedule - A function to set the Nurse Schedule
+ * @param {Function} outputToConsole - Outputs a line to the console object
  */
 function postSolve (xhr, setSchedule, outputToConsole) {
-  // const xhr = nurseVars.xhr
-
   if (xhr.status === 200) {
     outputToConsole('Solved! Enjoy your nurse schedule!')
 
@@ -113,11 +102,11 @@ function postSolve (xhr, setSchedule, outputToConsole) {
       }
     }
 
-    // outputToConsole('The returned nurse schedule is:')
-    // newsched.map((row) => outputToConsole(row.join(' ')))
+    // console.log('The returned nurse schedule is:')
+    // newsched.map((row) => console.log(row.join(' ')))
 
-    // outputToConsole(xhr.response.HardNurseConstraint)
-    // outputToConsole(xhr.response.HardShiftConstraint)
+    // console.log(xhr.response.HardNurseConstraint)
+    // console.log(xhr.response.HardShiftConstraint)
 
     setSchedule(newsched)
   } else if (xhr.status === 400) {

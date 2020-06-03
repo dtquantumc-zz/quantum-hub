@@ -32,6 +32,7 @@ import './nurseScheduler.css'
  *      outputToConsole={(line) => {
  *        setTextLines(textLines.concat(line))
  *      }}
+ *      appendToConsole={}
  *    />
  *  )
  *
@@ -48,7 +49,8 @@ import './nurseScheduler.css'
  * it to the current console output string array. If the Console
  * is not being used, this can do anything you want with that
  * string, but you should probably output it in some way.
- * @prop {func(string)} appendToConsole - Same, but just appends
+ * @prop {func(string)} appendToConsole - (Required) Same as output,
+ * but just appends
  * the given string to the last line of the Console.
  */
 function NurseScheduler (props) {
@@ -56,22 +58,12 @@ function NurseScheduler (props) {
   // These use React Hooks, so rerendering is done
   // whenever the Set function for a variable is called.
   var [schedule, setSchedule] = useState([[false]])
-  // const [numNurses, setNumNurses] = useState(4)
-  // const [numDays, setNumDays] = useState(7)
-
-  // var nurseState = {
-  //   schedule: schedule,
-  //   setSchedule: setSchedule,
-  //   numNurses: numNurses,
-  //   setNumNurses: setNumNurses,
-  //   numDays: numDays,
-  //   setNumDays: setNumDays
-  // }
 
   const useStyles = makeStyles(styles)
 
   const classes = useStyles()
 
+  /** Sample Schedule in the commented lines below */
   // schedule = [
   //   [0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1],
   //   [1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1],

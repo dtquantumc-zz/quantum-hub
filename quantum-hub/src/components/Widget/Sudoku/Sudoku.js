@@ -41,6 +41,7 @@ import styles from '../../../assets/jss/material-kit-react/components/sudokuStyl
  *      getAPIKey={() => APIKey}
  *      outputToConsole={(line) => {
  *        setTextLines(textLines.concat(line))
+ *      appendToConsole={}
  *      }}
  *    />
  *  )
@@ -58,7 +59,8 @@ import styles from '../../../assets/jss/material-kit-react/components/sudokuStyl
  * it to the current console output string array. If the Console
  * is not being used, this can do anything you want with that
  * string, but you should probably output it in some way.
- * @prop {func(string)} appendToConsole - Same, but just appends
+ * @prop {func(string)} appendToConsole - (Required) Same as output,
+ * but just appends
  * the given string to the last line of the Console.
  */
 function SudokuGame (props) {
@@ -437,6 +439,9 @@ function resetBlockInvalid (setters) {
  * to the number of the key just pressed.
  * @param {KeyPress} event - The keypres to be handled
  * @param {Object} state - The complete state of the Sudoku board
+ * @param {Function} keyPressValidator - The validator that
+ * will be called to check the Sudoku board state and validities
+ * after any board change
  */
 function handleKeyPress (event, state, keyPressValidator) {
   console.log(`Key pressed is ${event.keyCode}`)
