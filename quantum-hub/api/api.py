@@ -26,6 +26,7 @@ def create_app():
     app = Flask(__name__, static_folder='./build', static_url_path='/')
     app.redis = Redis.from_url(os.environ.get('REDIS_URL') or 'redis://')
     app.task_queue = rq.Queue('qpu_tasks', connection = app.redis)
+    app.is_live = True
     return app
 
 app = create_app()
@@ -78,14 +79,28 @@ def make_worker():
     token = 'DEV-a141649cf7a24ed2fd84b5939533c9fcc2d99fb6' # Haris
     # token = 'DEV-98f37d3736d62d7061eaa5e68214a92eadb2393b' # Ari
 
+    args = []
     if raw_data['typeOfProblem'] == 'nurseScheduling':
         args = [token, raw_data['n_nurses'], raw_data['n_days']]
-        job = app.task_queue.enqueue('nurse_scheduling_master.nurse_scheduling.main', args=args)
     elif raw_data['typeOfProblem'] == 'sudokuSolving':
         args = [raw_data['sudokuArray'], token]
-        job = app.task_queue.enqueue('sudoku_master.sudoku.main', args=args)
 
-    return {'jobStatus':'enqueued', 'jobID':job.get_id()}
+    if app.is_live:
+        if raw_data['typeOfProblem'] == 'nurseScheduling':
+            job = app.task_queue.enqueue('nurse_scheduling_master.nurse_scheduling.main', args=args)
+        elif raw_data['typeOfProblem'] == 'sudokuSolving':
+            job = app.task_queue.enqueue('sudoku_master.sudoku.main', args=args)
+
+        return {'jobStatus':'enqueued', 'jobID':job.get_id()}
+    
+    else:
+        if raw_data['typeOfProblem'] == 'nurseScheduling':
+            res = nurse_scheduling.main(*args)
+        elif raw_data['typeOfProblem'] == 'sudokuSolving':
+            res = sudoku.main(*args)
+
+        res['jobStatus'] = 'finished'
+        return res
 
 
 @app.route('/check_worker', methods=['POST'])
@@ -129,6 +144,7 @@ if __name__ == '__main__':
     # Run Flask App
     port = int(os.getenv('PORT', 5000))
     print(port)
+    app.is_live = False
     app.run(debug=True, host='0.0.0.0', port=port)
 
 
