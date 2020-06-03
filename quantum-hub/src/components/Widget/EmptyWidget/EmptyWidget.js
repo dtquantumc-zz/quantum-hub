@@ -6,7 +6,7 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import XMLHttpRequest from 'xhr2'
+// import XMLHttpRequest from 'xhr2'
 import makeLongRequest from '../LongRequest'
 
 /**

@@ -1,2 +1,2 @@
 web: gunicorn api:app -t 29
-worker: rq worker qpu_tasks
+worker: rq worker -u $REDIS_URL qpu_tasks

@@ -70,12 +70,47 @@ div, p {margin:0px; padding:0px;}
   outline: none;
 }
 
-.focused{
+.bolded{
+  font-weight: bold;
+}
+
+.gridSquare.rowInvalid{
+  background-color: #e8a0a0;
+}
+
+.gridSquare.colnInvalid{
+  background-color: #e8a0a0;
+}
+
+.gridSquare.blockInvalid{
+  background-color: #e8a0a0;
+}
+
+.gridSquare.rowInvalid.colnInvalid,
+.gridSquare.rowInvalid.blockInvalid,
+.gridSquare.blockInvalid.colnInvalid{
+  background-color: #D96262;
+}
+
+.gridSquare.rowInvalid.colnInvalid.blockInvalid{
+  background-color: #c02e2e;
+}
+
+.focused,
+.rowInvalid.focused, .colnInvalid.focused, .blockInvalid.focused,
+.gridSquare.rowInvalid.colnInvalid.focused, .gridSquare.rowInvalid.blockInvalid.focused,
+.gridSquare.blockInvalid.colnInvalid.focused{
   background-color: lightgray;
 }
 
-.bolded{
-  font-weight: bold;
+.invalidOutline{
+  border-radius: 50%;
+  border: thin solid black;
+  width: 28px;
+  height: 28px;
+  background-color: #c02e2e;
+  color: white;
+  box-shadow: 0 2px 2px 0 #823a3a, 0 3px 1px -2px #823a3a, 0 1px 5px 0 #823a3a;
 }
 
 .sudokuBox{

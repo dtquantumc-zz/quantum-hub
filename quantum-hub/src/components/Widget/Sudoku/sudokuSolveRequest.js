@@ -4,7 +4,7 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import XMLHttpRequest from 'xhr2'
+// import XMLHttpRequest from 'xhr2'
 import makeLongRequest from '../LongRequest'
 import sudokuVars from './SudokuVariables'
 import {
@@ -23,8 +23,10 @@ import {
  * a simulation is wanted.
  * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
  * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
+ * @param {Function} resetInvalidStates - Helper function to reset all of the
+ * Sudoku Grid's invalid states
  */
-function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, getAPIKey, setEmpty, setLoading) {
+function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, getAPIKey, setEmpty, setLoading, resetInvalidStates) {
   if (sudokuVars.xhr) return
   var sudokuArray = []
   for (var y = 0; y < 9; y++) {
@@ -62,7 +64,7 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
     (xhr) => { outputToConsole('The sudoku has been queued for solving!') },
     (xhr) => { outputToConsole(xhr.response.jobStatus) },
     (xhr) => {
-      postSolve(xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading)
+      postSolve(xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, resetInvalidStates)
     },
     (xhr) => {
       outputToConsole('Something went wrong')
@@ -88,12 +90,15 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
  * @param {Function} outputToConsole - Output a line of text to the console.
  * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
  * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
+ * @param {Function} resetInvalidStates - Helper function to reset all of the
+ * Sudoku Grid's invalid states
  */
-function postSolve (xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading) {
+function postSolve (xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, resetInvalidStates) {
   // const xhr = sudokuVars.xhr
 
   setEnabled(true)
   setLoading(false)
+  resetInvalidStates()
 
   if (xhr.status === 200) {
     outputToConsole('Solved!')

@@ -4,7 +4,7 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import XMLHttpRequest from 'xhr2'
+// import XMLHttpRequest from 'xhr2'
 import makeLongRequest from '../LongRequest'
 import nurseVars from './NurseVariables'
 
