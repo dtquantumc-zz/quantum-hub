@@ -47,8 +47,10 @@ export default function NurseSchedulingInput (props) {
                 }}
                 inputProps={{
                   type: 'number',
-                  max: 30,
-                  min: 0,
+                  inputProps: {
+                    min: 0,
+                    max: 50
+                  },
                   onChange: (e) => {
                     props.setNumNurses(e.target.value)
                   }
@@ -62,11 +64,14 @@ export default function NurseSchedulingInput (props) {
                 }}
                 inputProps={{
                   type: 'number',
-                  max: 30,
-                  min: 0,
+                  inputProps: {
+                    min: 0,
+                    max: 30
+                  },
                   onChange: (e) => {
                     props.setNumDays(e.target.value)
-                  }
+                  },
+                  validator: () => {return false}
                 }}
               />
             </CardBody>

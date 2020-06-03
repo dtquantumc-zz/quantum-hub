@@ -18,7 +18,7 @@ import { container } from '../../material-kit-react.js'
 
 const nurseSchedulingInputStyle = {
   gridItem: {
-    width: 'inherit'
+    width: '100%'
   },
   container: {
     ...container,
