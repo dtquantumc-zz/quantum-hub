@@ -8,4 +8,6 @@ Quantum Hub NodeJS documentation
 	
 	q-hub-nurse
 
+	q-hub-longrequest
+
 	q-hub-deploy

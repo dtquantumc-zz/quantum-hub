@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sudoku Solver &#8212; DTQC 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Nurse Scheduler" href="q-hub-nurse.html" />
+    <link rel="prev" title="Components" href="q-hub-components.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sudoku-solver">
+<h1>Sudoku Solver<a class="headerlink" href="#sudoku-solver" title="Permalink to this headline">¶</a></h1>
+<p>This sudoku solver uses Dwave’s Leap system to solve
+sudokus. It also contains a pretty cool validation
+and error-showing system, indicated by highlighted
+rows, columns, and blocks where there are errors.</p>
+<dl class="function">
+<dt id="SudokuGame">
+<code class="sig-name descname">SudokuGame</code><span class="sig-paren">(</span><em class="sig-param">props</em><span class="sig-paren">)</span><a class="headerlink" href="#SudokuGame" title="Permalink to this definition">¶</a></dt>
+<dd><p>SudokuGame is meant to make the Sudoku Solver tool
+useable and accessible.</p>
+<p>Example Use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="p">[</span><span class="n">APIKey</span><span class="p">,</span> <span class="n">setAPIKey</span><span class="p">]</span> <span class="o">=</span> <span class="n">useState</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">const</span> <span class="p">[</span><span class="n">textLines</span><span class="p">,</span> <span class="n">setTextLines</span><span class="p">]</span> <span class="o">=</span> <span class="n">useState</span><span class="p">([])</span>
+<span class="k">return</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="n">SudokuGame</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;mySudoku&#39;</span>
+    <span class="n">getAPIKey</span><span class="o">=</span><span class="p">{()</span> <span class="o">=&gt;</span> <span class="n">APIKey</span><span class="p">}</span>
+    <span class="n">outputToConsole</span><span class="o">=</span><span class="p">{(</span><span class="n">line</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="n">setTextLines</span><span class="p">(</span><span class="n">textLines</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+    <span class="n">appendToConsole</span><span class="o">=</span><span class="p">{}</span>
+    <span class="p">}}</span>
+  <span class="o">/&gt;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Properties:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>string</em>) – (Required) This will get extended to serve as the id base string for all underlying components.</p></li>
+<li><p><strong>getAPIKey</strong> (<em>func()</em>) – (Required) This needs to be a function that can be called to return the current API key. NOTE: If it returns ‘’, this is equivalent to choosing the simulator.</p></li>
+<li><p><strong>outputToConsole</strong> (<em>func(string)</em>) – (Required) This function should take a single string (a line of text), and concatenate it to the current console output string array. If the Console is not being used, this can do anything you want with that string, but you should probably output it in some way.</p></li>
+<li><p><strong>appendToConsole</strong> (<em>func(string)</em>) – (Required) Same as output, but just appends the given string to the last line of the Console.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="function">
+<dt id="GridSquare">
+<code class="sig-name descname">GridSquare</code><span class="sig-paren">(</span><em class="sig-param">props</em><span class="sig-paren">)</span><a class="headerlink" href="#GridSquare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a singular sudoku square, like you see 81 of in the whole 9x9 grid.
+Uses its x and y props to decide which of its grid borders should be bolded
+and how bold they should be. This is what gives the board its Sudoku look.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>Integer</em>) – The x position of the Square in its grid</p></li>
+<li><p><strong>y</strong> (<em>Integer</em>) – The y position of the Square in its grid</p></li>
+<li><p><strong>focused</strong> (<em>Boolean</em>) – Marks whether the square should be in focus</p></li>
+<li><p><strong>onClick</strong> (<em>function</em>) – Function to be called on button click</p></li>
+<li><p><strong>value</strong> (<em>Integer</em>) – What will be displayed in the Square</p></li>
+<li><p><strong>bolded</strong> (<em>Boolean</em>) – Whether the square’s text should be bolded</p></li>
+<li><p><strong>enabled</strong> (<em>Boolean</em>) – Whether the button should be enabled</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="makeSudokuGrid">
+<code class="sig-name descname">makeSudokuGrid</code><span class="sig-paren">(</span><em class="sig-param">sudokuGrid</em>, <em class="sig-param">gridBold</em>, <em class="sig-param">shaded</em>, <em class="sig-param">enabled</em>, <em class="sig-param">setCurrentSquare</em>, <em class="sig-param">gridInvalid</em>, <em class="sig-param">rowInvalid</em>, <em class="sig-param">colnInvalid</em>, <em class="sig-param">blockInvalid</em><span class="sig-paren">)</span><a class="headerlink" href="#makeSudokuGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of 81 GridSquares to make a Sudoku with.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sudokuGrid</strong> (<em>Array(81)</em>) – An array of 81 numbers, left-to-right, top-to-bottom that make up the sudoku grid.</p></li>
+<li><p><strong>gridBold</strong> (<em>Array(81)</em>) – An array of 81 booleans, depicting if each square is bolded or not.</p></li>
+<li><p><strong>shaded</strong> (<em>Array</em>) – An array of all the shaded buttons, in case more than one is shaded at once.</p></li>
+<li><p><strong>enabled</strong> (<em>Boolean</em>) – Whether the whole board is enabled, or should be shaded and disabled.</p></li>
+<li><p><strong>setCurrentSquare</strong> (<em>function</em>) – A function to change the current selected square to any clicked square.</p></li>
+<li><p><strong>gridInvalid</strong> (<em>Array(Array(9))</em>) – A 9x9 array with True indicating that sudoku tile should be drawn as invalid.</p></li>
+<li><p><strong>rowInvalid</strong> (<em>Array(9)</em>) – An array of all the rows with errors in them marked by True</p></li>
+<li><p><strong>colnInvalid</strong> (<em>Array(9)</em>) – Same as rowInvalid, but columns.</p></li>
+<li><p><strong>blockInvalid</strong> (<em>Object</em>) – A JS object with keys [blockRow, blockColn] marking blocks as errorred or error-free.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="handleKeyPress">
+<code class="sig-name descname">handleKeyPress</code><span class="sig-paren">(</span><em class="sig-param">event</em>, <em class="sig-param">state</em>, <em class="sig-param">keyPressValidator</em><span class="sig-paren">)</span><a class="headerlink" href="#handleKeyPress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles key presses for the Sudoku Grid Component
+Sets the number in the currently selected slot of the sudoku grid
+to the number of the key just pressed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> (<em>KeyPress</em>) – The keypres to be handled</p></li>
+<li><p><strong>state</strong> (<em>Object</em>) – The complete state of the Sudoku board</p></li>
+<li><p><strong>keyPressValidator</strong> (<em>function</em>) – The validator that will be called to check the Sudoku board state and validities after any board change</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sudokuSolveRequest">
+<code class="sig-name descname">sudokuSolveRequest</code><span class="sig-paren">(</span><em class="sig-param">sudokuGrid</em>, <em class="sig-param">setSudokuGrid</em>, <em class="sig-param">setEnabled</em>, <em class="sig-param">outputToConsole</em>, <em class="sig-param">appendToConsole</em>, <em class="sig-param">getAPIKey</em>, <em class="sig-param">setEmpty</em>, <em class="sig-param">setLoading</em>, <em class="sig-param">resetInvalidStates</em><span class="sig-paren">)</span><a class="headerlink" href="#sudokuSolveRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function does the XML HTTP request for the Sudoku Widget. It calls the
+backend, and once the data is returned, postSolve is called. This handles
+request creation, console logging, and some state validation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sudokuGrid</strong> (<em>Array(81)</em>) – This is the current Sudoku GameState grid</p></li>
+<li><p><strong>setSudokuGrid</strong> (<em>function</em>) – Hook to update Sudoku Grid</p></li>
+<li><p><strong>setEnabled</strong> (<em>function</em>) – Hook to update Enabled status of the whole widget</p></li>
+<li><p><strong>outputToConsole</strong> (<em>function</em>) – Hook to add a line of text to the Console (output)</p></li>
+<li><p><strong>appendToConsole</strong> (<em>function</em>) – Append to Console</p></li>
+<li><p><strong>getAPIKey</strong> (<em>function</em>) – Returns the user’s current API Key. If empty, assume a simulation is wanted.</p></li>
+<li><p><strong>setEmpty</strong> (<em>function</em>) – Hook to update the Sudoku Grid’s empty state</p></li>
+<li><p><strong>setLoading</strong> (<em>function</em>) – Hook to update the Sudoku Grid’s loading state</p></li>
+<li><p><strong>resetInvalidStates</strong> (<em>function</em>) – Helper function to reset all of the Sudoku Grid’s invalid states</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sudokuSolveRequest.postSolve">
+<code class="sig-prename descclassname">sudokuSolveRequest.</code><code class="sig-name descname">postSolve</code><span class="sig-paren">(</span><em class="sig-param">setSudokuGrid</em>, <em class="sig-param">setEnabled</em>, <em class="sig-param">outputToConsole</em>, <em class="sig-param">setEmpty</em>, <em class="sig-param">setLoading</em>, <em class="sig-param">resetInvalidStates</em><span class="sig-paren">)</span><a class="headerlink" href="#sudokuSolveRequest.postSolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>postSolve is called after the call to the server is completed.
+It will handle any (most) errors, set the grid to a solved state if solved,
+and report back to the user through the console.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setSudokuGrid</strong> (<em>function</em>) – Hook to update the Sudoku Grid.</p></li>
+<li><p><strong>setEnabled</strong> (<em>function</em>) – Hook to update enabled status of widget.</p></li>
+<li><p><strong>outputToConsole</strong> (<em>function</em>) – Output a line of text to the console.</p></li>
+<li><p><strong>setEmpty</strong> (<em>function</em>) – Hook to update the Sudoku Grid’s empty state</p></li>
+<li><p><strong>setLoading</strong> (<em>function</em>) – Hook to update the Sudoku Grid’s loading state</p></li>
+<li><p><strong>resetInvalidStates</strong> (<em>function</em>) – Helper function to reset all of the Sudoku Grid’s invalid states</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="SudokuVariables">
+<em class="property">class </em><code class="sig-name descname">SudokuVariables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SudokuVariables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static SudokuVariables class
+Reason for this is to provide static variables that don’t
+refresh React.
+It has two static variables, xhr and state, and the ability
+to set each.</p>
+<dl class="attribute">
+<dt id="SudokuVariables.state">
+<code class="sig-prename descclassname">SudokuVariables.</code><code class="sig-name descname">state</code><a class="headerlink" href="#SudokuVariables.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the latest state of the sudoku
+solve request. Used in the LongRequest callbacks
+of sudokuSolveRequest</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="SudokuVariables.xhr">
+<code class="sig-prename descclassname">SudokuVariables.</code><code class="sig-name descname">xhr</code><a class="headerlink" href="#SudokuVariables.xhr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the latest XML Http Request. THis is unused as of now,
+due to LongRequest</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="SudokuVariables.setState">
+<code class="sig-prename descclassname">SudokuVariables.</code><code class="sig-name descname">setState</code><span class="sig-paren">(</span><em class="sig-param">newState</em><span class="sig-paren">)</span><a class="headerlink" href="#SudokuVariables.setState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets state</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="SudokuVariables.setXHR">
+<code class="sig-prename descclassname">SudokuVariables.</code><code class="sig-name descname">setXHR</code><span class="sig-paren">(</span><em class="sig-param">newXHR</em><span class="sig-paren">)</span><a class="headerlink" href="#SudokuVariables.setXHR" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets xhr</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="resetSudokuGrid">
+<code class="sig-name descname">resetSudokuGrid</code><span class="sig-paren">(</span><em class="sig-param">setSudokuGrid</em>, <em class="sig-param">setBold</em><span class="sig-paren">)</span><a class="headerlink" href="#resetSudokuGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fills the Sudoku grid with 0s
+Sets the grid state using setSudokuGrid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setSudokuGrid</strong> (<em>function</em>) – Sets an external Sudoku Grid variable</p></li>
+<li><p><strong>setBold</strong> (<em>function</em>) – Sets a grid variable indicating boldness of square</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">DTQC</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="q-hub-components.html">Components</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sudoku Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="q-hub-nurse.html">Nurse Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="q-hub-longrequest.html">LongRequest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="q-hub-deploy.html">Deployment to Heroku</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a><ul>
+      <li>Previous: <a href="q-hub-components.html" title="previous chapter">Components</a></li>
+      <li>Next: <a href="q-hub-nurse.html" title="next chapter">Nurse Scheduler</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, UBC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/q-hub-sudoku.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

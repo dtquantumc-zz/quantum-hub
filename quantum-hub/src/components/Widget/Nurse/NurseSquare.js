@@ -11,7 +11,7 @@ import './nurseScheduler.css'
 
 /**
  * NurseSquare is a single square in the grid of NurseSchedule.
- * (cols+1)*(rows+1) of them are made by @function{DrawNurses}.
+ * (cols+1)*(rows+1) of them are made by DrawNurses.
  * The props they accept affect their CSS and content.
  *
  * The row and column props determine the CSS used. For example,
