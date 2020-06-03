@@ -72,11 +72,18 @@ function App (props) {
     textLines = textLines.concat(line)
   }
 
+  const appendToConsole = function (word) {
+    textLines[textLines.length - 1] += word
+    setTextLines([...textLines])
+    // console.log(textLines[textLines.length - 1])
+  }
+
   const widgetComponent =
     <WidgetTag
       id='myWidget'
       getAPIKey={() => ''}
       outputToConsole={outputToConsole}
+      appendToConsole={appendToConsole}
       key='myGame'
     />
 

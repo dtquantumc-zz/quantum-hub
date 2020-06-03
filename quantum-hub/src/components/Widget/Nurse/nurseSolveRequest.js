@@ -15,7 +15,7 @@ import nurseVars from './NurseVariables'
  * @param {Function} outputToConsole - Output to Console
  * @param {Function} getAPIKey - Get the API Key
  */
-function nurseSolveRequest (setSchedule, outputToConsole, getAPIKey) {
+function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAPIKey) {
   if (nurseVars.xhr) return
 
   if (nurseVars.numNurses < 1 || nurseVars.numNurses > 50) {
@@ -54,8 +54,22 @@ function nurseSolveRequest (setSchedule, outputToConsole, getAPIKey) {
 
   makeLongRequest(
     params,
-    (xhr) => { outputToConsole('The nurse problem has been queued for solving!') },
-    (xhr) => { outputToConsole(xhr.response.jobStatus) },
+    (xhr) => {
+      outputToConsole('The nurse problem has been queued for solving!')
+      nurseVars.setState(xhr.response.jobStatus)
+    },
+    (xhr) => {
+      if (xhr.response.jobStatus === nurseVars.state) {
+        appendToConsole('.')
+      } else if (xhr.response.jobStatus === 'queued') {
+        outputToConsole('In Queue')
+      } else if (xhr.response.jobStatus === 'started') {
+        outputToConsole('Solving')
+      } else {
+        outputToConsole(xhr.response.jobStatus)
+      }
+      nurseVars.setState(xhr.response.jobStatus)
+    },
     (xhr) => {
       postSolve(xhr, setSchedule, outputToConsole)
     },
@@ -67,7 +81,7 @@ function nurseSolveRequest (setSchedule, outputToConsole, getAPIKey) {
     outputToConsole
   )
 
-  outputToConsole('Solving...')
+  // outputToConsole('Solving...')
 }
 
 /**
@@ -78,7 +92,7 @@ function postSolve (xhr, setSchedule, outputToConsole) {
   // const xhr = nurseVars.xhr
 
   if (xhr.status === 200) {
-    outputToConsole('Solved!')
+    outputToConsole('Solved! Enjoy your nurse schedule!')
 
     // Create the new schedule. This is done in reverse to avoid
     // changing the length of each array more than once
@@ -95,15 +109,15 @@ function postSolve (xhr, setSchedule, outputToConsole) {
       for (var i = 0; i < xhr.response.schedule[row].length; ++i) {
         const col = xhr.response.schedule[row][i]
         newsched[row][col] = 1
-        console.log(row, col)
+        // console.log(row, col)
       }
     }
 
-    outputToConsole('The returned nurse schedule is:')
-    newsched.map((row) => outputToConsole(row.join(' ')))
+    // outputToConsole('The returned nurse schedule is:')
+    // newsched.map((row) => outputToConsole(row.join(' ')))
 
-    outputToConsole(xhr.response.HardNurseConstraint)
-    outputToConsole(xhr.response.HardShiftConstraint)
+    // outputToConsole(xhr.response.HardNurseConstraint)
+    // outputToConsole(xhr.response.HardShiftConstraint)
 
     setSchedule(newsched)
   } else if (xhr.status === 400) {

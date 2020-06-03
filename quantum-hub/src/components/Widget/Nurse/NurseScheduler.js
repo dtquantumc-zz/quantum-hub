@@ -48,6 +48,8 @@ import './nurseScheduler.css'
  * it to the current console output string array. If the Console
  * is not being used, this can do anything you want with that
  * string, but you should probably output it in some way.
+ * @prop {func(string)} appendToConsole - Same, but just appends
+ * the given string to the last line of the Console.
  */
 function NurseScheduler (props) {
   // States for Nurse Scheduling widget.
@@ -97,7 +99,7 @@ function NurseScheduler (props) {
         setNumDays={nurseVars.setNumDays}
         setNumNurses={nurseVars.setNumNurses}
         onSolve={
-          () => nurseSolveRequest(setSchedule, props.outputToConsole, props.getAPIKey)
+          () => nurseSolveRequest(setSchedule, props.outputToConsole, props.appendToConsole, props.getAPIKey)
         }
       />
     </div>

@@ -13,6 +13,7 @@ export default class NurseVariables {
   static numNurses = 3
   static numDays = 7
   static xhr = null
+  static state = ''
 
   static setNumNurses (num) {
     NurseVariables.numNurses = num
@@ -24,5 +25,9 @@ export default class NurseVariables {
 
   static setXHR (newXHR) {
     NurseVariables.xhr = newXHR
+  }
+
+  static setState (newState) {
+    NurseVariables.state = newState
   }
 }

@@ -11,8 +11,13 @@
  */
 export default class SudokuVariables {
   static xhr = null
+  static state = ''
 
   static setXHR (newXHR) {
     SudokuVariables.xhr = newXHR
+  }
+
+  static setState (newState) {
+    SudokuVariables.state = newState
   }
 }

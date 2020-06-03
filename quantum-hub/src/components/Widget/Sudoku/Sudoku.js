@@ -58,6 +58,8 @@ import styles from '../../../assets/jss/material-kit-react/components/sudokuStyl
  * it to the current console output string array. If the Console
  * is not being used, this can do anything you want with that
  * string, but you should probably output it in some way.
+ * @prop {func(string)} appendToConsole - Same, but just appends
+ * the given string to the last line of the Console.
  */
 function SudokuGame (props) {
   // The states for the Sudoku widget. These all use React hooks,
@@ -134,7 +136,7 @@ function SudokuGame (props) {
             // TODO: Consider setting it to nothing instead of top-left
             setCurrentSquare([0, 0])
             sudokuSolveRequest(sudokuGrid, setSudokuGrid, setEnabled,
-              props.outputToConsole, props.getAPIKey, setEmpty,
+              props.outputToConsole, props.appendToConsole, props.getAPIKey, setEmpty,
               setLoading, resetInvalidStates.bind(this, invalidStateSetters))
           }}
         >

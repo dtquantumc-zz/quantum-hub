@@ -26,7 +26,7 @@ import {
  * @param {Function} resetInvalidStates - Helper function to reset all of the
  * Sudoku Grid's invalid states
  */
-function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, getAPIKey, setEmpty, setLoading, resetInvalidStates) {
+function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, appendToConsole, getAPIKey, setEmpty, setLoading, resetInvalidStates) {
   if (sudokuVars.xhr) return
   var sudokuArray = []
   for (var y = 0; y < 9; y++) {
@@ -61,8 +61,22 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
 
   makeLongRequest(
     params,
-    (xhr) => { outputToConsole('The sudoku has been queued for solving!') },
-    (xhr) => { outputToConsole(xhr.response.jobStatus) },
+    (xhr) => {
+      outputToConsole('The sudoku has been queued for solving!')
+      sudokuVars.setState(xhr.response.jobStatus)
+    },
+    (xhr) => {
+      if (xhr.response.jobStatus === sudokuVars.state) {
+        appendToConsole('.')
+      } else if (xhr.response.jobStatus === 'queued') {
+        outputToConsole('In Queue')
+      } else if (xhr.response.jobStatus === 'started') {
+        outputToConsole('Solving')
+      } else {
+        outputToConsole(xhr.response.jobStatus)
+      }
+      sudokuVars.setState(xhr.response.jobStatus)
+    },
     (xhr) => {
       postSolve(xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, resetInvalidStates)
     },
@@ -75,7 +89,7 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
   )
 
   // setXHR(xhr)
-  outputToConsole('Solving...')
+  // outputToConsole('Solving...')
 }
 
 /**
