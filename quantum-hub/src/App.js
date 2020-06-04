@@ -116,7 +116,7 @@ function App (props) {
   return (
     <div>
       <Header
-        color='geeringup'
+        color='geeringupPrimary'
         brand={appBrand}
         rightLinks={<RightHeaderLinks />}
         leftLinks={<LeftHeaderLinks />}
@@ -153,7 +153,7 @@ function App (props) {
 //   } else {
 //     userInput =
 //       <div className={classes.sudokuInput}>
-//         <Button color='geeringup'>
+//         <Button color='geeringupSecondary'>
 //           Solve
 //         </Button>
 //       </div>

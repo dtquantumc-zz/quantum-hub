@@ -76,7 +76,7 @@ export default function NurseSchedulingInput (props) {
               />
             </CardBody>
             <CardFooter className={classes.cardFooter}>
-              <Button color='geeringup' onClick={props.onSolve}>
+              <Button color='geeringupSecondary' onClick={props.onSolve}>
                     Solve
               </Button>
             </CardFooter>

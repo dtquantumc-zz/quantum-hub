@@ -133,7 +133,7 @@ Header.propTypes = {
     'white',
     'rose',
     'dark',
-    'geeringup'
+    'geeringupPrimary'
   ]),
   rightLinks: PropTypes.node,
   leftLinks: PropTypes.node,
