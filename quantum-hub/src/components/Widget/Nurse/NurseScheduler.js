@@ -86,7 +86,7 @@ function NurseScheduler (props) {
           }
         </div>
       </div>
-      <p>Please enter a number of nurses and days to be scheduled!</p>
+      <p>Please enter a number of Nurses and Days to be scheduled!</p>
       <NurseSchedulingInput
         setNumDays={nurseVars.setNumDays}
         setNumNurses={nurseVars.setNumNurses}
