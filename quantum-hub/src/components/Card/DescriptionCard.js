@@ -133,7 +133,7 @@ export default function DescriptionCard (props) {
               </Typography>
               <Typography align='left' paragraph>
                 This application uses D-Wave System's Nurse Scheduling Toy Example code,
-                found <Link href='https://github.com/dwave-examples/nurse-scheduling' style={{ color: '#18abd6' }}>here</Link>.
+                found <Link href='https://github.com/dwave-examples/nurse-scheduling' style={{ color: '#1599bf' }}>here</Link>.
               </Typography>
               <Typography align='left' paragraph>
                 Similar to the Sudoku puzzle, the NSP is a constraint satisfactory problem (CSP).
@@ -172,7 +172,7 @@ export default function DescriptionCard (props) {
                   it on a <i>quantum annealer</i>. In particular, we will be using D-Wave System's 2000Q
                   Quantum Processing Unit. To use this web application, you require a unique API token from
                   D-Wave Systems. You can obtain one by signing up for a <i>free</i> LEAP account on
-                  their <Link href='https://cloud.dwavesys.com/leap/' style={{ color: '#18abd6' }}>website</Link>.
+                  their <Link href='https://cloud.dwavesys.com/leap/' style={{ color: '#1599bf' }}>website</Link>.
                 </Typography>
                 <Button color='geeringupSecondary' onClick={handleClickOpen('paper')}>Find Out More</Button>
               </CardBody>
@@ -219,7 +219,7 @@ export default function DescriptionCard (props) {
               </Typography>
               <Typography align='left' paragraph>
                 This application uses a script from D-Wave's gallery of examples
-                linked <Link href='https://github.com/dwave-examples/sudoku' style={{ color: '#18abd6' }}>here</Link>. The Sudoku puzzle is modeled as
+                linked <Link href='https://github.com/dwave-examples/sudoku' style={{ color: '#1599bf' }}>here</Link>. The Sudoku puzzle is modeled as
                 a <i>constraint satisfaction problem</i>, or CSP. These are problems in mathematics where the
                 solution is the state of a set of objects such that they satisfy certain constraints or
                 limitations. For instance, in Sudoku, there are a number of requirements or constraints for a
@@ -240,7 +240,7 @@ export default function DescriptionCard (props) {
               </Typography>
               <Typography align='left' paragraph>
                 D-Wave's sudoku-solving script uses a hybrid
-                solver, <Link href='https://docs.dwavesys.com/docs/latest/doc_leap_hybrid.html' style={{ color: '#18abd6' }}>Kerberos</Link>. Kerberos breaks
+                solver, <Link href='https://docs.dwavesys.com/docs/latest/doc_leap_hybrid.html' style={{ color: '#1599bf' }}>Kerberos</Link>. Kerberos breaks
                 problems down into smaller pieces and solves each on a quantum computer, before combining them to
                 provide one final solution.
               </Typography>
