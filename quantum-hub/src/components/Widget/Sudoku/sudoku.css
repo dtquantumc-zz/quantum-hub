@@ -1,8 +1,8 @@
 div, p {margin:0px; padding:0px;}
 
-.gridSquare{
+.gridGrid .gridSquare{
   display: block;
-  border: thin solid gray;
+  border: thin solid rgba(0, 0, 0, 0.87);
   background-color: white;
   cursor: pointer;
   text-align: center;
@@ -10,97 +10,100 @@ div, p {margin:0px; padding:0px;}
   color: rgba(0, 0, 0, 0.87);
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: normal;
-  font-size: 30px;
+  font-size: 24px;
 }
 
-.gridSquare:disabled{
+.gridGrid .gridSquare:disabled{
   background-color: lightgray;
 }
 
-.gridLeft{
+.gridGrid .gridLeft{
   border-left: 2px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridLeftest{
+.gridGrid .gridLeftest{
   border-left: 4px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridLeftest.gridToppest {
+.gridGrid .gridLeftest.gridToppest {
   border-top-left-radius: 6px;
 }
 
-.gridLeftest.gridBottomest {
+.gridGrid .gridLeftest.gridBottomest {
   border-bottom-left-radius: 6px;
 }
 
-.gridRight{
+.gridGrid .gridRight{
   border-right: 2px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridRightest{
+.gridGrid .gridRightest{
   border-right: 4px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridRightest.gridToppest {
+.gridGrid .gridRightest.gridToppest {
   border-top-right-radius: 6px;
 }
 
-.gridRightest.gridBottomest {
+.gridGrid .gridRightest.gridBottomest {
   border-bottom-right-radius: 6px;
 }
 
-.gridTop{
+.gridGrid .gridTop{
   border-top: 2px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridToppest{
+.gridGrid .gridToppest{
   border-top: 4px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridBottom{
+.gridGrid .gridBottom{
   border-bottom: 2px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridBottomest{
+.gridGrid .gridBottomest{
   border-bottom: 4px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridSquare:focus{
+.gridGrid .gridSquare:focus{
   z-index: 1000;
   outline: none;
 }
 
-.bolded{
+.gridGrid .bolded{
   font-weight: bold;
 }
 
-.gridSquare.rowInvalid{
+.gridGrid .gridSquare.rowInvalid{
   background-color: #e8a0a0;
 }
 
-.gridSquare.colnInvalid{
+.gridGrid .gridSquare.colnInvalid{
   background-color: #e8a0a0;
 }
 
-.gridSquare.blockInvalid{
+.gridGrid .gridSquare.blockInvalid{
   background-color: #e8a0a0;
 }
 
-.gridSquare.rowInvalid.colnInvalid,
-.gridSquare.rowInvalid.blockInvalid,
-.gridSquare.blockInvalid.colnInvalid{
+.gridGrid .gridSquare.rowInvalid.colnInvalid,
+.gridGrid .gridSquare.rowInvalid.blockInvalid,
+.gridGrid .gridSquare.blockInvalid.colnInvalid{
   background-color: #D96262;
 }
 
-.gridSquare.rowInvalid.colnInvalid.blockInvalid{
+.gridGrid .gridSquare.rowInvalid.colnInvalid.blockInvalid{
   background-color: #c02e2e;
 }
 
-.focused,
-.rowInvalid.focused, .colnInvalid.focused, .blockInvalid.focused,
-.gridSquare.rowInvalid.colnInvalid.focused, .gridSquare.rowInvalid.blockInvalid.focused,
-.gridSquare.blockInvalid.colnInvalid.focused{
-  background-color: lightgray;
+.gridGrid .gridSquare.focused,
+.gridGrid .gridSquare.rowInvalid.focused,
+.gridGrid .gridSquare.colnInvalid.focused,
+.gridGrid .gridSquare.blockInvalid.focused,
+.gridGrid .gridSquare.rowInvalid.colnInvalid.focused,
+.gridGrid .gridSquare.rowInvalid.blockInvalid.focused,
+.gridGrid .gridSquare.blockInvalid.colnInvalid.focused{
+  background-color: rgba(80, 200, 235, 0.65);
 }
 
 .invalidOutline{

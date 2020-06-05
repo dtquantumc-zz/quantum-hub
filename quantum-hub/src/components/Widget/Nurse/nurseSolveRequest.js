@@ -19,16 +19,6 @@ import nurseVars from './NurseVariables'
 function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAPIKey) {
   if (nurseVars.xhr) return
 
-  if (nurseVars.numNurses < 1 || nurseVars.numNurses > 50) {
-    outputToConsole('Invalid number of nurses. Please check and try again.')
-    return
-  }
-
-  if (nurseVars.numDays < 1 || nurseVars.numDays > 30) {
-    outputToConsole('Invalid number of days. Please check and try again.')
-    return
-  }
-
   outputToConsole(`Scheduling ${nurseVars.numNurses} nurses across ${nurseVars.numDays} days:`)
 
   const params = {

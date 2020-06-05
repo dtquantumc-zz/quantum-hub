@@ -132,7 +132,7 @@ function SudokuGame (props) {
       <p>Click on the cells and use your keyboard numbers to fill them in!</p>
       <div className={classes.sudokuInput}>
         <Button
-          color='geeringup' // Not a typo, this is the actual color
+          color='geeringupSecondary'
           disabled={!enabled}
           onClick={() => {
             // TODO: Consider setting it to nothing instead of top-left
@@ -145,6 +145,7 @@ function SudokuGame (props) {
           Solve
         </Button>
         <Button
+          color='geeringupPrimary'
           disabled={(empty || !enabled)}
           onClick={() => {
             emptySudokuGrid(sudokuState)
