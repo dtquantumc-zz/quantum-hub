@@ -90,6 +90,7 @@ function NurseScheduler (props) {
       <NurseSchedulingInput
         setNumDays={nurseVars.setNumDays}
         setNumNurses={nurseVars.setNumNurses}
+        setNursesPerDay={nurseVars.setNursesPerDay}
         onSolve={
           () => nurseSolveRequest(setSchedule, props.outputToConsole, props.appendToConsole, props.getAPIKey)
         }

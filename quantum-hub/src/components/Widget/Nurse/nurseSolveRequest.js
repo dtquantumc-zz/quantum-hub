@@ -35,7 +35,8 @@ function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAP
     // token: getAPIKey(),
     typeOfProblem: 'nurseScheduling',
     n_nurses: Math.floor(nurseVars.numNurses),
-    n_days: Math.floor(nurseVars.numDays)
+    n_days: Math.floor(nurseVars.numDays),
+    nurses_per_day: Math.floor(nurseVars.nursesPerDay)
   }
 
   makeLongRequest(

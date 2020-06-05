@@ -81,7 +81,7 @@ def make_worker():
 
     args = []
     if raw_data['typeOfProblem'] == 'nurseScheduling':
-        args = [token, raw_data['n_nurses'], raw_data['n_days']]
+        args = [token, raw_data['n_nurses'], raw_data['n_days'], raw_data['nurses_per_day']]
     elif raw_data['typeOfProblem'] == 'sudokuSolving':
         args = [raw_data['sudokuArray'], token]
 

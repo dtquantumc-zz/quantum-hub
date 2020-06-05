@@ -22,7 +22,7 @@ import GridItem from '../Grid/GridItem'
 import Button from '../CustomButtons/Button'
 import Card from '../Card/Card.js'
 import CardBody from '../Card/CardBody.js'
-import CardHeader from '../Card/CardHeader.js'
+// import CardHeader from '../Card/CardHeader.js'
 import CardFooter from '../Card/CardFooter.js'
 import CustomInput from '../CustomInput/CustomInput'
 
@@ -71,7 +71,25 @@ export default function NurseSchedulingInput (props) {
                   onChange: (e) => {
                     props.setNumDays(e.target.value)
                   },
-                  validator: () => {return false}
+                  validator: () => { return false }
+                }}
+              />
+              <CustomInput
+                labelText='Nurses per Day (Max 24)'
+                id='nursedays'
+                formControlProps={{
+                  fullWidth: true
+                }}
+                inputProps={{
+                  type: 'number',
+                  inputProps: {
+                    min: 0,
+                    max: 24
+                  },
+                  onChange: (e) => {
+                    props.setNursesPerDay(e.target.value)
+                  },
+                  validator: () => { return false }
                 }}
               />
             </CardBody>

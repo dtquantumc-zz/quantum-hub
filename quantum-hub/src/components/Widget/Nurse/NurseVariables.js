@@ -21,6 +21,11 @@ class NurseVariables {
   static numDays = 7
 
   /**
+   * The number of nurses that should be scheduled for each day
+   */
+  static nursesPerDay = 1
+
+  /**
    * The latest XML Http Request. Currently unused
    */
   static xhr = null
@@ -39,6 +44,11 @@ class NurseVariables {
   /** */
   static setNumDays (num) {
     NurseVariables.numDays = num
+  }
+
+  /** */
+  static setNursesPerDay (num) {
+    NurseVariables.nursesPerDay = num
   }
 
   /** */
