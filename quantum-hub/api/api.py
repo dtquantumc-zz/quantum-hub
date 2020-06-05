@@ -154,4 +154,5 @@ def set_api_token():
 
 @app.route('/get_ip', methods=['GET'])
 def get_ip():
-		return {'ip': request.remote_addr}
+    print(request.remote_addr)
+    return {'ip': request.remote_addr}

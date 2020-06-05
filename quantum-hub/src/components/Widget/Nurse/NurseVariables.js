@@ -21,7 +21,7 @@ class NurseVariables {
 
   static defaultNumNurses = 3
   static defaultNumDays = 7
-  static defaultNumNursesPerDay = 1
+  static defaultNursesPerDay = 1
 
   /**
    * The number of nurses for the next solve request
@@ -36,7 +36,7 @@ class NurseVariables {
   /**
    * The number of nurses that should be scheduled for each day
    */
-  static nursesPerDay = 1
+  static nursesPerDay = NurseVariables.defaultNursesPerDay
 
   /**
    * The latest XML Http Request. Currently unused
@@ -79,12 +79,12 @@ class NurseVariables {
   static setNursesPerDay (num, errorSetters) {
     if (NurseVariables.isEmptyInput(num)) {
       errorSetters.setNumNursesPerDayError(false)
-      NurseVariables.numNursesPerDay = NurseVariables.defaultNumNursesPerDay
+      NurseVariables.nursesPerDay = NurseVariables.defaultNursesPerDay
     } else if (!NurseVariables.isNumInNursesPerDayRange(num)) {
       errorSetters.setNumNursesPerDayError(true)
     } else {
       errorSetters.setNumNursesPerDayError(false)
-      NurseVariables.numNursesPerDay = num
+      NurseVariables.nursesPerDay = num
     }
   }
 

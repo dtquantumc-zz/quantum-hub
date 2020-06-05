@@ -10,7 +10,7 @@ div, p {margin:0px; padding:0px;}
   justify-content: center;
   align-items: center;
   position: relative;
-  min-height: 24px;
+  min-height: 26px;
 
   border: thin solid gray;
   background-color: white;
@@ -103,7 +103,7 @@ div, p {margin:0px; padding:0px;}
   height: 100%;
   display: grid;
   grid-template-columns: 90px repeat( var(--numCol), 1fr );
-  grid-template-rows: 30px repeat( var(--numRow), 1fr );
+  grid-template-rows: 40px repeat( var(--numRow), 1fr );
 }
 
 p{
