@@ -63,6 +63,7 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
       } else if (xhr.response.jobStatus === 'queued') {
         outputToConsole('In Queue')
       } else if (xhr.response.jobStatus === 'started') {
+        outputToConsole('Quantum Computing in Progress!')
         outputToConsole('Solving')
       } else {
         outputToConsole(xhr.response.jobStatus)
@@ -76,6 +77,8 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
       outputToConsole('Something went wrong')
       console.log(xhr)
       outputToConsole(JSON.stringify(xhr))
+      setEnabled(true)
+      setLoading(false)
     },
     outputToConsole
   )

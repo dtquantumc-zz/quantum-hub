@@ -146,6 +146,7 @@ function SudokuGame (props) {
         </Button>
         <Button
           color='geeringupPrimary'
+          // color='primary'
           disabled={(empty || !enabled)}
           onClick={() => {
             emptySudokuGrid(sudokuState)
@@ -445,7 +446,7 @@ function resetBlockInvalid (setters) {
  * after any board change
  */
 function handleKeyPress (event, state, keyPressValidator) {
-  console.log(`Key pressed is ${event.keyCode}`)
+  // console.log(`Key pressed is ${event.keyCode}`)
   const backspaces = [8, 46, 110]
   // 8 is backspace, the others are the numbers
   const x = state.cur[0]

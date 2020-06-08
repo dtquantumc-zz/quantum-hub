@@ -41,6 +41,7 @@ function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAP
       } else if (xhr.response.jobStatus === 'queued') {
         outputToConsole('In Queue')
       } else if (xhr.response.jobStatus === 'started') {
+        outputToConsole('Quantum Computing in Progress!')
         outputToConsole('Solving')
       } else {
         outputToConsole(xhr.response.jobStatus)

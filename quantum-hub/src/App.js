@@ -47,13 +47,6 @@ function App (props) {
   const [widgetOverride, overrideWidget] = useState('')
   var [textLines, setTextLines] = useState([])
 
-  // const appBrand = getAppBrand(props)
-
-  // const typeOfProblem = {
-  //   isNurseScheduler: props.isNurseScheduler,
-  //   isSudokuSolver: props.isSudokuSolver
-  // }
-
   // widget is a string, a key to the widgetList object describing the widget
   let widget
   if (widgetOverride && widgetList[widgetOverride]) {
@@ -75,7 +68,6 @@ function App (props) {
   const appendToConsole = function (word) {
     textLines[textLines.length - 1] += word
     setTextLines([...textLines])
-    // console.log(textLines[textLines.length - 1])
   }
 
   const widgetComponent =
@@ -88,14 +80,27 @@ function App (props) {
     />
 
   // const qpuSwitch = <QPUswitch key='qpuSwitch' setAPIKey={setAPIKey} />
-  const terminalWindow = <Console textLines={textLines} title={widgetList[widget].name} key='terminalWindow' getIP={props.live} />
-  const howItWorksCard = <DescriptionCard widget={widget} key='howItWorksCard' />
+  const terminalWindow =
+    <Console
+      textLines={textLines}
+      title={widgetList[widget].name}
+      key='terminalWindow'
+      getIP={props.live}
+    />
+
+  const howItWorksCard =
+    <DescriptionCard
+      widget={widget}
+      key='howItWorksCard'
+    />
 
   const nurseSwitchButton =
     <Button
       className={classes.nurseSwitchButton}
       onClick={() => overrideWidget('nurse')}
-      disabled={widget === 'nurse'} size='sm'
+      disabled={widget === 'nurse'}
+      size='sm'
+      key='nurseBut'
     >
     Switch to Nurse
     </Button>
@@ -106,10 +111,16 @@ function App (props) {
       onClick={() => overrideWidget('sudoku')}
       disabled={widget === 'sudoku'}
       size='sm'
+      key='sudBut'
     >
-    Switch to Sudoku
+      Switch to Sudoku
     </Button>
-  const appSwitchButtons = <GridItem children={[nurseSwitchButton, sudokuSwitchButton]} />
+
+  const appSwitchButtons =
+    <GridItem
+      children={[nurseSwitchButton, sudokuSwitchButton]}
+      key='appSwitchButs'
+    />
   // const gridContainerChildren = [qpuSwitch, terminalWindow, widgetComponent, howItWorksCard]
   const gridContainerChildren = [terminalWindow, widgetComponent, howItWorksCard, appSwitchButtons]
 
@@ -121,15 +132,18 @@ function App (props) {
         rightLinks={<RightHeaderLinks />}
         leftLinks={<LeftHeaderLinks />}
         fixed
+        key='myHeader'
       />
       <div className={classes.container}>
         <GridContainer
           className={classes.gridContainer}
           children={gridContainerChildren}
+          key='myGridContainer'
         />
       </div>
       <Footer
         leftLinks={<FooterLinks />}
+        key='myFooter'
       />
     </div>
   )

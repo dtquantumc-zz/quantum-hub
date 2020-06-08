@@ -88,8 +88,8 @@ export default function NurseSchedulingInput (props) {
               },
               onChange: (e) => {
                 props.setNumDays(e.target.value, setters)
-              },
-              validator: () => { return false }
+              }
+              // validator: () => { return false }
             }}
             helperText={`Number of Days must be between ${NurseVars.daysLowerBound} and ${NurseVars.daysUpperBound}`}
           />
@@ -110,8 +110,8 @@ export default function NurseSchedulingInput (props) {
               },
               onChange: (e) => {
                 props.setNursesPerDay(e.target.value, setters)
-              },
-              validator: () => { return false }
+              }
+              // validator: () => { return false }
             }}
             helperText={`Nurses per Day must be between ${NurseVars.nPDLowerBound} and ${NurseVars.nPDUpperBound}`}
           />
