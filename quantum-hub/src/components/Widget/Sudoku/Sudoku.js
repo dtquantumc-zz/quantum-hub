@@ -111,6 +111,7 @@ function SudokuGame (props) {
       <div className={loading ? 'sudokuBox loading' : 'sudokuBox'}>
         <div
           className='gridGrid'
+          tabIndex='0'
           onKeyDown={(event) => {
             // Don't handle key presses if the whole app is disabled
             if (enabled) {

@@ -144,6 +144,10 @@ div, p {margin:0px; padding:0px;}
   grid-template-rows: repeat(9, 1fr);
 }
 
+.gridGrid:focus{
+  outline: none;
+}
+
 .boxingrid{
   display: grid;
 }
