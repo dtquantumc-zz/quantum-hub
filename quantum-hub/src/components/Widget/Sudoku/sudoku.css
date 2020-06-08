@@ -2,15 +2,17 @@ div, p {margin:0px; padding:0px;}
 
 .gridGrid .gridSquare{
   display: block;
+  flex: 1;
   border: thin solid rgba(0, 0, 0, 0.87);
   background-color: white;
   cursor: pointer;
   text-align: center;
-  position: relative;
   color: rgba(0, 0, 0, 0.87);
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: normal;
   font-size: 24px;
+  margin: 0;
+  min-height: 5vh;
 }
 
 .gridGrid .gridSquare:disabled{
@@ -117,6 +119,7 @@ div, p {margin:0px; padding:0px;}
 }
 
 .sudokuBox{
+  display: block;
   position: relative;
   margin: auto;
   width: 100%;
@@ -133,11 +136,16 @@ div, p {margin:0px; padding:0px;}
 .gridGrid{
   position: absolute;
   top: 0;
-  width: 100%;
-  height: 100%;
   display: grid;
+  height: 100%;
+  width: 100%;
+  flex: 1;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
+}
+
+.boxingrid{
+  display: grid;
 }
 
 p{
