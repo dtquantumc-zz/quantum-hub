@@ -12,6 +12,7 @@ import XMLHttpRequest from 'xhr2'
 // styling
 import './component_css/console.css'
 import styles from '../../assets/jss/material-kit-react/components/consoleStyle.js'
+// import CardBody from '../Card/CardBody'
 const useStyles = makeStyles(styles)
 
 /**
@@ -38,6 +39,7 @@ function Console (props) {
   // This is a React Reference object, used for statically
   // referencing a particular element.
   const divBotRef = useRef(null)
+  const scrollRef = useRef(null)
 
   var [xhr, setXHR] = useState(null)
   var [IP, setIP] = useState('')
@@ -64,10 +66,13 @@ function Console (props) {
   // we scroll it into view. This happens every time
   // the console is updated by React.
   useEffect(() => {
-    divBotRef.current.scrollIntoView({
-      block: 'nearest',
-      inline: 'start'
-    })
+    // divBotRef.current.scrollIntoView(
+    //   {
+    //     block: 'nearest',
+    //     inline: 'start'
+    //   }
+    // )
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight
   })
 
   // Note, the empty list element at the bottom has the
@@ -78,7 +83,7 @@ function Console (props) {
       <div id='console_head' className='scroll_head'>
         {props.title ? props.title : 'Console'}{IP ? `@${IP}` : ''}
       </div>
-      <div id='console' className='scroll_console'>
+      <div id='console' className='scroll_console' ref={scrollRef}>
         <ul>
           {lines.map((line, index) => {
             return <li key={index}>{line}</li>
