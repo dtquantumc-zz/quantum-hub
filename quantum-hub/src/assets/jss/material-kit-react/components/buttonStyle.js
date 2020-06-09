@@ -205,12 +205,14 @@ const buttonStyle = {
     }
   },
   geeringupPrimary: {
+    color: '#FFF',
     backgroundColor: '#50C8EB',
     '&:hover,&:focus': {
       backgroundColor: '#50C8EB'
     }
   },
   geeringupSecondary: {
+    color: '#FFF',
     backgroundColor: '#D96262',
     '&:hover,&:focus': {
       backgroundColor: '#D96262'

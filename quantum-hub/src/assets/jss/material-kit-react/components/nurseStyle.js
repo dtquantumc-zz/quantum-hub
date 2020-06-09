@@ -7,16 +7,30 @@
 const nurseStyle = theme => ({
   nurseRoot: {
     width: '476px',
-    margin: theme.spacing(1),
-    '& > *': {
-      color: 'rgba(0, 0, 0, 0.87)'
-    }
+    margin: theme.spacing(1)
   },
   nurseInput: {
     display: 'flex',
     justifyContent: 'center',
     '& > *': {
       margin: theme.spacing(1)
+    }
+  },
+  buttonContainer: {
+    display: 'flex'
+  },
+  detailButton: {
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  },
+  instructions: {
+    color: 'rgba(0, 0, 0, 0.87)',
+    textAlign: 'center'
+  },
+  dialogContent: {
+    ' & > *': {
+      width: 'max-content',
+      display: 'inline-block'
     }
   }
 })
