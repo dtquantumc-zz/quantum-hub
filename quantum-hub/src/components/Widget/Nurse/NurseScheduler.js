@@ -13,6 +13,15 @@ import nurseVars from './NurseVariables'
 
 import NurseSchedulingInput from '../../Inputs/NurseSchedulingInput'
 
+import NurseDetailTable from '../../Table/NurseDetailTable.js'
+
+import Button from '../../CustomButtons/Button.js'
+
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
+
 import { makeStyles } from '@material-ui/core/styles'
 import styles from '../../../assets/jss/material-kit-react/components/nurseStyle.js'
 import './nurseScheduler.css'
@@ -58,10 +67,31 @@ function NurseScheduler (props) {
   // These use React Hooks, so rerendering is done
   // whenever the Set function for a variable is called.
   var [schedule, setSchedule] = useState([[false]])
+  const [open, setOpen] = React.useState(false)
+  const [scroll, setScroll] = React.useState('paper')
+  const descriptionElementRef = React.useRef(null)
 
   const useStyles = makeStyles(styles)
 
   const classes = useStyles()
+
+  React.useEffect(() => {
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef
+      if (descriptionElement !== null) {
+        descriptionElement.focus()
+      }
+    }
+  }, [open])
+
+  const handleClickOpen = (scrollType) => () => {
+    setOpen(true)
+    setScroll(scrollType)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   /** Sample Schedule in the commented lines below */
   // schedule = [
@@ -86,7 +116,17 @@ function NurseScheduler (props) {
           }
         </div>
       </div>
-      <p>Please enter a number of Nurses and Days to be scheduled!</p>
+      <div className={classes.buttonContainer}>
+        <Button
+          className={classes.detailButton}
+          color='geeringupSecondary'
+          size='sm'
+          onClick={handleClickOpen('paper')}
+        >
+            More Detail
+        </Button>
+      </div>
+      <div className={classes.instructions}>Please enter a number of Nurses and Days to be scheduled!</div>
       <NurseSchedulingInput
         setNumDays={nurseVars.setNumDays}
         setNumNurses={nurseVars.setNumNurses}
@@ -95,6 +135,27 @@ function NurseScheduler (props) {
           () => nurseSolveRequest(setSchedule, props.outputToConsole, props.appendToConsole, props.getAPIKey)
         }
       />
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        scroll={scroll}
+        aria-labelledby='scroll-dialog-title'
+        aria-describedby='scroll-dialog-description'
+        maxWidth='false'
+      >
+        <DialogTitle id='scroll-dialog-title'>Detailed View</DialogTitle>
+        <DialogContent className={classes.dialogContent} dividers={scroll === 'paper'}>
+          <NurseDetailTable schedule={schedule} />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            color='geeringupSecondary'
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }
