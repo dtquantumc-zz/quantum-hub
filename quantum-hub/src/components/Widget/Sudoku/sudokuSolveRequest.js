@@ -23,11 +23,10 @@ import {
  * @param {Function} getAPIKey - Returns the user's current API Key. If empty, assume
  * a simulation is wanted.
  * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
+ * @param {Function} gridValidator - Function to validate the Sudoku Grid's state
  * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
- * @param {Function} resetInvalidStates - Helper function to reset all of the
- * Sudoku Grid's invalid states
  */
-function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, appendToConsole, getAPIKey, setEmpty, setLoading, resetInvalidStates) {
+function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, appendToConsole, getAPIKey, setEmpty, gridValidator, setLoading) {
   if (sudokuVars.xhr) return
   var sudokuArray = []
   for (var y = 0; y < 9; y++) {
@@ -71,7 +70,7 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
       sudokuVars.setState(xhr.response.jobStatus)
     },
     (xhr) => {
-      postSolve(xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, resetInvalidStates)
+      postSolve(xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, gridValidator)
     },
     (xhr) => {
       outputToConsole('Something went wrong')
@@ -94,15 +93,13 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
  * @param {Function} outputToConsole - Output a line of text to the console.
  * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
  * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
- * @param {Function} resetInvalidStates - Helper function to reset all of the
- * Sudoku Grid's invalid states
+ * @param {Function} gridValidator - Function to validate the Sudoku Grid's state
  */
-function postSolve (xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, resetInvalidStates) {
+function postSolve (xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, gridValidator) {
   // const xhr = sudokuVars.xhr
 
   setEnabled(true)
   setLoading(false)
-  resetInvalidStates()
 
   if (xhr.status === 200) {
     outputToConsole('Solved! This is the qpu\'s answer:')
@@ -116,6 +113,7 @@ function postSolve (xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, s
 
       setSudokuGrid(flattenedBoard)
       setEmpty(isGridAllZeros(flattenedBoard))
+      gridValidator(flattenedBoard)
     } else {
       outputToConsole(JSON.stringify(xhr.response))
     }

@@ -6,7 +6,7 @@
 
 const nurseStyle = theme => ({
   nurseRoot: {
-    width: '476px',
+    // width: '476px',
     margin: theme.spacing(1)
   },
   nurseInput: {
@@ -15,6 +15,12 @@ const nurseStyle = theme => ({
     '& > *': {
       margin: theme.spacing(1)
     }
+  },
+  nurseProgress: {
+    position: 'absolute',
+    bottom: 'calc((307px / 2) - (68px / 2))',
+    left: 'calc((510px / 2) - (68px / 2))',
+    color: '#50c8eb'
   },
   buttonContainer: {
     display: 'flex'
@@ -25,7 +31,13 @@ const nurseStyle = theme => ({
   },
   instructions: {
     color: 'rgba(0, 0, 0, 0.87)',
-    textAlign: 'center'
+    textAlign: 'center',
+    padding: '0.9375rem'
+  },
+  loading: {
+    '&$instructions': {
+      color: 'rgba(0, 0, 0, 0.65)'
+    }
   },
   dialogContent: {
     ' & > *': {

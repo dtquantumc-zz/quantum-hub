@@ -134,9 +134,9 @@ export default function NurseDetailTable (props) {
     <TableContainer component={Paper}>
       <Table className={classes.table} size='small' stickyHeader aria-label='a dense table'>
         <TableHead>
-          <TableRow children={getTableHeadCells(props.schedule, classes)} />
+          <TableRow children={getTableHeadCells(schedule, classes)} />
         </TableHead>
-        <TableBody children={getTableBodyRows(props.schedule, classes)} />
+        <TableBody children={getTableBodyRows(schedule, classes)} />
       </Table>
     </TableContainer>
   )

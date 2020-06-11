@@ -12,7 +12,9 @@ const descriptionCardStyle = theme => ({
     margin: theme.spacing(1)
   },
   descriptionCard: {
-    marginTop: '0'
+    marginTop: '0',
+    boxShadow: 'none',
+    border: '1px solid rgba(0, 0, 0, 0.12)'
   },
   form: {
     margin: '0'

@@ -22,6 +22,9 @@ import {
   // resetSudokuGrid
 } from './sudokuHelpers'
 
+import { addKeyValToObject } from '../../utils.js'
+import SudokuValidationUtils from './SudokuValidationUtils.js'
+
 import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -70,9 +73,9 @@ function SudokuGame (props) {
   const [sudokuGrid, setSudokuGrid] = useState(Array(81).fill(0))
   const [gridBold, setGridBold] = useState(Array(81).fill(0))
 
-  const [gridInvalid, setGridInvalid] = useState(getEmptyGrid())
-  const [rowInvalid, setRowInvalid] = useState(getEmptyRow())
-  const [colnInvalid, setColnInvalid] = useState(getEmptyColn())
+  const [gridInvalid, setGridInvalid] = useState(SudokuValidationUtils.getEmptyGrid())
+  const [rowInvalid, setRowInvalid] = useState(SudokuValidationUtils.getEmptyRow())
+  const [colnInvalid, setColnInvalid] = useState(SudokuValidationUtils.getEmptyColn())
   const [blockInvalid, setBlockInvalid] = useState({})
 
   const [currentSquare, setCurrentSquare] = useState([0, 0])
@@ -118,7 +121,7 @@ function SudokuGame (props) {
               handleKeyPress(
                 event,
                 sudokuState,
-                validateKeyPress.bind(this, invalidStateSetters)
+                (sudokuGrid) => { SudokuValidationUtils.validateKeyPress(invalidStateSetters, sudokuGrid) }
               )
             }
           }}
@@ -140,7 +143,8 @@ function SudokuGame (props) {
             setCurrentSquare([0, 0])
             sudokuSolveRequest(sudokuGrid, setSudokuGrid, setEnabled,
               props.outputToConsole, props.appendToConsole, props.getAPIKey, setEmpty,
-              setLoading, resetInvalidStates.bind(this, invalidStateSetters))
+              (sudokuGrid) => { SudokuValidationUtils.validateKeyPress(invalidStateSetters, sudokuGrid) },
+              setLoading)
           }}
         >
           Solve
@@ -151,7 +155,7 @@ function SudokuGame (props) {
           disabled={(empty || !enabled)}
           onClick={() => {
             emptySudokuGrid(sudokuState)
-            resetInvalidStates(invalidStateSetters)
+            SudokuValidationUtils.dStates(invalidStateSetters)
           }}
         >
           Reset
@@ -159,281 +163,6 @@ function SudokuGame (props) {
       </div>
     </div>
   )
-}
-
-function isValidSudokuGrid (sudokuValidationResults) {
-  return areRowsValid(sudokuValidationResults) &&
-  areColnsValid(sudokuValidationResults) &&
-  areBlocksValid(sudokuValidationResults)
-}
-
-function areRowsValid (sudokuValidationResults) {
-  return isEmptyObject(sudokuValidationResults.duplicatesInRow)
-}
-
-function areColnsValid (sudokuValidationResults) {
-  return isEmptyObject(sudokuValidationResults.duplicatesInColn)
-}
-
-function areBlocksValid (sudokuValidationResults) {
-  return isEmptyObject(sudokuValidationResults.duplicatesInBlock)
-}
-
-function isEmptyObject (object) {
-  return isKeyLengthZero(object) &&
-    isObjectConstructor(object)
-}
-
-function isKeyLengthZero (object) {
-  return Object.keys(object).length === 0
-}
-
-function isObjectConstructor (object) {
-  return object.constructor === Object
-}
-
-function validateKeyPress (setters, sudokuGrid) {
-  const sudokuValidationResults = getSudokuValidationResults(sudokuGrid)
-
-  if (isValidSudokuGrid(sudokuValidationResults)) {
-    resetInvalidStates(setters)
-  } else {
-    updateInvalidStates(setters, sudokuValidationResults)
-  }
-}
-
-function getSudokuValidationResults (sudokuGrid) {
-  const N = 9
-  const M = 9
-
-  let seenInRow = {}
-  let seenInColn = {}
-  let seenInBlock = {}
-
-  const sudokuBoard = getUnflattenedSudokuBoard(sudokuGrid)
-
-  for (let i = 0; i < M; i++) {
-    for (let j = 0; j < N; j++) {
-      const current = sudokuBoard[i][j]
-
-      if (current === 0) {
-        continue
-      }
-
-      const inRow = current + ' in row ' + i
-      const inColn = current + ' in coln ' + j
-
-      const blockRow = Math.floor(i / 3)
-      const blockColumn = Math.floor(j / 3)
-      const inBlock = current + ' in block ' + blockRow + ' - ' + blockColumn
-
-      seenInRow = addKeyValToObject(inRow, [i, j], seenInRow)
-      seenInColn = addKeyValToObject(inColn, [i, j], seenInColn)
-      seenInBlock = addKeyValToObject(inBlock, [i, j], seenInBlock)
-    }
-  }
-
-  const validationResult = {
-    duplicatesInRow: getDuplicatesInRow(seenInRow),
-    duplicatesInColn: getDuplicatesInColn(seenInColn),
-    duplicatesInBlock: getDuplicatesInBlock(seenInBlock)
-  }
-
-  return validationResult
-}
-
-function getDuplicatesInRow (seenInRow) {
-  let duplicatesInRow = {}
-
-  Object.keys(seenInRow).forEach(row => {
-    if (hasDuplicates(seenInRow, row)) {
-      seenInRow[row].forEach((coord) => {
-        duplicatesInRow = addKeyValToObject(coord[0], coord[1], duplicatesInRow)
-      })
-    }
-  })
-
-  return duplicatesInRow
-}
-
-function getDuplicatesInColn (seenInColn) {
-  let duplicatesInColn = {}
-
-  Object.keys(seenInColn).forEach(coln => {
-    if (hasDuplicates(seenInColn, coln)) {
-      seenInColn[coln].forEach((coord) => {
-        duplicatesInColn = addKeyValToObject(coord[1], coord[0], duplicatesInColn)
-      })
-    }
-  })
-
-  return duplicatesInColn
-}
-
-function getDuplicatesInBlock (seenInBlock) {
-  let duplicatesInBlock = {}
-
-  Object.keys(seenInBlock).forEach(block => {
-    if (hasDuplicates(seenInBlock, block)) {
-      seenInBlock[block].forEach((coord) => {
-        const key = [Math.floor(coord[0] / 3), Math.floor(coord[1] / 3)]
-        duplicatesInBlock = addKeyValToObject(key, coord, duplicatesInBlock)
-      })
-    }
-  })
-
-  return duplicatesInBlock
-}
-
-function hasDuplicates (object, key) {
-  return object[key].length > 1
-}
-
-function getUnflattenedSudokuBoard (flattenedSudokuBoard) {
-  const unflattenedSudokuBoard = []
-  let row = []
-
-  for (let i = 0; i < flattenedSudokuBoard.length; i++) {
-    row.push(flattenedSudokuBoard[i])
-
-    if (isRowFilled(i)) {
-      unflattenedSudokuBoard.push(row)
-      row = []
-    }
-  }
-
-  return unflattenedSudokuBoard
-}
-
-function isRowFilled (lastFilledIndex) {
-  return (lastFilledIndex + 1) % 9 === 0
-}
-
-function addKeyValToObject (key, val, object) {
-  if (!object[key]) {
-    object[key] = [val]
-  } else {
-    object[key].push(val)
-  }
-
-  return object
-}
-
-function updateInvalidStates (setters, sudokuValidationResults) {
-  let newGridInvalid = getEmptyGrid()
-  newGridInvalid = handleInvalidRow(sudokuValidationResults, newGridInvalid, setters)
-  newGridInvalid = handleInvalidColn(sudokuValidationResults, newGridInvalid, setters)
-  newGridInvalid = handleInvalidBlock(sudokuValidationResults, newGridInvalid, setters)
-
-  setters.setGridInvalid(newGridInvalid)
-}
-
-function handleInvalidRow (sudokuValidationResults, gridInvalid, setters) {
-  if (areRowsValid(sudokuValidationResults)) {
-    resetRowInvalid(setters)
-  } else {
-    const duplicatesInRow = sudokuValidationResults.duplicatesInRow
-    setters.setRowInvalid(duplicatesInRow)
-    gridInvalid = updateInvalidRowCoordinatesInGrid(duplicatesInRow, gridInvalid)
-  }
-
-  return gridInvalid
-}
-
-function updateInvalidRowCoordinatesInGrid (duplicatesInRow, gridInvalid) {
-  Object.keys(duplicatesInRow).forEach(row => {
-    const columns = duplicatesInRow[row]
-    columns.forEach(column => {
-      gridInvalid[row][column] = true
-    })
-  })
-
-  return gridInvalid
-}
-
-function handleInvalidColn (sudokuValidationResults, gridInvalid, setters) {
-  if (areColnsValid(sudokuValidationResults)) {
-    resetColnInvalid(setters)
-  } else {
-    const duplicatesInColn = sudokuValidationResults.duplicatesInColn
-    setters.setColnInvalid(duplicatesInColn)
-    gridInvalid = updateInvalidColnCoordinatesInGrid(duplicatesInColn, gridInvalid)
-  }
-
-  return gridInvalid
-}
-
-function updateInvalidColnCoordinatesInGrid (duplicatesInColn, gridInvalid) {
-  Object.keys(duplicatesInColn).forEach(column => {
-    const rows = duplicatesInColn[column]
-    rows.forEach(row => {
-      gridInvalid[row][column] = true
-    })
-  })
-
-  return gridInvalid
-}
-
-function handleInvalidBlock (sudokuValidationResults, gridInvalid, setters) {
-  if (areBlocksValid(sudokuValidationResults)) {
-    resetBlockInvalid(setters)
-  } else {
-    const duplicatesInBlock = sudokuValidationResults.duplicatesInBlock
-    setters.setBlockInvalid(duplicatesInBlock)
-    gridInvalid = updateInvalidBlockCoordinatesInGrid(duplicatesInBlock, gridInvalid)
-  }
-
-  return gridInvalid
-}
-
-function updateInvalidBlockCoordinatesInGrid (duplicatesInBlock, gridInvalid) {
-  Object.keys(duplicatesInBlock).forEach(block => {
-    const coords = duplicatesInBlock[block]
-    coords.forEach(coord => {
-      gridInvalid[coord[0]][coord[1]] = true
-    })
-  })
-
-  return gridInvalid
-}
-
-function getEmptyGrid () {
-  return getEmptyColn().map(() => getEmptyRow())
-}
-
-function getEmptyColn () {
-  return Array(9).fill(0)
-}
-
-function getEmptyRow () {
-  return Array(9).fill(0)
-}
-
-function getEmptyBlock () {
-  return {}
-}
-
-function resetInvalidStates (setters) {
-  resetGridInvalid(setters)
-  resetRowInvalid(setters)
-  resetColnInvalid(setters)
-  resetBlockInvalid(setters)
-}
-
-function resetGridInvalid (setters) {
-  setters.setGridInvalid(getEmptyGrid())
-}
-
-function resetRowInvalid (setters) {
-  setters.setRowInvalid(getEmptyRow())
-}
-
-function resetColnInvalid (setters) {
-  setters.setColnInvalid(getEmptyColn())
-}
-
-function resetBlockInvalid (setters) {
-  setters.setBlockInvalid(getEmptyBlock())
 }
 
 /**

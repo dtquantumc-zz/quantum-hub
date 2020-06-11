@@ -5,10 +5,11 @@
  */
 
 import React, { useState } from 'react'
+import clsx from 'clsx'
 // import PropTypes from 'prop-types'
 
 import nurseSolveRequest from './nurseSolveRequest'
-import { DrawNurses } from './NurseSquare'
+import NurseSchedule from '../../DatePicker/NurseSchedule.js'
 import nurseVars from './NurseVariables'
 
 import NurseSchedulingInput from '../../Inputs/NurseSchedulingInput'
@@ -16,6 +17,8 @@ import NurseSchedulingInput from '../../Inputs/NurseSchedulingInput'
 import NurseDetailTable from '../../Table/NurseDetailTable.js'
 
 import Button from '../../CustomButtons/Button.js'
+
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -69,6 +72,7 @@ function NurseScheduler (props) {
   var [schedule, setSchedule] = useState([[false]])
   const [open, setOpen] = React.useState(false)
   const [scroll, setScroll] = React.useState('paper')
+  const [loading, setLoading] = useState(false)
   const descriptionElementRef = React.useRef(null)
 
   const useStyles = makeStyles(styles)
@@ -108,13 +112,10 @@ function NurseScheduler (props) {
   return (
     <div className={classes.nurseRoot}>
       <div className='nurseBox'>
-        <div
-          className='nurseGrid'
-        >
-          {
-            <DrawNurses schedule={schedule} />
-          }
+        <div className={loading ? 'nurseSchedule loading' : 'nurseSchedule'}>
+          <NurseSchedule schedule={schedule} />
         </div>
+        {loading && <CircularProgress size={68} className={classes.nurseProgress} />}
       </div>
       <div className={classes.buttonContainer}>
         <Button
@@ -122,18 +123,22 @@ function NurseScheduler (props) {
           color='geeringupSecondary'
           size='sm'
           onClick={handleClickOpen('paper')}
+          disabled={loading}
         >
             More Detail
         </Button>
       </div>
-      <div className={classes.instructions}>Please enter a number of Nurses and Days to be scheduled!</div>
+      <div className={loading ? clsx(classes.instructions, classes.loading) : classes.instructions}>
+      Please enter a number of Nurses and Days to be scheduled!
+      </div>
       <NurseSchedulingInput
         setNumDays={nurseVars.setNumDays}
         setNumNurses={nurseVars.setNumNurses}
         setNursesPerDay={nurseVars.setNursesPerDay}
         onSolve={
-          () => nurseSolveRequest(setSchedule, props.outputToConsole, props.appendToConsole, props.getAPIKey)
+          () => nurseSolveRequest(setSchedule, props.outputToConsole, props.appendToConsole, props.getAPIKey, setLoading)
         }
+        disabled={loading}
       />
       <Dialog
         open={open}
