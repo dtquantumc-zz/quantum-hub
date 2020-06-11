@@ -14,7 +14,7 @@ import GridContainer from '../Grid/GridContainer.js'
 import GridItem from '../Grid/GridItem'
 
 import widgetList from '../Widget/widgetList.js'
-import Button from '../CustomButtons/Button'
+import Button from '../CustomButtons/Button.js'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -79,7 +79,7 @@ export default function DescriptionCard (props) {
             ref={descriptionElementRef}
             tabIndex={-1}
           >
-          {widgetInfo.readMoreDescriptionText}
+            {widgetInfo.readMoreDescriptionText}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
