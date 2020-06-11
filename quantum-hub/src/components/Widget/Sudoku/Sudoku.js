@@ -22,6 +22,8 @@ import {
   // resetSudokuGrid
 } from './sudokuHelpers'
 
+import { addKeyValToObject } from '../../utils.js'
+
 import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -307,16 +309,6 @@ function getUnflattenedSudokuBoard (flattenedSudokuBoard) {
 
 function isRowFilled (lastFilledIndex) {
   return (lastFilledIndex + 1) % 9 === 0
-}
-
-function addKeyValToObject (key, val, object) {
-  if (!object[key]) {
-    object[key] = [val]
-  } else {
-    object[key].push(val)
-  }
-
-  return object
 }
 
 function updateInvalidStates (setters, sudokuValidationResults) {

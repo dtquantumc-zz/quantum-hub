@@ -7,6 +7,50 @@
 const nurseScheduleStyle = {
   badge: {
     backgroundColor: '#D96262'
+  },
+  geeringupTheme: {
+    overrides: {
+      MuiPickersCalendarHeader: {
+        transitionContainer: {
+          color: 'rgba(0, 0, 0, 0.87)'
+        }
+      },
+      MuiPickersStaticWrapper: {
+        staticWrapperRoot: {
+          borderRadius: '6px',
+          border: '1px solid rgba(0, 0, 0, 0.12)'
+        }
+      },
+      MuiPickersToolbar: {
+        toolbar: {
+          backgroundColor: '#50c8eb'
+        }
+      },
+      MuiPickersToolbarButton: {
+        toolbarBtn: {
+          '&:focus': {
+            color: 'inherit',
+            background: 'transparent'
+          }
+        }
+      },
+      MuiPickersDay: {
+        day: {
+          color: 'rgb(21, 153, 191)'
+        },
+        daySelected: {
+          '&, &:hover': {
+            backgroundColor: '#50c8eb'
+          }
+        },
+        dayDisabled: {
+          color: 'rgba(80, 200, 235, 0.65)'
+        },
+        current: {
+          color: 'rgba(0, 0, 0, 0.87)'
+        }
+      }
+    }
   }
 }
 

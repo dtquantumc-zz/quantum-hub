@@ -50,7 +50,7 @@ export default function DescriptionCard (props) {
     setOpen(false)
   }
 
-  const widgetInfo = !!props.widget ? widgetList[props.widget] : widgetList.default
+  const widgetInfo = props.widget ? widgetList[props.widget] : widgetList.default
 
   return (
     <GridContainer className={classes.container} justify='center'>

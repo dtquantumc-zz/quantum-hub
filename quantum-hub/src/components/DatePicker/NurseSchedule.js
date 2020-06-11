@@ -24,12 +24,14 @@ import DateFnsUtils from '@date-io/date-fns'
 import { ThemeProvider } from '@material-ui/styles'
 import NursesOnDayDialog from '../Dialog/NursesOnDayDialog.js'
 
+import { addKeyValToObject } from '../utils.js'
+
 import styles from '../../assets/jss/material-kit-react/components/nurseScheduleStyle.js'
 const useStyles = makeStyles(styles)
 
 const NurseSchedule = (props) => {
   const classes = useStyles()
-  const geeringupTheme = createMuiTheme(getGeerinupTheme())
+  const geeringupTheme = createMuiTheme(styles.geeringupTheme)
 
   const [date, changeDate] = useState(new Date())
   const [open, setOpen] = React.useState(false)
@@ -104,16 +106,6 @@ const NurseSchedule = (props) => {
   )
 }
 
-function addKeyValToObject (key, val, object) {
-  if (!object[key]) {
-    object[key] = [val]
-  } else {
-    object[key].push(val)
-  }
-
-  return object
-}
-
 function getScheduleInfo (schedule) {
   const daysWithNurses = new Set()
   let daysToNurses = {}
@@ -131,53 +123,6 @@ function getScheduleInfo (schedule) {
   return {
     daysWithNurses: daysWithNurses,
     daysToNurses: daysToNurses
-  }
-}
-
-function getGeerinupTheme () {
-  return {
-    overrides: {
-      MuiPickersCalendarHeader: {
-        transitionContainer: {
-          color: 'rgba(0, 0, 0, 0.87)'
-        }
-      },
-      MuiPickersStaticWrapper: {
-        staticWrapperRoot: {
-          borderRadius: '6px',
-          border: '1px solid rgba(0, 0, 0, 0.12)'
-        }
-      },
-      MuiPickersToolbar: {
-        toolbar: {
-          backgroundColor: '#50c8eb'
-        }
-      },
-      MuiPickersToolbarButton: {
-        toolbarBtn: {
-          '&:focus': {
-            color: 'inherit',
-            background: 'transparent'
-          }
-        }
-      },
-      MuiPickersDay: {
-        day: {
-          color: 'rgb(21, 153, 191)'
-        },
-        daySelected: {
-          '&, &:hover': {
-            backgroundColor: '#50c8eb'
-          }
-        },
-        dayDisabled: {
-          color: 'rgba(80, 200, 235, 0.65)'
-        },
-        current: {
-          color: 'rgba(0, 0, 0, 0.87)'
-        }
-      }
-    }
   }
 }
 
