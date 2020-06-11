@@ -20,7 +20,7 @@ const appStyle = {
   container: {
     zIndex: '12',
     color: '#FFFFFF',
-    marginTop: '90px',
+    marginTop: '74px',
     ...container
   },
   title: {
