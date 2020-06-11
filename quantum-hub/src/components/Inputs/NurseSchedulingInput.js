@@ -50,14 +50,15 @@ export default function NurseSchedulingInput (props) {
     // <Card className={classes.nurseSchedulingInput}>
     <form className={classes.form}>
       {/* <CardBody className={classes.cardBody}> */}
-      <Grid container spacing={2}>
+      <Grid className={classes.gridContainer} container spacing={2}>
         <Grid item xs={4}>
           <CustomInput
             labelText='Nurses'
             id='nurse'
             formControlProps={{
               fullWidth: true,
-              error: numNursesError
+              error: numNursesError,
+              disabled: props.disabled
             }}
             inputProps={{
               type: 'number',
@@ -78,7 +79,8 @@ export default function NurseSchedulingInput (props) {
             id='days'
             formControlProps={{
               fullWidth: true,
-              error: numDaysError
+              error: numDaysError,
+              disabled: props.disabled
             }}
             inputProps={{
               type: 'number',
@@ -89,7 +91,6 @@ export default function NurseSchedulingInput (props) {
               onChange: (e) => {
                 props.setNumDays(e.target.value, setters)
               }
-              // validator: () => { return false }
             }}
             helperText={`Number of Days must be between ${NurseVars.daysLowerBound} and ${NurseVars.daysUpperBound}`}
           />
@@ -100,18 +101,18 @@ export default function NurseSchedulingInput (props) {
             id='nursedays'
             formControlProps={{
               fullWidth: true,
-              error: numNursesPerDayError
+              error: numNursesPerDayError,
+              disabled: props.disabled
             }}
             inputProps={{
               type: 'number',
               inputProps: {
-                min: 0,
-                max: 24
+                min: NurseVars.nPDLowerBound,
+                max: NurseVars.nPDUpperBound
               },
               onChange: (e) => {
                 props.setNursesPerDay(e.target.value, setters)
               }
-              // validator: () => { return false }
             }}
             helperText={`Nurses per Day must be between ${NurseVars.nPDLowerBound} and ${NurseVars.nPDUpperBound}`}
           />
@@ -119,7 +120,7 @@ export default function NurseSchedulingInput (props) {
       </Grid>
       {/* </CardBody> */}
       <CardFooter className={classes.cardFooter}>
-        <Button color='geeringupSecondary' onClick={props.onSolve} disabled={numNursesError || numDaysError}>
+        <Button color='geeringupSecondary' onClick={props.onSolve} disabled={numNursesError || numDaysError || props.disabled}>
               Solve
         </Button>
       </CardFooter>

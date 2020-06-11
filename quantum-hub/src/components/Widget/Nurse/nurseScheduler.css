@@ -90,9 +90,13 @@ div, p {margin:0px; padding:0px;}
 
 .nurseBox{
   position: relative;
-  margin: 0;
+  margin: auto;
   width: 100%;
-  padding-top: 65%;
+}
+
+.nurseSchedule.loading{
+  pointer-events: none;
+  opacity: 0.65;
 }
 
 .nurseGrid{

@@ -15,10 +15,12 @@ import nurseVars from './NurseVariables'
  * @param {Function} outputToConsole - Output to Console
  * @param {Function} appendToConsole - Append to Console
  * @param {Function} getAPIKey - Get the API Key
+ * @param {Function} setLoading - Hook to set the Nurse App's loading state
  */
-function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAPIKey) {
+function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAPIKey, setLoading) {
   if (nurseVars.xhr) return
 
+  setLoading(true)
   outputToConsole(`Scheduling ${nurseVars.numNurses} nurses across ${nurseVars.numDays} days:`)
 
   const params = {
@@ -49,12 +51,13 @@ function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAP
       nurseVars.setState(xhr.response.jobStatus)
     },
     (xhr) => {
-      postSolve(xhr, setSchedule, outputToConsole)
+      postSolve(xhr, setSchedule, outputToConsole, setLoading)
     },
     (xhr) => {
       outputToConsole('Something went wrong')
       console.log(xhr)
       outputToConsole(JSON.stringify(xhr))
+      setLoading(false)
     },
     outputToConsole
   )
@@ -70,8 +73,9 @@ function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAP
  * matrix.
  * @param {Function} setSchedule - A function to set the Nurse Schedule
  * @param {Function} outputToConsole - Outputs a line to the console object
+ * @param {Function} setLoading - Hook to set the Nurse App's loading state
  */
-function postSolve (xhr, setSchedule, outputToConsole) {
+function postSolve (xhr, setSchedule, outputToConsole, setLoading) {
   if (xhr.status === 200) {
     outputToConsole('Solved! Enjoy your nurse schedule!')
 
@@ -108,6 +112,7 @@ function postSolve (xhr, setSchedule, outputToConsole) {
     outputToConsole('Your Nurse Scheduling may have been too difficult and timed out.')
     outputToConsole('Please save the configuration you were trying to solve and report the problem')
   }
+  setLoading(false)
   nurseVars.setXHR(null)
 }
 
