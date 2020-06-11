@@ -1,0 +1,52 @@
+:root {
+  --hexWidth: 50px;
+}
+
+.hexGrid{
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.extraSVG{
+  display: block;
+  position: absolute;
+  top: 0;
+}
+
+.hexRow{
+  margin: 0;
+  margin-top: calc(var(--hexWidth) / (-3.46410161514) - 4px)
+}
+
+.hexRow:nth-child(even){
+  margin-left: calc(var(--hexWidth) / (2.0));
+}
+
+.hexRow:nth-child(1){
+  margin-top: 0;
+}
+
+.hexagon{
+  cursor: pointer;
+}
+
+.latticeBox{
+  position: relative;
+  margin: 0;
+  width: 100%;
+  padding-top: 80%;
+  border: thin gray solid;
+}
+
+.innerMarble{
+  pointer-events: none;
+}
+
+.line{
+  pointer-events: none;
+}

@@ -8,6 +8,7 @@ import React from 'react'
 
 import SudokuGame from './Sudoku/Sudoku'
 import NurseScheduler from './Nurse/NurseScheduler'
+import LatticeColourer from './Lattice/LatticeColourer'
 import Widget from './EmptyWidget/EmptyWidget'
 
 import NurseBriefDescriptionText from '../Typography/NurseBriefDescriptionText.js'
@@ -36,6 +37,16 @@ const widgetList = {
     readMoreDescriptionText: <SudokuReadMoreDescriptionText />,
     brand: 'Sudoku Solver',
     component: SudokuGame
+  },
+  lattice: {
+    enabler: 'isLatticeColourer',
+    route: '/app/lattice',
+    name: 'lattice-colourer',
+    title: 'Lattice Two-Colouring',
+    briefDescriptionText: <p>Temporary Description Text</p>,
+    readMoreDescriptionText: <p>Temporary Description Text</p>,
+    brand: 'Lattice Two-Colouring',
+    component: LatticeColourer
   },
   default: {
     enabler: 'isNothing',
