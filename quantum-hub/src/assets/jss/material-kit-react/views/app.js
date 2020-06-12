@@ -70,6 +70,13 @@ const appStyle = {
     '&:hover,&:focus': {
       backgroundColor: '#D96262'
     }
+  },
+  latticeSwitchButton: {
+    margin: '8px',
+    backgroundColor: '#D96262',
+    '&:hover,&:focus': {
+      backgroundColor: '#D96262'
+    }
   }
 }
 

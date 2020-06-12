@@ -17,9 +17,12 @@ import styles from '../../../assets/jss/material-kit-react/components/latticeSty
 import './latticeColourer.css'
 
 const baseLattice = [
-  [1, 1, 0, 0, 1, 1],
-  [0, 1, 1, 1, 0],
-  [1, 1, 1, 0, 0]
+  [1, 1, 0, 0, 1, 1, 1],
+  [0, 1, 1, 1, 0, 1],
+  [1, 1, 1, 1, 1, 1, 1],
+  [0, 1, 1, 1, 0, 1],
+  [1, 1, 1, 0, 0, 0, 1],
+  [1, 1, 0, 0, 0, 1]
 ]
 
 /**
@@ -64,6 +67,8 @@ function LatticeColourer (props) {
   // whenever the Set function for a variable is called.
   const [lattice, setLattice] = useState(baseLattice)
   const [mode, setMode] = useState('grid') // Can be 'grid', 'marble', or 'disabled'
+  const [conflicts, setConflicts] = useState(0)
+  const [minConf, setMinConf] = useState(1000)
 
   const useStyles = makeStyles(styles)
 
@@ -76,15 +81,35 @@ function LatticeColourer (props) {
     modeText = 'Unlock'
   }
 
+  var instructionText = ''
+  var minText = ''
+  if (mode === 'grid') {
+    instructionText = 'Build a Grid to play on!'
+  } else if (mode === 'marble') {
+    instructionText = 'Minimize the conflicts: ' + conflicts
+    minText = 'Your best: ' + minConf
+  }
+
   return (
     <div className={classes.latticeRoot}>
       <div className='latticeBox'>
         <HexGrid
           lattice={lattice}
           setLattice={setLattice}
+          setConflicts={(num) => {
+            setConflicts(num)
+            if (num < minConf) {
+              setMinConf(num)
+            }
+          }}
           mode={mode}
           width={476}
         />
+      </div>
+      <div className={classes.instructions}>
+        {instructionText}
+        <br />
+        {minText}
       </div>
       <div className={classes.buttonContainer}>
         <Button
@@ -95,6 +120,7 @@ function LatticeColourer (props) {
             if (mode === 'grid') {
               setMode('marble')
             } else if (mode === 'marble') {
+              setMinConf(1000)
               setMode('grid')
             }
           }}

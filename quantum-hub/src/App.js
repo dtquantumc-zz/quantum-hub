@@ -116,9 +116,20 @@ function App (props) {
       Switch to Sudoku
     </Button>
 
+  const latticeSwitchButton =
+    <Button
+      className={classes.latticeSwitchButton}
+      onClick={() => overrideWidget('lattice')}
+      disabled={widget === 'lattice'}
+      size='sm'
+      key='sudBut'
+    >
+      Switch to Lattice (WIP)
+    </Button>
+
   const appSwitchButtons =
     <GridItem
-      children={[nurseSwitchButton, sudokuSwitchButton]}
+      children={[nurseSwitchButton, sudokuSwitchButton, latticeSwitchButton]}
       key='appSwitchButs'
     />
   // const gridContainerChildren = [qpuSwitch, terminalWindow, widgetComponent, howItWorksCard]
@@ -148,70 +159,5 @@ function App (props) {
     </div>
   )
 }
-
-/**
- *
- * @param {object} props object from the App
- * @param {object} classes styles for input field React Components
- * @returns {object} userInput React Component
- */
-// function getUserInput (props, classes) {
-//   let userInput
-
-//   if (props.isNurseScheduler) {
-//     userInput =
-//       <div className={classes.nurseSchedulingInput}>
-//         {/* TODO: Upcoming */}
-//         {/* <NurseSchedulingInput /> */}
-//       </div>
-//   } else {
-//     userInput =
-//       <div className={classes.sudokuInput}>
-//         <Button color='geeringupSecondary'>
-//           Solve
-//         </Button>
-//       </div>
-//   }
-
-//   return userInput
-// }
-
-// function loadWidget (props, classes) {
-//   let widget
-//   if (props.widget === 'sudoku') {
-//     widget =
-//       <SudokuGame
-//         id='myWidget'
-//         getAPIKey={() => APIKey}
-//         outputToConsole={(line) => {
-//           setTextLines(textLines.concat(line))
-//           textLines = textLines.concat(line)
-//         }}
-//         key='myGame'
-//       />
-//   } else if (props.widget === 'nurse') {
-//     widget = <p>Nothing here sorry</p>
-//   } else {
-//     widget = <p>Really nothing here :(</p>
-//   }
-//   return widget
-// }
-
-/**
- *
- * @param {object} props object from the App
- * @returns {string} brand for the App
- */
-// function getAppBrand (props) {
-//   let appBrand
-
-//   if (props.isNurseScheduler) {
-//     appBrand = 'Nurse Scheduler'
-//   } else {
-//     appBrand = 'Sudoku Solver'
-//   }
-
-//   return appBrand
-// }
 
 export default App

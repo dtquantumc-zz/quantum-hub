@@ -57,8 +57,8 @@ function Hexagons (props) {
           return (
             <>
               <Hexagon
-                x={x}
-                y={y}
+                x={x + 1}
+                y={y + 1}
                 h={hexHeight}
                 w={hexWidth}
                 isOn={e ? 1 : 0}
@@ -89,8 +89,10 @@ function MarblesAndLines (props) {
   const lattice = props.lattice
   const hexWidth = props.hexWidth
   const hexHeight = props.hexHeight
+  const setConflicts = props.setConflicts
 
-  return (
+  var conflicts = 0
+  const returnVal = (
     lattice.map((row, i) => {
       return (
         row.map((e, j) => {
@@ -123,6 +125,7 @@ function MarblesAndLines (props) {
                     (jj + (ii % 2 === 1 ? 1 : 0.5)) * hexWidth,
                     (ii + 2 / 3) * hexHeight
                   ])
+                  conflicts += 1
                 }
               }
             }
@@ -137,10 +140,10 @@ function MarblesAndLines (props) {
                     <line
                       className='line'
                       key={x + ' ' + y + ' ' + x2 + ' ' + y2}
-                      x1={x}
-                      y1={y}
-                      x2={x2}
-                      y2={y2}
+                      x1={x + 1}
+                      y1={y + 1}
+                      x2={x2 + 1}
+                      y2={y2 + 1}
                       stroke='black'
                       strokeWidth='4'
                     />
@@ -149,8 +152,8 @@ function MarblesAndLines (props) {
               }
               <circle
                 className='innerMarble'
-                cx={x}
-                cy={y}
+                cx={x + 1}
+                cy={y + 1}
                 r={hexWidth / 6}
                 fill={fillC}
                 stroke='black'
@@ -162,12 +165,16 @@ function MarblesAndLines (props) {
       )
     })
   )
+
+  setConflicts(conflicts)
+  return (returnVal)
 }
 
 function HexGrid (props) {
   const [lattice, setLattice] = [props.lattice, props.setLattice]
   const mode = props.mode
-  const maxW = props.width
+  const maxW = props.width - 2
+  const setConflicts = props.setConflicts
 
   // Calculate the width and height of each hexagon
   var width = 0
@@ -186,7 +193,7 @@ function HexGrid (props) {
   // Display all the polygons
   return (
     <div className='hexGrid'>
-      <svg width={maxW} height={hexHeight * (height + 0.333333)}>
+      <svg width={maxW + 2} height={hexHeight * (height + 0.333333) + 2}>
         <Hexagons
           hexWidth={hexWidth}
           hexHeight={hexHeight}
@@ -201,6 +208,7 @@ function HexGrid (props) {
             lattice={lattice}
             setLattice={setLattice}
             mode={mode}
+            setConflicts={setConflicts}
           />
         )
           : ''}
