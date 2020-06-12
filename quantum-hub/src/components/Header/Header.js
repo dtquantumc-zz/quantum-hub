@@ -81,13 +81,17 @@ export default function Header (props) {
   return (
     <AppBar className={appBarClasses}>
       <Toolbar className={classes.container}>
-        {leftLinks !== undefined ? leftLinksComponent : null}
+        <div className={classes.leftLinks}>
+          {leftLinks !== undefined ? leftLinksComponent : null}
+        </div>
         <div className={classes.flex}>
           {brandComponent}
         </div>
-        <Hidden smDown implementation='css'>
-          {rightLinks}
-        </Hidden>
+        <div className={classes.rightLinks}>
+          <Hidden smDown implementation='css'>
+            {rightLinks}
+          </Hidden>
+        </div>
         <Hidden mdUp>
           <IconButton
             color='inherit'

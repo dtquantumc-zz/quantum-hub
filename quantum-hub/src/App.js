@@ -20,15 +20,9 @@ import GridContainer from './components/Grid/GridContainer.js'
 import Footer from './components/Footer/Footer.js'
 import FooterLinks from './components/Footer/FooterLinks.js'
 
-// TODO: Upcoming
-// import NurseSchedulingInput from './components/Inputs/NurseSchedulingInput.js'
-
 import Button from './components/CustomButtons/Button.js'
 import GridItem from './components/Grid/GridItem.js'
 
-// import SudokuGame from './components/Widget/sudoku.js'
-// import Widget from './components/Widget/widget.js'
-// @material-ui/icons
 import { makeStyles } from '@material-ui/core/styles'
 
 import styles from './assets/jss/material-kit-react/views/app.js'
@@ -79,7 +73,6 @@ function App (props) {
       key='myGame'
     />
 
-  // const qpuSwitch = <QPUswitch key='qpuSwitch' setAPIKey={setAPIKey} />
   const terminalWindow =
     <Console
       textLines={textLines}
@@ -129,6 +122,7 @@ function App (props) {
 
   const appSwitchButtons =
     <GridItem
+      className={classes.container}
       children={[nurseSwitchButton, sudokuSwitchButton, latticeSwitchButton]}
       key='appSwitchButs'
     />

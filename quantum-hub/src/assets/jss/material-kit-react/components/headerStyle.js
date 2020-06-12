@@ -169,14 +169,16 @@ const headerStyle = {
     paddingLeft: '0',
     ...transition
   },
-  centered: {
-    justifyContent: 'center'
+  leftLinks: {
+    marginLeft: '24px',
+    display: 'flex',
+    width: '200px'
   },
-  lefted: {
-    justifyContent: 'left'
-  },
-  righted: {
-    justifyContent: 'right'
+  rightLinks: {
+    marginRight: '24px',
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    width: '200px'
   }
 }
 
