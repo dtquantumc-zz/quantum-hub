@@ -24,7 +24,7 @@ import DateFnsUtils from '@date-io/date-fns'
 import { ThemeProvider } from '@material-ui/styles'
 import NursesOnDayDialog from '../Dialog/NursesOnDayDialog.js'
 
-import { addKeyValToObject } from '../utils.js'
+import Utils from '../utils.js'
 
 import styles from '../../assets/jss/material-kit-react/components/nurseScheduleStyle.js'
 const useStyles = makeStyles(styles)
@@ -115,7 +115,7 @@ function getScheduleInfo (schedule) {
         if (!daysWithNurses.has(j)) {
           daysWithNurses.add(j)
         }
-        daysToNurses = addKeyValToObject(j, i, daysToNurses)
+        daysToNurses = Utils.addKeyValToObject(j, i, daysToNurses)
       }
     }
   }

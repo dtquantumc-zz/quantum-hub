@@ -3,6 +3,7 @@
  * (C) Copyright 2020
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
+import Utils from '../../utils.js'
 
 export default class SudokuValidationUtils {
   /**
@@ -123,9 +124,9 @@ export default class SudokuValidationUtils {
         const blockColumn = Math.floor(j / 3)
         const inBlock = current + ' in block ' + blockRow + ' - ' + blockColumn
 
-        seenInRow = SudokuValidationUtils.addKeyValToObject(inRow, [i, j], seenInRow)
-        seenInColn = SudokuValidationUtils.addKeyValToObject(inColn, [i, j], seenInColn)
-        seenInBlock = SudokuValidationUtils.addKeyValToObject(inBlock, [i, j], seenInBlock)
+        seenInRow = Utils.addKeyValToObject(inRow, [i, j], seenInRow)
+        seenInColn = Utils.addKeyValToObject(inColn, [i, j], seenInColn)
+        seenInBlock = Utils.addKeyValToObject(inBlock, [i, j], seenInBlock)
       }
     }
 
@@ -151,7 +152,7 @@ export default class SudokuValidationUtils {
     Object.keys(seenInRow).forEach(row => {
       if (SudokuValidationUtils.hasDuplicates(seenInRow, row)) {
         seenInRow[row].forEach((coord) => {
-          duplicatesInRow = SudokuValidationUtils.addKeyValToObject(coord[0], coord[1], duplicatesInRow)
+          duplicatesInRow = Utils.addKeyValToObject(coord[0], coord[1], duplicatesInRow)
         })
       }
     })
@@ -172,7 +173,7 @@ export default class SudokuValidationUtils {
     Object.keys(seenInColn).forEach(coln => {
       if (SudokuValidationUtils.hasDuplicates(seenInColn, coln)) {
         seenInColn[coln].forEach((coord) => {
-          duplicatesInColn = SudokuValidationUtils.addKeyValToObject(coord[1], coord[0], duplicatesInColn)
+          duplicatesInColn = Utils.addKeyValToObject(coord[1], coord[0], duplicatesInColn)
         })
       }
     })
@@ -194,7 +195,7 @@ export default class SudokuValidationUtils {
       if (SudokuValidationUtils.hasDuplicates(seenInBlock, block)) {
         seenInBlock[block].forEach((coord) => {
           const key = [Math.floor(coord[0] / 3), Math.floor(coord[1] / 3)]
-          duplicatesInBlock = SudokuValidationUtils.addKeyValToObject(key, coord, duplicatesInBlock)
+          duplicatesInBlock = Utils.addKeyValToObject(key, coord, duplicatesInBlock)
         })
       }
     })

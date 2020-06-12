@@ -22,7 +22,6 @@ import {
   // resetSudokuGrid
 } from './sudokuHelpers'
 
-import { addKeyValToObject } from '../../utils.js'
 import SudokuValidationUtils from './SudokuValidationUtils.js'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -155,7 +154,7 @@ function SudokuGame (props) {
           disabled={(empty || !enabled)}
           onClick={() => {
             emptySudokuGrid(sudokuState)
-            SudokuValidationUtils.dStates(invalidStateSetters)
+            SudokuValidationUtils.resetInvalidStates(invalidStateSetters)
           }}
         >
           Reset
