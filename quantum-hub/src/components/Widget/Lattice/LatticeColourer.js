@@ -7,7 +7,7 @@
 import React, { useState } from 'react'
 // import PropTypes from 'prop-types'
 
-// import latticeSolveRequest from './latticeSolveRequest'
+import latticeSolveRequest from './latticeSolveRequest'
 import HexGrid from './HexGrid'
 
 import Button from '../../CustomButtons/Button.js'
@@ -126,6 +126,17 @@ function LatticeColourer (props) {
           }}
         >
           {modeText}
+        </Button>
+        <Button
+          className={classes.detailButton}
+          color='geeringupSecondary'
+          size='sm'
+          disabled={mode !== 'marble'}
+          onClick={() => {
+            latticeSolveRequest(lattice, setLattice, props.outputToConsole, props.appendToConsole, props.getAPIKey)
+          }}
+        >
+          Get Quantum Solution
         </Button>
       </div>
     </div>

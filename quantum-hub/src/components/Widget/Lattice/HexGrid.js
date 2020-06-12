@@ -31,6 +31,7 @@ function Hexagon (props) {
         (x) + ',' + (y + h) + ' ' +
         (x) + ',' + (y + (1 / 3) * h) + ' '
       }
+      key={x + ' ' + y}
       strokeWidth='2'
       stroke='black'
       strokeOpacity={isOn ? 1 : 0.3}
@@ -55,29 +56,28 @@ function Hexagons (props) {
           const y = (i * hexHeight)
           if (mode !== 'grid' && !e) return ''
           return (
-            <>
-              <Hexagon
-                x={x + 1}
-                y={y + 1}
-                h={hexHeight}
-                w={hexWidth}
-                isOn={e ? 1 : 0}
-                onClick={() => {
-                  var newLattice = lattice.map(row => [...row])
-                  if (mode === 'grid') {
-                    if (lattice[i][j]) {
-                      newLattice[i][j] = 0
-                    } else {
-                      newLattice[i][j] = 1
-                    }
-                    setLattice(newLattice)
-                  } else if (mode === 'marble' && lattice[i][j]) {
-                    newLattice[i][j] = -lattice[i][j]
-                    setLattice(newLattice)
+            <Hexagon
+              x={x + 1}
+              y={y + 1}
+              key={x + ' ' + y}
+              h={hexHeight}
+              w={hexWidth}
+              isOn={e ? 1 : 0}
+              onClick={() => {
+                var newLattice = lattice.map(row => [...row])
+                if (mode === 'grid') {
+                  if (lattice[i][j]) {
+                    newLattice[i][j] = 0
+                  } else {
+                    newLattice[i][j] = 1
                   }
-                }}
-              />
-            </>
+                  setLattice(newLattice)
+                } else if (mode === 'marble' && lattice[i][j]) {
+                  newLattice[i][j] = -lattice[i][j]
+                  setLattice(newLattice)
+                }
+              }}
+            />
           )
         })
       )
@@ -117,7 +117,7 @@ function MarblesAndLines (props) {
           for (var n of neighbours) {
             const ii = i + n[0]
             const jj = j + n[1]
-            console.log(ii + ' ' + jj)
+            // console.log(ii + ' ' + jj)
             if (ii >= 0 && ii < lattice.length) {
               if (jj >= 0 && jj < lattice[ii].length) {
                 if (lattice[ii][jj] === e) {
@@ -130,7 +130,7 @@ function MarblesAndLines (props) {
               }
             }
           }
-          console.log(lineEnds)
+          // console.log(lineEnds)
 
           return (
             <>
@@ -183,7 +183,7 @@ function HexGrid (props) {
     const w = lattice[i].length + (i % 2 === 1 ? 0.5 : 0)
     width = Math.max(width, w)
   }
-  console.log(height)
+  // console.log(height)
   const hexWidth = maxW / (width)
   const hexHeight = 1.15470053838 * hexWidth * 0.75
 

@@ -18,6 +18,7 @@ from dwave.cloud import exceptions
 # D-Wave Code Example Imports
 from nurse_scheduling_master import nurse_scheduling
 from sudoku_master import sudoku
+from two_colour_master import two_colour
 
 # Worker Code Imports
 import workers
@@ -84,12 +85,16 @@ def make_worker():
         args = [token, raw_data['n_nurses'], raw_data['n_days'], raw_data['nurses_per_day']]
     elif raw_data['typeOfProblem'] == 'sudokuSolving':
         args = [raw_data['sudokuArray'], token]
+    elif raw_data['typeOfProblem'] == 'latticeColouring':
+        args = [token, raw_data['n_vertices'], raw_data['neighbours']]
 
     if app.is_live:
         if raw_data['typeOfProblem'] == 'nurseScheduling':
             job = app.task_queue.enqueue('nurse_scheduling_master.nurse_scheduling.main', args=args)
         elif raw_data['typeOfProblem'] == 'sudokuSolving':
             job = app.task_queue.enqueue('sudoku_master.sudoku.main', args=args)
+        elif raw_data['typeOfProblem'] == 'latticeColouring':
+            job = app.task_queue.enqueue('two_colour_master.two_colour.main', args=args)
 
         return {'jobStatus':'enqueued', 'jobID':job.get_id()}
     
@@ -98,6 +103,8 @@ def make_worker():
             res = nurse_scheduling.main(*args)
         elif raw_data['typeOfProblem'] == 'sudokuSolving':
             res = sudoku.main(*args)
+        elif raw_data['typeOfProblem'] == 'latticeColouring':
+            res = two_colour.main(*args)
 
         res['jobStatus'] = 'finished'
         return res

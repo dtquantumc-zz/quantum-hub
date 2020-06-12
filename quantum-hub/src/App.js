@@ -122,7 +122,7 @@ function App (props) {
       onClick={() => overrideWidget('lattice')}
       disabled={widget === 'lattice'}
       size='sm'
-      key='sudBut'
+      key='latBut'
     >
       Switch to Lattice (WIP)
     </Button>

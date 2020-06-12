@@ -24,10 +24,10 @@ def load_problem(filename):
 
     neighbours = tuple( tuple(int(x) for x in line.rstrip().split()) for line in content[1:] )
 
-    return (n, neighbours)
+    return n, neighbours
 
 
-def main(token, problem=None, filename=None, local=False):
+def main(token=token, n_vertices=0, neighbours=None, filename=None, local=False):
     ''' Using any graph at all, if given the number of nodes
     and the neighbours, 0-indexed, this will try to minimize the
     number of same-coloured neighbours.
@@ -37,13 +37,13 @@ def main(token, problem=None, filename=None, local=False):
     if filename == None:
         filename = 'problem.txt'
 
-    if problem == None:
-        problem = load_problem(filename)
+    if neighbours == None:
+        n_vertices, neighbours = load_problem(filename)
 
     # 2. Define problem
 
-    h = [0 for x in range(problem[0])]
-    J = dict( (neighbour, 10) for neighbour in problem[1] )
+    h = [0 for x in range(n_vertices)]
+    J = dict( (tuple(neighbour), 10) for neighbour in neighbours )
     # print(J)
 
     # 3. Instantiate solver
@@ -55,13 +55,13 @@ def main(token, problem=None, filename=None, local=False):
 
     # 5. Use response
 
-    best_solution = solution.first.sample
+    best_solution = [int(solution.first.sample[x]) for x in range(n_vertices)]
 
     # print( best_solution )
     if local:
         return solution
     else:
-        return best_solution
+        return {'solution': best_solution}
 
 
 if __name__ == "__main__":
