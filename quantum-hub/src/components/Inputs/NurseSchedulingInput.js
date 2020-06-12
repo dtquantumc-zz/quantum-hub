@@ -23,7 +23,7 @@ import Grid from '@material-ui/core/Grid'
 import Button from '../CustomButtons/Button'
 // import Card from '../Card/Card.js'
 // import CardBody from '../Card/CardBody.js'
-import CardFooter from '../Card/CardFooter.js'
+// import CardFooter from '../Card/CardFooter.js'
 import CustomInput from '../CustomInput/CustomInput'
 import NurseVars from '../Widget/Nurse/NurseVariables.js'
 
@@ -119,11 +119,15 @@ export default function NurseSchedulingInput (props) {
         </Grid>
       </Grid>
       {/* </CardBody> */}
-      <CardFooter className={classes.cardFooter}>
-        <Button color='geeringupSecondary' onClick={props.onSolve} disabled={numNursesError || numDaysError || props.disabled}>
-              Solve
+      <div className={classes.cardFooter}>
+        <Button
+          color='geeringupSecondary'
+          onClick={props.onSolve}
+          disabled={numNursesError || numDaysError || props.disabled}
+        >
+          Solve
         </Button>
-      </CardFooter>
+      </div>
     </form>
     // </Card>
     //   </GridItem>

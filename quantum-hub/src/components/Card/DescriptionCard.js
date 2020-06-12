@@ -10,8 +10,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import Card from './Card.js'
 import CardBody from './CardBody'
 
-import GridContainer from '../Grid/GridContainer.js'
-import GridItem from '../Grid/GridItem'
+// import GridContainer from '../Grid/GridContainer.js'
+// import GridItem from '../Grid/GridItem'
 
 import widgetList from '../Widget/widgetList.js'
 import Button from '../CustomButtons/Button.js'
@@ -53,8 +53,8 @@ export default function DescriptionCard (props) {
   const widgetInfo = props.widget ? widgetList[props.widget] : widgetList.default
 
   return (
-    <GridContainer className={classes.container} justify='center'>
-      <GridItem>
+    <div className={classes.container} justify='center'>
+      <div>
         <Card className={classes.descriptionCard}>
           <form className={classes.form}>
             <CardBody>
@@ -64,7 +64,7 @@ export default function DescriptionCard (props) {
             </CardBody>
           </form>
         </Card>
-      </GridItem>
+      </div>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -88,6 +88,6 @@ export default function DescriptionCard (props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </GridContainer>
+    </div>
   )
 }
