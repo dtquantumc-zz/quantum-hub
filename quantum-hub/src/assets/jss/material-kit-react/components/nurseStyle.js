@@ -6,7 +6,7 @@
 
 const nurseStyle = theme => ({
   nurseRoot: {
-    // width: '476px',
+    width: '476px',
     margin: theme.spacing(1)
   },
   nurseInput: {
@@ -32,7 +32,8 @@ const nurseStyle = theme => ({
   instructions: {
     color: 'rgba(0, 0, 0, 0.87)',
     textAlign: 'center',
-    padding: '0.9375rem'
+    padding: '0.9375rem',
+    paddingBottom: '0'
   },
   loading: {
     '&$instructions': {

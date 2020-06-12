@@ -53,7 +53,7 @@ function Hexagons (props) {
         row.map((e, j) => {
           const x = (j + (i % 2 === 1 ? 0.5 : 0)) * hexWidth
           const y = (i * hexHeight)
-
+          if (mode !== 'grid' && !e) return ''
           return (
             <>
               <Hexagon

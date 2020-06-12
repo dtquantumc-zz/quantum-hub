@@ -7,7 +7,7 @@
 import React, { useState } from 'react'
 // import PropTypes from 'prop-types'
 
-import latticeSolveRequest from './latticeSolveRequest'
+// import latticeSolveRequest from './latticeSolveRequest'
 import HexGrid from './HexGrid'
 
 import Button from '../../CustomButtons/Button.js'

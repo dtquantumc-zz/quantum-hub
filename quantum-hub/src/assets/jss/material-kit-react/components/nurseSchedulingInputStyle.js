@@ -68,7 +68,7 @@ const nurseSchedulingInputStyle = {
     }
   },
   form: {
-    width: '510px',
+    width: 'auto',
     margin: 'auto'
   },
   cardHeader: {
@@ -100,7 +100,7 @@ const nurseSchedulingInputStyle = {
     textAlign: 'center'
   },
   cardFooter: {
-    paddingTop: '0rem',
+    paddingTop: '0',
     border: '0',
     borderRadius: '6px',
     justifyContent: 'center !important'

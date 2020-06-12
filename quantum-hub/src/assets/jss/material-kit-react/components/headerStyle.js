@@ -58,14 +58,14 @@ const headerStyle = {
   container: {
     ...container,
     minHeight: '50px',
-    flex: '1',
+    flex: '1 0 0',
     alignItems: 'center',
     justifyContent: 'space-between',
     display: 'flex',
     flexWrap: 'nowrap'
   },
   flex: {
-    flex: 1,
+    flex: '1',
     display: 'flex',
     justifyContent: 'center'
   },
@@ -168,6 +168,15 @@ const headerStyle = {
     paddingRight: '0px',
     paddingLeft: '0',
     ...transition
+  },
+  centered: {
+    justifyContent: 'center'
+  },
+  lefted: {
+    justifyContent: 'left'
+  },
+  righted: {
+    justifyContent: 'right'
   }
 }
 
