@@ -11,6 +11,7 @@ import latticeSolveRequest from './latticeSolveRequest'
 import HexGrid from './HexGrid'
 
 import Button from '../../CustomButtons/Button.js'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 import { makeStyles } from '@material-ui/core/styles'
 import styles from '../../../assets/jss/material-kit-react/components/latticeStyle.js'
@@ -69,6 +70,7 @@ function LatticeColourer (props) {
   const [mode, setMode] = useState('grid') // Can be 'grid', 'marble', or 'disabled'
   const [conflicts, setConflicts] = useState(0)
   const [minConf, setMinConf] = useState(1000)
+  const [loading, setLoading] = [props.loading, props.setLoading]
 
   const useStyles = makeStyles(styles)
 
@@ -92,7 +94,7 @@ function LatticeColourer (props) {
 
   return (
     <div className={classes.latticeRoot}>
-      <div className='latticeBox'>
+      <div className={'latticeBox' + (loading ? ' loading' : '')}>
         <HexGrid
           lattice={lattice}
           setLattice={setLattice}
@@ -105,6 +107,7 @@ function LatticeColourer (props) {
           mode={mode}
           width={476}
         />
+        {loading && <CircularProgress size={68} className={classes.latticeProgress} />}
       </div>
       <div className={classes.instructions}>
         {instructionText}
@@ -133,7 +136,7 @@ function LatticeColourer (props) {
           size='sm'
           disabled={mode !== 'marble'}
           onClick={() => {
-            latticeSolveRequest(lattice, setLattice, props.outputToConsole, props.appendToConsole, props.getAPIKey)
+            latticeSolveRequest(lattice, setLattice, props.outputToConsole, props.appendToConsole, props.getAPIKey, setLoading)
           }}
         >
           Get Quantum Solution

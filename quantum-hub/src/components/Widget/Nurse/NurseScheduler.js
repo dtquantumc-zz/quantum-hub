@@ -72,7 +72,7 @@ function NurseScheduler (props) {
   var [schedule, setSchedule] = useState([[false]])
   const [open, setOpen] = React.useState(false)
   const [scroll, setScroll] = React.useState('paper')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = [props.loading, props.setLoading]
   const descriptionElementRef = React.useRef(null)
 
   const useStyles = makeStyles(styles)

@@ -40,7 +40,7 @@ function App (props) {
   // const [APIKey, setAPIKey] = useState('')
   const [widgetOverride, overrideWidget] = useState('')
   var [textLines, setTextLines] = useState([])
-  const [solving, setSolving] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   // widget is a string, a key to the widgetList object describing the widget
   let widget
@@ -71,6 +71,8 @@ function App (props) {
       getAPIKey={() => ''}
       outputToConsole={outputToConsole}
       appendToConsole={appendToConsole}
+      loading={loading}
+      setLoading={setLoading}
       key='myGame'
     />
 
@@ -95,7 +97,7 @@ function App (props) {
         window.history.replaceState({ app: 'nurse' }, 'Nurse Scheduler', '/app/nurse')
         overrideWidget('nurse')
       }}
-      disabled={widget === 'nurse'}
+      disabled={widget === 'nurse' || loading}
       size='sm'
       key='nurseBut'
     >
@@ -109,7 +111,7 @@ function App (props) {
         window.history.replaceState({ app: 'sudoku' }, 'Sudoku Solver', '/app/sudoku')
         overrideWidget('sudoku')
       }}
-      disabled={widget === 'sudoku'}
+      disabled={widget === 'sudoku' || loading}
       size='sm'
       key='sudBut'
     >
@@ -123,7 +125,7 @@ function App (props) {
         window.history.replaceState({ app: 'lattice' }, 'Lattice Colourer', '/app/lattice')
         overrideWidget('lattice')
       }}
-      disabled={widget === 'lattice'}
+      disabled={widget === 'lattice' || loading}
       size='sm'
       key='latBut'
     >

@@ -34,7 +34,13 @@ const latticeStyle = theme => ({
       width: 'max-content',
       display: 'inline-block'
     }
-  }
+  },
+  latticeProgress: {
+    position: 'absolute',
+    bottom: 'calc((307px / 2) - (68px / 2))',
+    left: 'calc(50% - (68px / 2))',
+    color: '#50c8eb'
+  },
 })
 
 export default latticeStyle

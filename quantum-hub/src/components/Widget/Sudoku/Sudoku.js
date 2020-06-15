@@ -80,7 +80,8 @@ function SudokuGame (props) {
   const [currentSquare, setCurrentSquare] = useState([0, 0])
   const [enabled, setEnabled] = useState(true)
   const [empty, setEmpty] = useState(true)
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = [props.loading, props.setLoading]
 
   var sudokuState = {
     grid: sudokuGrid,

@@ -17,7 +17,7 @@ import LatticeVars from './latticeVars'
  * @param {Function} appendToConsole - Append to Console
  * @param {Function} getAPIKey - Get the API Key
  */
-function latticeSolveRequest (lattice, setLattice, outputToConsole, appendToConsole, getAPIKey) {
+function latticeSolveRequest (lattice, setLattice, outputToConsole, appendToConsole, getAPIKey, setLoading) {
   var dict = {}
   var arr = []
   var conns = []
@@ -69,6 +69,8 @@ function latticeSolveRequest (lattice, setLattice, outputToConsole, appendToCons
     neighbours: conns
   }
 
+  setLoading(true)
+
   makeLongRequest(
     params,
     (xhr) => {
@@ -90,11 +92,13 @@ function latticeSolveRequest (lattice, setLattice, outputToConsole, appendToCons
     },
     (xhr) => {
       postSolve(xhr, lattice, setLattice, outputToConsole)
+      setLoading(false)
     },
     (xhr) => {
       outputToConsole('Something went wrong')
       console.log(xhr)
       outputToConsole(JSON.stringify(xhr))
+      setLoading(false)
     },
     outputToConsole
   )
