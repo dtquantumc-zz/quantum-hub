@@ -40,6 +40,7 @@ function App (props) {
   // const [APIKey, setAPIKey] = useState('')
   const [widgetOverride, overrideWidget] = useState('')
   var [textLines, setTextLines] = useState([])
+  const [solving, setSolving] = useState(false)
 
   // widget is a string, a key to the widgetList object describing the widget
   let widget
@@ -90,7 +91,10 @@ function App (props) {
   const nurseSwitchButton =
     <Button
       className={classes.nurseSwitchButton}
-      onClick={() => overrideWidget('nurse')}
+      onClick={() => {
+        window.history.replaceState({ app: 'nurse' }, 'Nurse Scheduler', '/app/nurse')
+        overrideWidget('nurse')
+      }}
       disabled={widget === 'nurse'}
       size='sm'
       key='nurseBut'
@@ -101,7 +105,10 @@ function App (props) {
   const sudokuSwitchButton =
     <Button
       className={classes.sudokuSwitchButton}
-      onClick={() => overrideWidget('sudoku')}
+      onClick={() => {
+        window.history.replaceState({ app: 'sudoku' }, 'Sudoku Solver', '/app/sudoku')
+        overrideWidget('sudoku')
+      }}
       disabled={widget === 'sudoku'}
       size='sm'
       key='sudBut'
@@ -112,7 +119,10 @@ function App (props) {
   const latticeSwitchButton =
     <Button
       className={classes.latticeSwitchButton}
-      onClick={() => overrideWidget('lattice')}
+      onClick={() => {
+        window.history.replaceState({ app: 'lattice' }, 'Lattice Colourer', '/app/lattice')
+        overrideWidget('lattice')
+      }}
       disabled={widget === 'lattice'}
       size='sm'
       key='latBut'
