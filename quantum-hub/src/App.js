@@ -53,7 +53,7 @@ function App (props) {
   }
 
   const appBrand = widgetList[widget].brand
-  const WidgetTag = widgetList[widget].component
+  // const WidgetTag = widgetList[widget].component
 
   const outputToConsole = (line) => {
     setTextLines(textLines.concat(line))
@@ -74,15 +74,25 @@ function App (props) {
   }
 
   const widgetComponent =
-    <WidgetTag
-      id='myWidget'
-      getAPIKey={() => ''}
-      outputToConsole={outputToConsole}
-      appendToConsole={appendToConsole}
-      loading={loading}
-      setLoading={setLoading}
-      key='myGame'
-    />
+    Object.keys(widgetList).map((wid) => {
+      const WidC = widgetList[wid].component
+      return (
+        <div
+          style={{ display: (wid === widget ? null : 'none') }}
+          key={wid + 'Div'}
+        >
+          <WidC
+            id='myWidget'
+            getAPIKey={() => ''}
+            outputToConsole={outputToConsole}
+            appendToConsole={appendToConsole}
+            loading={loading}
+            setLoading={setLoading}
+            key={wid + 'Widget'}
+          />
+        </div>
+      )
+    })
 
   const terminalWindow =
     <Console
