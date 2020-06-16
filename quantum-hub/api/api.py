@@ -77,8 +77,8 @@ def make_worker():
 
     # job = app.task_queue.enqueue('workers.foo', args = [int(request.get_json()['time']), 2])
 
-    token = 'DEV-a141649cf7a24ed2fd84b5939533c9fcc2d99fb6' # Haris
-    # token = 'DEV-98f37d3736d62d7061eaa5e68214a92eadb2393b' # Ari
+    # token = 'DEV-a141649cf7a24ed2fd84b5939533c9fcc2d99fb6' # Haris
+    token = 'DEV-98f37d3736d62d7061eaa5e68214a92eadb2393b' # Ari
 
     args = []
     if raw_data['typeOfProblem'] == 'nurseScheduling':

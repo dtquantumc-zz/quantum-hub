@@ -11,11 +11,14 @@ import NurseScheduler from './Nurse/NurseScheduler'
 import LatticeColourer from './Lattice/LatticeColourer'
 import Widget from './EmptyWidget/EmptyWidget'
 
-import NurseBriefDescriptionText from '../Typography/NurseBriefDescriptionText.js'
-import NurseReadMoreDescriptionText from '../Typography/NurseReadMoreDescriptionText.js'
+import NurseBriefDescriptionText from '../Typography/NurseBriefDescriptionText'
+import NurseReadMoreDescriptionText from '../Typography/NurseReadMoreDescriptionText'
 
-import SudokuBriefDescriptionText from '../Typography/SudokuBriefDescriptionText.js'
-import SudokuReadMoreDescriptionText from '../Typography/SudokuReadMoreDescriptionText.js'
+import SudokuBriefDescriptionText from '../Typography/SudokuBriefDescriptionText'
+import SudokuReadMoreDescriptionText from '../Typography/SudokuReadMoreDescriptionText'
+
+import LatticeBriefDescriptionText from '../Typography/LatticeBriefDescriptionText'
+import LatticeReadMoreDescriptionText from '../Typography/LatticeReadMoreDescriptionText'
 
 const widgetList = {
   nurse: {
@@ -43,8 +46,8 @@ const widgetList = {
     route: '/app/lattice',
     name: 'lattice-colourer',
     title: 'Lattice Two-Colouring',
-    briefDescriptionText: <p>Temporary Description Text</p>,
-    readMoreDescriptionText: <p>Temporary Description Text</p>,
+    briefDescriptionText: <LatticeBriefDescriptionText />,
+    readMoreDescriptionText: <LatticeReadMoreDescriptionText />,
     brand: 'Lattice Two-Colouring',
     component: LatticeColourer
   },
