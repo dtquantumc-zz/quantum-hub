@@ -27,9 +27,13 @@ import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import Hidden from '@material-ui/core/Hidden'
 import Drawer from '@material-ui/core/Drawer'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 // @material-ui/icons
-import Menu from '@material-ui/icons/Menu'
+import MenuIcon from '@material-ui/icons/Menu'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 // core components
+import widgetList from '../Widget/widgetList'
 import styles from '../../assets/jss/material-kit-react/components/headerStyle.js'
 
 const useStyles = makeStyles(styles)
@@ -37,6 +41,8 @@ const useStyles = makeStyles(styles)
 export default function Header (props) {
   const classes = useStyles()
   const [mobileOpen, setMobileOpen] = React.useState(false)
+  const [appMenuAnchor, setAppMenuAnchor] = React.useState(null)
+
   React.useEffect(() => {
     if (props.changeColorOnScroll) {
       window.addEventListener('scroll', headerColorChange)
@@ -47,9 +53,17 @@ export default function Header (props) {
       }
     }
   })
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
+  const handleAppMenuClick = (event) => {
+    setAppMenuAnchor(event.currentTarget)
+  }
+  const handleAppMenuClose = () => {
+    setAppMenuAnchor(null)
+  }
+
   const headerColorChange = () => {
     const { color, changeColorOnScroll } = props
     const windowsScrollTop = window.pageYOffset
@@ -69,14 +83,55 @@ export default function Header (props) {
         .classList.remove(classes[changeColorOnScroll.color])
     }
   }
-  const { color, rightLinks, leftLinks, brand, fixed, absolute } = props
+  const { color, rightLinks, leftLinks, brand, fixed, absolute, setWidget, loading } = props
   const appBarClasses = classNames({
     [classes.appBar]: true,
     [classes[color]]: color,
     [classes.absolute]: absolute,
     [classes.fixed]: fixed
   })
-  const brandComponent = <Button className={classes.title}>{brand}</Button>
+  const brandComponent =
+    <>
+      <Button
+        className={classes.title}
+        onClick={handleAppMenuClick}
+
+      >
+        {loading ? '' : (
+          <>
+            <MoreVertIcon />
+            <div className={classes.lPad} />
+          </>
+        )}
+        {brand}
+      </Button>
+      <Menu
+        disabled={loading}
+        id='AppMenu'
+        variant='temporary'
+        anchorEl={appMenuAnchor}
+        open={Boolean(appMenuAnchor)}
+        onClose={handleAppMenuClose}
+        className={classes.menu}
+        keepMounted
+      >
+        {Object.keys(widgetList).map((widget) => {
+          if (widget === 'default') return ''
+          return (
+            <MenuItem
+              key={widget}
+              onClick={() => {
+                setWidget(widget)
+                handleAppMenuClose()
+              }}
+            >
+              {widgetList[widget].brand}
+            </MenuItem>
+          )
+        })}
+      </Menu>
+    </>
+
   const leftLinksComponent = <Hidden smDown implementation='css'>{leftLinks}</Hidden>
   return (
     <AppBar className={appBarClasses}>
@@ -98,7 +153,7 @@ export default function Header (props) {
             aria-label='open drawer'
             onClick={handleDrawerToggle}
           >
-            <Menu />
+            <MenuIcon />
           </IconButton>
         </Hidden>
       </Toolbar>

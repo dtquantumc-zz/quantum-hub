@@ -65,6 +65,14 @@ function App (props) {
     setTextLines([...textLines])
   }
 
+  const setWidget = (widget) => {
+    if (!widgetList[widget]) {
+      widget = 'default'
+    }
+    window.history.replaceState({ app: widget }, widgetList[widget].brand, widgetList[widget].route)
+    overrideWidget(widget)
+  }
+
   const widgetComponent =
     <WidgetTag
       id='myWidget'
@@ -150,6 +158,8 @@ function App (props) {
         leftLinks={<LeftHeaderLinks />}
         fixed
         key='myHeader'
+        setWidget={setWidget}
+        loading={loading}
       />
       <div className={classes.container}>
         <GridContainer

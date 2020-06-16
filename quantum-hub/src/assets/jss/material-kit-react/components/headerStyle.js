@@ -179,6 +179,12 @@ const headerStyle = {
     display: 'flex',
     flexDirection: 'row-reverse',
     width: '200px'
+  },
+  menu: {
+    width: '400px'
+  },
+  lPad: {
+    paddingLeft: '8px'
   }
 }
 
