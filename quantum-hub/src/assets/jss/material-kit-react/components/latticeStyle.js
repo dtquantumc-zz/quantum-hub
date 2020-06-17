@@ -19,11 +19,12 @@ const latticeStyle = theme => ({
     }
   },
   buttonContainer: {
-    display: 'flex'
+    display: 'flex',
+    justifyContent: 'space-between'
   },
   detailButton: {
-    marginLeft: 'auto',
-    marginRight: 'auto'
+    marginLeft: '0',
+    marginRight: '0'
   },
   instructions: {
     color: 'rgba(0, 0, 0, 0.87)',

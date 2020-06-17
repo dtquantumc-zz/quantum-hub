@@ -16,7 +16,8 @@ export default function LatticeBriefDescriptionText () {
       </Typography>
       <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         You can design your own grid, where
-        each hexagon is a graph node, connected to its neighbours. Then, after "locking in"
+        each hexagon is a graph node, connected to its neighbours.
+        Then, after "locking in"
         the grid, your goal is to colour the nodes with two colours so as
         to minimize neighbouring nodes with the same colour.
       </Typography>

@@ -45,7 +45,7 @@ function latticeSolveRequest (lattice, setLattice, outputToConsole, appendToCons
       for (var n of neighbours) {
         const ii = i + n[0]
         const jj = j + n[1]
-        console.log(ii + ' ' + jj)
+        // console.log(ii + ' ' + jj)
         if (ii >= 0 && ii < lattice.length) {
           if (jj >= 0 && jj < lattice[ii].length) {
             if (lattice[ii][jj] !== 0) {
@@ -57,8 +57,8 @@ function latticeSolveRequest (lattice, setLattice, outputToConsole, appendToCons
     }
   }
 
-  console.log(dict)
-  console.log(conns)
+  // console.log(dict)
+  // console.log(conns)
 
   outputToConsole(`Colouring ${index} Lattice points for minimum conflicts:`)
 

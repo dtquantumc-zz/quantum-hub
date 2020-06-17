@@ -25,6 +25,24 @@ class LatticeVars {
    */
   static state = ''
 
+  /**
+   * Stores the best lattice so far
+   */
+  static bestLattice = [null, 1000]
+
+  /**
+   * Stores the quantum solution
+   */
+  static quantumLattice = [[], '?']
+
+  static setBest (lattice, conflicts) {
+    LatticeVars.bestLattice = [lattice, conflicts]
+  }
+
+  static setQuantum (lattice, conflicts) {
+    LatticeVars.quantumLattice = [lattice, conflicts]
+  }
+
   static setState (state) {
     LatticeVars.state = state
   }

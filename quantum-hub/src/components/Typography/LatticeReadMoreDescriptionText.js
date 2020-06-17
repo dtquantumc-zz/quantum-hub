@@ -24,6 +24,10 @@ export default function LatticeReadMoreDescriptionText () {
         centers of the cells.
       </Typography>
       <Typography align='left' paragraph>
+        In condensed matter physics, this problem occurs in the context of finding
+        the ground state of the antiferromagnetic Ising model on a triangular lattice.
+      </Typography>
+      <Typography align='left' paragraph>
         When you are satisfied with your best two-colouring configuration, you can then
         get a quantum computer's solution to the same problem. The computer runs the
         same problem 50 times, choosing the best answer. Sometimes, there are multiple
@@ -46,16 +50,12 @@ export default function LatticeReadMoreDescriptionText () {
         versions of it.
       </Typography>
       <Typography align='left' paragraph>
-        This two-colouring problem is essentially what D-Wave's Quantum Annealer solves
-        at heart, however it allows for connections of varying strengths, as well as
-        connections asking the neighbours to have the same colour.
-      </Typography>
-      <Typography align='left' paragraph>
-        For advanced readers wondering whether Dwave's quantum annealer can thus solve any
-        NP-Complete problem, the answer is that it is built to solve optimization
-        problems which encompass NP-Complete problem. It is unproven whether or not
-        the annealer can solve any size of problem, although it is strongly believed
-        that it would take an exponential amount of time with large enough problems.
+        This two colouring problem is a special case of the optimization problem
+        implemented by D-Wave's quantum annealer. The annealer
+        uses <Link href='https://en.wikipedia.org/wiki/Quantum_tunnelling' style={{ color: '#1599bf' }}>Quantum Tunnelling</Link> to
+        try and speed up finding the optimum solution. It's not known exactly when
+        this strategy offers an advantage compared to classical methods,
+        but we're continuing to explore!
       </Typography>
     </>
   )

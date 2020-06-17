@@ -16,6 +16,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
 import styles from '../../../assets/jss/material-kit-react/components/latticeStyle.js'
 import './latticeColourer.css'
+import LatticeVars from './latticeVars'
 
 const baseLattice = [
   [1, 1, 0, 0, 1, 1, 1],
@@ -68,13 +69,24 @@ function LatticeColourer (props) {
   // whenever the Set function for a variable is called.
   const [lattice, setLattice] = useState(baseLattice)
   const [mode, setMode] = useState('grid') // Can be 'grid', 'marble', or 'disabled'
-  const [conflicts, setConflicts] = useState(0)
-  const [minConf, setMinConf] = useState(1000)
   const [loading, setLoading] = [props.loading, props.setLoading]
 
   const useStyles = makeStyles(styles)
 
   const classes = useStyles()
+
+  const isQuantum = latticeSame(lattice, LatticeVars.quantumLattice[0])
+
+  var conflicts = '?'
+  if (mode !== 'grid') {
+    conflicts = calculateConflicts(lattice)
+    // console.log(conflicts)
+    if (conflicts.length <= LatticeVars.bestLattice[1] && !isQuantum) {
+      LatticeVars.setBest(lattice.map((row) => [...row]), conflicts.length)
+    }
+  }
+
+  const isBest = LatticeVars.bestLattice[1] === conflicts.length
 
   var modeText
   if (mode === 'grid') {
@@ -87,10 +99,17 @@ function LatticeColourer (props) {
   var minText = ''
   if (mode === 'grid') {
     instructionText = 'Build a Grid to play on!'
+  } else if (isQuantum) {
+    instructionText = 'The Quantum Solution has ' + conflicts.length + ' conflicts!'
+  } else if (isBest) {
+    instructionText = 'This is your best solution yet with ' + conflicts.length + ' conflicts!'
   } else if (mode === 'marble') {
-    instructionText = 'Minimize the conflicts: ' + conflicts
-    minText = 'Your best: ' + minConf
+    instructionText = 'Minimize the conflicts: ' + conflicts.length
   }
+
+  const bestText = 'Best Solution: ' + LatticeVars.bestLattice[1]
+
+  const qText = 'Quantum Solution: ' + LatticeVars.quantumLattice[1]
 
   return (
     <div className={classes.latticeRoot}>
@@ -98,12 +117,7 @@ function LatticeColourer (props) {
         <HexGrid
           lattice={lattice}
           setLattice={setLattice}
-          setConflicts={(num) => {
-            setConflicts(num)
-            if (num < minConf) {
-              setMinConf(num)
-            }
-          }}
+          conflicts={conflicts}
           mode={mode}
           width={476}
         />
@@ -123,7 +137,9 @@ function LatticeColourer (props) {
             if (mode === 'grid') {
               setMode('marble')
             } else if (mode === 'marble') {
-              setMinConf(1000)
+              setLattice(lattice.map((row) => row.map((e) => e * e)))
+              LatticeVars.setBest(null, 1000)
+              LatticeVars.setQuantum([], '?')
               setMode('grid')
             }
           }}
@@ -136,14 +152,81 @@ function LatticeColourer (props) {
           size='sm'
           disabled={mode !== 'marble'}
           onClick={() => {
-            latticeSolveRequest(lattice, setLattice, props.outputToConsole, props.appendToConsole, props.getAPIKey, setLoading)
+            latticeSolveRequest(
+              lattice,
+              (newLattice) => {
+                LatticeVars.setQuantum(newLattice, (calculateConflicts(newLattice)).length)
+                setLattice(newLattice)
+              },
+              props.outputToConsole,
+              props.appendToConsole,
+              props.getAPIKey,
+              setLoading
+            )
           }}
         >
           Get Quantum Solution
         </Button>
       </div>
+      <div className={classes.buttonContainer} style={{ display: (mode !== 'grid' ? null : 'none') }}>
+        <Button
+          className={classes.detailButton}
+          color='geeringupSecondary'
+          size='sm'
+          disabled={mode !== 'marble'}
+          onClick={() => {
+            setLattice(LatticeVars.bestLattice[0].map((row) => [...row]))
+          }}
+        >
+          {bestText}
+        </Button>
+        <Button
+          className={classes.detailButton}
+          color='geeringupSecondary'
+          size='sm'
+          disabled={mode !== 'marble' || LatticeVars.quantumLattice[0].length === 0}
+          onClick={() => {
+            setLattice(LatticeVars.quantumLattice[0].map((row) => [...row]))
+          }}
+        >
+          {qText}
+        </Button>
+      </div>
     </div>
   )
+}
+
+function calculateConflicts (lattice) {
+  var conflicts = []
+  for (var i = 0; i < lattice.length; ++i) {
+    for (var j = 0; j < lattice[i].length; ++j) {
+      if (!lattice[i][j]) continue
+      const neighbours = (i % 2 !== 0) ? [[1, 1], [1, 0], [0, 1]] : [[1, -1], [1, 0], [0, 1]]
+      for (const n of neighbours) {
+        const [ii, jj] = [i + n[0], j + n[1]]
+        // console.log(ii + ' ' + jj)
+        if (ii >= 0 && ii < lattice.length && jj >= 0 && jj < lattice[ii].length) {
+          if (lattice[ii][jj] === lattice[i][j]) {
+            conflicts.push([i, j, ii, jj])
+          }
+        }
+      }
+    }
+  }
+  return conflicts
+}
+
+function latticeSame (lattice1, lattice2) {
+  // console.log(lattice1)
+  // console.log(lattice2)
+  if (lattice1.length !== lattice2.length) return false
+  for (var i = 0; i < lattice1.length; ++i) {
+    if (lattice1[i].length !== lattice2[i].length) return false
+    for (var j = 0; j < lattice1[i].length; ++j) {
+      if (lattice1[i][j] !== lattice2[i][j]) return false
+    }
+  }
+  return true
 }
 
 export default LatticeColourer

@@ -89,9 +89,10 @@ function MarblesAndLines (props) {
   const lattice = props.lattice
   const hexWidth = props.hexWidth
   const hexHeight = props.hexHeight
-  const setConflicts = props.setConflicts
+  const conflicts = props.conflicts
 
-  var conflicts = 0
+  var ci = 0
+
   const returnVal = (
     lattice.map((row, i) => {
       return (
@@ -108,29 +109,43 @@ function MarblesAndLines (props) {
           }
 
           var lineEnds = []
-          var neighbours
-          if (i % 2) {
-            neighbours = [[1, 1], [1, 0], [0, 1]]
-          } else {
-            neighbours = [[1, -1], [1, 0], [0, 1]]
+
+          while (
+            ci < conflicts.length &&
+            conflicts[ci][0] === i &&
+            conflicts[ci][1] === j
+          ) {
+            const ii = conflicts[ci][2]
+            const jj = conflicts[ci][3]
+            lineEnds.push([
+              (jj + (ii % 2 === 1 ? 1 : 0.5)) * hexWidth,
+              (ii + 2 / 3) * hexHeight
+            ])
+            ci++
           }
-          for (var n of neighbours) {
-            const ii = i + n[0]
-            const jj = j + n[1]
-            // console.log(ii + ' ' + jj)
-            if (ii >= 0 && ii < lattice.length) {
-              if (jj >= 0 && jj < lattice[ii].length) {
-                if (lattice[ii][jj] === e) {
-                  lineEnds.push([
-                    (jj + (ii % 2 === 1 ? 1 : 0.5)) * hexWidth,
-                    (ii + 2 / 3) * hexHeight
-                  ])
-                  conflicts += 1
-                }
-              }
-            }
-          }
-          // console.log(lineEnds)
+          // var neighbours
+          // if (i % 2) {
+          //   neighbours = [[1, 1], [1, 0], [0, 1]]
+          // } else {
+          //   neighbours = [[1, -1], [1, 0], [0, 1]]
+          // }
+          // for (var n of neighbours) {
+          //   const ii = i + n[0]
+          //   const jj = j + n[1]
+          //   // console.log(ii + ' ' + jj)
+          //   if (ii >= 0 && ii < lattice.length) {
+          //     if (jj >= 0 && jj < lattice[ii].length) {
+          //       if (lattice[ii][jj] === e) {
+          //         lineEnds.push([
+          //           (jj + (ii % 2 === 1 ? 1 : 0.5)) * hexWidth,
+          //           (ii + 2 / 3) * hexHeight
+          //         ])
+          //         conflicts += 1
+          //       }
+          //     }
+          //   }
+          // }
+          // // console.log(lineEnds)
 
           return (
             <>
@@ -152,6 +167,7 @@ function MarblesAndLines (props) {
               }
               <circle
                 className='innerMarble'
+                key={x + ' ' + y + ' circ'}
                 cx={x + 1}
                 cy={y + 1}
                 r={hexWidth / 6}
@@ -165,8 +181,6 @@ function MarblesAndLines (props) {
       )
     })
   )
-
-  setConflicts(conflicts)
   return (returnVal)
 }
 
@@ -174,7 +188,7 @@ function HexGrid (props) {
   const [lattice, setLattice] = [props.lattice, props.setLattice]
   const mode = props.mode
   const maxW = props.width - 2
-  const setConflicts = props.setConflicts
+  const conflicts = props.conflicts
 
   // Calculate the width and height of each hexagon
   var width = 0
@@ -206,9 +220,9 @@ function HexGrid (props) {
             hexWidth={hexWidth}
             hexHeight={hexHeight}
             lattice={lattice}
+            conflicts={conflicts}
             setLattice={setLattice}
             mode={mode}
-            setConflicts={setConflicts}
           />
         )
           : ''}
