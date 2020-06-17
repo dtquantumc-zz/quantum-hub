@@ -115,7 +115,8 @@ function App (props) {
         window.history.replaceState({ app: 'nurse' }, 'Nurse Scheduler', '/app/nurse')
         overrideWidget('nurse')
       }}
-      disabled={widget === 'nurse' || loading}
+      disabled={widget === 'nurse'}
+      // disabled={widget === 'nurse' || loading}
       size='sm'
       key='nurseBut'
     >
@@ -129,7 +130,8 @@ function App (props) {
         window.history.replaceState({ app: 'sudoku' }, 'Sudoku Solver', '/app/sudoku')
         overrideWidget('sudoku')
       }}
-      disabled={widget === 'sudoku' || loading}
+      disabled={widget === 'sudoku'}
+      // disabled={widget === 'sudoku' || loading}
       size='sm'
       key='sudBut'
     >
@@ -143,7 +145,8 @@ function App (props) {
         window.history.replaceState({ app: 'lattice' }, 'Lattice Colourer', '/app/lattice')
         overrideWidget('lattice')
       }}
-      disabled={widget === 'lattice' || loading}
+      disabled={widget === 'lattice'}
+      // disabled={widget === 'lattice' || loading}
       size='sm'
       key='latBut'
     >
@@ -169,7 +172,8 @@ function App (props) {
         fixed
         key='myHeader'
         setWidget={setWidget}
-        loading={loading}
+        // loading={loading}
+        loading={false}
       />
       <div className={classes.container}>
         <GridContainer
