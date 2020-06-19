@@ -67,7 +67,7 @@ function LatticeColourer (props) {
   // States for Lattice Colouring widget.
   // These use React Hooks, so rerendering is done
   // whenever the Set function for a variable is called.
-  const [lattice, setLattice] = useState(baseLattice)
+  const [lattice, setLattice] = useState(getRandomLattice())
   const [mode, setMode] = useState('grid') // Can be 'grid', 'marble', or 'disabled'
   const [loading, setLoading] = [props.loading, props.setLoading]
 
@@ -150,22 +150,26 @@ function LatticeColourer (props) {
           className={classes.detailButton}
           color='geeringupSecondary'
           size='sm'
-          disabled={mode !== 'marble'}
+          disabled={false}
           onClick={() => {
-            latticeSolveRequest(
-              lattice,
-              (newLattice) => {
-                LatticeVars.setQuantum(newLattice, (calculateConflicts(newLattice)).length)
-                setLattice(newLattice)
-              },
-              props.outputToConsole,
-              props.appendToConsole,
-              props.getAPIKey,
-              setLoading
-            )
+            if (mode === 'marble') {
+              latticeSolveRequest(
+                lattice,
+                (newLattice) => {
+                  LatticeVars.setQuantum(newLattice, (calculateConflicts(newLattice)).length)
+                  setLattice(newLattice)
+                },
+                props.outputToConsole,
+                props.appendToConsole,
+                props.getAPIKey,
+                setLoading
+              )
+            } else if (mode === 'grid') {
+              setLattice(getRandomLattice())
+            }
           }}
         >
-          Get Quantum Solution
+          {mode === 'marble' ? 'Get Quantum Solution' : 'Random Grid'}
         </Button>
       </div>
       <div className={classes.buttonContainer} style={{ display: (mode !== 'grid' ? null : 'none') }}>
@@ -227,6 +231,21 @@ function latticeSame (lattice1, lattice2) {
     }
   }
   return true
+}
+
+function getRandomLattice () {
+  var newLattice = []
+  const size = 6 + Math.floor(Math.random() * 3)
+  for (var i = 0; i < size - 1; ++i) {
+    newLattice[i] = []
+    for (var j = 0; j < size - (i % 2 !== 0); ++j) {
+      newLattice[i][j] = Math.floor(Math.random() * 3)
+      if (newLattice[i][j] > 0) {
+        newLattice[i][j] = 1
+      }
+    }
+  }
+  return newLattice
 }
 
 export default LatticeColourer
