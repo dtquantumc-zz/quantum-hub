@@ -18,14 +18,14 @@ import styles from '../../../assets/jss/material-kit-react/components/latticeSty
 import './latticeColourer.css'
 import LatticeVars from './latticeVars'
 
-const baseLattice = [
-  [1, 1, 0, 0, 1, 1, 1],
-  [0, 1, 1, 1, 0, 1],
-  [1, 1, 1, 1, 1, 1, 1],
-  [0, 1, 1, 1, 0, 1],
-  [1, 1, 1, 0, 0, 0, 1],
-  [1, 1, 0, 0, 0, 1]
-]
+// const baseLattice = [
+//   [1, 1, 0, 0, 1, 1, 1],
+//   [0, 1, 1, 1, 0, 1],
+//   [1, 1, 1, 1, 1, 1, 1],
+//   [0, 1, 1, 1, 0, 1],
+//   [1, 1, 1, 0, 0, 0, 1],
+//   [1, 1, 0, 0, 0, 1]
+// ]
 
 /**
  * LatticeColourer is meant to give access to a hexagonal

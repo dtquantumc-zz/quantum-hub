@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import './sudoku.css'
 import sudokuSolveRequest from './sudokuSolveRequest'
+import getRandSolvableBoard from './randSolvableBoard'
 
 import Button from '../../CustomButtons/Button'
 import { makeSudokuGrid } from './GridSquare'
@@ -18,7 +19,8 @@ import {
   updateEmptyState,
   // isGridAllZeros,
   flatten,
-  emptySudokuGrid
+  emptySudokuGrid,
+  boldify
   // resetSudokuGrid
 } from './sudokuHelpers'
 
@@ -28,6 +30,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import styles from '../../../assets/jss/material-kit-react/components/sudokuStyle.js'
+
+// THIS MAY BE A PROBLEM AND RECALCING EACH TIME
+const randBoard = getRandSolvableBoard()
+const randBold = boldify(randBoard)
 
 /**
  * SudokuGame is meant to make the Sudoku Solver tool
@@ -69,8 +75,8 @@ function SudokuGame (props) {
   // The states for the Sudoku widget. These all use React hooks,
   // so that when setWhatever is called, the sudoku game is queued
   // for a rerender.
-  const [sudokuGrid, setSudokuGrid] = useState(Array(81).fill(0))
-  const [gridBold, setGridBold] = useState(Array(81).fill(0))
+  const [sudokuGrid, setSudokuGrid] = useState(randBoard)
+  const [gridBold, setGridBold] = useState(boldify(randBold))
 
   const [gridInvalid, setGridInvalid] = useState(SudokuValidationUtils.getEmptyGrid())
   const [rowInvalid, setRowInvalid] = useState(SudokuValidationUtils.getEmptyRow())
@@ -108,6 +114,11 @@ function SudokuGame (props) {
   const useStyles = makeStyles(styles)
 
   const classes = useStyles()
+
+  // if (load.isFirst) {
+  //   load.setFirst()
+  //   setGridBold(boldify(sudokuGrid))
+  // }
 
   return (
     <div className={classes.sudokuRoot}>
