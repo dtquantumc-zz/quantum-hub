@@ -107,7 +107,7 @@ function LatticeColourer (props) {
     instructionText = 'Minimize the conflicts: ' + conflicts.length
   }
 
-  const bestText = 'Best Solution: ' + LatticeVars.bestLattice[1]
+  const bestText = 'My Best Solution: ' + LatticeVars.bestLattice[1]
 
   const qText = 'Quantum Solution: ' + LatticeVars.quantumLattice[1]
 
