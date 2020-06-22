@@ -128,6 +128,8 @@ function getRandSolvableBoard () {
       break
     }
   }
+  console.log('made new sudoku:')
+  console.log(grid)
   return flatGrid(grid)
 }
 

@@ -76,7 +76,7 @@ function SudokuGame (props) {
   // so that when setWhatever is called, the sudoku game is queued
   // for a rerender.
   const [sudokuGrid, setSudokuGrid] = useState(randBoard)
-  const [gridBold, setGridBold] = useState(boldify(randBold))
+  const [gridBold, setGridBold] = useState(randBold)
 
   const [gridInvalid, setGridInvalid] = useState(SudokuValidationUtils.getEmptyGrid())
   const [rowInvalid, setRowInvalid] = useState(SudokuValidationUtils.getEmptyRow())
