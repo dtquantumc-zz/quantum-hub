@@ -161,6 +161,18 @@ function SudokuGame (props) {
           Solve
         </Button>
         <Button
+          color='geeringupSecondary'
+          disabled={!enabled}
+          onClick={() => {
+            const newRand = getRandSolvableBoard()
+            const newRandBold = boldify(newRand)
+            setSudokuGrid(newRand)
+            setGridBold(newRandBold)
+          }}
+        >
+          Random
+        </Button>
+        <Button
           color='geeringupPrimary'
           // color='primary'
           disabled={(empty || !enabled)}

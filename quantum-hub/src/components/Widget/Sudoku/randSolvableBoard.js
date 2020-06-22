@@ -35,10 +35,7 @@ function checkSolvable (grid, gridmask, Num, i, j, rand) {
   var vals = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
   if (rand) {
-    for (var a = 8; a > 0; a--) {
-      const b = Math.floor(Math.random() * 9);
-      [vals[a], vals[b]] = [vals[b], vals[a]]
-    }
+    shuffle(vals)
   }
 
   for (var val of vals) {
@@ -113,10 +110,20 @@ function getRandSolvableBoard () {
   var grid = makeFullGrid()
   // return flatGrid(grid)
   var Num = [2]
-  while (true) {
-    var x = Math.floor(Math.random() * 9)
-    var y = Math.floor(Math.random() * 9)
-    if (!grid[x][y]) continue
+  // var tries = 100
+  // var tried = new Set()
+  var toTry = []
+  for (var i = 0; i < 9; ++i) {
+    for (var j = 0; j <= i; ++j) {
+      toTry.push([i, j])
+    }
+  }
+
+  shuffle(toTry)
+
+  for (const [x, y] of toTry) {
+    // const x = box[0]
+    // const y = box[1]
 
     const oldvals = [grid[x][y], grid[8 - x][8 - y]]
     grid[x][y] = grid[8 - x][8 - y] = 0
@@ -125,7 +132,6 @@ function getRandSolvableBoard () {
     if (checkSolvable(grid, makeGridMask(grid), Num, -1, 0, false)) {
       grid[x][y] = oldvals[0]
       grid[8 - x][8 - y] = oldvals[1]
-      break
     }
   }
   console.log('made new sudoku:')
@@ -139,6 +145,13 @@ function flatGrid (grid) {
     newgrid[i] = grid[i % 9][Math.floor(i / 9)]
   }
   return newgrid
+}
+
+function shuffle (arr) {
+  for (var a = arr.length - 1; a > 0; a--) {
+    const b = Math.floor(Math.random() * arr.length);
+    [arr[a], arr[b]] = [arr[b], arr[a]]
+  }
 }
 
 export default getRandSolvableBoard
