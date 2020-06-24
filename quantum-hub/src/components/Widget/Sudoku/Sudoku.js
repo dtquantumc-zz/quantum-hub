@@ -168,6 +168,7 @@ function SudokuGame (props) {
             const newRandBold = boldify(newRand)
             setSudokuGrid(newRand)
             setGridBold(newRandBold)
+            SudokuValidationUtils.resetInvalidStates(invalidStateSetters)
           }}
         >
           Random
