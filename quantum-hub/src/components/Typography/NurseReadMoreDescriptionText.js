@@ -13,43 +13,50 @@ export default function NurseReadMoreDescriptionText () {
   return (
     <>
       <Typography align='left' paragraph>
-        Nurses are assigned according to the following constraints:
+        <b>Objective</b>
+      </Typography>
+      <Typography align='left' paragraph>
+        The objective of this app is to create a nurse work schedule so that:
         <ol>
-          <li>No nurse must work two or more days in a row (hard constraint)</li>
-          <li>At least one nurse must be assigned for each working day (hard constraint)</li>
-          <li>All nurses should have roughly even work schedules (soft constraint)</li>
+          <li>No nurse works two or more days in a row</li>
+          <li>There are exactly enough nurses working each day</li>
+          <li>All nurses should have roughly even work schedules</li>
+        </ol>
+        If such a perfect schedule is impossible, nurses may be scheduled to work
+        twice or more in a row, and there may be understaffing.
+      </Typography>
+      <Typography align='left' paragraph>
+        <b>Instructions</b>
+      </Typography>
+      <Typography align='left' paragraph>
+        <ol>
+          <li>Input the problem contraints you want</li>
+          <li>Click "Solve" to solve on a quantum computer</li>
+          <li>There may be a delay while waiting for an available computer</li>
+          <li>The compact schedule is then shown in a calendar</li>
+          <li>Click "More Detail" to see a complete schedule in a grid</li>
         </ol>
       </Typography>
       <Typography align='left' paragraph>
-        Hard constraints tell the program that they <b>must</b> be met.
-        Soft constraints tell the program to promote solutions that meet them.
+        <b>Quantum Randomness</b>
       </Typography>
       <Typography align='left' paragraph>
-        The program tries to find the <i>optimum</i> solution here, meaning
-        that not every solution will meet all three constraints well, it is
-        looking for the best solution possible.
+        D-Wave's quantum annealer is probabilistic, and as such, you may get a
+        different solution every time you click "Solve". Try solving multiple
+        times to see if you get different answers!
       </Typography>
       <Typography align='left' paragraph>
-        Enter the number of nurses you'd like to schedule, and the number of days
-        you'd like to schedule shifts on. Kindly note that when you submit your problem,
-        it will be put in two queues. The first is a queue on this web application,
-        where we solve problems based on when they are submitted. The second queue your
-        problem will have to wait in is D-Wave's Quantum Processor Unit, or QPU. It's
-        unlikely that you'll be waiting in queue for a very long time, it really depends
-        on how many users there are at any given time!
+        <b>Problem Background</b>
       </Typography>
       <Typography align='left' paragraph>
-        This application uses D-Wave System's Nurse Scheduling Toy Example code,
-        found <Link href='https://github.com/dwave-examples/nurse-scheduling' style={{ color: '#1599bf' }}>here</Link>.
+        This application uses D-Wave System's Nurse
+        Scheduling <Link href='https://github.com/dwave-examples/nurse-scheduling' style={{ color: '#1599bf' }}>Toy Example code</Link>.
       </Typography>
       <Typography align='left' paragraph>
-        Similar to the Sudoku puzzle, the NSP is a constraint satisfactory problem (CSP).
+        Similar to the Sudoku puzzle, Nurse Scheduling is a constraint satisfactory
+        problem (CSP).
         There are a given set of constraints that an ideal solution must follow. We
         run this problem on D-Wave System's Quantum Processing Unit (QPU).
-      </Typography>
-      <Typography align='left' paragraph>
-        D-Wave's solvers are probabilistic, and as such, you may get a different solution
-        every time you click 'Solve'.
       </Typography>
     </>
   )

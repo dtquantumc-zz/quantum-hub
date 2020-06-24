@@ -12,17 +12,17 @@ export default function NurseBriefDescriptionText () {
   return (
     <>
       <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
-        Welcome to the Nurse Scheduling Problem, or the NSP.
+        This app schedules nurses to shifts using a quantum computer.
       </Typography>
       <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
-        This application assigns a set of nurses to a number of shifts,
-        based on a set of constraints on schedule and staff.
+        A schedule will be found to assign nurses to shifts so that nurses work
+        similar amounts, no nurse works twice in a row, and there are enough nurses
+        per day to take care of patients.
       </Typography>
       <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         This is a <i>simplified</i> model of a nursing facility.
         In real facilities, the constraints may differ and may be somewhat more complicated,
-        to ensure that there are enough nurses on shifts at all times, without overworking
-        any individual nursing staff.
+        to accomodate with changing demand and nurses' availability schedules.
       </Typography>
     </>
   )

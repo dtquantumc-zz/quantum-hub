@@ -150,7 +150,7 @@ function App (props) {
       size='sm'
       key='latBut'
     >
-      Switch to Lattice (WIP)
+      Switch to Lattice
     </Button>
 
   const appSwitchButtons =
