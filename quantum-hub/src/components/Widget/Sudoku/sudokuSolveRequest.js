@@ -109,7 +109,7 @@ function postSolve (xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, s
       // const flattenedBoard = solvedBoard.flat()
       // Sad, have to get rid of flat() for old Edge support.
       // Many people haven't updated Edge to Jan 2020 version yet
-      const flattenedBoard = solvedBoard.join().split(',')
+      const flattenedBoard = [].concat(...solvedBoard)
 
       setSudokuGrid(flattenedBoard)
       setEmpty(isGridAllZeros(flattenedBoard))

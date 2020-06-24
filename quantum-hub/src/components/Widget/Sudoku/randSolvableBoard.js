@@ -135,7 +135,8 @@ function getRandSolvableBoard () {
     }
   }
   console.log('made new sudoku:')
-  console.log(grid)
+  // console.log(grid)
+  console.log((flatGrid(grid).map((e) => { return (e === 0 ? ' ' : e) })).join(''))
   return flatGrid(grid)
 }
 
