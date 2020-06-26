@@ -121,6 +121,8 @@ function getRandSolvableBoard () {
 
   shuffle(toTry)
 
+  var fails = 3
+
   for (const [x, y] of toTry) {
     // const x = box[0]
     // const y = box[1]
@@ -132,8 +134,10 @@ function getRandSolvableBoard () {
     if (checkSolvable(grid, makeGridMask(grid), Num, -1, 0, false)) {
       grid[x][y] = oldvals[0]
       grid[8 - x][8 - y] = oldvals[1]
+      if (fails-- === 0) break
     }
   }
+  console.log(fails)
   console.log('made new sudoku:')
   // console.log(grid)
   console.log((flatGrid(grid).map((e) => { return (e === 0 ? ' ' : e) })).join(''))

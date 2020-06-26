@@ -140,7 +140,8 @@ def main(matrix=None, token=None):
     for row in range(n):
         for col in range(n):
             node_digits = [get_label(row, col, digit) for digit in digits]
-            one_digit_bqm = combinations(node_digits, 1)
+            one_digit_bqm = combinations(node_digits, 1, strength=1.5)
+            # print(one_digit_bqm)
             bqm.update(one_digit_bqm)
 
     # Constraint: Each row of nodes cannot have duplicate digits
@@ -148,6 +149,7 @@ def main(matrix=None, token=None):
         for digit in digits:
             row_nodes = [get_label(row, col, digit) for col in range(n)]
             row_bqm = combinations(row_nodes, 1)
+            # print(row_bqm)
             bqm.update(row_bqm)
 
     # Constraint: Each column of nodes cannot have duplicate digits
@@ -155,6 +157,7 @@ def main(matrix=None, token=None):
         for digit in digits:
             col_nodes = [get_label(row, col, digit) for row in range(n)]
             col_bqm = combinations(col_nodes, 1)
+            # print(col_bqm)
             bqm.update(col_bqm)
 
     # Constraint: Each sub-square cannot have duplicates
@@ -173,6 +176,7 @@ def main(matrix=None, token=None):
                 subsquare = [get_label(row + row_shift, col + col_shift, digit)
                              for row, col in subsquare_indices]
                 subsquare_bqm = combinations(subsquare, 1)
+                # print(subsquare_bqm)
                 bqm.update(subsquare_bqm)
 
     # Constraint: Fix known values
@@ -191,24 +195,41 @@ def main(matrix=None, token=None):
                 # produced by 'get_label(row, col, value)'. All other labels
                 # with the same 'row' and 'col' will be discouraged from being
                 # selected.
-                bqm.fix_variable(get_label(row, col, value), 1)
+                for val in digits:
+                    if val == value:
+                        bqm.fix_variable(get_label(row, col, value), 1)
+                    else:
+                        bqm.fix_variable(get_label(row, col, val), -1)
+
+    if len(bqm) == 0:
+        print("That was a full Sudoku!")
+        return get_result(matrix)
+
+    bqm.scale(10)
 
     # Solve BQM
     sampler = KerberosSampler()
     solution = sampler.sample(bqm,
                               max_iter=10,
-                              convergence=2,
-                              energy_threshold=0.1,
+                              convergence=3,
+                              energy_threshold=0.0,
                               qpu_sampler=qpu_sampler)
+    # print(solution)
     best_solution = solution.first.sample
 
     # Print solution
     solution_list = [k for k, v in best_solution.items() if v == 1]
 
+    # New Matrix
+    # matrix = [[0 for x in range(n)] for y in range(n)]
+
     for label in solution_list:
         coord, digit = label.split('_')
         row, col = map(int, coord.split(','))
-        matrix[row][col] = int(digit)
+        if matrix[row][col]:
+            print(f'Duplicate answer: {row}, {col} = {matrix[row][col]} or {digit}?')
+        else:
+            matrix[row][col] = int(digit)
 
     # result = get_result(matrix)
     # print(solution.info)
