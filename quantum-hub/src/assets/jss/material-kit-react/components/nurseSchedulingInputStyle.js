@@ -17,8 +17,11 @@
 import { container } from '../../material-kit-react.js'
 
 const nurseSchedulingInputStyle = {
+  gridContainer: {
+    paddingTop: '0'
+  },
   gridItem: {
-    width: 'inherit'
+    width: '100%'
   },
   container: {
     ...container,
@@ -65,7 +68,8 @@ const nurseSchedulingInputStyle = {
     }
   },
   form: {
-    margin: '0'
+    width: 'auto',
+    margin: 'auto'
   },
   cardHeader: {
     width: 'auto',
@@ -96,7 +100,8 @@ const nurseSchedulingInputStyle = {
     textAlign: 'center'
   },
   cardFooter: {
-    paddingTop: '0rem',
+    display: 'flex',
+    paddingTop: '0',
     border: '0',
     borderRadius: '6px',
     justifyContent: 'center !important'

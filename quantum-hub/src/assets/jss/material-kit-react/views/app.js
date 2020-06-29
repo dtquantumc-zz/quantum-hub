@@ -20,7 +20,7 @@ const appStyle = {
   container: {
     zIndex: '12',
     color: '#FFFFFF',
-    marginTop: '90px',
+    marginTop: '74px',
     ...container
   },
   title: {
@@ -58,13 +58,20 @@ const appStyle = {
     justifyContent: 'center'
   },
   nurseSwitchButton: {
-    margin: '8px 8px 8px calc(22px - ((292.906px - 286.969px) / 2))',
+    margin: '8px',
     backgroundColor: '#D96262',
     '&:hover,&:focus': {
       backgroundColor: '#D96262'
     }
   },
   sudokuSwitchButton: {
+    margin: '8px',
+    backgroundColor: '#D96262',
+    '&:hover,&:focus': {
+      backgroundColor: '#D96262'
+    }
+  },
+  latticeSwitchButton: {
     margin: '8px',
     backgroundColor: '#D96262',
     '&:hover,&:focus': {

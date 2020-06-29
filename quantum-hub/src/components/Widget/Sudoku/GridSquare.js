@@ -59,7 +59,13 @@ function GridSquare (props) {
  * @param {Boolean} enabled - Whether the whole board is enabled, or should be shaded
  * and disabled.
  * @param {Function} setCurrentSquare - A function to change the current selected
- * square to any clicked square
+ * square to any clicked square.
+ * @param {Array(Array(9))} gridInvalid - A 9x9 array with True indicating that sudoku
+ * tile should be drawn as invalid.
+ * @param {Array(9)} rowInvalid - An array of all the rows with errors in them marked by True
+ * @param {Array(9)} colnInvalid - Same as rowInvalid, but columns.
+ * @param {Object} blockInvalid - A JS object with keys [blockRow, blockColn] marking
+ * blocks as errorred or error-free.
  */
 function makeSudokuGrid (sudokuGrid, gridBold, shaded, enabled, setCurrentSquare, gridInvalid, rowInvalid, colnInvalid, blockInvalid) {
   return (

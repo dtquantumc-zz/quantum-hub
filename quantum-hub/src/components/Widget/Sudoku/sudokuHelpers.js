@@ -50,6 +50,16 @@ function resetSudokuGrid (setSudokuGrid, setBold) {
   setBold(newBold)
 }
 
+function boldify (grid) {
+  var newBold = Array(81)
+  for (var i = 0; i < 81; ++i) {
+    if (grid[i] !== 0) newBold[i] = true
+    else newBold[i] = false
+  }
+  // console.log(newBold)
+  return newBold
+}
+
 export {
   isNumberPress,
   isNumpadPress,
@@ -58,5 +68,6 @@ export {
   isGridAllZeros,
   flatten,
   emptySudokuGrid,
-  resetSudokuGrid
+  resetSudokuGrid,
+  boldify
 }

@@ -19,14 +19,14 @@ import {
  * @param {Function} setSudokuGrid - Hook to update Sudoku Grid
  * @param {Function} setEnabled - Hook to update Enabled status of the whole widget
  * @param {Function} outputToConsole - Hook to add a line of text to the Console (output)
+ * @param {Function} appendToConsole - Append to Console
  * @param {Function} getAPIKey - Returns the user's current API Key. If empty, assume
  * a simulation is wanted.
  * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
+ * @param {Function} gridValidator - Function to validate the Sudoku Grid's state
  * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
- * @param {Function} resetInvalidStates - Helper function to reset all of the
- * Sudoku Grid's invalid states
  */
-function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, getAPIKey, setEmpty, setLoading, resetInvalidStates) {
+function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, appendToConsole, getAPIKey, setEmpty, gridValidator, setLoading) {
   if (sudokuVars.xhr) return
   var sudokuArray = []
   for (var y = 0; y < 9; y++) {
@@ -40,78 +40,88 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
   outputToConsole('Sending in this grid:')
   sudokuArray.map((row) => outputToConsole(row.join(' ')))
 
-  // sudokuVars.xhr = new XMLHttpRequest()
-  // var xhr = sudokuVars.xhr
-  // const url = '/qpu_request'
+  // Set the parameters to send to the server
   const params = {
     // token: getAPIKey(),
     typeOfProblem: 'sudokuSolving',
     sudokuArray: sudokuArray
   }
-  // const async = true
-  // xhr.open('POST', url, async)
 
-  // xhr.responseType = 'json'
-
-  // xhr.onload = () => {
-  //   postSolve(setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading)
-  // }
-  // xhr.setRequestHeader('Content-type', 'application/json')
-  // xhr.send(JSON.stringify(params))
-
+  // Make the request for a solve to be queued up
+  // makeLongRequest is a powerful function, please
+  // use it wisely
   makeLongRequest(
     params,
-    (xhr) => { outputToConsole('The sudoku has been queued for solving!') },
-    (xhr) => { outputToConsole(xhr.response.jobStatus) },
     (xhr) => {
-      postSolve(xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, resetInvalidStates)
+      outputToConsole('The sudoku has been queued for solving!')
+      sudokuVars.setState(xhr.response.jobStatus)
+    },
+    (xhr) => {
+      if (xhr.response.jobStatus === sudokuVars.state) {
+        appendToConsole('.')
+      } else if (xhr.response.jobStatus === 'queued') {
+        outputToConsole('In Queue')
+      } else if (xhr.response.jobStatus === 'started') {
+        outputToConsole('Quantum Computing in Progress!')
+        outputToConsole('Solving')
+      } else {
+        outputToConsole(xhr.response.jobStatus)
+      }
+      sudokuVars.setState(xhr.response.jobStatus)
+    },
+    (xhr) => {
+      postSolve(xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, gridValidator)
     },
     (xhr) => {
       outputToConsole('Something went wrong')
       console.log(xhr)
       outputToConsole(JSON.stringify(xhr))
+      setEnabled(true)
+      setLoading(false)
     },
     outputToConsole
   )
-
-  // setXHR(xhr)
-  outputToConsole('Solving...')
 }
 
 /**
  * postSolve is called after the call to the server is completed.
- * It should handle any errors, set the grid to a solved state if solved,
+ * It will handle any (most) errors, set the grid to a solved state if solved,
  * and report back to the user through the console.
  *
- * At the moment, it simply prints out the response text. This functionality
- * will be improved in later versions.
  * @param {Function} setSudokuGrid - Hook to update the Sudoku Grid.
  * @param {Function} setEnabled - Hook to update enabled status of widget.
  * @param {Function} outputToConsole - Output a line of text to the console.
  * @param {Function} setEmpty - Hook to update the Sudoku Grid's empty state
  * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
- * @param {Function} resetInvalidStates - Helper function to reset all of the
- * Sudoku Grid's invalid states
+ * @param {Function} gridValidator - Function to validate the Sudoku Grid's state
  */
-function postSolve (xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, resetInvalidStates) {
+function postSolve (xhr, setSudokuGrid, setEnabled, outputToConsole, setEmpty, setLoading, gridValidator) {
   // const xhr = sudokuVars.xhr
 
   setEnabled(true)
   setLoading(false)
-  resetInvalidStates()
 
   if (xhr.status === 200) {
-    outputToConsole('Solved!')
+    outputToConsole('Solved! This is the qpu\'s answer:')
     const solvedBoard = xhr.response.solved_board
     if (solvedBoard) {
       solvedBoard.map((row) => outputToConsole(row.join(' ')))
-      const flattenedBoard = solvedBoard.flat()
+      // const flattenedBoard = solvedBoard.flat()
+      // Sad, have to get rid of flat() for old Edge support.
+      // Many people haven't updated Edge to Jan 2020 version yet
+      const flattenedBoard = [].concat(...solvedBoard)
+
       setSudokuGrid(flattenedBoard)
       setEmpty(isGridAllZeros(flattenedBoard))
+      gridValidator(flattenedBoard)
     } else {
       outputToConsole(JSON.stringify(xhr.response))
     }
-    outputToConsole(xhr.response.solution_message)
+    if (xhr.response.solution_message === 'The solution is correct') {
+      outputToConsole('The sudoku was solved correctly!')
+    } else {
+      outputToConsole('Unfortunately, the QPU did not find an optimal solution')
+    }
     // outputToConsole(xhr.response.timing.stringify())
   } else if (xhr.status === 400) {
     outputToConsole(xhr.response.error)

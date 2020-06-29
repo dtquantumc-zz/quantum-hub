@@ -14,8 +14,6 @@
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Deployment to Heroku" href="q-hub-deploy.html" />
-    <link rel="prev" title="Components" href="q-hub-components.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -125,6 +123,7 @@ useable and accessible.</p>
     <span class="n">getAPIKey</span><span class="o">=</span><span class="p">{()</span> <span class="o">=&gt;</span> <span class="n">APIKey</span><span class="p">}</span>
     <span class="n">outputToConsole</span><span class="o">=</span><span class="p">{(</span><span class="n">line</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
       <span class="n">setTextLines</span><span class="p">(</span><span class="n">textLines</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+    <span class="n">appendToConsole</span><span class="o">=</span><span class="p">{}</span>
     <span class="p">}}</span>
   <span class="o">/&gt;</span>
 <span class="p">)</span>
@@ -137,6 +136,7 @@ useable and accessible.</p>
 <li><p><strong>id</strong> (<em>string</em>) – (Required) This will get extended to serve as the id base string for all underlying components.</p></li>
 <li><p><strong>getAPIKey</strong> (<em>func()</em>) – (Required) This needs to be a function that can be called to return the current API key. NOTE: If it returns ‘’, this is equivalent to choosing the simulator.</p></li>
 <li><p><strong>outputToConsole</strong> (<em>func(string)</em>) – (Required) This function should take a single string (a line of text), and concatenate it to the current console output string array. If the Console is not being used, this can do anything you want with that string, but you should probably output it in some way.</p></li>
+<li><p><strong>appendToConsole</strong> (<em>func(string)</em>) – (Required) Same as output, but just appends the given string to the last line of the Console.</p></li>
 </ul>
 </dd>
 </dl>
@@ -154,6 +154,7 @@ and how bold they should be. This is what gives the board its Sudoku look.</p>
 <li><p><strong>focused</strong> (<em>Boolean</em>) – Marks whether the square should be in focus</p></li>
 <li><p><strong>onClick</strong> (<em>function</em>) – Function to be called on button click</p></li>
 <li><p><strong>value</strong> (<em>Integer</em>) – What will be displayed in the Square</p></li>
+<li><p><strong>bolded</strong> (<em>Boolean</em>) – Whether the square’s text should be bolded</p></li>
 <li><p><strong>enabled</strong> (<em>Boolean</em>) – Whether the button should be enabled</p></li>
 </ul>
 </dd>
@@ -162,7 +163,7 @@ and how bold they should be. This is what gives the board its Sudoku look.</p>
 
 <dl class="function">
 <dt id="handleKeyPress">
-<code class="sig-name descname">handleKeyPress</code><span class="sig-paren">(</span><em class="sig-param">event</em>, <em class="sig-param">sudokuGrid</em>, <em class="sig-param">setSudokuGrid</em>, <em class="sig-param">cur</em><span class="sig-paren">)</span><a class="headerlink" href="#handleKeyPress" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">handleKeyPress</code><span class="sig-paren">(</span><em class="sig-param">event</em>, <em class="sig-param">state</em>, <em class="sig-param">keyPressValidator</em><span class="sig-paren">)</span><a class="headerlink" href="#handleKeyPress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles key presses for the Sudoku Grid Component
 Sets the number in the currently selected slot of the sudoku grid
 to the number of the key just pressed.</p>
@@ -170,51 +171,8 @@ to the number of the key just pressed.</p>
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>event</strong> (<em>KeyPress</em>) – The keypres to be handled</p></li>
-<li><p><strong>sudokuGrid</strong> (<em>Array(81)</em>) – The current Sudoku grid</p></li>
-<li><p><strong>setSudokuGrid</strong> (<em>function</em>) – The hook to set the Sudoku grid</p></li>
-<li><p><strong>cur</strong> (<em>Array(2)</em>) – The currently selected tile</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="sendForSolve">
-<code class="sig-name descname">sendForSolve</code><span class="sig-paren">(</span><em class="sig-param">sudokuGrid</em>, <em class="sig-param">setSudokuGrid</em>, <em class="sig-param">setEnabled</em>, <em class="sig-param">outputToConsole</em>, <em class="sig-param">xhr</em>, <em class="sig-param">setXHR</em>, <em class="sig-param">getAPIKey</em><span class="sig-paren">)</span><a class="headerlink" href="#sendForSolve" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function does the XML HTTP request for the Sudoku Widget. It calls the
-backend, and once the data is returned, postSolve is called. This handles
-request creation, console logging, and some state validation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sudokuGrid</strong> (<em>Array(81)</em>) – This is the current Sudoku GameState grid</p></li>
-<li><p><strong>setSudokuGrid</strong> (<em>function</em>) – Hook to update Sudoku Grid</p></li>
-<li><p><strong>setEnabled</strong> (<em>function</em>) – Hook to update Enabled status of the whole widget</p></li>
-<li><p><strong>outputToConsole</strong> (<em>function</em>) – Hook to add a line of text to the Console (output)</p></li>
-<li><p><strong>xhr</strong> (<em>XMLHttpRequest</em>) – The current HTTP XML request. We only allow one at a time for this widget, so the function only runs if it is null.</p></li>
-<li><p><strong>setXHR</strong> (<em>function</em>) – Hook to update the current HTTP XML request.</p></li>
-<li><p><strong>getAPIKey</strong> (<em>function</em>) – Returns the user’s current API Key. If empty, assume a simulation is wanted.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="postSolve">
-<code class="sig-name descname">postSolve</code><span class="sig-paren">(</span><em class="sig-param">setSudokuGrid</em>, <em class="sig-param">setEnabled</em>, <em class="sig-param">outputToConsole</em>, <em class="sig-param">xhr</em>, <em class="sig-param">setXHR</em><span class="sig-paren">)</span><a class="headerlink" href="#postSolve" title="Permalink to this definition">¶</a></dt>
-<dd><p>postSolve is called after the call to the server is completed.
-It should handle any errors, set the grid to a solved state if solved,
-and report back to the user through the console.</p>
-<p>At the moment, it simply prints out the response text. This functionality
-will be improved in later versions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>setSudokuGrid</strong> (<em>function</em>) – Hook to update the Sudoku Grid.</p></li>
-<li><p><strong>setEnabled</strong> (<em>function</em>) – Hook to update enabled status of widget.</p></li>
-<li><p><strong>outputToConsole</strong> (<em>function</em>) – Output a line of text to the console.</p></li>
-<li><p><strong>xhr</strong> (<em>XMLHttpRequest</em>) – The widget’s current XML Http Request.</p></li>
-<li><p><strong>setXHR</strong> (<em>function</em>) – Hook to set xhr.</p></li>
+<li><p><strong>state</strong> (<em>Object</em>) – The complete state of the Sudoku board</p></li>
+<li><p><strong>keyPressValidator</strong> (<em>function</em>) – The validator that will be called to check the Sudoku board state and validities after any board change</p></li>
 </ul>
 </dd>
 </dl>
@@ -242,25 +200,16 @@ will be improved in later versions.</p>
 
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="q-hub-components.html">Components</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Widgets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="q-hub-deploy.html">Deployment to Heroku</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a><ul>
-      <li>Previous: <a href="q-hub-components.html" title="previous chapter">Components</a></li>
-      <li>Next: <a href="q-hub-deploy.html" title="next chapter">Deployment to Heroku</a></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>

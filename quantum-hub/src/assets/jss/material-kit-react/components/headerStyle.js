@@ -32,9 +32,9 @@ const headerStyle = {
   appBar: {
     display: 'flex',
     border: '0',
-    borderRadius: '3px',
-    padding: '0.625rem 0',
-    marginBottom: '20px',
+    borderRadius: '0',
+    padding: '6px 0',
+    marginBottom: '12px',
     color: '#555',
     width: '100%',
     backgroundColor: '#fff',
@@ -58,21 +58,21 @@ const headerStyle = {
   container: {
     ...container,
     minHeight: '50px',
-    flex: '1',
+    flex: '1 0 0',
     alignItems: 'center',
     justifyContent: 'space-between',
     display: 'flex',
     flexWrap: 'nowrap'
   },
   flex: {
-    flex: 1,
+    flex: '1',
     display: 'flex',
     justifyContent: 'center'
   },
   title: {
     ...defaultFont,
     lineHeight: '30px',
-    fontSize: '18px',
+    fontSize: '24px',
     borderRadius: '3px',
     textTransform: 'none',
     color: 'inherit',
@@ -143,7 +143,7 @@ const headerStyle = {
     boxShadow:
       '0 4px 18px 0px rgba(0, 0, 0, 0.12), 0 7px 10px -5px rgba(0, 0, 0, 0.15)'
   },
-  geeringup: {
+  geeringupPrimary: {
     color: '#fff',
     backgroundColor: '#50c8eb'
   },
@@ -168,6 +168,23 @@ const headerStyle = {
     paddingRight: '0px',
     paddingLeft: '0',
     ...transition
+  },
+  leftLinks: {
+    marginLeft: '24px',
+    display: 'flex',
+    width: '200px'
+  },
+  rightLinks: {
+    marginRight: '24px',
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    width: '200px'
+  },
+  menu: {
+    width: '400px'
+  },
+  lPad: {
+    paddingLeft: '8px'
   }
 }
 

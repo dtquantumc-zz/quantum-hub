@@ -14,17 +14,18 @@
 
  */
 
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 
-import GridContainer from '../Grid/GridContainer.js'
-import GridItem from '../Grid/GridItem'
+// import GridContainer from '../Grid/GridContainer.js'
+// import GridItem from '../Grid/GridItem'
 import Button from '../CustomButtons/Button'
-import Card from '../Card/Card.js'
-import CardBody from '../Card/CardBody.js'
-import CardHeader from '../Card/CardHeader.js'
-import CardFooter from '../Card/CardFooter.js'
+// import Card from '../Card/Card.js'
+// import CardBody from '../Card/CardBody.js'
+// import CardFooter from '../Card/CardFooter.js'
 import CustomInput from '../CustomInput/CustomInput'
+import NurseVars from '../Widget/Nurse/NurseVariables.js'
 
 import styles from '../../assets/jss/material-kit-react/components/nurseSchedulingInputStyle.js'
 
@@ -33,51 +34,103 @@ const useStyles = makeStyles(styles)
 export default function NurseSchedulingInput (props) {
   const classes = useStyles()
 
+  const [numNursesError, setNumNursesError] = useState(false)
+  const [numDaysError, setNumDaysError] = useState(false)
+  const [numNursesPerDayError, setNumNursesPerDayError] = useState(false)
+
+  const setters = {
+    setNumNursesError: setNumNursesError,
+    setNumDaysError: setNumDaysError,
+    setNumNursesPerDayError: setNumNursesPerDayError
+  }
+
   return (
-    <GridContainer justify='center'>
-      <GridItem className={classes.gridItem}>
-        <Card className={classes.nurseSchedulingInput}>
-          <form className={classes.form}>
-            <CardBody className={classes.cardBody}>
-              <CustomInput
-                labelText='Nurses (Max 50)'
-                id='nurse'
-                formControlProps={{
-                  fullWidth: true
-                }}
-                inputProps={{
-                  type: 'number',
-                  max: 30,
-                  min: 0,
-                  onChange: (e) => {
-                    props.setNumNurses(e.target.value)
-                  }
-                }}
-              />
-              <CustomInput
-                labelText='Days (Max 30)'
-                id='days'
-                formControlProps={{
-                  fullWidth: true
-                }}
-                inputProps={{
-                  type: 'number',
-                  max: 30,
-                  min: 0,
-                  onChange: (e) => {
-                    props.setNumDays(e.target.value)
-                  }
-                }}
-              />
-            </CardBody>
-            <CardFooter className={classes.cardFooter}>
-              <Button color='geeringup' onClick={props.onSolve}>
-                    Solve
-              </Button>
-            </CardFooter>
-          </form>
-        </Card>
-      </GridItem>
-    </GridContainer>
+    // <GridContainer justify='center'>
+    //   <GridItem className={classes.gridItem}>
+    // <Card className={classes.nurseSchedulingInput}>
+    <form className={classes.form}>
+      {/* <CardBody className={classes.cardBody}> */}
+      <Grid className={classes.gridContainer} container spacing={2}>
+        <Grid item xs={4}>
+          <CustomInput
+            labelText='Nurses'
+            id='nurse'
+            formControlProps={{
+              fullWidth: true,
+              error: numNursesError,
+              disabled: props.disabled
+            }}
+            inputProps={{
+              type: 'number',
+              inputProps: {
+                min: NurseVars.nursesLowerBound,
+                max: NurseVars.nursesUpperBound
+              },
+              onChange: (e) => {
+                props.setNumNurses(e.target.value, setters)
+              }
+            }}
+            helperText={`Number of Nurses must be between ${NurseVars.nursesLowerBound} and ${NurseVars.nursesUpperBound}`}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <CustomInput
+            labelText='Days'
+            id='days'
+            formControlProps={{
+              fullWidth: true,
+              error: numDaysError,
+              disabled: props.disabled
+            }}
+            inputProps={{
+              type: 'number',
+              inputProps: {
+                min: NurseVars.daysLowerBound,
+                max: NurseVars.daysUpperBound
+              },
+              onChange: (e) => {
+                props.setNumDays(e.target.value, setters)
+              }
+            }}
+            helperText={`Number of Days must be between ${NurseVars.daysLowerBound} and ${NurseVars.daysUpperBound}`}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <CustomInput
+            labelText='Nurses per Day'
+            id='nursedays'
+            formControlProps={{
+              fullWidth: true,
+              error: numNursesPerDayError,
+              disabled: props.disabled
+            }}
+            inputProps={{
+              type: 'number',
+              inputProps: {
+                min: NurseVars.nPDLowerBound,
+                max: NurseVars.nPDUpperBound
+              },
+              onChange: (e) => {
+                props.setNursesPerDay(e.target.value, setters)
+              }
+            }}
+            helperText={`Nurses per Day must be between ${NurseVars.nPDLowerBound} and ${NurseVars.nPDUpperBound}`}
+          />
+        </Grid>
+      </Grid>
+      {/* </CardBody> */}
+      <div className={classes.cardFooter}>
+        <Button
+          color='geeringupSecondary'
+          onClick={props.onSolve}
+          disabled={numNursesError || numDaysError || props.disabled}
+        >
+          Solve
+        </Button>
+      </div>
+    </form>
+    // </Card>
+    //   </GridItem>
+    // </GridContainer>
   )
 }

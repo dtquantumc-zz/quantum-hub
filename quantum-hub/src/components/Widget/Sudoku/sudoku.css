@@ -1,106 +1,111 @@
 div, p {margin:0px; padding:0px;}
 
-.gridSquare{
+.gridGrid .gridSquare{
   display: block;
-  border: thin solid gray;
+  flex: 1;
+  border: thin solid rgba(0, 0, 0, 0.87);
   background-color: white;
   cursor: pointer;
   text-align: center;
-  position: relative;
   color: rgba(0, 0, 0, 0.87);
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: normal;
-  font-size: 30px;
+  font-size: 24px;
+  margin: 0;
+  min-height: 5vh;
 }
 
-.gridSquare:disabled{
+.gridGrid .gridSquare:disabled{
   background-color: lightgray;
 }
 
-.gridLeft{
+.gridGrid .gridLeft{
   border-left: 2px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridLeftest{
+.gridGrid .gridLeftest{
   border-left: 4px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridLeftest.gridToppest {
+.gridGrid .gridLeftest.gridToppest {
   border-top-left-radius: 6px;
 }
 
-.gridLeftest.gridBottomest {
+.gridGrid .gridLeftest.gridBottomest {
   border-bottom-left-radius: 6px;
 }
 
-.gridRight{
+.gridGrid .gridRight{
   border-right: 2px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridRightest{
+.gridGrid .gridRightest{
   border-right: 4px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridRightest.gridToppest {
+.gridGrid .gridRightest.gridToppest {
   border-top-right-radius: 6px;
 }
 
-.gridRightest.gridBottomest {
+.gridGrid .gridRightest.gridBottomest {
   border-bottom-right-radius: 6px;
 }
 
-.gridTop{
+.gridGrid .gridTop{
   border-top: 2px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridToppest{
+.gridGrid .gridToppest{
   border-top: 4px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridBottom{
+.gridGrid .gridBottom{
   border-bottom: 2px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridBottomest{
+.gridGrid .gridBottomest{
   border-bottom: 4px solid rgba(0, 0, 0, 0.87);
 }
 
-.gridSquare:focus{
+.gridGrid .gridSquare:focus{
   z-index: 1000;
   outline: none;
 }
 
-.bolded{
+.gridGrid .bolded{
   font-weight: bold;
 }
 
-.gridSquare.rowInvalid{
+.gridGrid .gridSquare.rowInvalid{
   background-color: #e8a0a0;
 }
 
-.gridSquare.colnInvalid{
+.gridGrid .gridSquare.colnInvalid{
   background-color: #e8a0a0;
 }
 
-.gridSquare.blockInvalid{
+.gridGrid .gridSquare.blockInvalid{
   background-color: #e8a0a0;
 }
 
-.gridSquare.rowInvalid.colnInvalid,
-.gridSquare.rowInvalid.blockInvalid,
-.gridSquare.blockInvalid.colnInvalid{
+.gridGrid .gridSquare.rowInvalid.colnInvalid,
+.gridGrid .gridSquare.rowInvalid.blockInvalid,
+.gridGrid .gridSquare.blockInvalid.colnInvalid{
   background-color: #D96262;
 }
 
-.gridSquare.rowInvalid.colnInvalid.blockInvalid{
+.gridGrid .gridSquare.rowInvalid.colnInvalid.blockInvalid{
   background-color: #c02e2e;
 }
 
-.focused,
-.rowInvalid.focused, .colnInvalid.focused, .blockInvalid.focused,
-.gridSquare.rowInvalid.colnInvalid.focused, .gridSquare.rowInvalid.blockInvalid.focused,
-.gridSquare.blockInvalid.colnInvalid.focused{
-  background-color: lightgray;
+.gridGrid .gridSquare.focused,
+.gridGrid .gridSquare.rowInvalid.focused,
+.gridGrid .gridSquare.colnInvalid.focused,
+.gridGrid .gridSquare.blockInvalid.focused,
+.gridGrid .gridSquare.rowInvalid.colnInvalid.focused,
+.gridGrid .gridSquare.rowInvalid.blockInvalid.focused,
+.gridGrid .gridSquare.blockInvalid.colnInvalid.focused{
+  background-color: rgba(80, 200, 235, 0.65);
 }
 
 .invalidOutline{
@@ -114,27 +119,39 @@ div, p {margin:0px; padding:0px;}
 }
 
 .sudokuBox{
+  display: block;
   position: relative;
   margin: auto;
-  width: 100%;
-  padding-top: 100%;
+  width: 90%;
+  padding-top: 90%;
 }
 
 .sudokuBox.loading{
   display: flex;
   justify-content: center;
-  padding-top: calc((462.05px - 68px ) / 2);
-  padding-bottom: calc((462.05px - 68px ) / 2);
+  padding-top: calc(45% - 34px);
+  padding-bottom: calc(45% - 34px);
+  /* padding-bottom: calc((462.05px - 68px ) / 2); */
+  opacity: 0.65;
 }
 
 .gridGrid{
   position: absolute;
   top: 0;
-  width: 100%;
-  height: 100%;
   display: grid;
+  height: 100%;
+  width: 100%;
+  flex: 1;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
+}
+
+.gridGrid:focus{
+  outline: none;
+}
+
+.boxingrid{
+  display: grid;
 }
 
 p{

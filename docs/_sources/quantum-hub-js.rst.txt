@@ -4,6 +4,10 @@ Quantum Hub NodeJS documentation
 .. toctree::
 	q-hub-components	
 	
-	q-hub-widgets
+	q-hub-sudoku
+	
+	q-hub-nurse
+
+	q-hub-longrequest
 
 	q-hub-deploy

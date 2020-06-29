@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import './sudoku.css'
 import sudokuSolveRequest from './sudokuSolveRequest'
+import getRandSolvableBoard from './randSolvableBoard'
 
 import Button from '../../CustomButtons/Button'
 import { makeSudokuGrid } from './GridSquare'
@@ -18,14 +19,21 @@ import {
   updateEmptyState,
   // isGridAllZeros,
   flatten,
-  emptySudokuGrid
+  emptySudokuGrid,
+  boldify
   // resetSudokuGrid
 } from './sudokuHelpers'
+
+import SudokuValidationUtils from './SudokuValidationUtils.js'
 
 import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import styles from '../../../assets/jss/material-kit-react/components/sudokuStyle.js'
+
+// THIS MAY BE A PROBLEM AND RECALCING EACH TIME
+const randBoard = getRandSolvableBoard()
+const randBold = boldify(randBoard)
 
 /**
  * SudokuGame is meant to make the Sudoku Solver tool
@@ -41,6 +49,7 @@ import styles from '../../../assets/jss/material-kit-react/components/sudokuStyl
  *      getAPIKey={() => APIKey}
  *      outputToConsole={(line) => {
  *        setTextLines(textLines.concat(line))
+ *      appendToConsole={}
  *      }}
  *    />
  *  )
@@ -58,23 +67,27 @@ import styles from '../../../assets/jss/material-kit-react/components/sudokuStyl
  * it to the current console output string array. If the Console
  * is not being used, this can do anything you want with that
  * string, but you should probably output it in some way.
+ * @prop {func(string)} appendToConsole - (Required) Same as output,
+ * but just appends
+ * the given string to the last line of the Console.
  */
 function SudokuGame (props) {
   // The states for the Sudoku widget. These all use React hooks,
   // so that when setWhatever is called, the sudoku game is queued
   // for a rerender.
-  const [sudokuGrid, setSudokuGrid] = useState(Array(81).fill(0))
-  const [gridBold, setGridBold] = useState(Array(81).fill(0))
+  const [sudokuGrid, setSudokuGrid] = useState(randBoard)
+  const [gridBold, setGridBold] = useState(randBold)
 
-  const [gridInvalid, setGridInvalid] = useState(getEmptyGrid())
-  const [rowInvalid, setRowInvalid] = useState(getEmptyRow())
-  const [colnInvalid, setColnInvalid] = useState(getEmptyColn())
+  const [gridInvalid, setGridInvalid] = useState(SudokuValidationUtils.getEmptyGrid())
+  const [rowInvalid, setRowInvalid] = useState(SudokuValidationUtils.getEmptyRow())
+  const [colnInvalid, setColnInvalid] = useState(SudokuValidationUtils.getEmptyColn())
   const [blockInvalid, setBlockInvalid] = useState({})
 
   const [currentSquare, setCurrentSquare] = useState([0, 0])
   const [enabled, setEnabled] = useState(true)
   const [empty, setEmpty] = useState(true)
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = [props.loading, props.setLoading]
 
   var sudokuState = {
     grid: sudokuGrid,
@@ -102,18 +115,24 @@ function SudokuGame (props) {
 
   const classes = useStyles()
 
+  // if (load.isFirst) {
+  //   load.setFirst()
+  //   setGridBold(boldify(sudokuGrid))
+  // }
+
   return (
     <div className={classes.sudokuRoot}>
       <div className={loading ? 'sudokuBox loading' : 'sudokuBox'}>
         <div
           className='gridGrid'
+          tabIndex='0'
           onKeyDown={(event) => {
             // Don't handle key presses if the whole app is disabled
             if (enabled) {
               handleKeyPress(
                 event,
                 sudokuState,
-                validateKeyPress.bind(this, invalidStateSetters)
+                (sudokuGrid) => { SudokuValidationUtils.validateKeyPress(invalidStateSetters, sudokuGrid) }
               )
             }
           }}
@@ -128,23 +147,39 @@ function SudokuGame (props) {
       <p>Click on the cells and use your keyboard numbers to fill them in!</p>
       <div className={classes.sudokuInput}>
         <Button
-          color='geeringup' // Not a typo, this is the actual color
+          color='geeringupSecondary'
           disabled={!enabled}
           onClick={() => {
             // TODO: Consider setting it to nothing instead of top-left
             setCurrentSquare([0, 0])
             sudokuSolveRequest(sudokuGrid, setSudokuGrid, setEnabled,
-              props.outputToConsole, props.getAPIKey, setEmpty,
-              setLoading, resetInvalidStates.bind(this, invalidStateSetters))
+              props.outputToConsole, props.appendToConsole, props.getAPIKey, setEmpty,
+              (sudokuGrid) => { SudokuValidationUtils.validateKeyPress(invalidStateSetters, sudokuGrid) },
+              setLoading)
           }}
         >
           Solve
         </Button>
         <Button
+          color='geeringupSecondary'
+          disabled={!enabled}
+          onClick={() => {
+            const newRand = getRandSolvableBoard()
+            const newRandBold = boldify(newRand)
+            setSudokuGrid(newRand)
+            setGridBold(newRandBold)
+            SudokuValidationUtils.resetInvalidStates(invalidStateSetters)
+          }}
+        >
+          Random
+        </Button>
+        <Button
+          color='geeringupPrimary'
+          // color='primary'
           disabled={(empty || !enabled)}
           onClick={() => {
             emptySudokuGrid(sudokuState)
-            resetInvalidStates(invalidStateSetters)
+            SudokuValidationUtils.resetInvalidStates(invalidStateSetters)
           }}
         >
           Reset
@@ -154,258 +189,18 @@ function SudokuGame (props) {
   )
 }
 
-function isValidSudokuGrid (sudokuValidationResults) {
-  return areRowsValid(sudokuValidationResults) &&
-  areColnsValid(sudokuValidationResults) &&
-  areBlocksValid(sudokuValidationResults)
-}
-
-function areRowsValid (sudokuValidationResults) {
-  return isEmptyObject(sudokuValidationResults.duplicatesInRow)
-}
-
-function areColnsValid (sudokuValidationResults) {
-  return isEmptyObject(sudokuValidationResults.duplicatesInColn)
-}
-
-function areBlocksValid (sudokuValidationResults) {
-  return isEmptyObject(sudokuValidationResults.duplicatesInBlock)
-}
-
-function isEmptyObject (object) {
-  return isKeyLengthZero(object) &&
-    isObjectConstructor(object)
-}
-
-function isKeyLengthZero (object) {
-  return Object.keys(object).length === 0
-}
-
-function isObjectConstructor (object) {
-  return object.constructor === Object
-}
-
-function validateKeyPress (setters, sudokuGrid) {
-  const sudokuValidationResults = getSudokuValidationResults(sudokuGrid)
-
-  if (isValidSudokuGrid(sudokuValidationResults)) {
-    resetInvalidStates(setters)
-  } else {
-    updateInvalidStates(setters, sudokuValidationResults)
-  }
-}
-
-function getSudokuValidationResults (sudokuGrid) {
-  const N = 9
-  const M = 9
-
-  const seen = new Set()
-
-  let duplicatesInRow = {}
-  let duplicatesInColn = {}
-  let duplicatesInBlock = {}
-
-  const sudokuBoard = getUnflattenedSudokuBoard(sudokuGrid)
-
-  for (let i = 0; i < M; i++) {
-    for (let j = 0; j < N; j++) {
-      const current = sudokuBoard[i][j]
-
-      if (current === 0) {
-        continue
-      }
-
-      const inRow = current + ' in row ' + i
-      const inColn = current + ' in coln ' + j
-
-      const blockRow = Math.floor(i / 3)
-      const blockColumn = Math.floor(j / 3)
-      const inBlock = current + ' in block ' + blockRow + ' - ' + blockColumn
-
-      if (seen.has(inRow)) {
-        duplicatesInRow = addKeyValToObject(i, j, duplicatesInRow)
-      }
-      seen.add(inRow)
-
-      if (seen.has(inColn)) {
-        duplicatesInColn = addKeyValToObject(j, i, duplicatesInColn)
-      }
-      seen.add(inColn)
-
-      if (seen.has(inBlock)) {
-        const key = [Math.floor(i / 3), Math.floor(j / 3)]
-        const val = [i, j]
-        duplicatesInBlock = addKeyValToObject(key, val, duplicatesInBlock)
-      }
-      seen.add(inBlock)
-    }
-  }
-
-  const validationResult = {
-    duplicatesInRow: duplicatesInRow,
-    duplicatesInColn: duplicatesInColn,
-    duplicatesInBlock: duplicatesInBlock
-  }
-
-  return validationResult
-}
-
-function getUnflattenedSudokuBoard (flattenedSudokuBoard) {
-  const unflattenedSudokuBoard = []
-  let row = []
-
-  for (let i = 0; i < flattenedSudokuBoard.length; i++) {
-    row.push(flattenedSudokuBoard[i])
-
-    if (isRowFilled(i)) {
-      unflattenedSudokuBoard.push(row)
-      row = []
-    }
-  }
-
-  return unflattenedSudokuBoard
-}
-
-function isRowFilled (lastFilledIndex) {
-  return (lastFilledIndex + 1) % 9 === 0
-}
-
-function addKeyValToObject (key, val, object) {
-  if (!object[key]) {
-    object[key] = [val]
-  } else {
-    object[key].push(val)
-  }
-
-  return object
-}
-
-function updateInvalidStates (setters, sudokuValidationResults) {
-  let newGridInvalid = getEmptyGrid()
-  newGridInvalid = handleInvalidRow(sudokuValidationResults, newGridInvalid, setters)
-  newGridInvalid = handleInvalidColn(sudokuValidationResults, newGridInvalid, setters)
-  newGridInvalid = handleInvalidBlock(sudokuValidationResults, newGridInvalid, setters)
-
-  setters.setGridInvalid(newGridInvalid)
-}
-
-function handleInvalidRow (sudokuValidationResults, gridInvalid, setters) {
-  if (areRowsValid(sudokuValidationResults)) {
-    resetRowInvalid(setters)
-  } else {
-    const duplicatesInRow = sudokuValidationResults.duplicatesInRow
-    setters.setRowInvalid(duplicatesInRow)
-    gridInvalid = updateInvalidRowCoordinatesInGrid(duplicatesInRow, gridInvalid)
-  }
-
-  return gridInvalid
-}
-
-function updateInvalidRowCoordinatesInGrid (duplicatesInRow, gridInvalid) {
-  Object.keys(duplicatesInRow).forEach(row => {
-    const columns = duplicatesInRow[row]
-    columns.forEach(column => {
-      gridInvalid[row][column] = true
-    })
-  })
-
-  return gridInvalid
-}
-
-function handleInvalidColn (sudokuValidationResults, gridInvalid, setters) {
-  if (areColnsValid(sudokuValidationResults)) {
-    resetColnInvalid(setters)
-  } else {
-    const duplicatesInColn = sudokuValidationResults.duplicatesInColn
-    setters.setColnInvalid(duplicatesInColn)
-    gridInvalid = updateInvalidColnCoordinatesInGrid(duplicatesInColn, gridInvalid)
-  }
-
-  return gridInvalid
-}
-
-function updateInvalidColnCoordinatesInGrid (duplicatesInColn, gridInvalid) {
-  Object.keys(duplicatesInColn).forEach(column => {
-    const rows = duplicatesInColn[column]
-    rows.forEach(row => {
-      gridInvalid[row][column] = true
-    })
-  })
-
-  return gridInvalid
-}
-
-function handleInvalidBlock (sudokuValidationResults, gridInvalid, setters) {
-  if (areBlocksValid(sudokuValidationResults)) {
-    resetBlockInvalid(setters)
-  } else {
-    const duplicatesInBlock = sudokuValidationResults.duplicatesInBlock
-    setters.setBlockInvalid(duplicatesInBlock)
-    gridInvalid = updateInvalidBlockCoordinatesInGrid(duplicatesInBlock, gridInvalid)
-  }
-
-  return gridInvalid
-}
-
-function updateInvalidBlockCoordinatesInGrid (duplicatesInBlock, gridInvalid) {
-  Object.keys(duplicatesInBlock).forEach(block => {
-    const coords = duplicatesInBlock[block]
-    coords.forEach(coord => {
-      gridInvalid[coord[0]][coord[1]] = true
-    })
-  })
-
-  return gridInvalid
-}
-
-function getEmptyGrid () {
-  return getEmptyColn().map(() => getEmptyRow())
-}
-
-function getEmptyColn () {
-  return Array(9).fill(0)
-}
-
-function getEmptyRow () {
-  return Array(9).fill(0)
-}
-
-function getEmptyBlock () {
-  return {}
-}
-
-function resetInvalidStates (setters) {
-  resetGridInvalid(setters)
-  resetRowInvalid(setters)
-  resetColnInvalid(setters)
-  resetBlockInvalid(setters)
-}
-
-function resetGridInvalid (setters) {
-  setters.setGridInvalid(getEmptyGrid())
-}
-
-function resetRowInvalid (setters) {
-  setters.setRowInvalid(getEmptyRow())
-}
-
-function resetColnInvalid (setters) {
-  setters.setColnInvalid(getEmptyColn())
-}
-
-function resetBlockInvalid (setters) {
-  setters.setBlockInvalid(getEmptyBlock())
-}
-
 /**
  * Handles key presses for the Sudoku Grid Component
  * Sets the number in the currently selected slot of the sudoku grid
  * to the number of the key just pressed.
  * @param {KeyPress} event - The keypres to be handled
  * @param {Object} state - The complete state of the Sudoku board
+ * @param {Function} keyPressValidator - The validator that
+ * will be called to check the Sudoku board state and validities
+ * after any board change
  */
 function handleKeyPress (event, state, keyPressValidator) {
-  console.log(`Key pressed is ${event.keyCode}`)
+  // console.log(`Key pressed is ${event.keyCode}`)
   const backspaces = [8, 46, 110]
   // 8 is backspace, the others are the numbers
   const x = state.cur[0]

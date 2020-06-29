@@ -88,6 +88,10 @@ class Widget extends React.Component {
       n_days: 4
     }
 
+    /** How to make a Long Request:
+     * Note that each of the four functions should take an XML request
+     * as a parameter.
+     */
     makeLongRequest(
       params,
       (xhr) => { this.props.outputToConsole('Queued!') },
@@ -158,7 +162,8 @@ class Widget extends React.Component {
         <button
           type='button'
           onClick={() => {
-            this.callSolver()
+            // this.callSolver()
+            this.props.outputToConsole('sorry, I\'m a blank app')
           }}
           // disabled={this.state.status === 'waiting...'}
           id={this.props.id + '_button'}

@@ -10,7 +10,3 @@ Widgets
 
 	.. js:autofunction:: handleKeyPress
 
-	.. js:autofunction:: sendForSolve
-
-	.. js:autofunction:: postSolve
-

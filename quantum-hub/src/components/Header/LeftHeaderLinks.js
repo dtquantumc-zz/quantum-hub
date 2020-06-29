@@ -25,7 +25,7 @@ const useStyles = makeStyles(styles);
 export default function LeftHeaderLinks() {
   const classes = useStyles();
 
-  const dtqcTitle = "More info about DTQC"
+  const dtqcTitle = "More about DTQC"
   const dtqcLink = "https://quantumcomputing.ubc.ca/education/k-12-education"
 
   return (
@@ -41,9 +41,9 @@ export default function LeftHeaderLinks() {
             color="transparent"
             href={dtqcLink}
             target='_blank'
-            className={classes.navLink}
+            className={classes.leftNavLink}
           >
-            <img src={dtqcLogo} style={{ height: '32px', borderRadius: '3px'}}/>
+            <img src={dtqcLogo} style={{ height: '38px', borderRadius: '3px'}}/>
           </Button>
         </Tooltip>
       </ListItem>

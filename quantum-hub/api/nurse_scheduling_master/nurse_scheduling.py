@@ -27,7 +27,7 @@ from copy import deepcopy
 import numpy as np
 
 
-def main(token, n_nurses=3, n_days=11):
+def main(token=None, n_nurses=3, n_days=11, nurses_per_day=1):
     # Overall model variables: problem size
     # binary variable q_nd is the assignment of nurse n to day d
     n_nurses = n_nurses      # count nurses n = 1 ... n_nurses
@@ -45,7 +45,8 @@ def main(token, n_nurses=3, n_days=11):
     # Hard shift constraint: at least one nurse working every day
     # Lagrange parameter, for hard shift constraint, on workforce and effort
     lagrange_hard_shift = 1.3
-    workforce = 1     # Workforce function W(d) - set to a constant for now
+    # workforce = 1     # Workforce function W(d) - set to a constant for now
+    workforce = nurses_per_day    # Workforce function W(d)
     effort = 1        # Effort function E(n) - set to a constant for now
 
     # Parameters for soft nurse constraint
@@ -59,7 +60,8 @@ def main(token, n_nurses=3, n_days=11):
     # The parameter gamma's value suggested by Ikeda, Nakamura, Humble
     lagrange_soft_nurse = 0.3      # Lagrange parameter for soft nurse, gamma
     preference = 1                 # preference function - constant for now
-    min_duty_days = int(n_days/n_nurses)
+    # min_duty_days = int(n_days/n_nurses)
+    min_duty_days = int(n_days*workforce/n_nurses)
 
 
     # Find composite index into 1D list for (nurse_index, day_index)

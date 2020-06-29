@@ -46,7 +46,7 @@ export default function CardHeader (props) {
 
 CardHeader.propTypes = {
   className: PropTypes.string,
-  color: PropTypes.oneOf(['warning', 'success', 'danger', 'info', 'primary', 'geeringup']),
+  color: PropTypes.oneOf(['warning', 'success', 'danger', 'info', 'primary', 'geeringupSecondary']),
   plain: PropTypes.bool,
   children: PropTypes.node
 }

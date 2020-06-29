@@ -9,76 +9,75 @@ import makeLongRequest from '../LongRequest'
 import nurseVars from './NurseVariables'
 
 /**
- * This is a function to send a solve request to the backend
- * @param {Object} nurseState - .schedule, .setSchedule,
- * .numNurses, .setNumNurses, .numDays, .setNumDays
+ * This is a function to send a solve request to the backend.
+ * Uses LongRequest to achieve this with background processes.
+ * @param {Function} setSchedule - Sets the Schedule
  * @param {Function} outputToConsole - Output to Console
+ * @param {Function} appendToConsole - Append to Console
  * @param {Function} getAPIKey - Get the API Key
+ * @param {Function} setLoading - Hook to set the Nurse App's loading state
  */
-function nurseSolveRequest (setSchedule, outputToConsole, getAPIKey) {
+function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAPIKey, setLoading) {
   if (nurseVars.xhr) return
 
-  if (nurseVars.numNurses < 1 || nurseVars.numNurses > 50) {
-    outputToConsole('Invalid number of nurses. Please check and try again.')
-    return
-  }
-
-  if (nurseVars.numDays < 1 || nurseVars.numDays > 30) {
-    outputToConsole('Invalid number of days. Please check and try again.')
-    return
-  }
-
-  // setEnabled(false)
+  setLoading(true)
   outputToConsole(`Scheduling ${nurseVars.numNurses} nurses across ${nurseVars.numDays} days:`)
 
-  // nurseVars.xhr = new XMLHttpRequest()
-  // var xhr = nurseVars.xhr
-  // const url = '/qpu_request'
   const params = {
     // token: getAPIKey(),
     typeOfProblem: 'nurseScheduling',
     n_nurses: Math.floor(nurseVars.numNurses),
-    n_days: Math.floor(nurseVars.numDays)
+    n_days: Math.floor(nurseVars.numDays),
+    nurses_per_day: Math.floor(nurseVars.nursesPerDay)
   }
-  // const async = true
-  // xhr.open('POST', url, async)
-
-  // xhr.responseType = 'json'
-
-  // xhr.onload = () => {
-  //   postSolve(setSchedule, outputToConsole)
-  // }
-  // xhr.setRequestHeader('Content-type', 'application/json')
-  // xhr.send(JSON.stringify(params))
-  // nurseVars.setXHR(xhr)
 
   makeLongRequest(
     params,
-    (xhr) => { outputToConsole('The nurse problem has been queued for solving!') },
-    (xhr) => { outputToConsole(xhr.response.jobStatus) },
     (xhr) => {
-      postSolve(xhr, setSchedule, outputToConsole)
+      outputToConsole('The nurse problem has been queued for solving!')
+      nurseVars.setState(xhr.response.jobStatus)
+    },
+    (xhr) => {
+      if (xhr.response.jobStatus === nurseVars.state) {
+        appendToConsole('.')
+      } else if (xhr.response.jobStatus === 'queued') {
+        outputToConsole('In Queue')
+      } else if (xhr.response.jobStatus === 'started') {
+        outputToConsole('Quantum Computing in Progress!')
+        outputToConsole('Solving')
+      } else {
+        outputToConsole(xhr.response.jobStatus)
+      }
+      nurseVars.setState(xhr.response.jobStatus)
+    },
+    (xhr) => {
+      postSolve(xhr, setSchedule, outputToConsole, setLoading)
     },
     (xhr) => {
       outputToConsole('Something went wrong')
       console.log(xhr)
       outputToConsole(JSON.stringify(xhr))
+      setLoading(false)
     },
     outputToConsole
   )
-
-  outputToConsole('Solving...')
 }
 
 /**
  * This is a function to do something after the solve has gone
- * through
+ * through. It decodes the grid configuration sent, and
+ * then sets it as the current grid.
+ * @param {XMLHTTPRequest} xhr - This is the response containing the results
+ * of the nurse scheduling job. The "encoded" schedule is in here. Encoded
+ * simply means a sparse matrix representation, as opposed to a complete
+ * matrix.
+ * @param {Function} setSchedule - A function to set the Nurse Schedule
+ * @param {Function} outputToConsole - Outputs a line to the console object
+ * @param {Function} setLoading - Hook to set the Nurse App's loading state
  */
-function postSolve (xhr, setSchedule, outputToConsole) {
-  // const xhr = nurseVars.xhr
-
+function postSolve (xhr, setSchedule, outputToConsole, setLoading) {
   if (xhr.status === 200) {
-    outputToConsole('Solved!')
+    outputToConsole('Solved! Enjoy your nurse schedule!')
 
     // Create the new schedule. This is done in reverse to avoid
     // changing the length of each array more than once
@@ -95,15 +94,15 @@ function postSolve (xhr, setSchedule, outputToConsole) {
       for (var i = 0; i < xhr.response.schedule[row].length; ++i) {
         const col = xhr.response.schedule[row][i]
         newsched[row][col] = 1
-        console.log(row, col)
+        // console.log(row, col)
       }
     }
 
-    outputToConsole('The returned nurse schedule is:')
-    newsched.map((row) => outputToConsole(row.join(' ')))
+    // console.log('The returned nurse schedule is:')
+    // newsched.map((row) => console.log(row.join(' ')))
 
-    outputToConsole(xhr.response.HardNurseConstraint)
-    outputToConsole(xhr.response.HardShiftConstraint)
+    // console.log(xhr.response.HardNurseConstraint)
+    // console.log(xhr.response.HardShiftConstraint)
 
     setSchedule(newsched)
   } else if (xhr.status === 400) {
@@ -113,6 +112,7 @@ function postSolve (xhr, setSchedule, outputToConsole) {
     outputToConsole('Your Nurse Scheduling may have been too difficult and timed out.')
     outputToConsole('Please save the configuration you were trying to solve and report the problem')
   }
+  setLoading(false)
   nurseVars.setXHR(null)
 }
 
