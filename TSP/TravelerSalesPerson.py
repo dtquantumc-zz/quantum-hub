@@ -4,13 +4,16 @@ from tabu import TabuSampler
 from dwave_networkx.algorithms.tsp import traveling_salesperson_qubo
 
 
-def make_graph(cities):
+def make_graph(cities,list_id):
 
     n=len(cities)
 
-    if (n>12 or n<3):
-        raise ValueError("Number of cities not within the limits!")
+    if (n>12 or n<3 or list_id>1):
+        raise ValueError("Number of cities or the list ID not within the limits!")
 
+    edges_list=[]
+
+    #list_id=0
     #cities:
     #0: A: Albuquerque
     #1: B: Boston
@@ -27,7 +30,7 @@ def make_graph(cities):
     #12: Montréal, QC, CA
 
     # Networkx graph of the problem. Distances measured in miles.
-    edges_list=[
+    edges_list.append([
         (0, 1, 2230),
         (0, 2, 1631),
         (0, 3, 1566),
@@ -106,11 +109,62 @@ def make_graph(cities):
         (10, 11, 758),
         (10, 12, 3527),
         (11, 12, 2850)
-    ]
+    ])
+
+    #list_id=1
+    #Vancouver locations
+    #0: UBC campus
+    #1: SFU campus
+    #2:Canada Place
+    #3:Rogers Arena
+    #4:Stanley park
+    #5:Metropolise at Metrotown
+    #6:Lafarge lake
+    #7:Burnaby lake
+    #8:Queen Elizabeth park
+
+    edges_list.append([
+        (0, 1, 16.5),
+        (0, 2, 7.3),
+        (0, 3, 7.3),
+        (0, 4, 7.9),
+        (0, 5, 11.3),
+        (0, 6, 24.7),
+        (0, 7, 14.9),
+        (0, 8, 9.8),
+        (1, 2, 9.2),
+        (1, 3, 9.1),
+        (1, 4, 10.6),
+        (1, 5, 7.3),
+        (1, 6, 8),
+        (1, 7, 4.4),
+        (1, 8, 17.5),
+        (2, 3, 1),
+        (2, 4, 1.2),
+        (2, 5, 9.4),
+        (2, 6, 17.1),
+        (2, 7, 10.1),
+        (2, 8, 6.1),
+        (3, 4, 1.9),
+        (3, 5, 7.2),
+        (3, 6, 19.2),
+        (3, 7, 8.8),
+        (3, 8, 4.9),
+        (4, 5, 8.9),
+        (4, 6, 20.8),
+        (4, 7, 11.7),
+        (4, 8, 7.7),
+        (5, 6, 13.3),
+        (5, 7, 5.6),
+        (5, 8, 8.3),
+        (6, 7, 8.9),
+        (6, 8, 29.9),
+        (7, 8, 15.5)
+    ])
 
     tmp_edges=[]
 
-    for edge in edges_list:
+    for edge in edges_list[list_id]:
         if(edge[0] in cities and edge[1] in cities):
             tmp_edges.append(edge)
 
@@ -172,7 +226,7 @@ def TSP_solver(G):
 
 
 def main():
-    TSP_solver(make_graph([1,3,5,4,7,8,9,10,11,12]))
+    TSP_solver(make_graph([1,3,5,4,7,8,9,10,11,12],0))
 
 if __name__ == "__main__":
     main()
