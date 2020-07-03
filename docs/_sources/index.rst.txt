@@ -15,7 +15,7 @@ Diversifying Talent in Quantum Computing is a K-12 Initiative with the goal of b
    :caption: Contents:
 
    summary
-   code
+   TSP
    quantum-hub-js
 
 

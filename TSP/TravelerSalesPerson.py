@@ -5,6 +5,44 @@ from dwave_networkx.algorithms.tsp import traveling_salesperson_qubo
 
 
 def make_graph(cities,list_id):
+    """
+    This function creates the TSP graph that will be solved.
+    Distances are measured in miles for Cities.
+
+    
+    Cities:
+        0. Albuquerque
+        #. Boston
+        #. Charlotte, NC
+        #. Detroit
+        #. Evanston, IL
+        #. Frankfort, Kentucky
+        #. Gulfport, Mississippi
+        #. Toronto, ON, CA
+        #. Vancouver, BC, CA
+        #. Winnipeg, MB, CA
+        #. Calgary, AB, CA
+        #. Regina, SK, CA
+        #. Montréal, QC, CA
+
+    Vancouver locations:
+        0. UBC campus
+        #. SFU campus
+        #. Canada Place
+        #. Rogers Arena
+        #. Stanley park
+        #. Metropolise at Metrotown
+        #. Lafarge lake
+        #. Burnaby lake
+        #. Queen Elizabeth park
+
+    :param cities: This is a list of indices of cities to be
+        included in the problem.
+    :param list_id: This indicates which city-set is being used.
+        0 for Cities, 1 for Vancouver locations.
+
+    :return: Returns the graph as a networkx graph.
+    """
 
     n=len(cities)
 
@@ -175,6 +213,16 @@ def make_graph(cities,list_id):
 
 
 def TSP_solver(G):
+    """
+    The TSP_solver function actually uses Ocean SDK and a call to dwave's
+    computer to solve the Traveling Salesperson Problem.
+
+    :param G: This is the networkx graph to be solved.
+        Usually the output of make_graph is directly plugged into this.
+
+    :return: It returns the route as a List, a directed networkx graph,
+        and the cost of the route.
+    """
     # Lagrange multiplier, to weigh the constraints versus the mileage
     lagrange = 4000
 
