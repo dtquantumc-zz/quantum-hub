@@ -11,13 +11,13 @@ Front-end components
 
 .. js:autofunction:: SudokuGame
 
-        .. js:autofunction:: GridSquare
+	.. js:autofunction:: GridSquare
 	
 	.. js:autofunction:: makeSudokuGrid	
 
-        .. js:autofunction:: handleKeyPress
+	.. js:autofunction:: handleKeyPress
 
-        .. js:autofunction:: sudokuSolveRequest
+	.. js:autofunction:: sudokuSolveRequest
 
 	.. js:autofunction:: sudokuSolveRequest.postSolve
 
@@ -30,4 +30,4 @@ Backend code
 ------------
 
 .. automodule:: sudoku_master.sudoku
-		:members:
+	:members:

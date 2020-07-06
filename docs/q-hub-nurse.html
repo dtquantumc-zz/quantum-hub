@@ -16,7 +16,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="LongRequest" href="q-hub-longrequest.html" />
+    <link rel="next" title="Two-Colouring on a Lattice" href="q-hub-two-colour.html" />
     <link rel="prev" title="Sudoku Solver" href="q-hub-sudoku.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -29,7 +29,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="q-hub-longrequest.html" title="LongRequest"
+          <a href="q-hub-two-colour.html" title="Two-Colouring on a Lattice"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="q-hub-sudoku.html" title="Sudoku Solver"
@@ -53,6 +53,8 @@ there is a nurse working every day, no nurse
 works two days in a row (wouldn’t that be a
 great world, never work two days in a row),
 and nurses’ workload is evenly split up.</p>
+<div class="section" id="front-end-components">
+<h2>Front-end components<a class="headerlink" href="#front-end-components" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="NurseScheduler">
 <code class="sig-name descname">NurseScheduler</code><span class="sig-paren">(</span><em class="sig-param">props</em><span class="sig-paren">)</span><a class="headerlink" href="#NurseScheduler" title="Permalink to this definition">¶</a></dt>
@@ -226,6 +228,57 @@ Used in nurseSolveRequest’s LongRequest callbacks.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-nurse_scheduling_master.nurse_scheduling">
+<span id="backend-code"></span><h2>Backend code<a class="headerlink" href="#module-nurse_scheduling_master.nurse_scheduling" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nurse_scheduling_master.nurse_scheduling.main">
+<code class="sig-prename descclassname">nurse_scheduling_master.nurse_scheduling.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">token=None</em>, <em class="sig-param">n_nurses=3</em>, <em class="sig-param">n_days=11</em>, <em class="sig-param">nurses_per_day=1</em><span class="sig-paren">)</span><a class="headerlink" href="#nurse_scheduling_master.nurse_scheduling.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a number of nurses, a number of days, and a wanted capacity
+of nurses per day.
+Also takes in a Dwave Authentication Token.
+Returns its best try at assigning nurses properly to the schedule required.
+One can think of the output as being a grid of size row x col,
+with a desired number of Xs in any column, while avoiding neighbouring
+Xs in any row.</p>
+<p>This runs on the Dwave Hybrid Sampler.
+The solution will be fast and good, but relatively expensive on Dwave
+allowed minutes.</p>
+<p>This code includes an implementation of the algorithm described in Ikeda,
+K., Nakamura, Y. &amp; Humble, T.S. Application of Quantum Annealing to Nurse
+Scheduling Problem. Sci Rep 9, 12837 (2019).
+<a class="reference external" href="https://doi.org/10.1038/s41598-019-49172-3">DOI: 10.1038/s41598-019-49172-3</a>,
+© The Author(s) 2019, use of
+which is licensed under a Creative Commons Attribution 4.0 International
+License</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_nurses</strong> – The number of nurses as an integer (number of rows in solution)</p></li>
+<li><p><strong>n_days</strong> – The number of days as an integer (number of columns in solution)</p></li>
+<li><p><strong>nurses_per_day</strong> – The number of desired nurses per day, an integer
+(desired number of Xs in any given column)</p></li>
+<li><p><strong>token</strong> – The Dwave token to be used.
+This should be a string, in the format used on the dwave leap website.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>Returns a dictionary. Keys supported:</p>
+<ul class="simple">
+<li><p>”Size” a string describing the problem size</p></li>
+<li><p>”Energy” a string describing the energy of the solution</p></li>
+<li><p>”HardNurseConstraint” a string describing the hard nurse constraint energy</p></li>
+<li><p>”HardShiftConstraint” a string describing the hard shift constraint energy</p></li>
+<li><p>”n_days” an integer - the number of days (columns) of the solution</p></li>
+<li><p>”n_nurses” an integer - the number of nurses (rows) of the solution</p></li>
+<li><p>”schedule” - A 2-dimensional array of integers. Lists the exact days each nurse works (The marked columns for each row).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
 
 
           </div>
@@ -233,12 +286,21 @@ Used in nurseSolveRequest’s LongRequest callbacks.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Nurse Scheduler</a><ul>
+<li><a class="reference internal" href="#front-end-components">Front-end components</a></li>
+<li><a class="reference internal" href="#module-nurse_scheduling_master.nurse_scheduling">Backend code</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="q-hub-sudoku.html"
                         title="previous chapter">Sudoku Solver</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="q-hub-longrequest.html"
-                        title="next chapter">LongRequest</a></p>
+  <p class="topless"><a href="q-hub-two-colour.html"
+                        title="next chapter">Two-Colouring on a Lattice</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -270,7 +332,7 @@ Used in nurseSolveRequest’s LongRequest callbacks.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="q-hub-longrequest.html" title="LongRequest"
+          <a href="q-hub-two-colour.html" title="Two-Colouring on a Lattice"
              >next</a> |</li>
         <li class="right" >
           <a href="q-hub-sudoku.html" title="Sudoku Solver"

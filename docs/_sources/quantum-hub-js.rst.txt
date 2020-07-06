@@ -8,6 +8,8 @@ Quantum Hub NodeJS documentation
 	
 	q-hub-nurse
 
+	q-hub-two-colour
+
 	q-hub-longrequest
 
 	q-hub-deploy

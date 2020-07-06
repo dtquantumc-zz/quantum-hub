@@ -123,32 +123,9 @@ function MarblesAndLines (props) {
             ])
             ci++
           }
-          // var neighbours
-          // if (i % 2) {
-          //   neighbours = [[1, 1], [1, 0], [0, 1]]
-          // } else {
-          //   neighbours = [[1, -1], [1, 0], [0, 1]]
-          // }
-          // for (var n of neighbours) {
-          //   const ii = i + n[0]
-          //   const jj = j + n[1]
-          //   // console.log(ii + ' ' + jj)
-          //   if (ii >= 0 && ii < lattice.length) {
-          //     if (jj >= 0 && jj < lattice[ii].length) {
-          //       if (lattice[ii][jj] === e) {
-          //         lineEnds.push([
-          //           (jj + (ii % 2 === 1 ? 1 : 0.5)) * hexWidth,
-          //           (ii + 2 / 3) * hexHeight
-          //         ])
-          //         conflicts += 1
-          //       }
-          //     }
-          //   }
-          // }
-          // // console.log(lineEnds)
 
           return (
-            <>
+            <React.Fragment key='hexfrag'>
               {
                 lineEnds.map(([x2, y2]) => {
                   return (
@@ -175,7 +152,7 @@ function MarblesAndLines (props) {
                 stroke='black'
                 strokeWidth='2'
               />
-            </>
+            </React.Fragment>
           )
         })
       )
@@ -184,6 +161,10 @@ function MarblesAndLines (props) {
   return (returnVal)
 }
 
+/**
+ * Draws the whole lattice grid, depending on the lattice given.
+ * @prop {Array(Array(Int))} lattice - A lattice object :D
+ */
 function HexGrid (props) {
   const [lattice, setLattice] = [props.lattice, props.setLattice]
   const mode = props.mode
