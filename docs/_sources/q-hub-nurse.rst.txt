@@ -9,6 +9,9 @@ works two days in a row (wouldn't that be a
 great world, never work two days in a row),
 and nurses' workload is evenly split up.
 
+Front-end components
+--------------------
+
 .. js:autofunction:: NurseScheduler
 
 	.. js:autofunction:: NurseSquare
@@ -21,3 +24,9 @@ and nurses' workload is evenly split up.
 
 	.. js:autoclass:: NurseVariables
 		:members:
+
+Backend code
+------------
+
+.. automodule:: nurse_scheduling_master.nurse_scheduling
+	:members:

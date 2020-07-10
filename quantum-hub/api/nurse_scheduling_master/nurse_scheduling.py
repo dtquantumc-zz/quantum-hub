@@ -28,6 +28,48 @@ import numpy as np
 
 
 def main(token=None, n_nurses=3, n_days=11, nurses_per_day=1):
+    """
+    Takes a number of nurses, a number of days, and a wanted capacity
+    of nurses per day.
+    Also takes in a Dwave Authentication Token.
+    Returns its best try at assigning nurses properly to the schedule required.
+    One can think of the output as being a grid of size row x col,
+    with a desired number of Xs in any column, while avoiding neighbouring
+    Xs in any row.
+
+    This runs on the Dwave Hybrid Sampler.
+    The solution will be fast and good, but relatively expensive on Dwave
+    allowed minutes.
+
+    This code includes an implementation of the algorithm described in Ikeda,
+    K., Nakamura, Y. & Humble, T.S. Application of Quantum Annealing to Nurse
+    Scheduling Problem. Sci Rep 9, 12837 (2019).
+    `DOI: 10.1038/s41598-019-49172-3 <https://doi.org/10.1038/s41598-019-49172-3>`_,
+    © The Author(s) 2019, use of
+    which is licensed under a Creative Commons Attribution 4.0 International
+    License
+
+    :param n_nurses: The number of nurses as an integer (number of rows in solution)
+
+    :param n_days: The number of days as an integer (number of columns in solution)
+
+    :param nurses_per_day: The number of desired nurses per day, an integer
+        (desired number of Xs in any given column)
+
+    :param token: The Dwave token to be used.
+        This should be a string, in the format used on the dwave leap website.
+
+    :return: Returns a dictionary. Keys supported:
+
+        * "Size" a string describing the problem size
+        * "Energy" a string describing the energy of the solution
+        * "HardNurseConstraint" a string describing the hard nurse constraint energy
+        * "HardShiftConstraint" a string describing the hard shift constraint energy
+        * "n_days" an integer - the number of days (columns) of the solution
+        * "n_nurses" an integer - the number of nurses (rows) of the solution
+        * "schedule" - A 2-dimensional array of integers. Lists the exact days each nurse works (The marked columns for each row).
+    
+    """
     # Overall model variables: problem size
     # binary variable q_nd is the assignment of nurse n to day d
     n_nurses = n_nurses      # count nurses n = 1 ... n_nurses

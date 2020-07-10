@@ -9,14 +9,20 @@ import dwave.inspector as insp
 # from dimod import ExactSolver
 # from neal import SimulatedAnnealingSampler
 
-token = 'DEV-98f37d3736d62d7061eaa5e68214a92eadb2393b' # Ari
-
 def load_problem(filename):
     ''' Returns a representation of the input graph.
 
     This is a tuple containing an integer, the number of nodes,
     as well as a tuple of tuples representing each pair of neighbours.
-    Nodes are 0-indexed'''
+    Nodes are 0-indexed.
+    
+    :param filename: A text string with the file to be loaded
+
+    :return: A tuple. The first item is the number of nodes.
+        The second item is a tuple representing the binary
+        relations of connected nodes.
+        Each relation is a tuple with two neighbouring node indices.
+    '''
     with open(filename, 'r') as f:
         content = f.readlines()
     
@@ -27,12 +33,32 @@ def load_problem(filename):
     return n, neighbours
 
 
-def main(token=token, n_vertices=0, neighbours=None, filename=None, local=False):
+def main(token='', n_vertices=0, neighbours=None, filename=None, local=False):
     ''' Using any graph at all, if given the number of nodes
     and the neighbours, 0-indexed, this will try to minimize the
     number of same-coloured neighbours.
 
-    Runs on the Basic Dwave Solver, so very quickly and painlessly
+    Runs on the Basic Dwave Solver, so very quickly and painlessly.
+
+    :param n_vertices: This is the number of vertices in the graph to be 2-coloured.
+        Vertices should be 0-indexed.
+
+    :param neighbours: This is the adjacency list describing the graph.
+        This should only describe vertex indices, 0-indexed.
+    
+    :param filename: If the problem is desired to be loaded from a file,
+        this string should be the path to that file.
+    
+    :param local: Utilized solely by __main__, will make the program output
+        the whole solution for display in Dwave's web inspector.
+
+    :param token: The Dwave token to be used.
+        This should be a string, in the format used on the dwave leap website.
+
+    :return: This returns a dictionary. The only key is "solution",
+        containing an ordered list of the states of the vertices for the best solution.
+        Each state is either 1 or -1.
+
     '''
     if filename == None:
         filename = 'problem.txt'

@@ -104,6 +104,27 @@ def get_result(matrix):
 
 
 def main(matrix=None, token=None):
+    """
+    Takes in a matrix to be solved, as well as the authentication token to be
+    sent to Dwave. Returns its best try at solving that matrix with few
+    conflicts.
+
+    This uses the Kerberos Sampler, which means that it will do a lot of computation
+    on the computer running this itself. Solving can take up to 30 seconds for
+    difficult problems.
+
+    :param matrix: A 2-dimensional 9x9 array describing the sudoku.
+        Zero indicates a blank space to be filled in, while any number
+        from 1 to 9 represents that number.
+    
+    :param token: The Dwave token to be used.
+        This should be a string, in the format used on the dwave leap website.
+
+    :return: Returns a dictionary object. The key "solution message" gives a message.
+        The key "solved_board" contains the resulting sudoku board, in the same
+        format as the input.
+
+    """
     # Note: for the purposes of a code example, main() is written as a script
 
     endpoint = 'https://cloud.dwavesys.com/sapi/'

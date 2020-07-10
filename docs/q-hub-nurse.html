@@ -5,31 +5,43 @@
   <head>
     <meta charset="utf-8" />
     <title>Nurse Scheduler &#8212; DTQC 0.0.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
+    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="LongRequest" href="q-hub-longrequest.html" />
-    <link rel="prev" title="Sudoku Solver" href="q-hub-sudoku.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="next" title="Two-Colouring on a Lattice" href="q-hub-two-colour.html" />
+    <link rel="prev" title="Sudoku Solver" href="q-hub-sudoku.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="q-hub-two-colour.html" title="Two-Colouring on a Lattice"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="q-hub-sudoku.html" title="Sudoku Solver"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">DTQC 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="quantum-hub-js.html" accesskey="U">Quantum Hub NodeJS documentation</a> &#187;</li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <div class="section" id="nurse-scheduler">
@@ -41,6 +53,8 @@ there is a nurse working every day, no nurse
 works two days in a row (wouldn’t that be a
 great world, never work two days in a row),
 and nurses’ workload is evenly split up.</p>
+<div class="section" id="front-end-components">
+<h2>Front-end components<a class="headerlink" href="#front-end-components" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="NurseScheduler">
 <code class="sig-name descname">NurseScheduler</code><span class="sig-paren">(</span><em class="sig-param">props</em><span class="sig-paren">)</span><a class="headerlink" href="#NurseScheduler" title="Permalink to this definition">¶</a></dt>
@@ -113,7 +127,7 @@ nurseScheduler.css.</p>
 
 <dl class="function">
 <dt id="nurseSolveRequest">
-<code class="sig-name descname">nurseSolveRequest</code><span class="sig-paren">(</span><em class="sig-param">setSchedule</em>, <em class="sig-param">outputToConsole</em>, <em class="sig-param">appendToConsole</em>, <em class="sig-param">getAPIKey</em><span class="sig-paren">)</span><a class="headerlink" href="#nurseSolveRequest" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">nurseSolveRequest</code><span class="sig-paren">(</span><em class="sig-param">setSchedule</em>, <em class="sig-param">outputToConsole</em>, <em class="sig-param">appendToConsole</em>, <em class="sig-param">getAPIKey</em>, <em class="sig-param">setLoading</em><span class="sig-paren">)</span><a class="headerlink" href="#nurseSolveRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is a function to send a solve request to the backend.
 Uses LongRequest to achieve this with background processes.</p>
 <dl class="field-list simple">
@@ -123,6 +137,7 @@ Uses LongRequest to achieve this with background processes.</p>
 <li><p><strong>outputToConsole</strong> (<em>function</em>) – Output to Console</p></li>
 <li><p><strong>appendToConsole</strong> (<em>function</em>) – Append to Console</p></li>
 <li><p><strong>getAPIKey</strong> (<em>function</em>) – Get the API Key</p></li>
+<li><p><strong>setLoading</strong> (<em>function</em>) – Hook to set the Nurse App’s loading state</p></li>
 </ul>
 </dd>
 </dl>
@@ -130,7 +145,7 @@ Uses LongRequest to achieve this with background processes.</p>
 
 <dl class="function">
 <dt id="nurseSolveRequest.postSolve">
-<code class="sig-prename descclassname">nurseSolveRequest.</code><code class="sig-name descname">postSolve</code><span class="sig-paren">(</span><em class="sig-param">xhr</em>, <em class="sig-param">setSchedule</em>, <em class="sig-param">outputToConsole</em><span class="sig-paren">)</span><a class="headerlink" href="#nurseSolveRequest.postSolve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">nurseSolveRequest.</code><code class="sig-name descname">postSolve</code><span class="sig-paren">(</span><em class="sig-param">xhr</em>, <em class="sig-param">setSchedule</em>, <em class="sig-param">outputToConsole</em>, <em class="sig-param">setLoading</em><span class="sig-paren">)</span><a class="headerlink" href="#nurseSolveRequest.postSolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is a function to do something after the solve has gone
 through. It decodes the grid configuration sent, and
 then sets it as the current grid.</p>
@@ -140,6 +155,7 @@ then sets it as the current grid.</p>
 <li><p><strong>xhr</strong> (<em>XMLHTTPRequest</em>) – This is the response containing the results of the nurse scheduling job. The “encoded” schedule is in here. Encoded simply means a sparse matrix representation, as opposed to a complete matrix.</p></li>
 <li><p><strong>setSchedule</strong> (<em>function</em>) – A function to set the Nurse Schedule</p></li>
 <li><p><strong>outputToConsole</strong> (<em>function</em>) – Outputs a line to the console object</p></li>
+<li><p><strong>setLoading</strong> (<em>function</em>) – Hook to set the Nurse App’s loading state</p></li>
 </ul>
 </dd>
 </dl>
@@ -164,6 +180,12 @@ refresh React</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="NurseVariables.nursesPerDay">
+<code class="sig-prename descclassname">NurseVariables.</code><code class="sig-name descname">nursesPerDay</code><a class="headerlink" href="#NurseVariables.nursesPerDay" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of nurses that should be scheduled for each day</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="NurseVariables.state">
 <code class="sig-prename descclassname">NurseVariables.</code><code class="sig-name descname">state</code><a class="headerlink" href="#NurseVariables.state" title="Permalink to this definition">¶</a></dt>
 <dd><p>The state of the latest LongRequest answer.
@@ -178,12 +200,17 @@ Used in nurseSolveRequest’s LongRequest callbacks.</p>
 
 <dl class="function">
 <dt id="NurseVariables.setNumDays">
-<code class="sig-prename descclassname">NurseVariables.</code><code class="sig-name descname">setNumDays</code><span class="sig-paren">(</span><em class="sig-param">num</em><span class="sig-paren">)</span><a class="headerlink" href="#NurseVariables.setNumDays" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">NurseVariables.</code><code class="sig-name descname">setNumDays</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">errorSetters</em><span class="sig-paren">)</span><a class="headerlink" href="#NurseVariables.setNumDays" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="NurseVariables.setNumNurses">
-<code class="sig-prename descclassname">NurseVariables.</code><code class="sig-name descname">setNumNurses</code><span class="sig-paren">(</span><em class="sig-param">num</em><span class="sig-paren">)</span><a class="headerlink" href="#NurseVariables.setNumNurses" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">NurseVariables.</code><code class="sig-name descname">setNumNurses</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">errorSetters</em><span class="sig-paren">)</span><a class="headerlink" href="#NurseVariables.setNumNurses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="NurseVariables.setNursesPerDay">
+<code class="sig-prename descclassname">NurseVariables.</code><code class="sig-name descname">setNursesPerDay</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">errorSetters</em><span class="sig-paren">)</span><a class="headerlink" href="#NurseVariables.setNursesPerDay" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -201,49 +228,86 @@ Used in nurseSolveRequest’s LongRequest callbacks.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-nurse_scheduling_master.nurse_scheduling">
+<span id="backend-code"></span><h2>Backend code<a class="headerlink" href="#module-nurse_scheduling_master.nurse_scheduling" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nurse_scheduling_master.nurse_scheduling.main">
+<code class="sig-prename descclassname">nurse_scheduling_master.nurse_scheduling.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">token=None</em>, <em class="sig-param">n_nurses=3</em>, <em class="sig-param">n_days=11</em>, <em class="sig-param">nurses_per_day=1</em><span class="sig-paren">)</span><a class="headerlink" href="#nurse_scheduling_master.nurse_scheduling.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a number of nurses, a number of days, and a wanted capacity
+of nurses per day.
+Also takes in a Dwave Authentication Token.
+Returns its best try at assigning nurses properly to the schedule required.
+One can think of the output as being a grid of size row x col,
+with a desired number of Xs in any column, while avoiding neighbouring
+Xs in any row.</p>
+<p>This runs on the Dwave Hybrid Sampler.
+The solution will be fast and good, but relatively expensive on Dwave
+allowed minutes.</p>
+<p>This code includes an implementation of the algorithm described in Ikeda,
+K., Nakamura, Y. &amp; Humble, T.S. Application of Quantum Annealing to Nurse
+Scheduling Problem. Sci Rep 9, 12837 (2019).
+<a class="reference external" href="https://doi.org/10.1038/s41598-019-49172-3">DOI: 10.1038/s41598-019-49172-3</a>,
+© The Author(s) 2019, use of
+which is licensed under a Creative Commons Attribution 4.0 International
+License</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_nurses</strong> – The number of nurses as an integer (number of rows in solution)</p></li>
+<li><p><strong>n_days</strong> – The number of days as an integer (number of columns in solution)</p></li>
+<li><p><strong>nurses_per_day</strong> – The number of desired nurses per day, an integer
+(desired number of Xs in any given column)</p></li>
+<li><p><strong>token</strong> – The Dwave token to be used.
+This should be a string, in the format used on the dwave leap website.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>Returns a dictionary. Keys supported:</p>
+<ul class="simple">
+<li><p>”Size” a string describing the problem size</p></li>
+<li><p>”Energy” a string describing the energy of the solution</p></li>
+<li><p>”HardNurseConstraint” a string describing the hard nurse constraint energy</p></li>
+<li><p>”HardShiftConstraint” a string describing the hard shift constraint energy</p></li>
+<li><p>”n_days” an integer - the number of days (columns) of the solution</p></li>
+<li><p>”n_nurses” an integer - the number of nurses (rows) of the solution</p></li>
+<li><p>”schedule” - A 2-dimensional array of integers. Lists the exact days each nurse works (The marked columns for each row).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
 
 
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">DTQC</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="q-hub-components.html">Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="q-hub-sudoku.html">Sudoku Solver</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Nurse Scheduler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="q-hub-longrequest.html">LongRequest</a></li>
-<li class="toctree-l2"><a class="reference internal" href="q-hub-deploy.html">Deployment to Heroku</a></li>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Nurse Scheduler</a><ul>
+<li><a class="reference internal" href="#front-end-components">Front-end components</a></li>
+<li><a class="reference internal" href="#module-nurse_scheduling_master.nurse_scheduling">Backend code</a></li>
 </ul>
 </li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="quantum-hub-js.html">Quantum Hub NodeJS documentation</a><ul>
-      <li>Previous: <a href="q-hub-sudoku.html" title="previous chapter">Sudoku Solver</a></li>
-      <li>Next: <a href="q-hub-longrequest.html" title="next chapter">LongRequest</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="q-hub-sudoku.html"
+                        title="previous chapter">Sudoku Solver</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="q-hub-two-colour.html"
+                        title="next chapter">Two-Colouring on a Lattice</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/q-hub-nurse.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -254,32 +318,32 @@ Used in nurseSolveRequest’s LongRequest callbacks.</p>
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2020, UBC.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/q-hub-nurse.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="q-hub-two-colour.html" title="Two-Colouring on a Lattice"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="q-hub-sudoku.html" title="Sudoku Solver"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">DTQC 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="quantum-hub-js.html" >Quantum Hub NodeJS documentation</a> &#187;</li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, UBC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
   </body>
 </html>
