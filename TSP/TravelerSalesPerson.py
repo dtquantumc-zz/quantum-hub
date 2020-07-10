@@ -4,10 +4,8 @@ from tabu import TabuSampler
 from dwave_networkx.algorithms.tsp import traveling_salesperson_qubo
 
 
-<<<<<<< HEAD
 def make_graph(nodes,list_id):
-=======
-def make_graph(cities,list_id):
+
     """
     This function creates the TSP graph that will be solved.
     Distances are measured in miles for Cities.
@@ -46,7 +44,6 @@ def make_graph(cities,list_id):
 
     :return: Returns the graph as a networkx graph.
     """
->>>>>>> 759aa83e54185d13e164d5f985f111f8176eb18a
 
     n=len(nodes)
 
