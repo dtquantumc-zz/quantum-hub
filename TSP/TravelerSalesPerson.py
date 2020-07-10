@@ -11,31 +11,51 @@ def make_graph(nodes,list_id):
     Distances are measured in miles for Cities.
 
     
-    Cities:
+    Cities: (list_id=0)
         0. Albuquerque
-        #. Boston
-        #. Charlotte, NC
-        #. Detroit
-        #. Evanston, IL
-        #. Frankfort, Kentucky
-        #. Gulfport, Mississippi
-        #. Toronto, ON, CA
-        #. Vancouver, BC, CA
-        #. Winnipeg, MB, CA
-        #. Calgary, AB, CA
-        #. Regina, SK, CA
-        #. Montréal, QC, CA
+        1. Boston
+        2. Charlotte, NC
+        3. Detroit
+        4. Evanston, IL
+        5. Frankfort, Kentucky
+        6. Gulfport, Mississippi
+        7. Toronto, ON, CA
+        8. Vancouver, BC, CA
+        9. Winnipeg, MB, CA
+        10. Calgary, AB, CA
+        11. Regina, SK, CA
+        12. Montréal, QC, CA
 
-    Vancouver locations:
+    Vancouver locations: (list_id=1)
         0. UBC campus
-        #. SFU campus
-        #. Canada Place
-        #. Rogers Arena
-        #. Stanley park
-        #. Metropolise at Metrotown
-        #. Lafarge lake
-        #. Burnaby lake
-        #. Queen Elizabeth park
+        1. SFU campus
+        2. Canada Place
+        3. Rogers Arena
+        4. Stanley park
+        5. Metropolise at Metrotown
+        6. Lafarge lake
+        7. Burnaby lake
+        8. Queen Elizabeth park
+        9:Playland at PNE
+        10:Burnaby Central Park
+        11:Mundy Park
+        12:Colony Farm Park
+
+    flowers' coordinates: (list_id=2)
+        #0:(1,9)
+        #1:(2,7)
+        #2:(6,5)
+        #3:(12,1)
+        #4:(10,8)
+        #5:(5,8)
+        #6:(2.5,4.5)
+        #7:(8,1.5)
+        #8:(9.5,10)
+        #9:(11,5.5)
+        #10:(6.5,0.5)
+        #11:(3,9)
+        #12:(7.5,8)
+
 
     :param cities: This is a list of indices of cities to be
         included in the problem.
@@ -51,22 +71,6 @@ def make_graph(nodes,list_id):
         raise ValueError("Number of cities or the list ID not within the limits!")
 
     edges_list=[]
-
-    #list_id=0
-    #cities:
-    #0: A: Albuquerque
-    #1: B: Boston
-    #2: C: Charlotte, NC
-    #3: Detroit
-    #4: Evanston, IL
-    #5: Frankfort, Kentucky
-    #6: Gulfport, Mississippi
-    #7: Toronto, ON, CA
-    #8: Vancouver, BC, CA
-    #9: Winnipeg, MB, CA
-    #10: Calgary, AB, CA
-    #11: Regina, SK, CA
-    #12: Montréal, QC, CA
 
     # Networkx graph of the problem. Distances measured in miles.
     edges_list.append([
@@ -150,22 +154,6 @@ def make_graph(nodes,list_id):
         (11, 12, 2850)
     ])
 
-    #list_id=1
-    #Vancouver locations
-    #0: UBC campus
-    #1: SFU campus
-    #2:Canada Place
-    #3:Rogers Arena
-    #4:Stanley park
-    #5:Metropolise at Metrotown
-    #6:Lafarge lake
-    #7:Burnaby lake
-    #8:Queen Elizabeth park
-    #9:Playland at PNE
-    #10:Burnaby Central Park
-    #11:Mundy Park
-    #12:Colony Farm Park
-
     edges_list.append([
         (0, 1, 16.5),
         (0, 2, 7.3),
@@ -246,22 +234,6 @@ def make_graph(nodes,list_id):
         (10, 12, 13.4),
         (11, 12, 4.4)
     ])
-
-    #list_id=2
-    #flowers list
-    #0:(1,9)
-    #1:(2,7)
-    #2:(6,5)
-    #3:(12,1)
-    #4:(10,8)
-    #5:(5,8)
-    #6:(2.5,4.5)
-    #7:(8,1.5)
-    #8:(9.5,10)
-    #9:(11,5.5)
-    #10:(6.5,0.5)
-    #11:(3,9)
-    #12:(7.5,8)
 
     edges_list.append([
         (0, 1, 2.23606797749979),
