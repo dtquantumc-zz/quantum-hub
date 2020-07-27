@@ -11,7 +11,7 @@ import React from 'react'
 // import HexGrid from './HexGrid'
 
 import Button from '../../CustomButtons/Button.js'
-import Slider from '@material-ui/core/Slider';
+import Slider from '@material-ui/core/Slider'
 // import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
 // import Input from '@material-ui/core/Input'
@@ -62,9 +62,9 @@ import './IsingModel.css'
 function IsingModel (props) {
   const [sliderVal, setSliderVal] = React.useState(0)
 
-  const [stateWeight, setStateWeight] = React.useState(0)
+  const [stateWeight, setStateWeight] = React.useState(Math.random() - 0.5)
 
-  const [HVal, setHVal] = React.useState('')
+  const [HVal, setHVal] = React.useState(Math.round((stateWeight < 0 ? 1 : -1) * (Math.pow(10, Math.abs(stateWeight) * 7) - 1)))
 
   const [annealTime, setAnnealTime] = React.useState(200)
 
@@ -206,7 +206,7 @@ function IsingModel (props) {
               Simulate
             </Button>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={3}> {/* H-value input */}
             <CustomInput
               labelText='H-value'
               id='h_input'
