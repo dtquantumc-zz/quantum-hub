@@ -9,6 +9,7 @@ import React from 'react'
 import SudokuGame from './Sudoku/Sudoku'
 import NurseScheduler from './Nurse/NurseScheduler'
 import LatticeColourer from './Lattice/LatticeColourer'
+import IsingModel from './Ising/IsingModel'
 import Widget from './EmptyWidget/EmptyWidget'
 
 import NurseBriefDescriptionText from '../Typography/NurseBriefDescriptionText'
@@ -50,6 +51,16 @@ const widgetList = {
     readMoreDescriptionText: <LatticeReadMoreDescriptionText />,
     brand: 'Lattice Two-Colouring',
     component: LatticeColourer
+  },
+  ising: {
+    enabler: 'isIsingModel',
+    route: '/app/ising',
+    name: 'ising-model',
+    title: 'Ising Model Visualiser',
+    briefDescriptionText: <span>This is placeholder text</span>,
+    readMoreDescriptionText: <span>This is more placeholder text</span>,
+    brand: 'Ising Model Visualiser',
+    component: IsingModel
   },
   default: {
     enabler: 'isNothing',

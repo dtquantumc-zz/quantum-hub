@@ -21,7 +21,7 @@ from sudoku_master import sudoku
 from two_colour_master import two_colour
 
 # Worker Code Imports
-import workers
+# import workers
 
 def create_app():
     app = Flask(__name__, static_folder='./build', static_url_path='/')
