@@ -43,18 +43,18 @@ def make_graph(nodes,list_id):
 
     flowers' coordinates: (list_id=2)
         #0:(1,9) White Lily
-        #1:(12.5,8) Hyacinth*
+        #1:(12.5,8) Hyacinth
         #2:(6,5) Orchid
         #3:(12,1) Bird of Paradise
-        #4:(3.5,2.7) Yellow Crocus*
+        #4:(3.5,2.7) Yellow Crocus
         #5:(5,8) Aztec Lily
-        #6:(2,4.5) Blue Bonnet*
-        #7:(9,2.5) Red Poppy*
+        #6:(2,4.5) Blue Bonnet
+        #7:(9,2.5) Red Poppy
         #8:(9.5,10) Orange Blossom
         #9:(11,5.5) Daisy
         #10:(6.5,0.5) China Rose
-        #11:(1,1) Poinsettia*
-        #12:(8.5,7) Blue Bell*
+        #11:(1,1) Poinsettia
+        #12:(8.5,7) Blue Bell
 
 
     :param cities: This is a list of indices of cities to be
