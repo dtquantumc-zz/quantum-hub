@@ -10,7 +10,7 @@ def make_graph(nodes,list_id):
     This function creates the TSP graph that will be solved.
     Distances are measured in miles for Cities.
 
-    
+
     Cities: (list_id=0)
         0. Albuquerque
         1. Boston
@@ -36,10 +36,10 @@ def make_graph(nodes,list_id):
         6. Lafarge lake
         7. Burnaby lake
         8. Queen Elizabeth park
-        9:Playland at PNE
-        10:Burnaby Central Park
-        11:Mundy Park
-        12:Colony Farm Park
+        9. Playland at PNE
+        10. Burnaby Central Park
+        11. Mundy Park
+        12. Colony Farm Park
 
     flowers' coordinates: (list_id=2)
         #0:(1,9) White Lily
