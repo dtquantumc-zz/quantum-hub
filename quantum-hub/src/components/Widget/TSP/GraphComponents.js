@@ -6,7 +6,7 @@
 
 export default class GraphComponents {
   static getCitiesEdgeList () {
-    return [ // TODO: is length 78?
+    return [
       [0, 1, 2230],
       [0, 2, 1631],
       [0, 3, 1566],
