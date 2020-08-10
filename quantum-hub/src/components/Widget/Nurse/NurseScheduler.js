@@ -4,9 +4,8 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import clsx from 'clsx'
-// import PropTypes from 'prop-types'
 
 import nurseSolveRequest from './nurseSolveRequest'
 import NurseSchedule from '../../DatePicker/NurseSchedule.js'
@@ -70,16 +69,16 @@ function NurseScheduler (props) {
   // These use React Hooks, so rerendering is done
   // whenever the Set function for a variable is called.
   var [schedule, setSchedule] = useState([[false]])
-  const [open, setOpen] = React.useState(false)
-  const [scroll, setScroll] = React.useState('paper')
+  const [open, setOpen] = useState(false)
+  const [scroll, setScroll] = useState('paper')
   const [loading, setLoading] = [props.loading, props.setLoading]
-  const descriptionElementRef = React.useRef(null)
+  const descriptionElementRef = useRef(null)
 
   const useStyles = makeStyles(styles)
 
   const classes = useStyles()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (open) {
       const { current: descriptionElement } = descriptionElementRef
       if (descriptionElement !== null) {
