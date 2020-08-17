@@ -19,7 +19,7 @@ from dwave.cloud import exceptions
 from nurse_scheduling_master import nurse_scheduling
 from sudoku_master import sudoku
 from two_colour_master import two_colour
-
+from TSP import TravelingSalesPerson
 # Worker Code Imports
 # import workers
 
@@ -34,7 +34,7 @@ app = create_app()
 
 @app.route('/make_worker', methods=['POST'])
 def make_worker():
-    
+
     raw_data = request.get_json()
 
     # token = 'DEV-a141649cf7a24ed2fd84b5939533c9fcc2d99fb6' # Haris
@@ -47,6 +47,8 @@ def make_worker():
         args = [raw_data['sudokuArray'], token]
     elif raw_data['typeOfProblem'] == 'latticeColouring':
         args = [token, raw_data['n_vertices'], raw_data['neighbours']]
+    elif raw_data['typeOfProblem'] == 'tspSolving':
+        args = [raw_data['selectedEdges'], token]
 
     if app.is_live:
         if raw_data['typeOfProblem'] == 'nurseScheduling':
@@ -57,7 +59,7 @@ def make_worker():
             job = app.task_queue.enqueue('two_colour_master.two_colour.main', args=args)
 
         return {'jobStatus':'enqueued', 'jobID':job.get_id()}
-    
+
     else:
         if raw_data['typeOfProblem'] == 'nurseScheduling':
             res = nurse_scheduling.main(*args)
@@ -65,6 +67,8 @@ def make_worker():
             res = sudoku.main(*args)
         elif raw_data['typeOfProblem'] == 'latticeColouring':
             res = two_colour.main(*args)
+        elif raw_data['typeOfProblem'] == 'tspSolving':
+            res = TravelingSalesPerson.main(*args)
 
         res['jobStatus'] = 'finished'
         return res
