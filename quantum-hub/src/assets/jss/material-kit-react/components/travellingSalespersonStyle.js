@@ -17,6 +17,26 @@ const travellingSalespersonStyle = theme => ({
   mapContainer: {
     width: '492px'
   },
+  loadingContainer: {
+    position: 'relative',
+    margin: 'auto',
+    width: '100%',
+    pointerEvents: 'none',
+    '& > *': {
+      pointerEvents: 'none'
+    },
+    opacity: '0.65'
+  },
+  mapProgress: {
+    position: 'absolute',
+    bottom: 'calc((307px / 2) - (68px / 2))',
+    left: 'calc((510px / 2) - (68px / 2))',
+    color: '#50c8eb',
+    zIndex: '1000'
+  },
+  hidingContainer: {
+    display: 'none'
+  },
   map: {
     height: '47.61vh',
     border: '1px solid rgba(0, 0, 0, 0.12)',
