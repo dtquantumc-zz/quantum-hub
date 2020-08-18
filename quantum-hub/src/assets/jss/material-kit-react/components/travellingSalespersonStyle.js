@@ -21,7 +21,6 @@ const travellingSalespersonStyle = theme => ({
     position: 'relative',
     margin: 'auto',
     width: '100%',
-    pointerEvents: 'none',
     '& > *': {
       pointerEvents: 'none'
     },
@@ -29,10 +28,13 @@ const travellingSalespersonStyle = theme => ({
   },
   mapProgress: {
     position: 'absolute',
-    bottom: 'calc((307px / 2) - (68px / 2))',
-    left: 'calc((510px / 2) - (68px / 2))',
+    bottom: 'calc((380.48px / 2) - (68px / 2))',
+    left: 'calc((492px / 2) - (68px / 2))',
     color: '#50c8eb',
-    zIndex: '1000'
+    zIndex: '1000',
+    '& > *': {
+      pointerEvents: 'none'
+    }
   },
   hidingContainer: {
     display: 'none'
