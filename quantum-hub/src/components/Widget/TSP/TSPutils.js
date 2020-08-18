@@ -200,8 +200,18 @@ export default class TSPutils {
     return key === Keys.CITIES
   }
 
+  static isCitiesMainGraph (key) {
+    const tspState = TSPstate.getInstance()
+    return TSPutils.isCitiesGraph(key) && !tspState.getFullScreen()
+  }
+
   static isVancouverGraph (key) {
     return key === Keys.VANCOUVER
+  }
+
+  static isVancouverMainGraph (key) {
+    const tspState = TSPstate.getInstance()
+    return TSPutils.isVancouverGraph(key) && !tspState.getFullScreen()
   }
 
   static isFlowersGraph (key) {
@@ -214,8 +224,11 @@ export default class TSPutils {
   }
 
   static handleClose (setOpen, setLoading) {
+    const tspState = TSPstate.getInstance()
+
     setOpen(false)
     setLoading(false)
+    tspState.setIsLoading(false)
   }
 
   static getGeeringupPrimaryColor () {
@@ -303,7 +316,7 @@ export default class TSPutils {
     popupPane.style.zIndex = 3000
   }
 
-  static isNonNegNumber(value) {
+  static isNonNegNumber (value) {
     return /^\d+$/.test(value)
   }
 
@@ -312,7 +325,7 @@ export default class TSPutils {
     TSPutils.doesEndWaypointMatch(lineWaypoints, endWaypoint))
   }
 
-  static doesStartWaypointMatch(lineWaypoints, startWaypoint) {
+  static doesStartWaypointMatch (lineWaypoints, startWaypoint) {
     const lineStartWaypoint = lineWaypoints[0]
     const lineStartLat = lineStartWaypoint.lat
     const lineStartLng = lineStartWaypoint.lng
