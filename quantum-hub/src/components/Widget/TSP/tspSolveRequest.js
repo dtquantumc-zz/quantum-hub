@@ -55,6 +55,7 @@ function tspSolveRequest (selectedEdges, key, setters, consoleFns) {
       console.log(xhr)
       consoleFns.outputToConsole(JSON.stringify(xhr))
       setters.setLoading(false)
+      tspState.setIsLoading(false)
     },
     consoleFns.outputToConsole
   )
@@ -66,6 +67,8 @@ function tspSolveRequest (selectedEdges, key, setters, consoleFns) {
  * and report back to the user through the console.
  */
 function postSolve (xhr, key, setters, consoleFns) {
+  const tspState = TSPstate.getInstance()
+
   if (xhr.status === 200) {
     const tspState = TSPstate.getInstance()
     const waypoints = TSPutils.getWaypointsSinglePath(Graph[key], xhr.response.route)
@@ -83,6 +86,7 @@ function postSolve (xhr, key, setters, consoleFns) {
     consoleFns.outputToConsole(xhr.status, xhr.statusText)
   }
   setters.setLoading(false)
+  tspState.setIsLoading(false)
 }
 
 export default tspSolveRequest
