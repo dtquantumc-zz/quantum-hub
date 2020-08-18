@@ -30,6 +30,7 @@ class TSPstate {
     lng: -105.2551,
     zoom: 4
   }
+
   vancouverState = {
     lat: 49.246292,
     lng: -122.999000,
