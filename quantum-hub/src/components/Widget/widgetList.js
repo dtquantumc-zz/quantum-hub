@@ -10,6 +10,7 @@ import SudokuGame from './Sudoku/Sudoku'
 import NurseScheduler from './Nurse/NurseScheduler'
 import LatticeColourer from './Lattice/LatticeColourer'
 import IsingModel from './Ising/IsingModel'
+import TSP from './TSP/TravellingSalesperson'
 import Widget from './EmptyWidget/EmptyWidget'
 
 import NurseBriefDescriptionText from '../Typography/NurseBriefDescriptionText'
@@ -20,6 +21,9 @@ import SudokuReadMoreDescriptionText from '../Typography/SudokuReadMoreDescripti
 
 import LatticeBriefDescriptionText from '../Typography/LatticeBriefDescriptionText'
 import LatticeReadMoreDescriptionText from '../Typography/LatticeReadMoreDescriptionText'
+
+import TSPbriefDescriptionText from '../Typography/TSPbriefDescriptionText'
+import TSPreadMoreDescriptionText from '../Typography/TSPreadMoreDescriptionText'
 
 const widgetList = {
   nurse: {
@@ -61,6 +65,16 @@ const widgetList = {
     readMoreDescriptionText: <span>This is more placeholder text</span>,
     brand: 'Ising Model Visualiser',
     component: IsingModel
+  },
+  tsp: {
+    enabler: 'isTSP',
+    route: '/app/tsp',
+    name: 'tsp',
+    title: 'Travelling Salesperson',
+    briefDescriptionText: <TSPbriefDescriptionText />,
+    readMoreDescriptionText: <TSPreadMoreDescriptionText />,
+    brand: 'Travelling Salesperson',
+    component: TSP
   },
   default: {
     enabler: 'isNothing',
