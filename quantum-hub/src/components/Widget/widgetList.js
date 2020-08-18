@@ -85,7 +85,7 @@ const widgetList = {
     enabler: 'isNothing',
     route: '/app/default',
     name: 'no-app',
-    title: 'No title found',
+    title: 'No Title Found',
     briefDescriptionText: 'No Brief Description Found',
     readMoreDescriptionText: 'No Read More Description Text Found',
     brand: 'No game found',
