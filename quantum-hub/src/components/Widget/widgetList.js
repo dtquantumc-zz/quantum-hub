@@ -34,6 +34,7 @@ const widgetList = {
     briefDescriptionText: <NurseBriefDescriptionText />,
     readMoreDescriptionText: <NurseReadMoreDescriptionText />,
     brand: 'Nurse Scheduler',
+    visible: true,
     component: NurseScheduler
   },
   sudoku: {
@@ -44,6 +45,7 @@ const widgetList = {
     briefDescriptionText: <SudokuBriefDescriptionText />,
     readMoreDescriptionText: <SudokuReadMoreDescriptionText />,
     brand: 'Sudoku Solver',
+    visible: true,
     component: SudokuGame
   },
   lattice: {
@@ -54,6 +56,7 @@ const widgetList = {
     briefDescriptionText: <LatticeBriefDescriptionText />,
     readMoreDescriptionText: <LatticeReadMoreDescriptionText />,
     brand: 'Lattice Two-Colouring',
+    visible: true,
     component: LatticeColourer
   },
   ising: {
@@ -64,6 +67,7 @@ const widgetList = {
     briefDescriptionText: <span>This is placeholder text</span>,
     readMoreDescriptionText: <span>This is more placeholder text</span>,
     brand: 'Ising Model Visualiser',
+    visible: true,
     component: IsingModel
   },
   tsp: {
@@ -74,6 +78,7 @@ const widgetList = {
     briefDescriptionText: <TSPbriefDescriptionText />,
     readMoreDescriptionText: <TSPreadMoreDescriptionText />,
     brand: 'Travelling Salesperson',
+    visible: false,
     component: TSP
   },
   default: {
@@ -84,6 +89,7 @@ const widgetList = {
     briefDescriptionText: 'No Brief Description Found',
     readMoreDescriptionText: 'No Read More Description Text Found',
     brand: 'No game found',
+    visible: false,
     component: Widget
   }
 }

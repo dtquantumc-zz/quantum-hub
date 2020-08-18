@@ -116,7 +116,7 @@ export default function Header (props) {
         keepMounted
       >
         {Object.keys(widgetList).map((widget) => {
-          if (widget === 'default') return ''
+          if (widgetList[widget].visible === false) return ''
           return (
             <MenuItem
               key={widget}

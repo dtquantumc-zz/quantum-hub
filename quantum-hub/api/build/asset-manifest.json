@@ -1,28 +1,30 @@
 {
   "files": {
     "main.css": "/static/css/main.672e29ab.chunk.css",
-    "main.js": "/static/js/main.41508a24.chunk.js",
-    "main.js.map": "/static/js/main.41508a24.chunk.js.map",
+    "main.js": "/static/js/main.2698ac9e.chunk.js",
+    "main.js.map": "/static/js/main.2698ac9e.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.439bff33.js",
     "runtime-main.js.map": "/static/js/runtime-main.439bff33.js.map",
-    "static/js/2.f1a12ce9.chunk.js": "/static/js/2.f1a12ce9.chunk.js",
-    "static/js/2.f1a12ce9.chunk.js.map": "/static/js/2.f1a12ce9.chunk.js.map",
+    "static/js/2.aed7b051.chunk.js": "/static/js/2.aed7b051.chunk.js",
+    "static/js/2.aed7b051.chunk.js.map": "/static/js/2.aed7b051.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.f11a30d796c94ce4ab3a81893c8b0637.js": "/precache-manifest.f11a30d796c94ce4ab3a81893c8b0637.js",
+    "precache-manifest.fce93a0bc6cdc37bfe10dfa67ff0a4ea.js": "/precache-manifest.fce93a0bc6cdc37bfe10dfa67ff0a4ea.js",
     "service-worker.js": "/service-worker.js",
     "static/css/main.672e29ab.chunk.css.map": "/static/css/main.672e29ab.chunk.css.map",
-    "static/js/2.f1a12ce9.chunk.js.LICENSE.txt": "/static/js/2.f1a12ce9.chunk.js.LICENSE.txt",
-    "static/js/main.41508a24.chunk.js.LICENSE.txt": "/static/js/main.41508a24.chunk.js.LICENSE.txt",
+    "static/js/2.aed7b051.chunk.js.LICENSE.txt": "/static/js/2.aed7b051.chunk.js.LICENSE.txt",
+    "static/js/main.2698ac9e.chunk.js.LICENSE.txt": "/static/js/main.2698ac9e.chunk.js.LICENSE.txt",
+    "static/media/BlueMarker.png": "/static/media/BlueMarker.a8c6e5ae.png",
     "static/media/DTQC_Logo0.svg": "/static/media/DTQC_Logo0.f5c48d09.svg",
     "static/media/DTS_Dark_00.svg": "/static/media/DTS_Dark_00.8112b2ca.svg",
     "static/media/GU_Icon_Blue.svg": "/static/media/GU_Icon_Blue.d16934a4.svg",
+    "static/media/RedMarker.png": "/static/media/RedMarker.222ff890.png",
     "static/media/msft.svg": "/static/media/msft.5f1735b5.svg",
     "static/media/ubc-logo-2018-crest-blue-rgb72.svg": "/static/media/ubc-logo-2018-crest-blue-rgb72.d24d1512.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.439bff33.js",
-    "static/js/2.f1a12ce9.chunk.js",
+    "static/js/2.aed7b051.chunk.js",
     "static/css/main.672e29ab.chunk.css",
-    "static/js/main.41508a24.chunk.js"
+    "static/js/main.2698ac9e.chunk.js"
   ]
 }
