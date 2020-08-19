@@ -39,9 +39,15 @@ function TravellingSalesperson (props) {
   const [scroll, setScroll] = useState('paper')
   const [key, setKey] = useState(Keys.CITIES)
   const [waypoints, setWaypoints] = useState(TSPutils.getCitiesWaypoints())
-  const [isPathSolved, setIsPathSolved] = useState(false)
+  const [isCitiesPathSolved, setIsCitiesPathSolved] = useState(false)
+  const [isVancouverPathSolved, setIsVancouverPathSolved] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [numSelectedNodes, setNumSelectedNodes] = useState(false)
+  const [numSelectedCitiesNodes, setNumSelectedCitiesNodes] = useState(false)
+  const [numSelectedVancouverNodes, setNumSelectedVancouverNodes] = useState(false)
+  const [switchingGraphs, setSwitchingGraphs] = useState({
+    isGraphSwitch: false,
+    key: null
+  })
 
   const descriptionElementRef = useRef(null)
 
@@ -51,6 +57,116 @@ function TravellingSalesperson (props) {
   const loadingContainerClasses = classNames({
     [classes.loadingContainer]: loading
   })
+
+  const prevKey = usePrevious(key)
+  const prevWaypoints = usePrevious(waypoints)
+
+  // Source1: https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state
+  // Source2: https://usehooks.com/usePrevious/
+  function usePrevious (value) {
+    const ref = useRef()
+
+    useEffect(() => {
+      ref.current = value
+    }, [value])
+
+    return ref.current
+  }
+  /**
+ * TODO: Confirm below is necessary
+ *
+ * Since setState() is an async function, we want to make sure all properties
+ * of the graph being switched to are set
+ *
+ * Source: https://reactjs.org/docs/react-component.html#setstate
+ */
+  useEffect(() => {
+    if (key !== prevKey && prevKey !== undefined) {
+      tspState.setComponentsUpdated(tspState.getComponentsUpdated() + 1)
+      if (allComponentsAreUpdated()) {
+        onAllComponentsUpdated()
+      }
+    }
+  }, [key])
+
+  useEffect(() => {
+    if (waypoints !== prevWaypoints && prevWaypoints !== undefined) {
+      tspState.setComponentsUpdated(tspState.getComponentsUpdated() + 1)
+      if (allComponentsAreUpdated()) {
+        onAllComponentsUpdated()
+      }
+    }
+  }, [waypoints])
+
+  function allComponentsAreUpdated () {
+    return tspState.getComponentsThatNeedUpdating() === tspState.getComponentsUpdated()
+  }
+
+  function onAllComponentsUpdated () {
+    tspState.setComponentsUpdated(0)
+    setSwitchingGraphs({
+      isGraphSwitch: true,
+      key: key
+    })
+  }
+
+  function getIsPathSolved () {
+    let isPathSolved = null
+    switch (key) {
+      case Keys.CITIES:
+        isPathSolved = isCitiesPathSolved
+        break
+      case Keys.VANCOUVER:
+        isPathSolved = isVancouverPathSolved
+        break
+      default:
+        break
+    }
+
+    return isPathSolved
+  }
+
+  function setIsPathSolved (value) {
+    switch (key) {
+      case Keys.CITIES:
+        setIsCitiesPathSolved(value)
+        break
+      case Keys.VANCOUVER:
+        setIsVancouverPathSolved(value)
+        break
+      default:
+        break
+    }
+  }
+
+  function getNumSelectedNodes () {
+    let numSelectedNodes = null
+    switch (key) {
+      case Keys.CITIES:
+        numSelectedNodes = numSelectedCitiesNodes
+        break
+      case Keys.VANCOUVER:
+        numSelectedNodes = numSelectedVancouverNodes
+        break
+      default:
+        break
+    }
+
+    return numSelectedNodes
+  }
+
+  function setNumSelectedNodes (value) {
+    switch (key) {
+      case Keys.CITIES:
+        setNumSelectedCitiesNodes(value)
+        break
+      case Keys.VANCOUVER:
+        setNumSelectedVancouverNodes(value)
+        break
+      default:
+        break
+    }
+  }
 
   useEffect(() => {
     if (open) {
@@ -72,25 +188,29 @@ function TravellingSalesperson (props) {
         <div className={TSPutils.isCitiesGraph(key) ? classes.mapContainer : classes.hidingContainer}>
           <Map
             position={position}
-            isPathSolved={isPathSolved}
+            isPathSolved={isCitiesPathSolved}
             waypoints={waypoints}
             currentGraph={currentGraph}
             Key={Keys.CITIES}
             loading={loading}
             setLoading={setLoading}
             setNumSelectedNodes={setNumSelectedNodes}
+            switchingGraphs={switchingGraphs}
+            setSwitchingGraphs={setSwitchingGraphs}
           />
         </div>
         <div className={key === Keys.VANCOUVER ? classes.mapContainer : classes.hidingContainer}>
           <Map
             position={position}
-            isPathSolved={isPathSolved}
+            isPathSolved={isVancouverPathSolved}
             waypoints={waypoints}
             currentGraph={currentGraph}
             Key={Keys.VANCOUVER}
             loading={loading}
             setLoading={setLoading}
             setNumSelectedNodes={setNumSelectedNodes}
+            switchingGraphs={switchingGraphs}
+            setSwitchingGraphs={setSwitchingGraphs}
           />
         </div>
       </div>
@@ -138,7 +258,7 @@ function TravellingSalesperson (props) {
       <div className={classes.tspInput}>
         <Button
           color='geeringupSecondary'
-          disabled={loading || numSelectedNodes < 3 || isPathSolved}
+          disabled={loading || getNumSelectedNodes() < 3 || getIsPathSolved()}
           onClick={() => {
             setLoading(true)
             tspState.setIsLoading(true)
@@ -157,31 +277,29 @@ function TravellingSalesperson (props) {
         </Button>
         <Button
           color='geeringupPrimary'
-          disabled={loading || numSelectedNodes === 0 || !isPathSolved}
+          disabled={loading || getNumSelectedNodes() === 0 || !getIsPathSolved()}
           onClick={() => {
             setLoading(true)
             tspState.setIsLoading(true)
 
-            const keys = Object.keys(tspState.getCitiesMainMapMarkers())
-            keys.forEach(key => {
-              tspState.getCitiesMainMapMarkers()[key].fire('updating', TSPutils.getBlueIcon())
+            const mainMapMarkers = tspState.getMainMapMarkers(key)
+            const keys = Object.keys(mainMapMarkers)
+            keys.forEach(index => {
+              mainMapMarkers[index].fire('updating', TSPutils.getBlueIcon())
             })
-            if (TSPutils.isCitiesGraph(key)) {
-              Object.keys(tspState.getCitiesLines()).forEach(index => {
-                tspState.getCitiesLines()[index].fire('reset')
-              })
-            } else {
-              Object.keys(tspState.getVancouverLines()).forEach(index => {
-                tspState.getVancouverLines()[index].fire('reset')
-              })
-            }
-            tspState.resetGraphStates()
+
+            const graphLines = tspState.getLines(key)
+            Object.keys(graphLines).forEach(index => {
+              graphLines[index].fire('reset')
+            })
+
+            tspState.resetGraphStates(key)
 
             setLoading(false)
             tspState.setIsLoading(false)
 
             setIsPathSolved(false)
-            tspState.setIsPathSolved(false)
+            tspState.setIsPathSolved(key, false)
 
             setNumSelectedNodes(0)
           }}
@@ -215,7 +333,7 @@ function TravellingSalesperson (props) {
           <div className={TSPutils.isCitiesGraph(key) ? classes.expandedMap : classes.hidingContainer}>
             <Map
               position={position}
-              isPathSolved={isPathSolved}
+              isPathSolved={isCitiesPathSolved}
               waypoints={waypoints}
               currentGraph={currentGraph}
               Key={Keys.CITIES}
@@ -223,12 +341,14 @@ function TravellingSalesperson (props) {
               setLoading={setLoading}
               fullScreen={open}
               setNumSelectedNodes={setNumSelectedNodes}
+              switchingGraphs={switchingGraphs}
+              setSwitchingGraphs={setSwitchingGraphs}
             />
           </div>
           <div className={key === Keys.VANCOUVER ? classes.expandedMap : classes.hidingContainer}>
             <Map
               position={position}
-              isPathSolved={isPathSolved}
+              isPathSolved={isVancouverPathSolved}
               waypoints={waypoints}
               currentGraph={currentGraph}
               Key={Keys.VANCOUVER}
@@ -236,6 +356,8 @@ function TravellingSalesperson (props) {
               setLoading={setLoading}
               fullScreen={open}
               setNumSelectedNodes={setNumSelectedNodes}
+              switchingGraphs={switchingGraphs}
+              setSwitchingGraphs={setSwitchingGraphs}
             />
           </div>
         </DialogContent>
