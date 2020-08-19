@@ -171,7 +171,8 @@ export default class TSPutils {
   }
 
   static isEdgeSelected (graphKey, edge) {
-    return TSPutils.isValInSelectedNodes(graphKey, edge[0]) &&
+    return edge[0] !== edge[1] &&
+    TSPutils.isValInSelectedNodes(graphKey, edge[0]) &&
     TSPutils.isValInSelectedNodes(graphKey, edge[1])
   }
 
@@ -283,21 +284,29 @@ export default class TSPutils {
   }
 
   static getRedMarker (latLng, popup) {
-    return L.marker(latLng, {
-      icon: TSPutils.getRedIcon(),
-      pane: 'customMarkerPane',
-      keyboard: false,
-      draggable: false
-    }).bindPopup(popup)
+    return TSPutils.getMarker(TSPutils.getRedIcon(), latLng, popup)
   }
 
   static getBlueMarker (latLng, popup) {
-    return L.marker(latLng, {
-      icon: TSPutils.getBlueIcon(),
+    return TSPutils.getMarker(TSPutils.getBlueIcon(), latLng, popup)
+  }
+
+  static getMarker (icon, latLng, popup) {
+    const marker = L.marker(latLng, {
+      icon: icon,
       pane: 'customMarkerPane',
       keyboard: false,
       draggable: false
     }).bindPopup(popup)
+
+    marker.on('mouseover', () => {
+      marker.openPopup()
+    })
+    marker.on('mouseout', () => {
+      marker.closePopup()
+    })
+
+    return marker
   }
 
   static createBluePane (map) {
