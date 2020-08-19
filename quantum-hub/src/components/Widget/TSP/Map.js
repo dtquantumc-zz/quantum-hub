@@ -21,13 +21,20 @@ export default function MapComponent (props) {
 
   const tspState = TSPstate.getInstance()
 
+  // TODO: Look into if this can be done inside a (i.e. useEffect) hook instead
   const saveMap = map => {
     TSPutils.isCitiesGraph(props.Key) ? tspState.setCitiesMap(map) : tspState.setVancouverMap(map)
     setMap(map)
   }
 
   // Used to do a refresh when the listed dependencies change
-  React.useEffect(() => {}, [map, props.position, props.isPathSolved, props.Key, props.fullScreen])
+  React.useEffect(() => {}, [map, props.position, props.loading, props.isPathSolved, props.Key, props.fullScreen])
+
+  React.useEffect(() => {
+    if (map !== null) {
+      map.leafletElement.invalidateSize()
+    }
+  })
 
   const attributionTemplate = '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   const attributionUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -39,9 +46,9 @@ export default function MapComponent (props) {
       center={props.position}
       zoom={zoom}
       ref={saveMap}
-      zoomControl={false}
-      doubleClickZoom={false}
-      scrollWheelZoom={false}
+      zoomControl
+      doubleClickZoom
+      scrollWheelZoom
     >
       <TileLayer attribution={attributionTemplate} url={attributionUrl} />
       {map !== null && <Routing
@@ -54,6 +61,8 @@ export default function MapComponent (props) {
         setLoading={props.setLoading}
         fullScreen={props.fullScreen}
         setNumSelectedNodes={props.setNumSelectedNodes}
+        switchingGraphs={props.switchingGraphs}
+        setSwitchingGraphs={props.setSwitchingGraphs}
       />}
     </Map>
   )
