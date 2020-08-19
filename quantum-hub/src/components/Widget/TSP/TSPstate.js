@@ -6,6 +6,7 @@
 
 import L from 'leaflet'
 import TSPutils from './TSPutils.js'
+import Keys from './Keys.js'
 
 class TSPstate {
   static instance = null
@@ -15,26 +16,30 @@ class TSPstate {
 
   isLoading = false
 
-  isPathSolved = false
+  isCitiesPathSolved = false
+  isVancouverPathSolved = false
 
   solvingState = ''
 
-  callsPending = new Set()
+  citiesCallsPending = new Set()
+  vancouverCallsPending = new Set()
 
   citiesMainMapMarkers = {}
+  vancouverMainMapMarkers = {}
+
   citiesMap = null
   vancouverMap = null
 
   citiesState = {
     lat: 44.5260,
     lng: -105.2551,
-    zoom: 4
+    zoom: 3
   }
 
   vancouverState = {
     lat: 49.246292,
     lng: -122.999000,
-    zoom: 11
+    zoom: 10
   }
 
   citiesRoute = {}
@@ -46,22 +51,55 @@ class TSPstate {
   citiesLines = {}
   vancouverLines = {}
 
-  selectedNodes = new Set()
-  selectedMarkers = new Set()
+  citiesSelectedNodes = new Set()
+  vancouverSelectedNodes = new Set()
 
-  markerLatLons = new Set()
-  fullScreenMarkerLatLons = new Set()
+  citiesSelectedMarkers = new Set()
+  vancouverSelectedMarkers = new Set()
+
+  citiesMarkerLatLons = new Set()
+  vancouverMarkerLatLons = new Set()
+
+  fullScreenCitiesMarkerLatLons = new Set()
+  fullScreenVancouverMarkerLatLons = new Set()
 
   fullScreen = false
 
-  solvedRouteIndexes = new Set()
+  citiesSolvedRouteIndexes = new Set()
+  vancouverSolvedRouteIndexes = new Set()
+
+  componentsUpdated = 0
+  /**
+   * 1. TravellingSalesperson.js: keys
+   * 2. TravellingSalesperson.js: waypoints
+   */
+  componentsThatNeedUpdating = 2
+
+  numFailedCitiesCalls = 0
+  numFailedVancouverCalls = 0
 
   static getInstance () {
-    if (TSPstate.instance == null) {
+    if (TSPstate.instance === null) {
       TSPstate.instance = new TSPstate()
     }
 
     return this.instance
+  }
+
+  getIsFirstRoundRoutingCall (key) {
+    let isFirstRoundRoutingCall = null
+    switch (key) {
+      case Keys.CITIES:
+        isFirstRoundRoutingCall = this.getIsCitiesFirstRoundRoutingCall()
+        break
+      case Keys.VANCOUVER:
+        isFirstRoundRoutingCall = this.getIsVancouverFirstRoundRoutingCall()
+        break
+      default:
+        break
+    }
+
+    return isFirstRoundRoutingCall
   }
 
   getIsCitiesFirstRoundRoutingCall () {
@@ -76,20 +114,80 @@ class TSPstate {
     return this.isLoading
   }
 
-  getIsPathSolved () {
-    return this.isPathSolved
+  getIsPathSolved (key) {
+    let isPathSolved = null
+    switch (key) {
+      case Keys.CITIES:
+        isPathSolved = this.getIsCitiesPathSolved()
+        break
+      case Keys.VANCOUVER:
+        isPathSolved = this.getIsVancouverPathSolved()
+        break
+      default:
+        break
+    }
+
+    return isPathSolved
+  }
+
+  getIsCitiesPathSolved () {
+    return this.isCitiesPathSolved
+  }
+
+  getIsVancouverPathSolved () {
+    return this.isVancouverPathSolved
   }
 
   getSolvingState () {
     return this.solvingState
   }
 
-  getCallsPending () {
-    return this.callsPending
+  getCallsPending (key) {
+    let callsPending = null
+    switch (key) {
+      case Keys.CITIES:
+        callsPending = this.getCitiesCallsPending()
+        break
+      case Keys.VANCOUVER:
+        callsPending = this.getVancouverCallsPending()
+        break
+      default:
+        break
+    }
+
+    return callsPending
+  }
+
+  getCitiesCallsPending () {
+    return this.citiesCallsPending
+  }
+
+  getVancouverCallsPending () {
+    return this.vancouverCallsPending
+  }
+
+  getMainMapMarkers (key) {
+    let mainMapMarkers = null
+    switch (key) {
+      case Keys.CITIES:
+        mainMapMarkers = this.getCitiesMainMapMarkers()
+        break
+      case Keys.VANCOUVER:
+        mainMapMarkers = this.getVancouverMainMapMarkers()
+        break
+      default:
+        break
+    }
+
+    return mainMapMarkers
   }
 
   getCitiesMainMapMarkers () {
     return this.citiesMainMapMarkers
+  }
+
+  getVancouverMainMapMarkers () {
+    return this.vancouverMainMapMarkers
   }
 
   getCitiesMap () {
@@ -108,12 +206,44 @@ class TSPstate {
     return this.vancouverState
   }
 
+  getRoute (key) {
+    let route = null
+    switch (key) {
+      case Keys.CITIES:
+        route = this.getCitiesRoute()
+        break
+      case Keys.VANCOUVER:
+        route = this.getVancouverRoute()
+        break
+      default:
+        break
+    }
+
+    return route
+  }
+
   getCitiesRoute () {
     return this.citiesRoute
   }
 
   getVancouverRoute () {
     return this.vancouverRoute
+  }
+
+  getLineRoute (key) {
+    let lineRoute = null
+    switch (key) {
+      case Keys.CITIES:
+        lineRoute = this.getCitiesLineRoute()
+        break
+      case Keys.VANCOUVER:
+        lineRoute = this.getVancouverLineRoute()
+        break
+      default:
+        break
+    }
+
+    return lineRoute
   }
 
   getCitiesLineRoute () {
@@ -124,6 +254,22 @@ class TSPstate {
     return this.vancouverLineRoute
   }
 
+  getLines (key) {
+    let lines = null
+    switch (key) {
+      case Keys.CITIES:
+        lines = this.getCitiesLines()
+        break
+      case Keys.VANCOUVER:
+        lines = this.getVancouverLines()
+        break
+      default:
+        break
+    }
+
+    return lines
+  }
+
   getCitiesLines () {
     return this.citiesLines
   }
@@ -132,28 +278,200 @@ class TSPstate {
     return this.vancouverLines
   }
 
-  getSelectedNodes () {
-    return this.selectedNodes
+  getSelectedNodes (key) {
+    let selectedNodes = null
+    switch (key) {
+      case Keys.CITIES:
+        selectedNodes = this.getCitiesSelectedNodes()
+        break
+      case Keys.VANCOUVER:
+        selectedNodes = this.getVancouverSelectedNodes()
+        break
+      default:
+        break
+    }
+
+    return selectedNodes
   }
 
-  getSelectedMarkers () {
-    return this.selectedMarkers
+  getCitiesSelectedNodes () {
+    return this.citiesSelectedNodes
   }
 
-  getMarkerLatLons () {
-    return this.markerLatLons
+  getVancouverSelectedNodes () {
+    return this.vancouverSelectedNodes
   }
 
-  getFullScreenMarkerLatLons () {
-    return this.fullScreenMarkerLatLons
+  getSelectedMarkers (key) {
+    let selectedMarkers = null
+    switch (key) {
+      case Keys.CITIES:
+        selectedMarkers = this.getCitiesSelectedMarkers()
+        break
+      case Keys.VANCOUVER:
+        selectedMarkers = this.getVancouverSelectedMarkers()
+        break
+      default:
+        break
+    }
+
+    return selectedMarkers
+  }
+
+  getCitiesSelectedMarkers () {
+    return this.citiesSelectedMarkers
+  }
+
+  getVancouverSelectedMarkers () {
+    return this.vancouverSelectedMarkers
+  }
+
+  getMarkerLatLons (key) {
+    let markerLatLons = null
+    switch (key) {
+      case Keys.CITIES:
+        markerLatLons = this.getCitiesMarkerLatLons()
+        break
+      case Keys.VANCOUVER:
+        markerLatLons = this.getVancouverMarkerLatLons()
+        break
+      default:
+        break
+    }
+
+    return markerLatLons
+  }
+
+  getCitiesMarkerLatLons () {
+    return this.citiesMarkerLatLons
+  }
+
+  getVancouverMarkerLatLons () {
+    return this.vancouverMarkerLatLons
+  }
+
+  getFullScreenMarkerLatLons (key) {
+    let fullScreenMarkerLatLons = null
+    switch (key) {
+      case Keys.CITIES:
+        fullScreenMarkerLatLons = this.getFullScreenCitiesMarkerLatLons()
+        break
+      case Keys.VANCOUVER:
+        fullScreenMarkerLatLons = this.getFullScreenVancouverMarkerLatLons()
+        break
+      default:
+        break
+    }
+
+    return fullScreenMarkerLatLons
+  }
+
+  getFullScreenCitiesMarkerLatLons () {
+    return this.fullScreenCitiesMarkerLatLons
+  }
+
+  getFullScreenVancouverMarkerLatLons () {
+    return this.fullScreenVancouverMarkerLatLons
   }
 
   getFullScreen () {
     return this.fullScreen
   }
 
-  getSolvedRouteIndexes () {
-    return this.solvedRouteIndexes
+  getSolvedRouteIndexes (key) {
+    let solvedRouteIndexes = null
+    switch (key) {
+      case Keys.CITIES:
+        solvedRouteIndexes = this.getCitiesSolvedRouteIndexes()
+        break
+      case Keys.VANCOUVER:
+        solvedRouteIndexes = this.getVancouverSolvedRouteIndexes()
+        break
+      default:
+        break
+    }
+    return solvedRouteIndexes
+  }
+
+  getCitiesSolvedRouteIndexes () {
+    return this.citiesSolvedRouteIndexes
+  }
+
+  getVancouverSolvedRouteIndexes () {
+    return this.vancouverSolvedRouteIndexes
+  }
+
+  getComponentsUpdated () {
+    return this.componentsUpdated
+  }
+
+  getComponentsThatNeedUpdating () {
+    return this.componentsThatNeedUpdating
+  }
+
+  getNumFailedCalls (key) {
+    let numFailedCalls = null
+    switch (key) {
+      case Keys.CITIES:
+        numFailedCalls = this.getNumFailedCitiesCalls()
+        break
+      case Keys.VANCOUVER:
+        numFailedCalls = this.getNumFailedVancouverCalls()
+        break
+      default:
+        break
+    }
+    return numFailedCalls
+  }
+
+  getNumFailedCitiesCalls () {
+    return this.numFailedCitiesCalls
+  }
+
+  getNumFailedVancouverCalls () {
+    return this.numFailedVancouverCalls
+  }
+
+  getFirstRoute (key) {
+    let firstRoute = null
+    switch (key) {
+      case Keys.CITIES:
+        firstRoute = this.getCitiesFirstRoute()
+        break
+      case Keys.VANCOUVER:
+        firstRoute = this.getVancouverFirstRoute()
+        break
+      case Keys.FLOWERS:
+        console.log('TODO: implement getFirstRoute() Flowers case')
+        break
+      default:
+        break
+    }
+
+    return firstRoute
+  }
+
+  getCitiesFirstRoute () {
+    const firstKey = Object.keys(this.getCitiesRoute())[0]
+    return this.getCitiesRoute()[firstKey]
+  }
+
+  getVancouverFirstRoute () {
+    const firstKey = Object.keys(this.getVancouverRoute())[0]
+    return this.getVancouverRoute()[firstKey]
+  }
+
+  setIsFirstRoundRoutingCall (graphKey, value) {
+    switch (graphKey) {
+      case Keys.CITIES:
+        this.setIsCitiesFirstRoundRoutingCall(value)
+        break
+      case Keys.VANCOUVER:
+        this.setIsVancouverFirstRoundRoutingCall(value)
+        break
+      default:
+        break
+    }
   }
 
   setIsCitiesFirstRoundRoutingCall (value) {
@@ -168,16 +486,50 @@ class TSPstate {
     this.isLoading = value
   }
 
-  setIsPathSolved (value) {
-    this.isPathSolved = value
+  setIsPathSolved (graphKey, value) {
+    switch (graphKey) {
+      case Keys.CITIES:
+        this.setIsCitiesPathSolved(value)
+        break
+      case Keys.VANCOUVER:
+        this.setIsVancouverPathSolved(value)
+        break
+      default:
+        break
+    }
+  }
+
+  setIsCitiesPathSolved (value) {
+    this.isCitiesPathSolved = value
+  }
+
+  setIsVancouverPathSolved (value) {
+    this.isVancouverPathSolved = value
   }
 
   setSolvingState (value) {
     this.solvingState = value
   }
 
-  setCallsPending (value) {
-    this.callsPending = value
+  setCallsPending (graphKey, value) {
+    switch (graphKey) {
+      case Keys.CITIES:
+        this.setCitiesCallsPending(value)
+        break
+      case Keys.VANCOUVER:
+        this.setVancouverCallsPending(value)
+        break
+      default:
+        break
+    }
+  }
+
+  setCitiesCallsPending (value) {
+    this.citiesCallsPending = value
+  }
+
+  setVancouverCallsPending (value) {
+    this.vancouverCallsPending = value
   }
 
   setCitiesMainMapMarkers (value) {
@@ -224,28 +576,142 @@ class TSPstate {
     this.vancouverLines = value
   }
 
-  setSelectedNodes (value) {
-    this.selectedNodes = value
+  setSelectedNodes (graphKey, value) {
+    switch (graphKey) {
+      case Keys.CITIES:
+        this.setCitiesSelectedNodes(value)
+        break
+      case Keys.VANCOUVER:
+        this.setVancouverSelectedNodes(value)
+        break
+      default:
+        break
+    }
   }
 
-  setSelectedMarkers (value) {
-    this.selectedMarkers = value
+  setCitiesSelectedNodes (value) {
+    this.citiesSelectedNodes = value
   }
 
-  setMarkerLatLons (value) {
-    this.markerLatLons = value
+  setVancouverSelectedNodes (value) {
+    this.vancouverSelectedNodes = value
   }
 
-  setFullScreenMarkerLatLons (value) {
-    this.fullScreenMarkerLatLons = value
+  setSelectedMarkers (graphKey, value) {
+    switch (graphKey) {
+      case Keys.CITIES:
+        this.setCitiesSelectedMarkers(value)
+        break
+      case Keys.VANCOUVER:
+        this.setVancouverSelectedMarkers(value)
+        break
+      default:
+        break
+    }
+  }
+
+  setCitiesSelectedMarkers (value) {
+    this.citiesSelectedMarkers = value
+  }
+
+  setVancouverSelectedMarkers (value) {
+    this.vancouverSelectedMarkers = value
+  }
+
+  setMarkerLatLons (graphKey, value) {
+    switch (graphKey) {
+      case Keys.CITIES:
+        this.setCitiesMarkerLatLons(value)
+        break
+      case Keys.VANCOUVER:
+        this.setVancouverMarkerLatLons(value)
+        break
+      default:
+        break
+    }
+  }
+
+  setCitiesMarkerLatLons (value) {
+    this.citiesMarkerLatLons = value
+  }
+
+  setVancouverMarkerLatLons (value) {
+    this.vancouverMarkerLatLons = value
+  }
+
+  setFullScreenMarkerLatLons (graphKey, value) {
+    switch (graphKey) {
+      case Keys.CITIES:
+        this.setFullScreenCitiesMarkerLatLons(value)
+        break
+      case Keys.VANCOUVER:
+        this.setFullScreenVancouverMarkerLatLons(value)
+        break
+      default:
+        break
+    }
+  }
+
+  setFullScreenCitiesMarkerLatLons (value) {
+    this.fullScreenCitiesMarkerLatLons = value
+  }
+
+  setFullScreenVancouverMarkerLatLons (value) {
+    this.fullScreenVancouverMarkerLatLons = value
   }
 
   setFullScreen (value) {
     this.fullScreen = value
   }
 
-  setSolvedRouteIndexes (value) {
-    this.solvedRouteIndexes = value
+  setSolvedRouteIndexes (graphKey, value) {
+    switch (graphKey) {
+      case Keys.CITIES:
+        this.setCitiesSolvedRouteIndexes(value)
+        break
+      case Keys.VANCOUVER:
+        this.setVancouverSolvedRouteIndexes(value)
+        break
+      default:
+        break
+    }
+  }
+
+  setCitiesSolvedRouteIndexes (value) {
+    this.citiesSolvedRouteIndexes = value
+  }
+
+  setVancouverSolvedRouteIndexes (value) {
+    this.vancouverSolvedRouteIndexes = value
+  }
+
+  setComponentsUpdated (value) {
+    this.componentsUpdated = value
+  }
+
+  setComponentsThatNeedUpdating (value) {
+    this.componentsThatNeedUpdating = value
+  }
+
+  setNumFailedCalls (graphKey, value) {
+    switch (graphKey) {
+      case Keys.CITIES:
+        this.setNumFailedCitiesCalls(value)
+        break
+      case Keys.VANCOUVER:
+        this.setNumFailedVancouverCalls(value)
+        break
+      default:
+        break
+    }
+  }
+
+  setNumFailedCitiesCalls (value) {
+    this.numFailedCitiesCalls = value
+  }
+
+  setNumFailedVancouverCalls (value) {
+    this.numFailedVancouverCalls = value
   }
 
   onReset (lineInfo, tspSolvedEventListenerInfo, key) {
@@ -262,16 +728,10 @@ class TSPstate {
 
     map.leafletElement.removeLayer(oldLine)
 
-    let lineRoute
-    if (TSPutils.isCitiesGraph(key)) {
-      lineRoute = this.getCitiesLineRoute()[index]
-    } else {
-      lineRoute = this.getVancouverLineRoute()[index]
-    }
-
-    let newLine = L.Routing.line(lineRoute, {
+    let newLine = L.Routing.line(this.getLineRoute(key)[index], {
       styles: TSPutils.getStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
     })
+
     const tspSolvedEventListener = (waypointsInSolution) => {
       const lineInfo = {
         line: newLine,
@@ -300,11 +760,7 @@ class TSPstate {
     newLine.addEventListener('reset', tspOnResetEventFn)
     newLine = newLine.addTo(map.leafletElement)
 
-    if (TSPutils.isCitiesGraph(key)) {
-      this.addToCitiesLines(index, newLine)
-    } else {
-      this.addToVancouverLines(index, newLine)
-    }
+    this.getLines(key)[index] = newLine
   }
 
   onTSPsolved (lineInfo, key) {
@@ -327,7 +783,7 @@ class TSPstate {
       if (TSPutils.doStartAndEndWaypointsMatch(lineWaypoints, startWaypoint, endWaypoint)) {
         const shouldLineBeReset = true
 
-        this.addToSolvedRouteIndexes(index)
+        this.getSolvedRouteIndexes(key).add(index)
         map.leafletElement.removeLayer(line)
 
         let newLine = L.Routing.line(routes, {
@@ -362,89 +818,15 @@ class TSPstate {
         newLine.addEventListener('reset', tspOnResetEventFn)
         newLine = newLine.addTo(map.leafletElement)
 
-        if (TSPutils.isCitiesGraph(key)) {
-          this.addToCitiesLines(index, newLine)
-        } else {
-          this.addToVancouverLines(index, newLine)
-        }
+        this.getLines(key)[index] = newLine
       }
     }
   }
 
-  resetGraphStates () {
-    this.setSelectedNodes(new Set())
-    this.setSelectedMarkers(new Set())
-    this.setSolvedRouteIndexes(new Set())
-  }
-
-  addToCallsPending (index) {
-    const callsPending = this.getCallsPending()
-    callsPending.add(index)
-  }
-
-  removeFromCallsPending (index) {
-    const callsPending = this.getCallsPending()
-    callsPending.delete(index)
-  }
-
-  addToCitiesMainMapMarkers (key, value) {
-    const markers = this.getCitiesMainMapMarkers()
-    markers[key] = value
-  }
-
-  addToCitiesRoute (key, value) {
-    const route = this.getCitiesRoute()
-    route[key] = value
-  }
-
-  addToVancouverRoute (key, value) {
-    const route = this.getVancouverRoute()
-    route[key] = value
-  }
-
-  addToCitiesLines (key, value) {
-    const citiesLines = this.getCitiesLines()
-    citiesLines[key] = value
-  }
-
-  addToVancouverLines (key, value) {
-    const vancouverLines = this.getVancouverLines()
-    vancouverLines[key] = value
-  }
-
-  addToSelectedNodes (key) {
-    const selectedNodes = this.getSelectedNodes()
-    selectedNodes.add(key)
-  }
-
-  removeFromSelectedNodes (key) {
-    const selectedNodes = this.getSelectedNodes()
-    selectedNodes.delete(key)
-  }
-
-  addToSelectedMarkers (key) {
-    const selectedMarkers = this.getSelectedMarkers()
-    selectedMarkers.add(key)
-  }
-
-  removeFromSelectedMarkers (key) {
-    const selectedMarkers = this.getSelectedMarkers()
-    selectedMarkers.delete(key)
-  }
-
-  addToMarkerLatLons (key) {
-    const markersLatLons = this.getMarkerLatLons()
-    markersLatLons.add(key)
-  }
-
-  addToFullScreenMarkerLatLons (key) {
-    const fullScreenMarkerLatLons = this.getFullScreenMarkerLatLons()
-    fullScreenMarkerLatLons.add(key)
-  }
-
-  addToSolvedRouteIndexes (index) {
-    const solvedRouteIndexes = this.getSolvedRouteIndexes()
-    solvedRouteIndexes.add(index)
+  resetGraphStates (key) {
+    this.setSelectedNodes(key, new Set())
+    this.setSelectedMarkers(key, new Set())
+    this.setSolvedRouteIndexes(key, new Set())
   }
 }
 
