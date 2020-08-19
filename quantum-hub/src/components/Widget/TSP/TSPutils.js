@@ -300,7 +300,10 @@ export default class TSPutils {
     }).bindPopup(popup)
 
     marker.on('mouseover', () => {
-      marker.openPopup()
+      const tspState = TSPstate.getInstance()
+      if (!tspState.getIsLoading()) {
+        marker.openPopup()
+      }
     })
     marker.on('mouseout', () => {
       marker.closePopup()
