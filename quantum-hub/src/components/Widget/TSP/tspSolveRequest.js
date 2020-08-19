@@ -73,13 +73,13 @@ function postSolve (xhr, key, setters, consoleFns) {
     const tspState = TSPstate.getInstance()
     const waypoints = TSPutils.getWaypointsSinglePath(Graph[key], xhr.response.route)
 
-    const graphLines = TSPutils.isCitiesGraph(key) ? tspState.getCitiesLines() : tspState.getVancouverLines()
+    const graphLines = tspState.getLines(key)
     Object.keys(graphLines).forEach(index => {
       graphLines[index].fire('tspSolvedEvent', waypoints)
     })
 
     setters.setIsPathSolved(true)
-    tspState.setIsPathSolved(true)
+    tspState.setIsPathSolved(key, true)
   } else if (xhr.status === 400) {
     consoleFns.outputToConsole(xhr.response.error)
   } else {
