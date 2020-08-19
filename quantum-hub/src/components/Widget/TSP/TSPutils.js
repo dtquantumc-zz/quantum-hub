@@ -35,7 +35,7 @@ export default class TSPutils {
     return {
       lat: 49.246292,
       lng: -122.999000,
-      zoom: 11
+      zoom: 10
     }
   }
 
@@ -43,7 +43,7 @@ export default class TSPutils {
     return {
       lat: 44.5260,
       lng: -105.2551,
-      zoom: 4
+      zoom: 3
     }
   }
 
@@ -156,12 +156,12 @@ export default class TSPutils {
 
   static handleClickSolve (currentGraph, key, setters, consoleFns) {
     const tspState = TSPstate.getInstance()
-    const selectedNodes = tspState.getSelectedNodes()
+    const selectedNodes = tspState.getSelectedNodes(key)
     console.log('selectedNodes: ', selectedNodes)
 
     const selectedEdges = []
     currentGraph.edgeList.forEach(edge => {
-      if (TSPutils.isEdgeSelected(edge)) {
+      if (TSPutils.isEdgeSelected(key, edge)) {
         selectedEdges.push(edge)
       }
     })
@@ -170,34 +170,34 @@ export default class TSPutils {
     tspSolveRequest(selectedEdges, key, setters, consoleFns)
   }
 
-  static isEdgeSelected (edge) {
-    return TSPutils.isValInSelectedNodes(edge[0]) &&
-    TSPutils.isValInSelectedNodes(edge[1])
+  static isEdgeSelected (graphKey, edge) {
+    return TSPutils.isValInSelectedNodes(graphKey, edge[0]) &&
+    TSPutils.isValInSelectedNodes(graphKey, edge[1])
   }
 
-  static isValInSelectedNodes (val) {
+  static isValInSelectedNodes (graphKey, val) {
     const tspState = TSPstate.getInstance()
-    return tspState.getSelectedNodes().has(val)
+    return tspState.getSelectedNodes(graphKey).has(val)
   }
 
-  static onMarkerClick (nodeId) {
+  static onMarkerClick (graphKey, nodeId) {
     const tspState = TSPstate.getInstance()
-    if (TSPutils.isMarkerDeselect(nodeId)) {
+    if (TSPutils.isMarkerDeselect(graphKey, nodeId)) {
       console.log('Deselecting ', nodeId)
-      tspState.removeFromSelectedNodes(nodeId)
+      tspState.getSelectedNodes(graphKey).delete(nodeId)
     } else {
       console.log('Selecting ', nodeId)
-      tspState.addToSelectedNodes(nodeId)
+      tspState.getSelectedNodes(graphKey).add(nodeId)
     }
   }
 
-  static isMarkerDeselect (nodeId) {
+  static isMarkerDeselect (graphKey, nodeId) {
     const tspState = TSPstate.getInstance()
-    return tspState.getSelectedNodes().has(nodeId)
+    return tspState.getSelectedNodes(graphKey).has(nodeId)
   }
 
-  static isCitiesGraph (key) {
-    return key === Keys.CITIES
+  static isMainGraph (key) {
+    return TSPutils.isCitiesMainGraph(key) || TSPutils.isVancouverMainGraph(key)
   }
 
   static isCitiesMainGraph (key) {
@@ -205,13 +205,17 @@ export default class TSPutils {
     return TSPutils.isCitiesGraph(key) && !tspState.getFullScreen()
   }
 
-  static isVancouverGraph (key) {
-    return key === Keys.VANCOUVER
-  }
-
   static isVancouverMainGraph (key) {
     const tspState = TSPstate.getInstance()
     return TSPutils.isVancouverGraph(key) && !tspState.getFullScreen()
+  }
+
+  static isCitiesGraph (key) {
+    return key === Keys.CITIES
+  }
+
+  static isVancouverGraph (key) {
+    return key === Keys.VANCOUVER
   }
 
   static isFlowersGraph (key) {
@@ -281,7 +285,7 @@ export default class TSPutils {
   static getRedMarker (latLng, popup) {
     return L.marker(latLng, {
       icon: TSPutils.getRedIcon(),
-      pane: 'markerPane',
+      pane: 'customMarkerPane',
       keyboard: false,
       draggable: false
     }).bindPopup(popup)
@@ -290,7 +294,7 @@ export default class TSPutils {
   static getBlueMarker (latLng, popup) {
     return L.marker(latLng, {
       icon: TSPutils.getBlueIcon(),
-      pane: 'markerPane',
+      pane: 'customMarkerPane',
       keyboard: false,
       draggable: false
     }).bindPopup(popup)
@@ -307,12 +311,12 @@ export default class TSPutils {
   }
 
   static createMarkerPane (map) {
-    const markerPane = map.leafletElement.createPane('markerPane')
+    const markerPane = map.leafletElement.createPane('customMarkerPane')
     markerPane.style.zIndex = 2000
   }
 
   static createPopupPane (map) {
-    const popupPane = map.leafletElement.createPane('popupPane')
+    const popupPane = map.leafletElement.createPane('customPopupPane')
     popupPane.style.zIndex = 3000
   }
 
