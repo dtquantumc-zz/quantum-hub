@@ -84,7 +84,21 @@ export default class GraphComponents {
       [9, 12, 2269],
       [10, 11, 758],
       [10, 12, 3527],
-      [11, 12, 2850]
+      [11, 12, 2850],
+      /**
+       * NOTE on the below edge:
+       * RoutingMachine.js > fetchPath() will create markers
+       * based on sourceNodes so we must provide every node we want
+       * a marker for as the source node in an edge (i.e. the first
+       * node in the array).
+       *
+       * Each array follows the pattern: [sourceNode, destNode, edgeWeight]
+       *
+       * TSPutils.js > isEdgeSelected() will make sure an edge which
+       * has the same source and destination nodes will not be pushed
+       * into the selected-edges edge list to solve
+       */
+      [12, 12, 0]
     ]
   }
 
@@ -221,7 +235,21 @@ export default class GraphComponents {
       [9, 12, 13],
       [10, 11, 13.4],
       [10, 12, 13.4],
-      [11, 12, 4.4]
+      [11, 12, 4.4],
+      /**
+       * NOTE on the below edge:
+       * RoutingMachine.js > fetchPath() will create markers
+       * based on sourceNodes so we must provide every node we want
+       * a marker for as the source node in an edge (i.e. the first
+       * node in the array).
+       *
+       * Each array follows the pattern: [sourceNode, destNode, edgeWeight]
+       *
+       * TSPutils.js > isEdgeSelected() will make sure an edge which
+       * has the same source and destination nodes will not be pushed
+       * into the selected-edges edge list to solve
+       */
+      [12, 12, 0]
     ]
   }
 
