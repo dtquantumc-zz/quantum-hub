@@ -2,9 +2,9 @@
 import 'leaflet-routing-machine'
 import { MapLayer, withLeaflet } from 'react-leaflet'
 import L from 'leaflet'
-import Keys from './Keys.js'
 import TSPutils from './TSPutils.js'
 import TSPstate from './TSPstate.js'
+import Graph from './Graph.js'
 
 class Routing extends MapLayer {
   componentDidUpdate () {
@@ -29,8 +29,7 @@ class Routing extends MapLayer {
     tspState.setFullScreen(this.props.fullScreen) // used in Marker callbacks
 
     if (this.isFirstRoundRoutingCallForMainGraph() ||
-    (tspState.getNumFailedCalls(this.props.Key) > (this.props.waypoints.length / 2) &&
-    !tspState.getFullScreen())) {
+    this.moreThanHalfCallsFailedForMainGraph()) {
       this.props.setLoading(true)
       tspState.setIsLoading(true)
     }
@@ -43,6 +42,18 @@ class Routing extends MapLayer {
     const tspState = TSPstate.getInstance()
     return (!tspState.getFullScreen() &&
     tspState.getIsFirstRoundRoutingCall(this.props.Key))
+  }
+
+  moreThanHalfCallsFailedForMainGraph () {
+    const tspState = TSPstate.getInstance()
+    return this.moreThanHalfCallsFailed() && !tspState.getFullScreen()
+  }
+
+  moreThanHalfCallsFailed () {
+    const tspState = TSPstate.getInstance()
+
+    return (tspState.getNumFailedCalls(this.props.Key) >
+    (this.props.waypoints.length / 2))
   }
 
   fetchPath () {
@@ -59,15 +70,19 @@ class Routing extends MapLayer {
       const name = waypoints[i].names[0]
       const id = currentGraph.nameMapping[name]
 
-      const popup = L.popup({ pane: 'customPopupPane' }).setContent(name)
+      const popup = L.popup({
+        pane: 'customPopupPane',
+        closeOnClick: true,
+        closeButton: false
+      }).setContent(name)
 
       const waypointSource = { latLng: waypoints[i].waypoint[0] }
       const waypointDest = { latLng: waypoints[i].waypoint[1] }
 
       // i.e. "["UBC campus","SFU campus"]"
       const waypointKey = JSON.stringify(waypoints[i].names)
-      // i.e. ""UBC campus""
-      const sourceKey = JSON.stringify(waypoints[i].names[0])
+      // i.e. "UBC campus"
+      const sourceKey = waypoints[i].names[0]
 
       const routingPlanOptions = this.getRoutingPlanOptionsOptions(sourceKey, popup, id)
 
@@ -81,9 +96,10 @@ class Routing extends MapLayer {
 
       const isLineRoutePresent = tspState.getVancouverLineRoute().hasOwnProperty(i) && !!tspState.getVancouverLineRoute()
       const isFirstRoundRoutingCall = tspState.getIsFirstRoundRoutingCall(Key)
-      const moreThanHalfCallsFailed = tspState.getNumFailedCalls(Key) > (waypoints.length / 2)
 
-      if ((!isLineRoutePresent && (isFirstRoundRoutingCall || moreThanHalfCallsFailed) && !tspState.getCallsPending(Key).has(i))) {
+      if ((!isLineRoutePresent &&
+        (isFirstRoundRoutingCall || this.moreThanHalfCallsFailed()) &&
+        !tspState.getCallsPending(Key).has(i))) {
         tspState.getCallsPending(Key).add(i)
 
         if (i === waypoints.length - 1) {
@@ -182,6 +198,12 @@ class Routing extends MapLayer {
     const popup = routingMachineParams.popup
     const id = routingMachineParams.id
     const Key = routingMachineParams.Key
+
+    /** Don't want to create a marker for a graph that
+     * is not the current graph */
+    if (!Graph[Key].nameMapping.hasOwnProperty(sourceKey)) {
+      return false
+    }
 
     if (!tspState.getFullScreen()) {
       if (tspState.getMarkerLatLons(Key).has(sourceKey)) {
