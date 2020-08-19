@@ -42,8 +42,8 @@ function TravellingSalesperson (props) {
   const [isCitiesPathSolved, setIsCitiesPathSolved] = useState(false)
   const [isVancouverPathSolved, setIsVancouverPathSolved] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [numSelectedCitiesNodes, setNumSelectedCitiesNodes] = useState(false)
-  const [numSelectedVancouverNodes, setNumSelectedVancouverNodes] = useState(false)
+  const [numSelectedCitiesNodes, setNumSelectedCitiesNodes] = useState(0)
+  const [numSelectedVancouverNodes, setNumSelectedVancouverNodes] = useState(0)
   const [switchingGraphs, setSwitchingGraphs] = useState({
     isGraphSwitch: false,
     key: null
@@ -139,14 +139,19 @@ function TravellingSalesperson (props) {
     }
   }
 
+  /**
+   * NOTE: We use TSPstate.js's getSelectedNodes(key).size since
+   * the state values may not be updated immediately after setNumSelectedNodes()
+   * is called since it calls async setters
+   */
   function getNumSelectedNodes () {
     let numSelectedNodes = null
     switch (key) {
       case Keys.CITIES:
-        numSelectedNodes = numSelectedCitiesNodes
+        numSelectedNodes = tspState.getSelectedNodes(key).size
         break
       case Keys.VANCOUVER:
-        numSelectedNodes = numSelectedVancouverNodes
+        numSelectedNodes = tspState.getSelectedNodes(key).size
         break
       default:
         break
@@ -168,6 +173,10 @@ function TravellingSalesperson (props) {
     }
   }
 
+  useEffect(() => {},
+    [numSelectedCitiesNodes, numSelectedVancouverNodes,
+      isCitiesPathSolved, isVancouverPathSolved, switchingGraphs])
+
   useEffect(() => {
     if (open) {
       openDescriptionElement()
@@ -180,6 +189,8 @@ function TravellingSalesperson (props) {
       descriptionElement.focus()
     }
   }
+
+  useEffect(() => {}, [loading])
 
   return (
     <div className={classes.root}>
