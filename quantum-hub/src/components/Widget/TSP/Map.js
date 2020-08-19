@@ -23,12 +23,14 @@ export default function MapComponent (props) {
 
   // TODO: Look into if this can be done inside a (i.e. useEffect) hook instead
   const saveMap = map => {
-    TSPutils.isCitiesGraph(props.Key) ? tspState.setCitiesMap(map) : tspState.setVancouverMap(map)
+    tspState.setMap(props.Key, map)
     setMap(map)
   }
 
   // Used to do a refresh when the listed dependencies change
-  React.useEffect(() => {}, [map, props.position, props.loading, props.isPathSolved, props.Key, props.fullScreen])
+  React.useEffect(() => {},
+    [map, props.position, props.loading,
+      props.isPathSolved, props.Key, props.fullScreen])
 
   React.useEffect(() => {
     if (map !== null) {
