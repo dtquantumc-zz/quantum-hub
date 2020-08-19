@@ -8,49 +8,41 @@ import TSPstate from './TSPstate.js'
 
 class Routing extends MapLayer {
   componentDidUpdate () {
-    TSPstate.getInstance().setFullScreenMarkerLatLons(new Set())
+    TSPstate.getInstance().setFullScreenMarkerLatLons(this.props.Key, new Set())
+
+    if (this.graphTabIsBeingSwitched()) {
+      this.props.setSwitchingGraphs({
+        isGraphSwitch: false,
+        key: null
+      })
+      this.createLeafletElement()
+    }
+  }
+
+  graphTabIsBeingSwitched () {
+    return (this.props.switchingGraphs.isGraphSwitch &&
+      this.props.switchingGraphs.key === this.props.Key)
   }
 
   createLeafletElement () {
     const tspState = TSPstate.getInstance()
     tspState.setFullScreen(this.props.fullScreen) // used in Marker callbacks
 
-    if (!tspState.getFullScreen()) {
+    if (this.isFirstRoundRoutingCallForMainGraph() ||
+    (tspState.getNumFailedCalls(this.props.Key) > (this.props.waypoints.length / 2) &&
+    !tspState.getFullScreen())) {
       this.props.setLoading(true)
       tspState.setIsLoading(true)
     }
     this.fetchPath()
 
-    return this.getFirstRoute()
+    return tspState.getFirstRoute(this.props.Key)
   }
 
-  getFirstRoute () {
-    let plan = null
-    switch (this.props.Key) {
-      case Keys.CITIES:
-        plan = this.getCitiesFirstRoute()
-        break
-      case Keys.VANCOUVER:
-        plan = this.getVancouverFirstRoute()
-        break
-      case Keys.FLOWERS:
-        console.log('TODO: implement getFirstRoute() FLowers case')
-        break
-    }
-
-    return plan
-  }
-
-  getCitiesFirstRoute () {
+  isFirstRoundRoutingCallForMainGraph () {
     const tspState = TSPstate.getInstance()
-    const firstKey = Object.keys(tspState.getCitiesRoute())[0]
-    return tspState.getCitiesRoute()[firstKey]
-  }
-
-  getVancouverFirstRoute () {
-    const tspState = TSPstate.getInstance()
-    const firstKey = Object.keys(tspState.getVancouverRoute())[0]
-    return tspState.getVancouverRoute()[firstKey]
+    return (!tspState.getFullScreen() &&
+    tspState.getIsFirstRoundRoutingCall(this.props.Key))
   }
 
   fetchPath () {
@@ -62,48 +54,41 @@ class Routing extends MapLayer {
 
     const router = new L.Routing.osrmv1({})
 
-    tspState.setCallsPending(new Set())
+    tspState.setCallsPending(Key, new Set())
     for (let i = 0; i < waypoints.length; i++) {
       const name = waypoints[i].names[0]
       const id = currentGraph.nameMapping[name]
 
-      const popup = L.popup({ pane: 'popupPane' }).setContent(name)
+      const popup = L.popup({ pane: 'customPopupPane' }).setContent(name)
 
       const waypointSource = { latLng: waypoints[i].waypoint[0] }
       const waypointDest = { latLng: waypoints[i].waypoint[1] }
 
+      // i.e. "["UBC campus","SFU campus"]"
       const waypointKey = JSON.stringify(waypoints[i].names)
+      // i.e. ""UBC campus""
       const sourceKey = JSON.stringify(waypoints[i].names[0])
 
-      const leafletElemetOptions = this.getLeafletElementOptions(sourceKey, popup, id)
+      const routingPlanOptions = this.getRoutingPlanOptionsOptions(sourceKey, popup, id)
 
-      const routingPlan = L.Routing.plan(waypoints[i].waypoint, leafletElemetOptions)
+      const routingPlan = L.Routing.plan(waypoints[i].waypoint, routingPlanOptions)
 
-      if (TSPutils.isCitiesMainGraph(this.props.Key)) {
-        tspState.addToCitiesRoute(waypointKey, routingPlan)
-      } else if (TSPutils.isVancouverMainGraph(this.props.Key)) {
-        tspState.addToVancouverRoute(waypointKey, routingPlan)
+      if (TSPutils.isMainGraph(this.props.Key)) {
+        // used in tspState.getFirstRoute()
+        tspState.getRoute(this.props.Key)[waypointKey] = routingPlan
       }
       routingPlan.addTo(map.leafletElement)
 
-      let isRouteForLinePresent = false
-      let isFirstRoundRoutingCall = false
-      if (TSPutils.isCitiesGraph(Key)) {
-        isRouteForLinePresent = tspState.getCitiesLineRoute().hasOwnProperty(i) && !!tspState.getCitiesLineRoute()
-        isFirstRoundRoutingCall = tspState.getIsCitiesFirstRoundRoutingCall()
-      } else if (TSPutils.isVancouverGraph(Key)) {
-        isRouteForLinePresent = tspState.getVancouverLineRoute().hasOwnProperty(i) && !!tspState.getVancouverLineRoute()
-        isFirstRoundRoutingCall = tspState.getIsVancouverFirstRoundRoutingCall()
-      }
-      if (!isRouteForLinePresent && isFirstRoundRoutingCall && !tspState.getCallsPending().has(i)) {
-        tspState.addToCallsPending(i)
+      const isLineRoutePresent = tspState.getVancouverLineRoute().hasOwnProperty(i) && !!tspState.getVancouverLineRoute()
+      const isFirstRoundRoutingCall = tspState.getIsFirstRoundRoutingCall(Key)
+      const moreThanHalfCallsFailed = tspState.getNumFailedCalls(Key) > (waypoints.length / 2)
+
+      if ((!isLineRoutePresent && (isFirstRoundRoutingCall || moreThanHalfCallsFailed) && !tspState.getCallsPending(Key).has(i))) {
+        tspState.getCallsPending(Key).add(i)
 
         if (i === waypoints.length - 1) {
-          if (TSPutils.isCitiesGraph(Key)) {
-            tspState.setIsCitiesFirstRoundRoutingCall(false)
-          } else if (TSPutils.isVancouverGraph(Key)) {
-            tspState.setIsVancouverFirstRoundRoutingCall(false)
-          }
+          tspState.setNumFailedCalls(Key, 0)
+          tspState.setIsFirstRoundRoutingCall(Key, false)
         }
 
         const line = null
@@ -124,45 +109,10 @@ class Routing extends MapLayer {
 
         router.route([waypointSource, waypointDest], callback)
       } else {
-        let lineRoutes = null
-        if (TSPutils.isCitiesGraph(Key)) {
-          lineRoutes = tspState.getCitiesLineRoute()[i]
-        } else {
-          lineRoutes = tspState.getVancouverLineRoute()[i]
-        }
-
-        if (lineRoutes === undefined) {
+        let line = tspState.getLines(Key)[i]
+        if (line === undefined) {
           continue
         }
-
-        let lineColor = null
-        let pane = null
-        if (tspState.getSolvedRouteIndexes().has(i)) {
-          lineColor = TSPutils.getGeeringupSecondaryColor()
-          pane = 'redPane'
-        } else {
-          lineColor = TSPutils.getGeeringupPrimaryColor()
-          pane = 'bluePane'
-        }
-
-        let line = L.Routing.line(lineRoutes, {
-          styles: TSPutils.getStyles(pane, lineColor)
-        })
-
-        const tspSolvedEventFn = (waypointsInSolution) => {
-          const lineInfo = {
-            line: line,
-            lineWaypoints: waypoints[i].waypoint,
-            waypointsInSolution: waypointsInSolution,
-            map: map,
-            routes: lineRoutes,
-            index: i
-          }
-
-          tspState.onTSPsolved(lineInfo, Key)
-        }
-        line.addEventListener('tspSolvedEvent', tspSolvedEventFn)
-
         line = line.addTo(map.leafletElement)
       }
     }
@@ -175,10 +125,10 @@ class Routing extends MapLayer {
     if (!this.props.map.leafletElement.getPane('redPane')) {
       this.initRedPane()
     }
-    if (!this.props.map.leafletElement.getPane('markerPane')) {
+    if (!this.props.map.leafletElement.getPane('customMarkerPane')) {
       this.initMarkerPane()
     }
-    if (!this.props.map.leafletElement.getPane('popupPane')) {
+    if (!this.props.map.leafletElement.getPane('customPopupPane')) {
       this.initPopupPane()
     }
   }
@@ -199,9 +149,7 @@ class Routing extends MapLayer {
     TSPutils.createPopupPane(this.props.map)
   }
 
-  getLeafletElementOptions (sourceKey, popup, id) {
-    const tspState = TSPstate.getInstance()
-
+  getRoutingPlanOptionsOptions (sourceKey, popup, id) {
     return {
       addWaypoints: false,
       draggableWaypoints: false,
@@ -210,70 +158,95 @@ class Routing extends MapLayer {
        * Returning falsy values from createMarker()
        * will result in no marker being created
        */
-      createMarker: function (i, wp, n) {
-        if (!tspState.getFullScreen()) {
-          if (tspState.getMarkerLatLons().has(sourceKey)) {
-            return false
-          }
-          tspState.addToMarkerLatLons(sourceKey)
-        } else {
-          if (tspState.getFullScreenMarkerLatLons().has(sourceKey)) {
-            return false
-          }
-          tspState.addToFullScreenMarkerLatLons(sourceKey)
+      createMarker: (i, wp, n) => {
+        const markerParams = {
+          wp: wp
         }
-
-        let marker = null
-        if (tspState.getSelectedMarkers().has(sourceKey)) {
-          marker = TSPutils.getRedMarker(wp.latLng, popup)
-        } else {
-          marker = TSPutils.getBlueMarker(wp.latLng, popup)
+        const routingMachineParams = {
+          sourceKey: sourceKey,
+          popup: popup,
+          id: id,
+          Key: this.props.Key
         }
-
-        const onClick = () => {
-          this.onMarkerClick(sourceKey, marker, id)
-        }
-
-        marker.addEventListener('click', onClick)
-
-        if (!tspState.getFullScreen()) {
-          const onUpdating = (icon) => {
-            marker.setIcon(icon)
-          }
-          marker.addEventListener('updating', onUpdating)
-
-          if (!(tspState.getCitiesMainMapMarkers().hasOwnProperty(sourceKey) && !!tspState.getCitiesMainMapMarkers()[sourceKey])) {
-            tspState.addToCitiesMainMapMarkers(sourceKey, marker)
-          }
-        }
-
-        return marker
-      }.bind(this)
+        return this.createMarker(markerParams, routingMachineParams)
+      }
     }
+  }
+
+  createMarker (markerParams, routingMachineParams) {
+    const tspState = TSPstate.getInstance()
+
+    const wp = markerParams.wp
+
+    const sourceKey = routingMachineParams.sourceKey
+    const popup = routingMachineParams.popup
+    const id = routingMachineParams.id
+    const Key = routingMachineParams.Key
+
+    if (!tspState.getFullScreen()) {
+      if (tspState.getMarkerLatLons(Key).has(sourceKey)) {
+        return false
+      }
+      tspState.getMarkerLatLons(Key).add(sourceKey)
+    } else {
+      if (tspState.getFullScreenMarkerLatLons(Key).has(sourceKey)) {
+        return false
+      }
+      tspState.getFullScreenMarkerLatLons(Key).add(sourceKey)
+    }
+
+    let marker = null
+    if (tspState.getSelectedMarkers(Key).has(sourceKey)) {
+      marker = TSPutils.getRedMarker(wp.latLng, popup)
+    } else {
+      marker = TSPutils.getBlueMarker(wp.latLng, popup)
+    }
+
+    const onClick = () => {
+      this.onMarkerClick(sourceKey, marker, id)
+    }
+
+    marker.addEventListener('click', onClick)
+
+    if (!tspState.getFullScreen()) {
+      const onUpdating = (icon) => {
+        marker.setIcon(icon)
+      }
+      marker.addEventListener('updating', onUpdating)
+
+      if (!(tspState.getMainMapMarkers(Key).hasOwnProperty(sourceKey) && !!tspState.getMainMapMarkers(Key)[sourceKey])) {
+        tspState.getMainMapMarkers(Key)[sourceKey] = marker
+      }
+    }
+
+    return marker
   }
 
   onMarkerClick (sourceKey, marker, id) {
     const tspState = TSPstate.getInstance()
 
+    const { Key, setNumSelectedNodes } = this.props
+
     const isMainMapLoading = (!tspState.getFullScreen() && tspState.getIsLoading())
-    if (isMainMapLoading || tspState.getIsPathSolved()) {
+
+    if (isMainMapLoading || tspState.getIsPathSolved(Key)) {
       return
     }
 
     let icon = TSPutils.getBlueIcon()
-    if (tspState.getSelectedMarkers().has(sourceKey)) {
-      tspState.removeFromSelectedMarkers(sourceKey)
+    if (tspState.getSelectedMarkers(Key).has(sourceKey)) {
+      tspState.getSelectedMarkers(Key).delete(sourceKey)
     } else {
-      tspState.addToSelectedMarkers(sourceKey)
+      tspState.getSelectedMarkers(Key).add(sourceKey)
       icon = TSPutils.getRedIcon()
     }
     marker.setIcon(icon)
 
-    TSPutils.onMarkerClick(id)
-    this.props.setNumSelectedNodes(tspState.getSelectedNodes().size)
+    TSPutils.onMarkerClick(Key, id)
+    setNumSelectedNodes(tspState.getSelectedNodes(Key).size)
 
     if (tspState.getFullScreen()) {
-      const correspondingMarkerOnMainMap = tspState.getCitiesMainMapMarkers()[sourceKey]
+      const correspondingMarkerOnMainMap = tspState.getMainMapMarkers(Key)[sourceKey]
       correspondingMarkerOnMainMap.fire('updating', icon)
     }
   }
@@ -289,28 +262,18 @@ class Routing extends MapLayer {
 
     const tspState = TSPstate.getInstance()
     // TODO: Investigate why in callback callsPending is always an empty set
-    if (tspState.getCallsPending().has(i)) {
-      tspState.removeFromCallsPending(i)
+    if (tspState.getCallsPending(Key).has(i)) {
+      tspState.getCallsPending(Key).delete(i)
     }
-
     if (line) {
       map.leafletElement.removeLayer(line)
     }
     if (err) {
-      // console.log(`Error in routing line ${i}: ${err.message}`)
+      tspState.setNumFailedCalls(Key, tspState.getNumFailedCalls(Key) + 1)
+      console.log(`Error in routing line ${i} for graph ${Key}: ${err.message}`)
     } else {
-      let lineRoutes = null
-      if (TSPutils.isCitiesGraph(Key)) {
-        lineRoutes = tspState.getCitiesLineRoute()
-      } else {
-        lineRoutes = tspState.getVancouverLineRoute()
-      }
-      lineRoutes[i] = routes[0]
-      if (TSPutils.isCitiesGraph(Key)) {
-        tspState.setCitiesLineRoute(lineRoutes)
-      } else {
-        tspState.setVancouverLineRoute(lineRoutes)
-      }
+      tspState.getLineRoute(Key)[i] = routes[0]
+
       line = L.Routing.line(routes[0], {
         styles: blueLineStyles
       })
@@ -330,11 +293,7 @@ class Routing extends MapLayer {
 
       line = line.addTo(map.leafletElement)
 
-      if (TSPutils.isCitiesGraph(Key)) {
-        tspState.addToCitiesLines(i, line)
-      } else {
-        tspState.addToVancouverLines(i, line)
-      }
+      tspState.getLines(Key)[i] = line
     }
     if (!tspState.getFullScreen() && i === waypoints.length - 1) {
       setLoading(false)
