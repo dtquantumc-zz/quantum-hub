@@ -536,6 +536,19 @@ class TSPstate {
     this.citiesMainMapMarkers = value
   }
 
+  setMap (graphKey, value) {
+    switch (graphKey) {
+      case Keys.CITIES:
+        this.setCitiesMap(value)
+        break
+      case Keys.VANCOUVER:
+        this.setVancouverMap(value)
+        break
+      default:
+        break
+    }
+  }
+
   setCitiesMap (value) {
     this.citiesMap = value
   }
