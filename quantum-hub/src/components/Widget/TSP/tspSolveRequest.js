@@ -68,15 +68,27 @@ function tspSolveRequest (selectedEdges, key, setters, consoleFns) {
  */
 function postSolve (xhr, key, setters, consoleFns) {
   const tspState = TSPstate.getInstance()
+  const responseRoute = xhr.response.route
 
   if (xhr.status === 200) {
     const tspState = TSPstate.getInstance()
-    const waypoints = TSPutils.getWaypointsSinglePath(Graph[key], xhr.response.route)
+    const waypoints = TSPutils.getWaypointsSinglePath(Graph[key], responseRoute)
 
     const graphLines = tspState.getLines(key)
     Object.keys(graphLines).forEach(index => {
       graphLines[index].fire('tspSolvedEvent', waypoints)
     })
+
+    consoleFns.outputToConsole('The Travelling Salesperson can travel in the following order:')
+    const idMapping = Graph[key].idMapping
+    for (let i = 0; i < responseRoute.length; i++) {
+      const currentRoute = responseRoute[i]
+      let solutionString = `${i + 1}. ${idMapping[currentRoute]}`
+      if (i < responseRoute.length - 1) {
+        solutionString += ' ->'
+      }
+      consoleFns.outputToConsole(solutionString)
+    }
 
     setters.setIsPathSolved(true)
     tspState.setIsPathSolved(key, true)
