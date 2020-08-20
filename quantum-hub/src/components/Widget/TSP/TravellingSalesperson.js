@@ -243,8 +243,9 @@ function TravellingSalesperson (props) {
             size='sm'
             disabled={loading || TSPutils.isFlowersGraph(key)}
             onClick={() => {
+              props.outputToConsole('FLOWERS graph is coming soon!')
               // TODO
-              TSPutils.onFlowersButtonClick(setCurrentGraph)
+              // TSPutils.onFlowersButtonClick(setCurrentGraph)
             }}
           >Flowers
           </Button>
@@ -257,7 +258,10 @@ function TravellingSalesperson (props) {
           onClick={() => {
             setLoading(true)
             tspState.setIsLoading(true)
-
+            const graphParams = {
+              currentGraph: currentGraph,
+              key: key
+            }
             const setters = {
               setIsPathSolved: setIsPathSolved,
               setLoading: setLoading
@@ -266,18 +270,18 @@ function TravellingSalesperson (props) {
               outputToConsole: props.outputToConsole,
               appendToConsole: props.appendToConsole
             }
-            TSPutils.handleClickSolve(currentGraph, key, setters, consoleFns)
+            TSPutils.handleClickSolve(graphParams, setters, consoleFns)
           }}
         >Solve
         </Button>
         <Button
           color='geeringupPrimary'
-          disabled={loading || !getIsPathSolved()}
+          disabled={loading || getNumSelectedNodes() === 0}
           onClick={() => {
             setLoading(true)
             tspState.setIsLoading(true)
 
-            props.outputToConsole(`Resetting solution for the ${key.toUpperCase()} graph...`)
+            props.outputToConsole(`Resetting the ${key.toUpperCase()} graph...`)
 
             const mainMapMarkers = tspState.getMainMapMarkers(key)
             const keys = Object.keys(mainMapMarkers)
