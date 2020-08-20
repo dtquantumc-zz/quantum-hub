@@ -125,10 +125,37 @@ class Routing extends MapLayer {
 
         router.route([waypointSource, waypointDest], callback)
       } else {
-        let line = tspState.getLines(Key)[i]
+        /** Don't want to add a line for a graph that
+         * is not the current graph */
+        if (!Graph[Key].nameMapping.hasOwnProperty(sourceKey)) {
+          return
+        }
+
+        let line
+        if (!this.props.fullScreen) {
+          line = tspState.getLines(Key)[i]
+        } else {
+          const lineRoutes = tspState.getLineRoute(Key)[i]
+          if (lineRoutes === undefined) {
+            continue
+          }
+
+          let lineStyles = null
+          if (tspState.getSolvedRouteIndexes(Key).has(i)) {
+            lineStyles = TSPutils.getStyles('redPane', TSPutils.getGeeringupSecondaryColor())
+          } else {
+            lineStyles = TSPutils.getStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
+          }
+
+          line = L.Routing.line(lineRoutes, {
+            styles: lineStyles
+          })
+        }
+
         if (line === undefined) {
           continue
         }
+
         line = line.addTo(map.leafletElement)
       }
     }
@@ -245,13 +272,21 @@ class Routing extends MapLayer {
   }
 
   onMarkerClick (sourceKey, marker, id) {
+    marker.closePopup()
+
     const tspState = TSPstate.getInstance()
 
-    const { Key, setNumSelectedNodes } = this.props
+    const { Key, setNumSelectedNodes, outputToConsole } = this.props
 
     const isMainMapLoading = (!tspState.getFullScreen() && tspState.getIsLoading())
+    if (isMainMapLoading) {
+      outputToConsole('Map is Loading...')
+      return
+    }
 
-    if (isMainMapLoading || tspState.getIsPathSolved(Key)) {
+    if (tspState.getIsPathSolved(Key)) {
+      outputToConsole('A shortes path is already solved for.')
+      outputToConsole("Please 'Reset' the map before selecting a new node")
       return
     }
 
@@ -264,7 +299,11 @@ class Routing extends MapLayer {
     }
     marker.setIcon(icon)
 
-    TSPutils.onMarkerClick(Key, id)
+    const consoleParams = {
+      outputToConsole: outputToConsole,
+      nodeName: sourceKey
+    }
+    TSPutils.onMarkerClick(Key, id, consoleParams)
     setNumSelectedNodes(tspState.getSelectedNodes(Key).size)
 
     if (tspState.getFullScreen()) {
@@ -274,7 +313,7 @@ class Routing extends MapLayer {
   }
 
   getRoutingCallback (callbackParams, lineParams) {
-    const { map, Key, waypoints, setLoading } = this.props
+    const { map, Key, waypoints, setLoading, fullScreen } = this.props
     const err = callbackParams.err
     const routes = callbackParams.routes
 
@@ -299,19 +338,21 @@ class Routing extends MapLayer {
       line = L.Routing.line(routes[0], {
         styles: blueLineStyles
       })
-      const tspSolvedEventFn = (waypointsInSolution) => {
-        const lineInfo = {
-          line: line,
-          lineWaypoints: waypoints[i].waypoint,
-          waypointsInSolution: waypointsInSolution,
-          map: map,
-          routes: routes[0],
-          index: i
-        }
+      if (!fullScreen) {
+        const tspSolvedEventFn = (waypointsInSolution) => {
+          const lineInfo = {
+            line: line,
+            lineWaypoints: waypoints[i].waypoint,
+            waypointsInSolution: waypointsInSolution,
+            map: map,
+            routes: routes[0],
+            index: i
+          }
 
-        tspState.onTSPsolved(lineInfo, Key)
+          tspState.onTSPsolved(lineInfo, Key)
+        }
+        line.addEventListener('tspSolvedEvent', tspSolvedEventFn)
       }
-      line.addEventListener('tspSolvedEvent', tspSolvedEventFn)
 
       line = line.addTo(map.leafletElement)
 
