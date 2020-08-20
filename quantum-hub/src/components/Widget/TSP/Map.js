@@ -4,7 +4,7 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Map, TileLayer } from 'react-leaflet'
 import Routing from './RoutingMachine'
 
@@ -17,7 +17,7 @@ import styles from '../../../assets/jss/material-kit-react/components/travelling
 export default function MapComponent (props) {
   const useStyles = makeStyles(styles)
   const classes = useStyles()
-  const [map, setMap] = React.useState(null)
+  const [map, setMap] = useState(null)
 
   const tspState = TSPstate.getInstance()
 
@@ -28,44 +28,86 @@ export default function MapComponent (props) {
   }
 
   // Used to do a refresh when the listed dependencies change
-  React.useEffect(() => {},
-    [map, props.position, props.loading,
+  useEffect(() => {},
+    [map, props.position,
       props.isPathSolved, props.Key, props.fullScreen])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (map !== null) {
       map.leafletElement.invalidateSize()
+
+      if (props.loading) {
+        disableMapHandlers()
+      } else {
+        enableMapHandlers()
+      }
     }
   })
+
+  function disableMapHandlers () {
+    getMapHandlersToToggle().forEach(handler => handler.disable())
+  }
+
+  function enableMapHandlers () {
+    getMapHandlersToToggle().forEach(handler => handler.enable())
+  }
+
+  /**
+   * NOTE: A list of all handlers can be found at
+   * https://leafletjs.com/reference-1.6.0.html#handler
+   * (Handler subsection under Map) or via the
+   * map.leafletElement._handlers property
+   */
+  function getMapHandlersToToggle () {
+    const leafletElem = map.leafletElement
+    const mapHandlersToToggle = [
+      leafletElem.boxZoom,
+      leafletElem.dragging,
+      leafletElem.keyboard,
+      leafletElem.scrollWheelZoom,
+      leafletElem.zoomControl,
+      leafletElem.touchZoom
+    ]
+
+      if (leafletElem.tap) {
+        mapHandlersToToggle.push(leafletElem.tap)
+      }
+
+      return mapHandlersToToggle
+  }
 
   const attributionTemplate = '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   const attributionUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
   const zoom = TSPutils.getZoom(props.Key, props.fullScreen)
+  const maxBounds = TSPutils.getMaxBounds(props.Key)
 
   return (
-    <Map
-      className={props.fullScreen ? classes.expandedMap : classes.map}
-      center={props.position}
-      zoom={zoom}
-      ref={saveMap}
-      zoomControl
-      doubleClickZoom
-      scrollWheelZoom
-    >
-      <TileLayer attribution={attributionTemplate} url={attributionUrl} />
-      {map !== null && <Routing
-        map={map}
-        waypoints={props.waypoints}
-        currentGraph={props.currentGraph}
-        isPathSolved={props.isPathSolved}
-        Key={props.Key}
-        loading={props.loading}
-        setLoading={props.setLoading}
-        fullScreen={props.fullScreen}
-        setNumSelectedNodes={props.setNumSelectedNodes}
-        switchingGraphs={props.switchingGraphs}
-        setSwitchingGraphs={props.setSwitchingGraphs}
-      />}
-    </Map>
+    <>
+      <Map
+        className={props.fullScreen ? classes.expandedMap : classes.map}
+        center={props.position}
+        zoom={zoom}
+        ref={saveMap}
+        maxBounds={maxBounds}
+        minZoom={zoom}
+        doubleClickZoom={false}
+      >
+        <TileLayer attribution={attributionTemplate} url={attributionUrl} />
+        {map !== null && <Routing
+          map={map}
+          waypoints={props.waypoints}
+          currentGraph={props.currentGraph}
+          isPathSolved={props.isPathSolved}
+          Key={props.Key}
+          loading={props.loading}
+          setLoading={props.setLoading}
+          fullScreen={props.fullScreen}
+          setNumSelectedNodes={props.setNumSelectedNodes}
+          switchingGraphs={props.switchingGraphs}
+          setSwitchingGraphs={props.setSwitchingGraphs}
+          outputToConsole={props.outputToConsole}
+        />}
+      </Map>
+    </>
   )
 }
