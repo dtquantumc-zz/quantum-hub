@@ -16,7 +16,10 @@ import Graph from './Graph.js'
  * backend, and once the data is returned, postSolve is called. This handles
  * request creation.
  */
-function tspSolveRequest (selectedEdges, key, setters, consoleFns) {
+function tspSolveRequest (graphParams, setters, consoleFns) {
+  const selectedEdges = graphParams.selectedEdges
+  const key = graphParams.key
+
   const tspState = TSPstate.getInstance()
 
   // Set the parameters to send to the server
@@ -80,11 +83,18 @@ function postSolve (xhr, key, setters, consoleFns) {
     })
 
     consoleFns.outputToConsole('The Travelling Salesperson can travel in the following order:')
+
     const idMapping = Graph[key].idMapping
-    for (let i = 0; i < responseRoute.length; i++) {
-      const currentRoute = responseRoute[i]
+    const length = responseRoute.length
+
+    const firstNode = responseRoute[0]
+    const firstNodeName = idMapping[firstNode]
+    consoleFns.outputToConsole(`(We arbitrarily pick ${firstNodeName} as the starting node.)`)
+
+    for (let i = 0; i < length + 1; i++) {
+      const currentRoute = responseRoute[i % length]
       let solutionString = `${i + 1}. ${idMapping[currentRoute]}`
-      if (i < responseRoute.length - 1) {
+      if (i < length) {
         solutionString += ' ->'
       }
       consoleFns.outputToConsole(solutionString)
