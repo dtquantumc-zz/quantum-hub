@@ -14,7 +14,7 @@ class TSPstate {
   isCitiesFirstRoundRoutingCall = true
   isVancouverFirstRoundRoutingCall = true
 
-  isLoading = false
+  isLoading = true
 
   isCitiesPathSolved = false
   isVancouverPathSolved = false
@@ -196,6 +196,22 @@ class TSPstate {
 
   getVancouverMap () {
     return this.vancouverMap
+  }
+
+  getMapState (key) {
+    let mapState = null
+    switch (key) {
+      case Keys.CITIES:
+        mapState = this.getCitiesState()
+        break
+      case Keys.VANCOUVER:
+        mapState = this.getVancouverState()
+        break
+      default:
+        break
+    }
+
+    return mapState
   }
 
   getCitiesState () {
