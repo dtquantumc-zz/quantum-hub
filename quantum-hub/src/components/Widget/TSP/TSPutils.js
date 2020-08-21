@@ -154,25 +154,60 @@ export default class TSPutils {
     return waypoints
   }
 
-  static handleClickSolve (currentGraph, key, setters, consoleFns) {
-    const tspState = TSPstate.getInstance()
-    const selectedNodes = tspState.getSelectedNodes(key)
-    console.log('selectedNodes: ', selectedNodes)
+  static handleClickSolve (graphParams, setters, consoleFns) {
+    const key = graphParams.key
+    const currentGraph = graphParams.currentGraph
 
+    const selectedEdges = TSPutils.getEdgesToSolve(key, currentGraph)
+
+    TSPutils.outputSendingToSolveToConsole(key, currentGraph, consoleFns.outputToConsole)
+
+    const tspSolveRequestGraphParams = {
+      selectedEdges: selectedEdges,
+      key: key
+    }
+    tspSolveRequest(tspSolveRequestGraphParams, setters, consoleFns)
+  }
+
+  static getEdgesToSolve (graphKey, currentGraph) {
+    let edgesToSolve = TSPutils.getSelectedEdges(graphKey, currentGraph)
+    if (edgesToSolve.length === 0) {
+      edgesToSolve = TSPutils.getAllEdges(currentGraph)
+    }
+
+    return edgesToSolve
+  }
+
+  static getSelectedEdges (graphKey, currentGraph) {
     const selectedEdges = []
     currentGraph.edgeList.forEach(edge => {
-      if (TSPutils.isEdgeSelected(key, edge)) {
+      if (TSPutils.isEdgeSelected(graphKey, edge)) {
         selectedEdges.push(edge)
       }
     })
 
-    console.log('selectedEdges: ', selectedEdges)
-    tspSolveRequest(selectedEdges, key, setters, consoleFns)
+    return selectedEdges
+  }
+
+  static getAllEdges (currentGraph) {
+    const allEdges = []
+    currentGraph.edgeList.forEach(edge => {
+      if (!TSPutils.bothNodesInEdgeAreTheSame(edge)) {
+        allEdges.push(edge)
+      }
+    })
+
+    return allEdges
   }
 
   static isEdgeSelected (graphKey, edge) {
-    return TSPutils.isValInSelectedNodes(graphKey, edge[0]) &&
+    return !TSPutils.bothNodesInEdgeAreTheSame(edge) &&
+    TSPutils.isValInSelectedNodes(graphKey, edge[0]) &&
     TSPutils.isValInSelectedNodes(graphKey, edge[1])
+  }
+
+  static bothNodesInEdgeAreTheSame (edge) {
+    return edge[0] === edge[1]
   }
 
   static isValInSelectedNodes (graphKey, val) {
@@ -180,13 +215,41 @@ export default class TSPutils {
     return tspState.getSelectedNodes(graphKey).has(val)
   }
 
-  static onMarkerClick (graphKey, nodeId) {
+  static outputSendingToSolveToConsole (graphKey, currentGraph, outputToConsole) {
+    const tspState = TSPstate.getInstance()
+    const selectedNodes = tspState.getSelectedNodes(graphKey)
+
+    outputToConsole('Finding the shortest path between the following nodes:')
+
+    if (selectedNodes.size === 0) {
+      const names = Object.keys(currentGraph.nameMapping)
+      TSPutils.outputNamesToConsole(names, outputToConsole)
+    } else {
+      const selectedNodesArray = Array.from(selectedNodes)
+      TSPutils.outputSelectedNodesToConsole(selectedNodesArray, outputToConsole, currentGraph)
+    }
+  }
+
+  static outputNamesToConsole (names, outputToConsole) {
+    for (let i = 0; i < names.length; i++) {
+      outputToConsole(`${i + 1}. ${names[i]}`)
+    }
+  }
+
+  static outputSelectedNodesToConsole (selectedNodesArray, outputToConsole, currentGraph) {
+    const idMapping = currentGraph.idMapping
+    for (let i = 0; i < selectedNodesArray.length; i++) {
+      outputToConsole(`${i + 1}. ${idMapping[selectedNodesArray[i]]}`)
+    }
+  }
+
+  static onMarkerClick (graphKey, nodeId, consoleParams) {
     const tspState = TSPstate.getInstance()
     if (TSPutils.isMarkerDeselect(graphKey, nodeId)) {
-      console.log('Deselecting ', nodeId)
+      consoleParams.outputToConsole(`- Deselecting: ${consoleParams.nodeName}`)
       tspState.getSelectedNodes(graphKey).delete(nodeId)
     } else {
-      console.log('Selecting ', nodeId)
+      consoleParams.outputToConsole(`Selecting: ${consoleParams.nodeName}`)
       tspState.getSelectedNodes(graphKey).add(nodeId)
     }
   }
@@ -251,17 +314,39 @@ export default class TSPutils {
     ]
   }
 
-  static getZoom (key, isFullScreen) {
+  static getZoom (key) {
     const tspState = TSPstate.getInstance()
+    return tspState.getMapState(key).zoom
+  }
 
-    let zoom = null
-    if (TSPutils.isCitiesGraph(key)) {
-      zoom = tspState.getCitiesState().zoom
-    } else {
-      zoom = tspState.getVancouverState().zoom
+  static getMaxBounds (key) {
+    let maxBounds = null
+    switch (key) {
+      case Keys.CITIES:
+        maxBounds = TSPutils.getCitiesMaxBounds()
+        break
+      case Keys.VANCOUVER:
+        maxBounds = TSPutils.getVancouverMaxBounds()
+        break
+      default:
+        break
     }
 
-    return zoom
+    return maxBounds
+  }
+
+  static getCitiesMaxBounds () {
+    const southWestBound = L.latLng(15.597245, -148.269778)
+    const northEastBound = L.latLng(64.099507, -51.894763)
+
+    return L.latLngBounds(southWestBound, northEastBound)
+  }
+
+  static getVancouverMaxBounds () {
+    const southWestBound = L.latLng(49.020672, -123.447644)
+    const northEastBound = L.latLng(49.455436, -122.582183)
+
+    return L.latLngBounds(southWestBound, northEastBound)
   }
 
   static getRedIcon () {
@@ -283,21 +368,32 @@ export default class TSPutils {
   }
 
   static getRedMarker (latLng, popup) {
-    return L.marker(latLng, {
-      icon: TSPutils.getRedIcon(),
-      pane: 'customMarkerPane',
-      keyboard: false,
-      draggable: false
-    }).bindPopup(popup)
+    return TSPutils.getMarker(TSPutils.getRedIcon(), latLng, popup)
   }
 
   static getBlueMarker (latLng, popup) {
-    return L.marker(latLng, {
-      icon: TSPutils.getBlueIcon(),
+    return TSPutils.getMarker(TSPutils.getBlueIcon(), latLng, popup)
+  }
+
+  static getMarker (icon, latLng, popup) {
+    const marker = L.marker(latLng, {
+      icon: icon,
       pane: 'customMarkerPane',
       keyboard: false,
       draggable: false
     }).bindPopup(popup)
+
+    marker.on('mouseover', () => {
+      const tspState = TSPstate.getInstance()
+      if (!tspState.getIsLoading()) {
+        marker.openPopup()
+      }
+    })
+    marker.on('mouseout', () => {
+      marker.closePopup()
+    })
+
+    return marker
   }
 
   static createBluePane (map) {

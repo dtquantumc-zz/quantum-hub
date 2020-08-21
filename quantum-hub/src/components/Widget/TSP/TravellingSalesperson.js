@@ -41,9 +41,9 @@ function TravellingSalesperson (props) {
   const [waypoints, setWaypoints] = useState(TSPutils.getCitiesWaypoints())
   const [isCitiesPathSolved, setIsCitiesPathSolved] = useState(false)
   const [isVancouverPathSolved, setIsVancouverPathSolved] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [numSelectedCitiesNodes, setNumSelectedCitiesNodes] = useState(false)
-  const [numSelectedVancouverNodes, setNumSelectedVancouverNodes] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [numSelectedCitiesNodes, setNumSelectedCitiesNodes] = useState(0)
+  const [numSelectedVancouverNodes, setNumSelectedVancouverNodes] = useState(0)
   const [switchingGraphs, setSwitchingGraphs] = useState({
     isGraphSwitch: false,
     key: null
@@ -72,14 +72,15 @@ function TravellingSalesperson (props) {
 
     return ref.current
   }
+
   /**
- * TODO: Confirm below is necessary
- *
- * Since setState() is an async function, we want to make sure all properties
- * of the graph being switched to are set
- *
- * Source: https://reactjs.org/docs/react-component.html#setstate
- */
+   * TODO: Confirm below is necessary
+   *
+   * Since setState() is an async function, we want to make sure all properties
+   * of the graph being switched to are set
+   *
+   * Source: https://reactjs.org/docs/react-component.html#setstate
+   */
   useEffect(() => {
     if (key !== prevKey && prevKey !== undefined) {
       tspState.setComponentsUpdated(tspState.getComponentsUpdated() + 1)
@@ -110,20 +111,13 @@ function TravellingSalesperson (props) {
     })
   }
 
+  /**
+   * NOTE: We use TSPstate.js's getIsPathSolved(key).size since
+   * the state values may not be updated immediately after setIsPathSolved()
+   * is called since it calls async setters
+   */
   function getIsPathSolved () {
-    let isPathSolved = null
-    switch (key) {
-      case Keys.CITIES:
-        isPathSolved = isCitiesPathSolved
-        break
-      case Keys.VANCOUVER:
-        isPathSolved = isVancouverPathSolved
-        break
-      default:
-        break
-    }
-
-    return isPathSolved
+    return tspState.getIsPathSolved(key)
   }
 
   function setIsPathSolved (value) {
@@ -139,20 +133,13 @@ function TravellingSalesperson (props) {
     }
   }
 
+  /**
+   * NOTE: We use TSPstate.js's getSelectedNodes(key).size since
+   * the state values may not be updated immediately after setNumSelectedNodes()
+   * is called since it calls async setters
+   */
   function getNumSelectedNodes () {
-    let numSelectedNodes = null
-    switch (key) {
-      case Keys.CITIES:
-        numSelectedNodes = numSelectedCitiesNodes
-        break
-      case Keys.VANCOUVER:
-        numSelectedNodes = numSelectedVancouverNodes
-        break
-      default:
-        break
-    }
-
-    return numSelectedNodes
+    return tspState.getSelectedNodes(key).size
   }
 
   function setNumSelectedNodes (value) {
@@ -168,6 +155,10 @@ function TravellingSalesperson (props) {
     }
   }
 
+  useEffect(() => {},
+    [numSelectedCitiesNodes, numSelectedVancouverNodes,
+      isCitiesPathSolved, isVancouverPathSolved, switchingGraphs])
+
   useEffect(() => {
     if (open) {
       openDescriptionElement()
@@ -180,6 +171,8 @@ function TravellingSalesperson (props) {
       descriptionElement.focus()
     }
   }
+
+  useEffect(() => {}, [loading])
 
   return (
     <div className={classes.root}>
@@ -197,6 +190,7 @@ function TravellingSalesperson (props) {
             setNumSelectedNodes={setNumSelectedNodes}
             switchingGraphs={switchingGraphs}
             setSwitchingGraphs={setSwitchingGraphs}
+            outputToConsole={props.outputToConsole}
           />
         </div>
         <div className={key === Keys.VANCOUVER ? classes.mapContainer : classes.hidingContainer}>
@@ -211,6 +205,7 @@ function TravellingSalesperson (props) {
             setNumSelectedNodes={setNumSelectedNodes}
             switchingGraphs={switchingGraphs}
             setSwitchingGraphs={setSwitchingGraphs}
+            outputToConsole={props.outputToConsole}
           />
         </div>
       </div>
@@ -248,8 +243,9 @@ function TravellingSalesperson (props) {
             size='sm'
             disabled={loading || TSPutils.isFlowersGraph(key)}
             onClick={() => {
+              props.outputToConsole('FLOWERS graph is coming soon!')
               // TODO
-              TSPutils.onFlowersButtonClick(setCurrentGraph)
+              // TSPutils.onFlowersButtonClick(setCurrentGraph)
             }}
           >Flowers
           </Button>
@@ -258,11 +254,14 @@ function TravellingSalesperson (props) {
       <div className={classes.tspInput}>
         <Button
           color='geeringupSecondary'
-          disabled={loading || getNumSelectedNodes() < 3 || getIsPathSolved()}
+          disabled={loading || (getNumSelectedNodes() < 3 && getNumSelectedNodes() !== 0) || getIsPathSolved()}
           onClick={() => {
             setLoading(true)
             tspState.setIsLoading(true)
-
+            const graphParams = {
+              currentGraph: currentGraph,
+              key: key
+            }
             const setters = {
               setIsPathSolved: setIsPathSolved,
               setLoading: setLoading
@@ -271,16 +270,18 @@ function TravellingSalesperson (props) {
               outputToConsole: props.outputToConsole,
               appendToConsole: props.appendToConsole
             }
-            TSPutils.handleClickSolve(currentGraph, key, setters, consoleFns)
+            TSPutils.handleClickSolve(graphParams, setters, consoleFns)
           }}
         >Solve
         </Button>
         <Button
           color='geeringupPrimary'
-          disabled={loading || getNumSelectedNodes() === 0 || !getIsPathSolved()}
+          disabled={loading || getNumSelectedNodes() === 0}
           onClick={() => {
             setLoading(true)
             tspState.setIsLoading(true)
+
+            props.outputToConsole(`Resetting the ${key.toUpperCase()} graph...`)
 
             const mainMapMarkers = tspState.getMainMapMarkers(key)
             const keys = Object.keys(mainMapMarkers)
@@ -343,6 +344,7 @@ function TravellingSalesperson (props) {
               setNumSelectedNodes={setNumSelectedNodes}
               switchingGraphs={switchingGraphs}
               setSwitchingGraphs={setSwitchingGraphs}
+              outputToConsole={props.outputToConsole}
             />
           </div>
           <div className={key === Keys.VANCOUVER ? classes.expandedMap : classes.hidingContainer}>
@@ -358,6 +360,7 @@ function TravellingSalesperson (props) {
               setNumSelectedNodes={setNumSelectedNodes}
               switchingGraphs={switchingGraphs}
               setSwitchingGraphs={setSwitchingGraphs}
+              outputToConsole={props.outputToConsole}
             />
           </div>
         </DialogContent>

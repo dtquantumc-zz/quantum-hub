@@ -2,10 +2,11 @@
 import 'leaflet-routing-machine'
 import { MapLayer, withLeaflet } from 'react-leaflet'
 import L from 'leaflet'
-import Keys from './Keys.js'
 import TSPutils from './TSPutils.js'
 import TSPstate from './TSPstate.js'
 import PersistentGraph from './PersistentGraph'
+
+import Graph from './Graph.js'
 
 class Routing extends MapLayer {
   componentDidUpdate () {
@@ -30,8 +31,7 @@ class Routing extends MapLayer {
     tspState.setFullScreen(this.props.fullScreen) // used in Marker callbacks
 
     if (this.isFirstRoundRoutingCallForMainGraph() ||
-    (tspState.getNumFailedCalls(this.props.Key) > (this.props.waypoints.length / 2) &&
-    !tspState.getFullScreen())) {
+    this.moreThanHalfCallsFailedForMainGraph()) {
       this.props.setLoading(true)
       tspState.setIsLoading(true)
     }
@@ -44,6 +44,18 @@ class Routing extends MapLayer {
     const tspState = TSPstate.getInstance()
     return (!tspState.getFullScreen() &&
     tspState.getIsFirstRoundRoutingCall(this.props.Key))
+  }
+
+  moreThanHalfCallsFailedForMainGraph () {
+    const tspState = TSPstate.getInstance()
+    return this.moreThanHalfCallsFailed() && !tspState.getFullScreen()
+  }
+
+  moreThanHalfCallsFailed () {
+    const tspState = TSPstate.getInstance()
+
+    return (tspState.getNumFailedCalls(this.props.Key) >
+    (this.props.waypoints.length / 2))
   }
 
   fetchPath () {
@@ -61,15 +73,19 @@ class Routing extends MapLayer {
       const name = waypoints[i].names[0]
       const id = currentGraph.nameMapping[name]
 
-      const popup = L.popup({ pane: 'customPopupPane' }).setContent(name)
+      const popup = L.popup({
+        pane: 'customPopupPane',
+        closeOnClick: true,
+        closeButton: false
+      }).setContent(name)
 
       const waypointSource = { latLng: waypoints[i].waypoint[0] }
       const waypointDest = { latLng: waypoints[i].waypoint[1] }
 
       // i.e. "["UBC campus","SFU campus"]"
       const waypointKey = JSON.stringify(waypoints[i].names)
-      // i.e. ""UBC campus""
-      const sourceKey = JSON.stringify(waypoints[i].names[0])
+      // i.e. "UBC campus"
+      const sourceKey = waypoints[i].names[0]
 
       const routingPlanOptions = this.getRoutingPlanOptionsOptions(sourceKey, popup, id)
 
@@ -83,9 +99,10 @@ class Routing extends MapLayer {
 
       const isLineRoutePresent = tspState.getVancouverLineRoute().hasOwnProperty(i) && !!tspState.getVancouverLineRoute()
       const isFirstRoundRoutingCall = tspState.getIsFirstRoundRoutingCall(Key)
-      const moreThanHalfCallsFailed = tspState.getNumFailedCalls(Key) > (waypoints.length / 2)
 
-      if ((!isLineRoutePresent && (isFirstRoundRoutingCall || moreThanHalfCallsFailed) && !tspState.getCallsPending(Key).has(i))) {
+      if ((!isLineRoutePresent &&
+        (isFirstRoundRoutingCall || this.moreThanHalfCallsFailed()) &&
+        !tspState.getCallsPending(Key).has(i))) {
         tspState.getCallsPending(Key).add(i)
 
         if (i === waypoints.length - 1) {
@@ -112,10 +129,37 @@ class Routing extends MapLayer {
         // router.route([waypointSource, waypointDest], callback)
         PersistentGraph.requestRoute([waypointSource, waypointDest], callback)
       } else {
-        let line = tspState.getLines(Key)[i]
+        /** Don't want to add a line for a graph that
+         * is not the current graph */
+        if (!Graph[Key].nameMapping.hasOwnProperty(sourceKey)) {
+          return
+        }
+
+        let line
+        if (!this.props.fullScreen) {
+          line = tspState.getLines(Key)[i]
+        } else {
+          const lineRoutes = tspState.getLineRoute(Key)[i]
+          if (lineRoutes === undefined) {
+            continue
+          }
+
+          let lineStyles = null
+          if (tspState.getSolvedRouteIndexes(Key).has(i)) {
+            lineStyles = TSPutils.getStyles('redPane', TSPutils.getGeeringupSecondaryColor())
+          } else {
+            lineStyles = TSPutils.getStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
+          }
+
+          line = L.Routing.line(lineRoutes, {
+            styles: lineStyles
+          })
+        }
+
         if (line === undefined) {
           continue
         }
+
         line = line.addTo(map.leafletElement)
       }
     }
@@ -186,6 +230,12 @@ class Routing extends MapLayer {
     const id = routingMachineParams.id
     const Key = routingMachineParams.Key
 
+    /** Don't want to create a marker for a graph that
+     * is not the current graph */
+    if (!Graph[Key].nameMapping.hasOwnProperty(sourceKey)) {
+      return false
+    }
+
     if (!tspState.getFullScreen()) {
       if (tspState.getMarkerLatLons(Key).has(sourceKey)) {
         return false
@@ -226,13 +276,21 @@ class Routing extends MapLayer {
   }
 
   onMarkerClick (sourceKey, marker, id) {
+    marker.closePopup()
+
     const tspState = TSPstate.getInstance()
 
-    const { Key, setNumSelectedNodes } = this.props
+    const { Key, setNumSelectedNodes, outputToConsole } = this.props
 
     const isMainMapLoading = (!tspState.getFullScreen() && tspState.getIsLoading())
+    if (isMainMapLoading) {
+      outputToConsole('Map is Loading...')
+      return
+    }
 
-    if (isMainMapLoading || tspState.getIsPathSolved(Key)) {
+    if (tspState.getIsPathSolved(Key)) {
+      outputToConsole('A shortes path is already solved for.')
+      outputToConsole("Please 'Reset' the map before selecting a new node")
       return
     }
 
@@ -245,7 +303,11 @@ class Routing extends MapLayer {
     }
     marker.setIcon(icon)
 
-    TSPutils.onMarkerClick(Key, id)
+    const consoleParams = {
+      outputToConsole: outputToConsole,
+      nodeName: sourceKey
+    }
+    TSPutils.onMarkerClick(Key, id, consoleParams)
     setNumSelectedNodes(tspState.getSelectedNodes(Key).size)
 
     if (tspState.getFullScreen()) {
@@ -255,7 +317,7 @@ class Routing extends MapLayer {
   }
 
   getRoutingCallback (callbackParams, lineParams) {
-    const { map, Key, waypoints, setLoading } = this.props
+    const { map, Key, waypoints, setLoading, fullScreen } = this.props
     const err = callbackParams.err
     const routes = callbackParams.routes
 
@@ -282,19 +344,21 @@ class Routing extends MapLayer {
       line = L.Routing.line(routes[0], {
         styles: blueLineStyles
       })
-      const tspSolvedEventFn = (waypointsInSolution) => {
-        const lineInfo = {
-          line: line,
-          lineWaypoints: waypoints[i].waypoint,
-          waypointsInSolution: waypointsInSolution,
-          map: map,
-          routes: routes[0],
-          index: i
-        }
+      if (!fullScreen) {
+        const tspSolvedEventFn = (waypointsInSolution) => {
+          const lineInfo = {
+            line: line,
+            lineWaypoints: waypoints[i].waypoint,
+            waypointsInSolution: waypointsInSolution,
+            map: map,
+            routes: routes[0],
+            index: i
+          }
 
-        tspState.onTSPsolved(lineInfo, Key)
+          tspState.onTSPsolved(lineInfo, Key)
+        }
+        line.addEventListener('tspSolvedEvent', tspSolvedEventFn)
       }
-      line.addEventListener('tspSolvedEvent', tspSolvedEventFn)
 
       line = line.addTo(map.leafletElement)
 

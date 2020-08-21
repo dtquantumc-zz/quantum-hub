@@ -21,9 +21,6 @@ const travellingSalespersonStyle = theme => ({
     position: 'relative',
     margin: 'auto',
     width: '100%',
-    '& > *': {
-      pointerEvents: 'none'
-    },
     opacity: '0.65'
   },
   mapProgress: {
@@ -31,10 +28,13 @@ const travellingSalespersonStyle = theme => ({
     bottom: 'calc((380.48px / 2) - (68px / 2))',
     left: 'calc((492px / 2) - (68px / 2))',
     color: '#50c8eb',
-    zIndex: '1000',
-    '& > *': {
-      pointerEvents: 'none'
-    }
+    /**
+     * NOTE: This zIndex value is selected so it is
+     * higher than the highest zIndex on Map.js
+     * which is the 'customPopupPane' at 3000 (set
+     * in TSPutils.js)
+     */
+    zIndex: '4000'
   },
   hidingContainer: {
     display: 'none'
