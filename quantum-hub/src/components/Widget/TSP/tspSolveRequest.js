@@ -74,30 +74,33 @@ function postSolve (xhr, key, setters, consoleFns) {
   const responseRoute = xhr.response.route
 
   if (xhr.status === 200) {
-    const tspState = TSPstate.getInstance()
-    const waypoints = TSPutils.getWaypointsSinglePath(Graph[key], responseRoute)
+    if (responseRoute.length === 0 && xhr.response.output_message) {
+      consoleFns.outputToConsole(xhr.response.output_message)
+    } else {
+      const waypoints = TSPutils.getWaypointsSinglePath(Graph[key], responseRoute)
 
-    const graphLines = tspState.getLines(key)
-    Object.keys(graphLines).forEach(index => {
-      graphLines[index].fire('tspSolvedEvent', waypoints)
-    })
+      const graphLines = tspState.getLines(key)
+      Object.keys(graphLines).forEach(index => {
+        graphLines[index].fire('tspSolvedEvent', waypoints)
+      })
 
-    consoleFns.outputToConsole('The Travelling Salesperson can travel in the following order:')
+      consoleFns.outputToConsole('The Travelling Salesperson can travel in the following order:')
 
-    const idMapping = Graph[key].idMapping
-    const length = responseRoute.length
+      const idMapping = Graph[key].idMapping
+      const length = responseRoute.length
 
-    const firstNode = responseRoute[0]
-    const firstNodeName = idMapping[firstNode]
-    consoleFns.outputToConsole(`(We arbitrarily pick ${firstNodeName} as the starting node.)`)
+      const firstNode = responseRoute[0]
+      const firstNodeName = idMapping[firstNode]
+      consoleFns.outputToConsole(`(We arbitrarily pick ${firstNodeName} as the starting node.)`)
 
-    for (let i = 0; i < length + 1; i++) {
-      const currentRoute = responseRoute[i % length]
-      let solutionString = `${i + 1}. ${idMapping[currentRoute]}`
-      if (i < length) {
-        solutionString += ' ->'
+      for (let i = 0; i < length + 1; i++) {
+        const currentRoute = responseRoute[i % length]
+        let solutionString = `${i + 1}. ${idMapping[currentRoute]}`
+        if (i < length) {
+          solutionString += ' ->'
+        }
+        consoleFns.outputToConsole(solutionString)
       }
-      consoleFns.outputToConsole(solutionString)
     }
 
     setters.setIsPathSolved(true)
