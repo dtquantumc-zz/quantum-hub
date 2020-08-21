@@ -349,7 +349,7 @@ def TSP_solver(G):
         and the cost of the route.
     """
     # Lagrange multiplier, to weigh the constraints versus the mileage
-    lagrange = 4000
+    lagrange = 8000
 
     n=len(G)
 
