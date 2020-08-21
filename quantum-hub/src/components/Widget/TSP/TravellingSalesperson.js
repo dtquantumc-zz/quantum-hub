@@ -58,8 +58,17 @@ function TravellingSalesperson (props) {
     [classes.loadingContainer]: loading
   })
 
-  const prevKey = usePrevious(key)
-  const prevWaypoints = usePrevious(waypoints)
+  function allComponentsAreUpdated () {
+    return tspState.getComponentsThatNeedUpdating() === tspState.getComponentsUpdated()
+  }
+
+  function onAllComponentsUpdated () {
+    tspState.setComponentsUpdated(0)
+    setSwitchingGraphs({
+      isGraphSwitch: true,
+      key: key
+    })
+  }
 
   // Source1: https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state
   // Source2: https://usehooks.com/usePrevious/
@@ -72,6 +81,9 @@ function TravellingSalesperson (props) {
 
     return ref.current
   }
+
+  const prevKey = usePrevious(key)
+  const prevWaypoints = usePrevious(waypoints)
 
   /**
    * TODO: Confirm below is necessary
@@ -88,7 +100,7 @@ function TravellingSalesperson (props) {
         onAllComponentsUpdated()
       }
     }
-  }, [key])
+  }, [key, prevKey])
 
   useEffect(() => {
     if (waypoints !== prevWaypoints && prevWaypoints !== undefined) {
@@ -97,19 +109,7 @@ function TravellingSalesperson (props) {
         onAllComponentsUpdated()
       }
     }
-  }, [waypoints])
-
-  function allComponentsAreUpdated () {
-    return tspState.getComponentsThatNeedUpdating() === tspState.getComponentsUpdated()
-  }
-
-  function onAllComponentsUpdated () {
-    tspState.setComponentsUpdated(0)
-    setSwitchingGraphs({
-      isGraphSwitch: true,
-      key: key
-    })
-  }
+  }, [waypoints, prevWaypoints])
 
   /**
    * NOTE: We use TSPstate.js's getIsPathSolved(key).size since
@@ -182,7 +182,7 @@ function TravellingSalesperson (props) {
           <Map
             position={position}
             isPathSolved={isCitiesPathSolved}
-            waypoints={waypoints}
+            waypoints={TSPutils.getCitiesWaypoints()}
             currentGraph={currentGraph}
             Key={Keys.CITIES}
             loading={loading}
@@ -197,7 +197,7 @@ function TravellingSalesperson (props) {
           <Map
             position={position}
             isPathSolved={isVancouverPathSolved}
-            waypoints={waypoints}
+            waypoints={TSPutils.getVancouverWaypoints()}
             currentGraph={currentGraph}
             Key={Keys.VANCOUVER}
             loading={loading}
@@ -335,7 +335,7 @@ function TravellingSalesperson (props) {
             <Map
               position={position}
               isPathSolved={isCitiesPathSolved}
-              waypoints={waypoints}
+              waypoints={TSPutils.getCitiesWaypoints()}
               currentGraph={currentGraph}
               Key={Keys.CITIES}
               loading={loading}
@@ -351,7 +351,7 @@ function TravellingSalesperson (props) {
             <Map
               position={position}
               isPathSolved={isVancouverPathSolved}
-              waypoints={waypoints}
+              waypoints={TSPutils.getVancouverWaypoints()}
               currentGraph={currentGraph}
               Key={Keys.VANCOUVER}
               loading={loading}

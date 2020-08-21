@@ -14,7 +14,7 @@ class PersistentGraph{
   static requestDictionary;
   static isLoaded = false;
   static isLoading = false;
-  static router;
+  static router = null;
   static requests = [];
   static handled = false;
   
@@ -23,7 +23,7 @@ class PersistentGraph{
 
     // const fs = require('fs')
 
-    this.router = new L.Routing.osrmv1({})
+    // this.router = new L.Routing.osrmv1({})
     this.isLoading = true
     
     var xhr = new XMLHttpRequest()
@@ -37,7 +37,7 @@ class PersistentGraph{
         this.requestDictionary = xhr.response
         this.isLoaded = true
         this.isLoading = false
-        console.log(this.requestDictionary)
+        // console.log(this.requestDictionary)
         this.handleRoutes()
       }
     }
@@ -64,8 +64,12 @@ class PersistentGraph{
     // console.log(res)
 
     if (res){
+      // console.log(Object.keys(this.requestDictionary))
       my_callback(null, this.getRoute(res))
     } else {
+      if (this.router === null) {
+        this.router = new L.Routing.osrmv1({})
+      }
       this.router.route([waypointSource, waypointDest], (err, routes) => {
         if (err) {
           console.log("Error in routing for new persistency route")
@@ -88,11 +92,12 @@ class PersistentGraph{
   }
 
   static handleRoutes() {
+    // console.log(this.requests)
     if (this.handled) return
     for (var e of this.requests) {
       this.requestRoute(e[0], e[1])
     }
-    this.handled = true
+    // this.handled = true
   }
 
   static getRoute(route) {
@@ -121,7 +126,7 @@ class PersistentGraph{
     var lastLng = route.coordinates[0].lng
     rt.coordinates.push([lastLat,lastLng])
     for(var i=1; i<route.coordinates.length; ++i){
-      if ( Math.abs(lastLat-route.coordinates[i].lat) > 0.01 || Math.abs(lastLng-route.coordinates[i].lng) > 0.01 ){
+      if ( Math.abs(lastLat-route.coordinates[i].lat) > 0.01 || Math.abs(lastLng-route.coordinates[i].lng) > 0.01 || route.coordinates.length < 1000 ){
         lastLat = route.coordinates[i].lat
         lastLng = route.coordinates[i].lng
         rt.coordinates.push([lastLat,lastLng])

@@ -65,8 +65,12 @@ class Routing extends MapLayer {
 
     const { map, waypoints, currentGraph, Key } = this.props
 
+    // console.log(waypoints)
+
     // const router = new L.Routing.osrmv1({})
     PersistentGraph.loadGraph()
+
+    // console.log(waypoints)
 
     tspState.setCallsPending(Key, new Set())
     for (let i = 0; i < waypoints.length; i++) {
@@ -127,6 +131,7 @@ class Routing extends MapLayer {
         }
 
         // router.route([waypointSource, waypointDest], callback)
+        // console.log("Accessing Vancouver Route")
         PersistentGraph.requestRoute([waypointSource, waypointDest], callback)
       } else {
         /** Don't want to add a line for a graph that
