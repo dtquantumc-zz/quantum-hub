@@ -5,6 +5,7 @@ import L from 'leaflet'
 import Keys from './Keys.js'
 import TSPutils from './TSPutils.js'
 import TSPstate from './TSPstate.js'
+import PersistentGraph from './PersistentGraph'
 
 class Routing extends MapLayer {
   componentDidUpdate () {
@@ -52,7 +53,8 @@ class Routing extends MapLayer {
 
     const { map, waypoints, currentGraph, Key } = this.props
 
-    const router = new L.Routing.osrmv1({})
+    // const router = new L.Routing.osrmv1({})
+    PersistentGraph.loadGraph()
 
     tspState.setCallsPending(Key, new Set())
     for (let i = 0; i < waypoints.length; i++) {
@@ -107,7 +109,8 @@ class Routing extends MapLayer {
           this.getRoutingCallback(callbackParams, lineParams)
         }
 
-        router.route([waypointSource, waypointDest], callback)
+        // router.route([waypointSource, waypointDest], callback)
+        PersistentGraph.requestRoute([waypointSource, waypointDest], callback)
       } else {
         let line = tspState.getLines(Key)[i]
         if (line === undefined) {
@@ -272,6 +275,8 @@ class Routing extends MapLayer {
       tspState.setNumFailedCalls(Key, tspState.getNumFailedCalls(Key) + 1)
       console.log(`Error in routing line ${i} for graph ${Key}: ${err.message}`)
     } else {
+      // console.log("Trying to draw")
+      // console.log(routes[0])
       tspState.getLineRoute(Key)[i] = routes[0]
 
       line = L.Routing.line(routes[0], {
@@ -299,6 +304,7 @@ class Routing extends MapLayer {
       setLoading(false)
       tspState.setIsLoading(false)
     }
+    // console.log(tspState.getLines(Key))
   }
 }
 

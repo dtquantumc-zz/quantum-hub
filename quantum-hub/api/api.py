@@ -4,7 +4,7 @@
 # Diversifying Talent in Quantum Computing, Geering Up, UBC
 
 import time
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, json
 import os
 from redis import Redis
 import redis
@@ -57,6 +57,8 @@ def make_worker():
             job = app.task_queue.enqueue('sudoku_master.sudoku.main', args=args)
         elif raw_data['typeOfProblem'] == 'latticeColouring':
             job = app.task_queue.enqueue('two_colour_master.two_colour.main', args=args)
+        elif raw_data['typeOfProblem'] == 'tspSolving':
+            job = app.task_queue.enqueue('TSP.TravelingSalesPerson.main', args=args)
 
         return {'jobStatus':'enqueued', 'jobID':job.get_id()}
 
@@ -111,14 +113,6 @@ def app_page(game):
 	print(game)
 	return app.send_static_file("index.html")
 
-if __name__ == '__main__':
-    # Run Flask App
-    port = int(os.getenv('PORT', 5000))
-    print(port)
-    app.is_live = False
-    app.run(debug=True, host='0.0.0.0', port=port)
-
-
 @app.route('/api_token', methods=['GET', 'POST'])
 def set_api_token():
     return {'given_token': request.get_json()['token']}
@@ -127,3 +121,18 @@ def set_api_token():
 def get_ip():
     print(request.remote_addr)
     return {'ip': request.remote_addr}
+
+@app.route('/get_persistent_graph', methods=['GET'])
+def get_graph():
+    print("wants routes")
+    # print( app.send_static_file("../TSP/Persistent_Routes.json") )
+    # return app.send_static_file("../TSP/Persistent_Routes.json")
+    with app.open_resource('TSP/Persistent_Routes.json') as f:
+        return json.load(f)
+
+if __name__ == '__main__':
+    # Run Flask App
+    port = int(os.getenv('PORT', 5000))
+    print(port)
+    app.is_live = False
+    app.run(debug=True, host='0.0.0.0', port=port)
