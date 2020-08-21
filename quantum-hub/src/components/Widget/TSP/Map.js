@@ -69,11 +69,11 @@ export default function MapComponent (props) {
       leafletElem.touchZoom
     ]
 
-      if (leafletElem.tap) {
-        mapHandlersToToggle.push(leafletElem.tap)
-      }
+    if (leafletElem.tap) {
+      mapHandlersToToggle.push(leafletElem.tap)
+    }
 
-      return mapHandlersToToggle
+    return mapHandlersToToggle
   }
 
   const attributionTemplate = '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
