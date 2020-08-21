@@ -340,7 +340,7 @@ function TravellingSalesperson (props) {
               Key={Keys.CITIES}
               loading={loading}
               setLoading={setLoading}
-              fullScreen={open}
+              fullScreen
               setNumSelectedNodes={setNumSelectedNodes}
               switchingGraphs={switchingGraphs}
               setSwitchingGraphs={setSwitchingGraphs}
@@ -356,7 +356,7 @@ function TravellingSalesperson (props) {
               Key={Keys.VANCOUVER}
               loading={loading}
               setLoading={setLoading}
-              fullScreen={open}
+              fullScreen
               setNumSelectedNodes={setNumSelectedNodes}
               switchingGraphs={switchingGraphs}
               setSwitchingGraphs={setSwitchingGraphs}
