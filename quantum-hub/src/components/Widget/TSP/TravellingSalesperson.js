@@ -183,7 +183,7 @@ function TravellingSalesperson (props) {
             position={position}
             isPathSolved={isCitiesPathSolved}
             waypoints={TSPutils.getCitiesWaypoints()}
-            currentGraph={currentGraph}
+            currentGraph={Graph[Keys.CITIES]}
             Key={Keys.CITIES}
             loading={loading}
             setLoading={setLoading}
@@ -198,7 +198,7 @@ function TravellingSalesperson (props) {
             position={position}
             isPathSolved={isVancouverPathSolved}
             waypoints={TSPutils.getVancouverWaypoints()}
-            currentGraph={currentGraph}
+            currentGraph={Graph[Keys.VANCOUVER]}
             Key={Keys.VANCOUVER}
             loading={loading}
             setLoading={setLoading}
@@ -257,7 +257,7 @@ function TravellingSalesperson (props) {
       <div className={classes.tspInput}>
       <Button
           color='geeringupPrimary'
-          disabled={loading || getNumSelectedNodes() === 0}
+          disabled={loading || (getNumSelectedNodes() === 0 && !tspState.getIsPathSolved(key))}
           onClick={() => {
             setLoading(true)
             tspState.setIsLoading(true)
@@ -342,7 +342,7 @@ function TravellingSalesperson (props) {
               position={position}
               isPathSolved={isCitiesPathSolved}
               waypoints={TSPutils.getCitiesWaypoints()}
-              currentGraph={currentGraph}
+              currentGraph={Graph[Keys.CITIES]}
               Key={Keys.CITIES}
               loading={loading}
               setLoading={setLoading}
@@ -358,7 +358,7 @@ function TravellingSalesperson (props) {
               position={position}
               isPathSolved={isVancouverPathSolved}
               waypoints={TSPutils.getVancouverWaypoints()}
-              currentGraph={currentGraph}
+              currentGraph={Graph[Keys.VANCOUVER]}
               Key={Keys.VANCOUVER}
               loading={loading}
               setLoading={setLoading}
