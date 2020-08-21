@@ -78,7 +78,10 @@ export default function MapComponent (props) {
 
   const attributionTemplate = '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   const attributionUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-  const zoom = TSPutils.getZoom(props.Key, props.fullScreen)
+  let zoom = TSPutils.getZoom(props.Key, props.fullScreen)
+  if (props.fullScreen) {
+    zoom += 2
+  }
   const maxBounds = TSPutils.getMaxBounds(props.Key)
 
   return (
