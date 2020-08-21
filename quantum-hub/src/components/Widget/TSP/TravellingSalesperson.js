@@ -223,7 +223,8 @@ function TravellingSalesperson (props) {
               }
               TSPutils.onCitiesButtonClick(tspSetters)
             }}
-          >Cities
+          >
+            Cities
           </Button>
           <Button
             size='sm'
@@ -237,7 +238,8 @@ function TravellingSalesperson (props) {
               }
               TSPutils.onVanButtonClick(tspSetters)
             }}
-          >Vancouver
+          >
+            Vancouver
           </Button>
           <Button
             size='sm'
@@ -247,34 +249,13 @@ function TravellingSalesperson (props) {
               // TODO
               // TSPutils.onFlowersButtonClick(setCurrentGraph)
             }}
-          >Flowers
+          >
+            Flowers
           </Button>
         </ButtonGroup>
       </div>
       <div className={classes.tspInput}>
-        <Button
-          color='geeringupSecondary'
-          disabled={loading || (getNumSelectedNodes() < 3 && getNumSelectedNodes() !== 0) || getIsPathSolved()}
-          onClick={() => {
-            setLoading(true)
-            tspState.setIsLoading(true)
-            const graphParams = {
-              currentGraph: currentGraph,
-              key: key
-            }
-            const setters = {
-              setIsPathSolved: setIsPathSolved,
-              setLoading: setLoading
-            }
-            const consoleFns = {
-              outputToConsole: props.outputToConsole,
-              appendToConsole: props.appendToConsole
-            }
-            TSPutils.handleClickSolve(graphParams, setters, consoleFns)
-          }}
-        >Solve
-        </Button>
-        <Button
+      <Button
           color='geeringupPrimary'
           disabled={loading || getNumSelectedNodes() === 0}
           onClick={() => {
@@ -304,10 +285,34 @@ function TravellingSalesperson (props) {
 
             setNumSelectedNodes(0)
           }}
-        >Reset
+        >
+          Reset
         </Button>
         <Button
           color='geeringupSecondary'
+          disabled={loading || (getNumSelectedNodes() < 3 && getNumSelectedNodes() !== 0) || getIsPathSolved()}
+          onClick={() => {
+            setLoading(true)
+            tspState.setIsLoading(true)
+            const graphParams = {
+              currentGraph: currentGraph,
+              key: key
+            }
+            const setters = {
+              setIsPathSolved: setIsPathSolved,
+              setLoading: setLoading
+            }
+            const consoleFns = {
+              outputToConsole: props.outputToConsole,
+              appendToConsole: props.appendToConsole
+            }
+            TSPutils.handleClickSolve(graphParams, setters, consoleFns)
+          }}
+        >
+          Solve
+        </Button>
+        <Button
+          color='geeringupPrimary'
           disabled={loading}
           onClick={() => {
             setLoading(true)
@@ -318,7 +323,8 @@ function TravellingSalesperson (props) {
             setLoading(false)
             tspState.setIsLoading(false)
           }}
-        >Full Screen
+        >
+          Full Screen
         </Button>
       </div>
       <Dialog

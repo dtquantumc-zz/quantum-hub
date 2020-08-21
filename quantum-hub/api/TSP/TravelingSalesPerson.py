@@ -395,15 +395,26 @@ def TSP_solver(G):
         print(route)
         print(cost)
         print(ans)
+    else:
+        print("No valid solution")
+        route = None
+        cost = None
+        ans = None
 
-        return route, cost, ans
+    return route, cost, ans
 
 
 def main(edge_list, graph_type):
     # TSP_solver(make_graph([1,3,5,4,7,8,9,10,11,12],2))
     (route, cost, ans) = TSP_solver(make_graph(edge_list, graph_type))
 
-    return {'route': route}
+    result = {'route': route}
+    if (route is None and cost is None and ans is None):
+        output_message = 'There is no valid solution for this combination of nodes. Please Select a different combination of nodes and try again.'
+        result['route'] = []
+        result['output_message'] = output_message
+
+    return result
 
 
 if __name__ == "__main__":

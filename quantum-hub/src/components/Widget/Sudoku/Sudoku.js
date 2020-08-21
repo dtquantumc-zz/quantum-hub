@@ -146,6 +146,17 @@ function SudokuGame (props) {
       </div>
       <p>Click on the cells and use your keyboard numbers to fill them in!</p>
       <div className={classes.sudokuInput}>
+      <Button
+          color='geeringupPrimary'
+          // color='primary'
+          disabled={(empty || !enabled)}
+          onClick={() => {
+            emptySudokuGrid(sudokuState)
+            SudokuValidationUtils.resetInvalidStates(invalidStateSetters)
+          }}
+        >
+          Reset
+        </Button>
         <Button
           color='geeringupSecondary'
           disabled={!enabled}
@@ -161,7 +172,7 @@ function SudokuGame (props) {
           Solve
         </Button>
         <Button
-          color='geeringupSecondary'
+          color='geeringupPrimary'
           disabled={!enabled}
           onClick={() => {
             const newRand = getRandSolvableBoard()
@@ -172,17 +183,6 @@ function SudokuGame (props) {
           }}
         >
           Random
-        </Button>
-        <Button
-          color='geeringupPrimary'
-          // color='primary'
-          disabled={(empty || !enabled)}
-          onClick={() => {
-            emptySudokuGrid(sudokuState)
-            SudokuValidationUtils.resetInvalidStates(invalidStateSetters)
-          }}
-        >
-          Reset
         </Button>
       </div>
     </div>
