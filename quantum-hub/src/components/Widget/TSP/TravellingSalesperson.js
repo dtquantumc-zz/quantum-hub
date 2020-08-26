@@ -102,7 +102,8 @@ function TravellingSalesperson (props) {
         onAllComponentsUpdated()
       }
     }
-  }, [key, prevKey])
+  })
+  // }, [key, prevKey])
 
   useEffect(() => {
     if (waypoints !== prevWaypoints && prevWaypoints !== undefined) {
@@ -111,7 +112,8 @@ function TravellingSalesperson (props) {
         onAllComponentsUpdated()
       }
     }
-  }, [waypoints, prevWaypoints])
+  })
+  // }, [waypoints, prevWaypoints])
 
   /**
    * NOTE: We use TSPstate.js's getIsPathSolved(key).size since
@@ -216,7 +218,10 @@ function TravellingSalesperson (props) {
         </div>
       </div>
       <div className={classes.buttonGroup}>
-        <ButtonGroup variant='contained' color='geeringupSecondary' aria-label='contained primary button group'>
+        <ButtonGroup
+          variant='contained'
+          aria-label='contained primary button group'
+        >
           <Button
             size='sm'
             disabled={loading || TSPutils.isCitiesGraph(key)}
@@ -229,6 +234,7 @@ function TravellingSalesperson (props) {
               }
               TSPutils.onCitiesButtonClick(tspSetters)
             }}
+            color='geeringupSecondary'
           >
             Cities
           </Button>
@@ -244,6 +250,7 @@ function TravellingSalesperson (props) {
               }
               TSPutils.onVanButtonClick(tspSetters)
             }}
+            color='geeringupSecondary'
           >
             Vancouver
           </Button>
@@ -255,6 +262,7 @@ function TravellingSalesperson (props) {
               // TODO
               // TSPutils.onFlowersButtonClick(setCurrentGraph)
             }}
+            color='geeringupSecondary'
           >
             Flowers
           </Button>
@@ -339,7 +347,7 @@ function TravellingSalesperson (props) {
         scroll={scroll}
         aria-labelledby='scroll-dialog-title'
         aria-describedby='scroll-dialog-description'
-        maxWidth='false'
+        maxWidth={false}
       >
         <DialogTitle id='scroll-dialog-title'>Full Screen</DialogTitle>
         <DialogContent className={classes.dialogContent} dividers={scroll === 'paper'}>

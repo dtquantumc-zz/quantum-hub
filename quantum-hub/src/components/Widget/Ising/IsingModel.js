@@ -178,7 +178,7 @@ function IsingModel (props) {
       </svg>
       <div>
         <Grid className={classes.gridContainer} container spacing={2}>
-          <Grid item xs={1.5}>
+          <Grid item xs='auto'>
             <div className='timeText'>
               Time:
             </div>
@@ -193,7 +193,7 @@ function IsingModel (props) {
               }}
             />
           </Grid>
-          <Grid item xs={2.5}>
+          <Grid item xs='auto'>
             <Button
               disabled={simulating}
               className={classes.detailButton}

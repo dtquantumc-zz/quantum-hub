@@ -20,8 +20,8 @@ import GridContainer from './components/Grid/GridContainer.js'
 import Footer from './components/Footer/Footer.js'
 import FooterLinks from './components/Footer/FooterLinks.js'
 
-import Button from './components/CustomButtons/Button.js'
-import GridItem from './components/Grid/GridItem.js'
+// import Button from './components/CustomButtons/Button.js'
+// import GridItem from './components/Grid/GridItem.js'
 
 import { makeStyles } from '@material-ui/core/styles'
 

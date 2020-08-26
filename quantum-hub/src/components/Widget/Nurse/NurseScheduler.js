@@ -145,7 +145,7 @@ function NurseScheduler (props) {
         scroll={scroll}
         aria-labelledby='scroll-dialog-title'
         aria-describedby='scroll-dialog-description'
-        maxWidth='false'
+        maxWidth={false}
       >
         <DialogTitle id='scroll-dialog-title'>Detailed View</DialogTitle>
         <DialogContent className={classes.dialogContent} dividers={scroll === 'paper'}>

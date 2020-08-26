@@ -108,7 +108,7 @@ export default function Header (props) {
       <Menu
         disabled={loading}
         id='AppMenu'
-        variant='temporary'
+        // variant='temporary'
         anchorEl={appMenuAnchor}
         open={Boolean(appMenuAnchor)}
         onClose={handleAppMenuClose}

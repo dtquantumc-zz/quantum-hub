@@ -68,7 +68,6 @@ export default function NursesOnDayDialog (props) {
 
 NursesOnDayDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
-  selectedValue: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
   nurseIndices: PropTypes.arrayOf(PropTypes.number)
 }
