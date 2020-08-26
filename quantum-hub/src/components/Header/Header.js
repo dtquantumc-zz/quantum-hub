@@ -31,7 +31,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 // @material-ui/icons
 import MenuIcon from '@material-ui/icons/Menu'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 // core components
 import widgetList from '../Widget/widgetList'
 import styles from '../../assets/jss/material-kit-react/components/headerStyle.js'
@@ -99,7 +99,7 @@ export default function Header (props) {
       >
         {loading ? '' : (
           <>
-            <MoreVertIcon />
+            <ExpandMoreIcon />
             <div className={classes.lPad} />
           </>
         )}
