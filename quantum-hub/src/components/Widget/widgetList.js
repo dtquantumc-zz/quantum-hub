@@ -25,6 +25,9 @@ import LatticeReadMoreDescriptionText from '../Typography/LatticeReadMoreDescrip
 import TSPbriefDescriptionText from '../Typography/TSPbriefDescriptionText'
 import TSPreadMoreDescriptionText from '../Typography/TSPreadMoreDescriptionText'
 
+import IsingBriefDescriptionText from '../Typography/IsingBriefDescriptionText'
+import IsingReadMoreDescriptionText from '../Typography/IsingReadMoreDescriptionText'
+
 const widgetList = {
   nurse: {
     enabler: 'isNurseScheduler',
@@ -64,8 +67,8 @@ const widgetList = {
     route: '/app/ising',
     name: 'ising-model',
     title: 'Ising Model Visualiser',
-    briefDescriptionText: <span>This is placeholder text</span>,
-    readMoreDescriptionText: <span>This is more placeholder text</span>,
+    briefDescriptionText: <IsingBriefDescriptionText />,
+    readMoreDescriptionText: <IsingReadMoreDescriptionText />,
     brand: 'Ising Model Visualiser',
     visible: false,
     component: IsingModel

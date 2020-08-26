@@ -12,15 +12,18 @@ export default function TSPbriefDescriptionText () {
   return (
     <>
       <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
-            Imagine you are a salesperson who is planning to visit a list of cities and wants to do this in the
-            shortest time possible by taking the shortest possible path.
+            This is a graphical representation of the Ising Model of a qubit and the annealing
+            process as used in Dwave's quantum annealer.
       </Typography>
       <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
-            Having the list of cities and distances between each pair, find the shortest path.
+            The qubit is initially in an equal superposition of states <b>1</b> and <b>0</b>.
+            Then, a "hamiltonian" is slowly applied, changing the energy of the states.
+            This is annealing.
+            Finally, the system resolves. As in nature, it prefers low-energy states.
       </Typography>
       <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
-            This is the original form of the “Travelling Salesperson Problem”(TSP) but this can be
-            generalized to many other forms.
+            A smaller H-Value means a lower energy for the <b>1</b> state, and the opposite is true
+            for a higher H-Value.
       </Typography>
     </>
   )
