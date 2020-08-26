@@ -37,8 +37,23 @@ def make_worker():
 
     raw_data = request.get_json()
 
-    # token = 'DEV-a141649cf7a24ed2fd84b5939533c9fcc2d99fb6' # Haris
-    token = 'DEV-98f37d3736d62d7061eaa5e68214a92eadb2393b' # Ari's
+    token = None
+
+    try:
+        token_file = open('token.txt', 'r')
+        tk1 = token_file.readline().rstrip()
+        tk2 = token_file.readline().rstrip()
+
+        if app.is_live:
+            token = tk1
+        else:
+            token = tk2
+            
+    except:
+        print("Please define a file called token.txt in the api folder.")
+        print("The first line should be the deployment token")
+        print("The second line should be the testing token")
+        return {'err': 'Token file not defined'}
 
     args = []
     if raw_data['typeOfProblem'] == 'nurseScheduling':

@@ -2,6 +2,8 @@ import networkx as nx
 import dimod
 from tabu import TabuSampler
 from dwave_networkx.algorithms.tsp import traveling_salesperson_qubo
+from hybrid.reference import KerberosSampler
+from dwave.system import DWaveSampler
 
 
 # def make_graph(nodes,list_id):
@@ -328,7 +330,7 @@ from dwave_networkx.algorithms.tsp import traveling_salesperson_qubo
 
 #     return G
 
-def make_graph(edge_list, graph_type):
+def make_graph(edge_list):
     for i in range(len(edge_list)):
         edge_list[i] = tuple(edge_list[i])
 
@@ -337,7 +339,7 @@ def make_graph(edge_list, graph_type):
 
     return G
 
-def TSP_solver(G):
+def TSP_solver(G, token=None):
     """
     The TSP_solver function actually uses Ocean SDK and a call to dwave's
     computer to solve the Traveling Salesperson Problem.
@@ -348,6 +350,19 @@ def TSP_solver(G):
     :return: It returns the route as a List, a directed networkx graph,
         and the cost of the route.
     """
+    endpoint = 'https://cloud.dwavesys.com/sapi/'
+    client = 'qpu'
+    solver = 'DW_2000Q_6'
+    try:
+        qpu_sampler = DWaveSampler(
+            client=client,
+            endpoint=endpoint,
+            token=token,
+            solver=solver)
+    except Exception as e:
+        print(e)
+        return {'error':'Token not accepted'}
+    
     # Lagrange multiplier, to weigh the constraints versus the mileage
     lagrange = 8000
 
@@ -360,11 +375,16 @@ def TSP_solver(G):
     offset = 2 * n * lagrange
 
     # Choose a sampler
-    sampler = TabuSampler()
+    # sampler = TabuSampler()
+    sampler = KerberosSampler()
 
     # Get a BQM and run the problem
     bqm = dimod.BinaryQuadraticModel.from_qubo(Q, offset=offset)
-    response = sampler.sample(bqm)
+    # response = sampler.sample(bqm)
+    response = sampler.sample(bqm,
+                              max_iter=1,
+                              convergence=1,
+                              qpu_sampler=qpu_sampler)
 
     # Turn the bitstring result into a trip/loop
     start = None
@@ -404,9 +424,16 @@ def TSP_solver(G):
     return route, cost, ans
 
 
-def main(edge_list, graph_type):
+def main(edge_list=None, token=None):
+    if edge_list==None:
+        return {'error': 'No graph or edge-list specified'}
+
+    # print(graph_type)
     # TSP_solver(make_graph([1,3,5,4,7,8,9,10,11,12],2))
-    (route, cost, ans) = TSP_solver(make_graph(edge_list, graph_type))
+    try:
+        (route, cost, ans) = TSP_solver(make_graph(edge_list), token)
+    except:
+        return {'route':[], 'output_message': 'There was an error in solving the problem. Please try again.'}
 
     result = {'route': route}
     if (route is None and cost is None and ans is None):
