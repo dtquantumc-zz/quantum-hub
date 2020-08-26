@@ -48,6 +48,8 @@ function TravellingSalesperson (props) {
     isGraphSwitch: false,
     key: null
   })
+  // const [refresh, setRefresh] = useState(false)
+  // if (refresh) setTimeout(() => { setRefresh(false) }, 500)
 
   const descriptionElementRef = useRef(null)
 
@@ -191,6 +193,8 @@ function TravellingSalesperson (props) {
             switchingGraphs={switchingGraphs}
             setSwitchingGraphs={setSwitchingGraphs}
             outputToConsole={props.outputToConsole}
+            // refresh={refresh}
+            // setRefresh={setRefresh}
           />
         </div>
         <div className={key === Keys.VANCOUVER ? classes.mapContainer : classes.hidingContainer}>
@@ -206,6 +210,8 @@ function TravellingSalesperson (props) {
             switchingGraphs={switchingGraphs}
             setSwitchingGraphs={setSwitchingGraphs}
             outputToConsole={props.outputToConsole}
+            // refresh={refresh}
+            // setRefresh={setRefresh}
           />
         </div>
       </div>
@@ -255,7 +261,7 @@ function TravellingSalesperson (props) {
         </ButtonGroup>
       </div>
       <div className={classes.tspInput}>
-      <Button
+        <Button
           color='geeringupPrimary'
           disabled={loading || (getNumSelectedNodes() === 0 && !tspState.getIsPathSolved(key))}
           onClick={() => {
@@ -351,6 +357,8 @@ function TravellingSalesperson (props) {
               switchingGraphs={switchingGraphs}
               setSwitchingGraphs={setSwitchingGraphs}
               outputToConsole={props.outputToConsole}
+              // refresh={refresh}
+              // setRefresh={setRefresh}
             />
           </div>
           <div className={key === Keys.VANCOUVER ? classes.expandedMap : classes.hidingContainer}>
@@ -367,6 +375,8 @@ function TravellingSalesperson (props) {
               switchingGraphs={switchingGraphs}
               setSwitchingGraphs={setSwitchingGraphs}
               outputToConsole={props.outputToConsole}
+              // refresh={refresh}
+              // setRefresh={setRefresh}
             />
           </div>
         </DialogContent>

@@ -96,20 +96,23 @@ export default function MapComponent (props) {
         doubleClickZoom={false}
       >
         <TileLayer attribution={attributionTemplate} url={attributionUrl} />
-        {map !== null && <Routing
-          map={map}
-          waypoints={props.waypoints}
-          currentGraph={props.currentGraph}
-          isPathSolved={props.isPathSolved}
-          Key={props.Key}
-          loading={props.loading}
-          setLoading={props.setLoading}
-          fullScreen={props.fullScreen}
-          setNumSelectedNodes={props.setNumSelectedNodes}
-          switchingGraphs={props.switchingGraphs}
-          setSwitchingGraphs={props.setSwitchingGraphs}
-          outputToConsole={props.outputToConsole}
-        />}
+        {map !== null &&
+          <Routing
+            map={map}
+            waypoints={props.waypoints}
+            currentGraph={props.currentGraph}
+            isPathSolved={props.isPathSolved}
+            Key={props.Key}
+            loading={props.loading}
+            setLoading={props.setLoading}
+            fullScreen={props.fullScreen}
+            setNumSelectedNodes={props.setNumSelectedNodes}
+            switchingGraphs={props.switchingGraphs}
+            setSwitchingGraphs={props.setSwitchingGraphs}
+            outputToConsole={props.outputToConsole}
+            // refresh={props.refresh}
+            // setRefresh={props.setRefresh}
+          />}
       </Map>
     </>
   )

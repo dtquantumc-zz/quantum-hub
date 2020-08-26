@@ -101,7 +101,7 @@ class Routing extends MapLayer {
       }
       routingPlan.addTo(map.leafletElement)
 
-      const isLineRoutePresent = tspState.getVancouverLineRoute().hasOwnProperty(i) && !!tspState.getVancouverLineRoute()
+      const isLineRoutePresent = tspState.getVancouverLineRoute().hasOwnProperty(i) && !!tspState.getVancouverLineRoute() // eslint-disable-line no-prototype-builtins
       const isFirstRoundRoutingCall = tspState.getIsFirstRoundRoutingCall(Key)
 
       if ((!isLineRoutePresent &&
@@ -136,7 +136,7 @@ class Routing extends MapLayer {
       } else {
         /** Don't want to add a line for a graph that
          * is not the current graph */
-        if (!Graph[Key].nameMapping.hasOwnProperty(sourceKey)) {
+        if (!Graph[Key].nameMapping.hasOwnProperty(sourceKey)) { // eslint-disable-line no-prototype-builtins
           return
         }
 
@@ -237,7 +237,7 @@ class Routing extends MapLayer {
 
     /** Don't want to create a marker for a graph that
      * is not the current graph */
-    if (!Graph[Key].nameMapping.hasOwnProperty(sourceKey)) {
+    if (!Graph[Key].nameMapping.hasOwnProperty(sourceKey)) { // eslint-disable-line no-prototype-builtins
       return false
     }
 
@@ -272,7 +272,7 @@ class Routing extends MapLayer {
       }
       marker.addEventListener('updating', onUpdating)
 
-      if (!(tspState.getMainMapMarkers(Key).hasOwnProperty(sourceKey) && !!tspState.getMainMapMarkers(Key)[sourceKey])) {
+      if (!(tspState.getMainMapMarkers(Key).hasOwnProperty(sourceKey) && !!tspState.getMainMapMarkers(Key)[sourceKey])) { // eslint-disable-line no-prototype-builtins
         tspState.getMainMapMarkers(Key)[sourceKey] = marker
       }
     }

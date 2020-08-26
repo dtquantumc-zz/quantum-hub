@@ -67,7 +67,7 @@ const widgetList = {
     briefDescriptionText: <span>This is placeholder text</span>,
     readMoreDescriptionText: <span>This is more placeholder text</span>,
     brand: 'Ising Model Visualiser',
-    visible: true,
+    visible: false,
     component: IsingModel
   },
   tsp: {
@@ -78,7 +78,7 @@ const widgetList = {
     briefDescriptionText: <TSPbriefDescriptionText />,
     readMoreDescriptionText: <TSPreadMoreDescriptionText />,
     brand: 'Travelling Salesperson',
-    visible: false,
+    visible: true,
     component: TSP
   },
   default: {
