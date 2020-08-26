@@ -108,59 +108,7 @@ function App (props) {
       key='howItWorksCard'
     />
 
-  const nurseSwitchButton =
-    <Button
-      className={classes.nurseSwitchButton}
-      onClick={() => {
-        window.history.replaceState({ app: 'nurse' }, 'Nurse Scheduler', '/app/nurse')
-        overrideWidget('nurse')
-      }}
-      disabled={widget === 'nurse'}
-      // disabled={widget === 'nurse' || loading}
-      size='sm'
-      key='nurseBut'
-    >
-    Switch to Nurse
-    </Button>
-
-  const sudokuSwitchButton =
-    <Button
-      className={classes.sudokuSwitchButton}
-      onClick={() => {
-        window.history.replaceState({ app: 'sudoku' }, 'Sudoku Solver', '/app/sudoku')
-        overrideWidget('sudoku')
-      }}
-      disabled={widget === 'sudoku'}
-      // disabled={widget === 'sudoku' || loading}
-      size='sm'
-      key='sudBut'
-    >
-      Switch to Sudoku
-    </Button>
-
-  const latticeSwitchButton =
-    <Button
-      className={classes.latticeSwitchButton}
-      onClick={() => {
-        window.history.replaceState({ app: 'lattice' }, 'Lattice Colourer', '/app/lattice')
-        overrideWidget('lattice')
-      }}
-      disabled={widget === 'lattice'}
-      // disabled={widget === 'lattice' || loading}
-      size='sm'
-      key='latBut'
-    >
-      Switch to Lattice
-    </Button>
-
-  const appSwitchButtons =
-    <GridItem
-      className={classes.container}
-      children={[nurseSwitchButton, sudokuSwitchButton, latticeSwitchButton]}
-      key='appSwitchButs'
-    />
-  // const gridContainerChildren = [qpuSwitch, terminalWindow, widgetComponent, howItWorksCard]
-  const gridContainerChildren = [terminalWindow, widgetComponent, howItWorksCard, appSwitchButtons]
+  const gridContainerChildren = [terminalWindow, widgetComponent, howItWorksCard]
 
   return (
     <div>
