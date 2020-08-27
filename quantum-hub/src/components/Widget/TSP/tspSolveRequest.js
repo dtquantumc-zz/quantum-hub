@@ -34,8 +34,8 @@ function tspSolveRequest (graphParams, setters, consoleFns) {
   makeLongRequest(
     params,
     (xhr) => {
-      consoleFns.outputToConsole('The graph has been queued for solving.')
-      tspState.setSolving(xhr.response.jobStatus)
+      consoleFns.outputToConsole('The graph has been queued for solving!')
+      tspState.setSolvingState(xhr.response.jobStatus)
     },
     (xhr) => {
       if (xhr.response.jobStatus === tspState.getSolvingState()) {
