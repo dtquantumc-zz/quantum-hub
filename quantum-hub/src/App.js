@@ -44,12 +44,22 @@ function App (props) {
 
   // widget is a string, a key to the widgetList object describing the widget
   let widget
+
+  const setWidget = (wid) => {
+    if (!widgetList[wid]) {
+      widget = 'default'
+    }
+    window.history.replaceState({ app: wid }, widgetList[wid].brand, widgetList[wid].route)
+    overrideWidget(wid)
+  }
+
   if (widgetOverride && widgetList[widgetOverride]) {
     widget = widgetOverride
   } else if (widgetList[props.widget]) {
     widget = props.widget
   } else {
-    widget = 'default'
+    setWidget('lattice')
+    widget = 'lattice'
   }
 
   const appBrand = widgetList[widget].brand
@@ -63,14 +73,6 @@ function App (props) {
   const appendToConsole = function (word) {
     textLines[textLines.length - 1] += word
     setTextLines([...textLines])
-  }
-
-  const setWidget = (widget) => {
-    if (!widgetList[widget]) {
-      widget = 'default'
-    }
-    window.history.replaceState({ app: widget }, widgetList[widget].brand, widgetList[widget].route)
-    overrideWidget(widget)
   }
 
   const widgetComponent =
