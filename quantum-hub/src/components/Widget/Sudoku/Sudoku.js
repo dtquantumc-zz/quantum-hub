@@ -146,7 +146,7 @@ function SudokuGame (props) {
       </div>
       <p>Click on the cells and use your keyboard numbers to fill them in!</p>
       <div className={classes.sudokuInput}>
-      <Button
+        <Button
           color='geeringupPrimary'
           // color='primary'
           disabled={(empty || !enabled)}

@@ -34,11 +34,11 @@ function tspSolveRequest (graphParams, setters, consoleFns) {
   makeLongRequest(
     params,
     (xhr) => {
-      consoleFns.outputToConsole('The graph has been queued for solving!')
+      consoleFns.outputToConsole('The graph has been queued for solving.')
       tspState.setSolving(xhr.response.jobStatus)
     },
     (xhr) => {
-      if (xhr.response.jobStatus === tspState.getState()) {
+      if (xhr.response.jobStatus === tspState.getSolvingState()) {
         consoleFns.appendToConsole('.')
       } else if (xhr.response.jobStatus === 'queued') {
         consoleFns.outputToConsole('In Queue')
@@ -49,6 +49,7 @@ function tspSolveRequest (graphParams, setters, consoleFns) {
         consoleFns.outputToConsole(xhr.response.jobStatus)
       }
       tspState.setSolvingState(xhr.response.jobStatus)
+      console.log(xhr.response.jobStatus)
     },
     (xhr) => {
       postSolve(xhr, key, setters, consoleFns)
