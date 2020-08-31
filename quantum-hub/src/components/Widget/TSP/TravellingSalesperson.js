@@ -28,6 +28,8 @@ import classNames from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import styles from '../../../assets/jss/material-kit-react/components/travellingSalespersonStyle.js'
 
+import './tsp.css'
+
 function TravellingSalesperson (props) {
   const tspState = TSPstate.getInstance()
 
