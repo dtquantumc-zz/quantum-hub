@@ -178,65 +178,102 @@ function IsingModel (props) {
       </svg>
       <div>
         <Grid className={classes.gridContainer} container spacing={2}>
-          <Grid item xs='auto'>
-            <div className='timeText'>
-              Time:
+          <Grid item xs={9}>
+            <div className='contain'>
+              <Button
+                disabled={simulating}
+                className={classes.detailButton}
+                color='geeringupSecondary'
+                size='sm'
+                onClick={() => {
+                  startSim()
+                }}
+              >
+                Simulate
+              </Button>
+              <div
+                className='resultText'
+                style={{
+                  display: (result !== -1 ? '' : 'none')
+                }}
+              >
+                Latest result: {result ? '|1\u232a' : '|0\u232a'}
+              </div>
+            </div>
+            <div className='contain'>
+              <div className='timeText'>
+                Time:
+              </div>
+              <div className='sliderContainer'>
+                <Slider
+                  disabled={simulating}
+                  defaultValue={0}
+                  value={sliderVal}
+                  onChange={(e, val) => {
+                    setSliderVal(val)
+                  }}
+                />
+              </div>
             </div>
           </Grid>
-          <Grid item xs={8}>
-            <Slider
-              disabled={simulating}
-              defaultValue={0}
-              value={sliderVal}
-              onChange={(e, val) => {
-                setSliderVal(val)
-              }}
-            />
-          </Grid>
-          <Grid item xs='auto'>
-            <Button
-              disabled={simulating}
-              className={classes.detailButton}
-              color='geeringupSecondary'
-              size='sm'
-              onClick={() => {
-                startSim()
-              }}
-            >
-              Simulate
-            </Button>
-          </Grid>
-          <Grid item xs={3}> {/* H-value input */}
+          <Grid item xs={3}>
             <CustomInput
-              labelText='H-value'
-              id='h_input'
+              labelText='Anneal Time (μs)'
+              id='t_input'
               formControlProps={{
                 fullWidth: true
               }}
               inputProps={{
-                value: HVal,
                 disabled: simulating,
+                defaultValue: 200,
                 type: 'number',
                 inputProps: {
-                  min: -1e7 + 1,
-                  max: 1e7 - 1
+                  min: 20,
+                  max: 200000
                 },
                 onChange: (e) => {
-                  if (e.target.value.trim !== '') {
-                    e.target.value = Math.max(-1e7 + 1, Math.min(1e7 - 1, e.target.value))
-                    var upH = Math.log10(Math.abs(e.target.value) + 1) / 7
-                    upH *= (e.target.value < 0 ? 1 : -1)
-                    setStateWeight(upH)
-                  } else {
-                    setStateWeight(0)
+                  if (e.target.value < 0) e.target.value *= -1
+                  if (e.target.value > 200000) e.target.value = 200000
+                  if (e.target.value !== '' && e.target.value >= 20 && e.target.value <= 200000) {
+                    setAnnealTime(e.target.value)
                   }
-                  if (e.target.value === 0) {
-                    e.target.value = null
-                  }
-                  setHVal(e.target.value)
                 }
               }}
             />
+          </Grid>
+          <Grid item xs={3}> {/* H-value input */}
+            <div className='moveUp'>
+              <CustomInput
+                labelText='H-value'
+                id='h_input'
+                formControlProps={{
+                  fullWidth: true
+                }}
+                inputProps={{
+                  value: HVal,
+                  disabled: simulating,
+                  type: 'number',
+                  inputProps: {
+                    min: -1e7 + 1,
+                    max: 1e7 - 1
+                  },
+                  onChange: (e) => {
+                    if (e.target.value.trim !== '') {
+                      e.target.value = Math.max(-1e7 + 1, Math.min(1e7 - 1, e.target.value))
+                      var upH = Math.log10(Math.abs(e.target.value) + 1) / 7
+                      upH *= (e.target.value < 0 ? 1 : -1)
+                      setStateWeight(upH)
+                    } else {
+                      setStateWeight(0)
+                    }
+                    if (e.target.value === 0) {
+                      e.target.value = null
+                    }
+                    setHVal(e.target.value)
+                  }
+                }}
+              />
+            </div>
           </Grid>
           <Grid item xs={6}>
             <div className='contain'>
@@ -264,41 +301,6 @@ function IsingModel (props) {
                 setHVal(Math.round(newHVal))
               }}
             />
-          </Grid>
-          <Grid item xs={3}>
-            <CustomInput
-              labelText='Anneal Time (μs)'
-              id='t_input'
-              formControlProps={{
-                fullWidth: true
-              }}
-              inputProps={{
-                disabled: simulating,
-                defaultValue: 200,
-                type: 'number',
-                inputProps: {
-                  min: 20,
-                  max: 200000
-                },
-                onChange: (e) => {
-                  if (e.target.value < 0) e.target.value *= -1
-                  if (e.target.value > 200000) e.target.value = 200000
-                  if (e.target.value !== '' && e.target.value >= 20 && e.target.value <= 200000) {
-                    setAnnealTime(e.target.value)
-                  }
-                }
-              }}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <div
-              className='timeText'
-              style={{
-                display: (result !== -1 ? '' : 'none')
-              }}
-            >
-              Latest result: {result ? '|1\u232a' : '|0\u232a'}
-            </div>
           </Grid>
         </Grid>
       </div>

@@ -57,7 +57,14 @@
 
 .timeText{
   color: black;
-  padding: 4px 0;
+  padding: 8px 0;
+  padding-right: 16px;
+  width: min-content;
+}
+
+.resultText{
+  color: black;
+  padding: 0px;
 }
 
 .inside{
@@ -70,4 +77,13 @@
   font-family: sans-serif;
   display: flex;
   justify-content: space-between;
+}
+
+.moveUp{
+  margin-top: -16px;
+}
+
+.sliderContainer{
+  margin-top: 3px;
+  width: 100%;
 }

@@ -70,7 +70,7 @@ const widgetList = {
     briefDescriptionText: <IsingBriefDescriptionText />,
     readMoreDescriptionText: <IsingReadMoreDescriptionText />,
     brand: 'Ising Model Visualiser',
-    visible: false,
+    visible: true,
     component: IsingModel
   },
   tsp: {

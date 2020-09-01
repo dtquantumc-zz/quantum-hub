@@ -5,8 +5,6 @@
  */
 
 import React from 'react'
-import PropTypes from 'prop-types'
-// import XMLHttpRequest from 'xhr2'
 import makeLongRequest from '../LongRequest'
 
 /**
@@ -56,12 +54,6 @@ import makeLongRequest from '../LongRequest'
  * string, but you should probably output it in some way.
  */
 class Widget extends React.Component {
-  static propTypes = {
-    id: PropTypes.string.isRequired,
-    getAPIKey: PropTypes.func.isRequired,
-    outputToConsole: PropTypes.func.isRequired
-  }
-
   constructor (props) {
     super(props)
     this.state = {
@@ -162,10 +154,8 @@ class Widget extends React.Component {
         <button
           type='button'
           onClick={() => {
-            // this.callSolver()
             this.props.outputToConsole('sorry, I\'m a blank app')
           }}
-          // disabled={this.state.status === 'waiting...'}
           id={this.props.id + '_button'}
         >
           Click me to solve!
