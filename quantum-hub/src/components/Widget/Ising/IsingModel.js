@@ -393,7 +393,7 @@ function Ket (props) {
       <g
         strokeWidth={s8}
         fill='none'
-        stroke={isSelected ? 'black' : 'gray'}
+        stroke={isSelected ? 'black' : 'lightgray'}
         strokeLinecap='square'
       >
         <path d={p1} />
