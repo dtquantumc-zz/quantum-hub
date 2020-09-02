@@ -743,11 +743,20 @@ class TSPstate {
     this.numFailedVancouverCalls = value
   }
 
+  /**
+   * This is the event handler for the 'reset' event. The event
+   * listener is attached to newly created red lines in TSPstate.js > onTSPsolved().
+   * Once the Travelling Salesperson Problem (TSP) is solved, lines along the
+   * Travelling Salesperson's path will be replaced by red lines and so must have a 'reset'
+   * event to set back to blue lines. That is the purpose of this function.
+   * @param {object} lineInfo contains information about the line that 'reset' has
+   * been called on
+   * @param {object} tspSolvedEventListenerInfo contains values needed to pass to the
+   * 'tspSolvedEvent' event listener
+   * @param {string} key one of the keys from Keys.js to identify the type of graph
+   *  (i.e. 'cities')
+   */
   onReset (lineInfo, tspSolvedEventListenerInfo, key) {
-    if (!lineInfo.shouldLineBeReset) {
-      return
-    }
-
     const oldLine = lineInfo.oldLine
     const index = lineInfo.index
     const map = lineInfo.map
@@ -773,25 +782,25 @@ class TSPstate {
 
       this.onTSPsolved(lineInfo, key)
     }
-    const tspOnResetEventFn = () => {
-      const lineInfo = {
-        oldLine: newLine,
-        index: index,
-        map: map,
-        waypoints: waypoints
-      }
-      const tspSolvedEventListenerInfo = {
-        routes: routes
-      }
-      this.onReset(lineInfo, tspSolvedEventListenerInfo, key)
-    }
+
     newLine.addEventListener('tspSolvedEvent', tspSolvedEventListener)
-    newLine.addEventListener('reset', tspOnResetEventFn)
     newLine = newLine.addTo(map.leafletElement)
 
     this.getLines(key)[index] = newLine
   }
 
+  /**
+   * This is the event handler for the 'tspSolvedEvent' event. The event
+   * listener is attached to newly created (blue) lines in RoutingMachine.js and
+   * to newly created blue lines in TSPstate.js > onReset(). (In onReset(),
+   * red lines are replaced with blue lines since blue is the default state of the line.)
+   * This function searches for (blue) lines which have their endpoints in the Travelling
+   * Salesperson's path and replaces them with red lines.
+   * @param {object} lineInfo contains information about the line that 'tspSolvedEvent' has
+   * been called on
+   * @param {string} key one of the keys from Keys.js to identify the type of graph
+   *  (i.e. 'cities')
+   */
   onTSPsolved (lineInfo, key) {
     const line = lineInfo.line
     const lineWaypoints = lineInfo.lineWaypoints
@@ -810,8 +819,6 @@ class TSPstate {
       const endWaypoint = waypointsInSolution[keys[i]].waypoint[1]
 
       if (TSPutils.doStartAndEndWaypointsMatch(lineWaypoints, startWaypoint, endWaypoint)) {
-        const shouldLineBeReset = true
-
         this.getSolvedRouteIndexes(key).add(index)
         map.leafletElement.removeLayer(line)
 
@@ -834,8 +841,7 @@ class TSPstate {
             oldLine: newLine,
             index: index,
             map: map,
-            waypoints: lineWaypoints,
-            shouldLineBeReset: shouldLineBeReset
+            waypoints: lineWaypoints
           }
           const tspSolvedEventListenerInfo = {
             routes: routes

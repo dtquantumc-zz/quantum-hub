@@ -110,8 +110,6 @@ export default function MapComponent (props) {
             switchingGraphs={props.switchingGraphs}
             setSwitchingGraphs={props.setSwitchingGraphs}
             outputToConsole={props.outputToConsole}
-            // refresh={props.refresh}
-            // setRefresh={props.setRefresh}
           />}
       </Map>
     </>
