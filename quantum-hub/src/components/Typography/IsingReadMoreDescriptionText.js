@@ -49,10 +49,10 @@ export default function TSPreadMoreDescriptionText () {
         Afterwards, you can manually slide the time slider around to check out the intermediate
         states.
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         <b>Quantum Annealing</b>
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         The annealing process is done by applying two Hamiltonians
         (mathematical description of problem weights)
         with changing strengths over time.
@@ -60,7 +60,7 @@ export default function TSPreadMoreDescriptionText () {
         The Hamiltonian <b>B</b> encodes the problem we want to solve. Check out the Math
         section below for more info on how this is done.
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         First, <b>A</b> is applied at full strength, and is slowly eased out as <b>B</b> is
         applied.
         Due to a quantum mechanical concept,
@@ -70,10 +70,10 @@ export default function TSPreadMoreDescriptionText () {
       <div>
         <img src={require('../../images/anneal_schedule.png')} />
       </div>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         <b>Math</b>
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         The Ising model is actually a mathematical model describing an energy landscape.
         The energy is determined by a state <b>s</b>, and each qubit is represented by a variable.
         In a state <b>s</b>, there are N variables, <InlineMath math='s_1, s_2, \dots, s_N' />.
@@ -81,10 +81,10 @@ export default function TSPreadMoreDescriptionText () {
         Each pair of variables has a coupling weight <InlineMath math='J_{i,j}' />.
       </Typography>
       <BlockMath math='E_{ising}(\textbf{s}) = \sum_{i=1}^N h_i s_i + \sum_{i=1}^N \sum_{j=i+1}^N J_{i,j} s_i s_j' />
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         <b>QUBO vs Ising</b>
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         There are two functionally equivalent models based on this equation:
         <ul>
           <li><b>QUBO:</b> Quadratic Unconstrained Binary Optimization
