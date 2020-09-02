@@ -1,30 +1,35 @@
 {
   "files": {
-    "main.css": "/static/css/main.672e29ab.chunk.css",
-    "main.js": "/static/js/main.ce5f503e.chunk.js",
-    "main.js.map": "/static/js/main.ce5f503e.chunk.js.map",
+    "main.css": "/static/css/main.659f97e0.chunk.css",
+    "main.js": "/static/js/main.eae38857.chunk.js",
+    "main.js.map": "/static/js/main.eae38857.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.439bff33.js",
     "runtime-main.js.map": "/static/js/runtime-main.439bff33.js.map",
-    "static/js/2.e7f16d33.chunk.js": "/static/js/2.e7f16d33.chunk.js",
-    "static/js/2.e7f16d33.chunk.js.map": "/static/js/2.e7f16d33.chunk.js.map",
+    "static/css/2.aeb5a4f1.chunk.css": "/static/css/2.aeb5a4f1.chunk.css",
+    "static/js/2.4d02424e.chunk.js": "/static/js/2.4d02424e.chunk.js",
+    "static/js/2.4d02424e.chunk.js.map": "/static/js/2.4d02424e.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.0a2dfe053ea836965452745d1e2bb607.js": "/precache-manifest.0a2dfe053ea836965452745d1e2bb607.js",
+    "precache-manifest.f3bf0b1f30dfc2b1962347e540805942.js": "/precache-manifest.f3bf0b1f30dfc2b1962347e540805942.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/main.672e29ab.chunk.css.map": "/static/css/main.672e29ab.chunk.css.map",
-    "static/js/2.e7f16d33.chunk.js.LICENSE.txt": "/static/js/2.e7f16d33.chunk.js.LICENSE.txt",
-    "static/js/main.ce5f503e.chunk.js.LICENSE.txt": "/static/js/main.ce5f503e.chunk.js.LICENSE.txt",
+    "static/css/2.aeb5a4f1.chunk.css.map": "/static/css/2.aeb5a4f1.chunk.css.map",
+    "static/css/main.659f97e0.chunk.css.map": "/static/css/main.659f97e0.chunk.css.map",
+    "static/js/2.4d02424e.chunk.js.LICENSE.txt": "/static/js/2.4d02424e.chunk.js.LICENSE.txt",
+    "static/js/main.eae38857.chunk.js.LICENSE.txt": "/static/js/main.eae38857.chunk.js.LICENSE.txt",
     "static/media/BlueMarker.png": "/static/media/BlueMarker.a8c6e5ae.png",
     "static/media/DTQC_Logo0.svg": "/static/media/DTQC_Logo0.f5c48d09.svg",
     "static/media/DTS_Dark_00.svg": "/static/media/DTS_Dark_00.8112b2ca.svg",
     "static/media/GU_Icon_Blue.svg": "/static/media/GU_Icon_Blue.d16934a4.svg",
+    "static/media/katex.min.css": "/static/media/KaTeX_Typewriter-Regular.f43e8696.woff2",
     "static/media/RedMarker.png": "/static/media/RedMarker.222ff890.png",
+    "static/media/anneal_schedule.png": "/static/media/anneal_schedule.87593a55.png",
     "static/media/msft.svg": "/static/media/msft.5f1735b5.svg",
     "static/media/ubc-logo-2018-crest-blue-rgb72.svg": "/static/media/ubc-logo-2018-crest-blue-rgb72.d24d1512.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.439bff33.js",
-    "static/js/2.e7f16d33.chunk.js",
-    "static/css/main.672e29ab.chunk.css",
-    "static/js/main.ce5f503e.chunk.js"
+    "static/css/2.aeb5a4f1.chunk.css",
+    "static/js/2.4d02424e.chunk.js",
+    "static/css/main.659f97e0.chunk.css",
+    "static/js/main.eae38857.chunk.js"
   ]
 }
