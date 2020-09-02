@@ -10,15 +10,31 @@ import Graph from './Graph.js'
 
 class Routing extends MapLayer {
   componentDidUpdate () {
-    TSPstate.getInstance().setFullScreenMarkerLatLons(this.props.Key, new Set())
+    this.resetFullScreenMarkerLatLons()
+    this.checkToLoadNewGraph()
+  }
 
+  resetFullScreenMarkerLatLons () {
+    const tspState = TSPstate.getInstance()
+    tspState.setFullScreenMarkerLatLons(this.props.Key, new Set())
+  }
+
+  checkToLoadNewGraph () {
     if (this.graphTabIsBeingSwitched()) {
-      this.props.setSwitchingGraphs({
-        isGraphSwitch: false,
-        key: null
-      })
-      this.createLeafletElement()
+      this.switchToNewGraph ()
     }
+  }
+
+  switchToNewGraph () {
+    this.resetSwitchingGraphsProp()
+    this.createLeafletElement()
+  }
+
+  resetSwitchingGraphsProp () {
+    this.props.setSwitchingGraphs({
+      isGraphSwitch: false,
+      key: null
+    })
   }
 
   graphTabIsBeingSwitched () {
@@ -65,12 +81,7 @@ class Routing extends MapLayer {
 
     const { map, waypoints, currentGraph, Key } = this.props
 
-    // console.log(waypoints)
-
-    // const router = new L.Routing.osrmv1({})
     PersistentGraph.loadGraph()
-
-    // console.log(waypoints)
 
     tspState.setCallsPending(Key, new Set())
     for (let i = 0; i < waypoints.length; i++) {
@@ -130,8 +141,6 @@ class Routing extends MapLayer {
           this.getRoutingCallback(callbackParams, lineParams)
         }
 
-        // router.route([waypointSource, waypointDest], callback)
-        // console.log("Accessing Vancouver Route")
         PersistentGraph.requestRoute([waypointSource, waypointDest], callback)
       } else {
         /** Don't want to add a line for a graph that
@@ -342,8 +351,6 @@ class Routing extends MapLayer {
       tspState.setNumFailedCalls(Key, tspState.getNumFailedCalls(Key) + 1)
       console.log(`Error in routing line ${i} for graph ${Key}: ${err.message}`)
     } else {
-      // console.log("Trying to draw")
-      // console.log(routes[0])
       tspState.getLineRoute(Key)[i] = routes[0]
 
       line = L.Routing.line(routes[0], {
@@ -373,7 +380,6 @@ class Routing extends MapLayer {
       setLoading(false)
       tspState.setIsLoading(false)
     }
-    // console.log(tspState.getLines(Key))
   }
 }
 
