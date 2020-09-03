@@ -109,7 +109,7 @@ function TravellingSalesperson (props) {
   useEffect(() => {}, [loading])
 
   // Source1: https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state
-  // Source2: https://usehooks.com/usePrevious/
+  // Source2: Ragland, Gabe. “UsePrevious.” UseHooks, 7 Nov. 2018, usehooks.com/usePrevious/.
   function usePrevious (value) {
     const ref = useRef()
 
