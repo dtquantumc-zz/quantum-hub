@@ -47,8 +47,7 @@ class Routing extends MapLayer {
     const tspState = TSPstate.getInstance()
     tspState.setFullScreen(fullScreen) // used in Marker callbacks
 
-    if (this.isFirstRoundRoutingCallForMainGraph() ||
-    this.moreThanHalfCallsFailedForMainGraph()) {
+    if (this.isFirstRoundRoutingCallForMainGraph()) {
       setLoading(true)
       tspState.setIsLoading(true)
     }
@@ -61,18 +60,6 @@ class Routing extends MapLayer {
     const tspState = TSPstate.getInstance()
     return (!tspState.getFullScreen() &&
     tspState.getIsFirstRoundRoutingCall(this.props.Key))
-  }
-
-  moreThanHalfCallsFailedForMainGraph () {
-    const tspState = TSPstate.getInstance()
-    return this.moreThanHalfCallsFailed() && !tspState.getFullScreen()
-  }
-
-  moreThanHalfCallsFailed () {
-    const tspState = TSPstate.getInstance()
-
-    return (tspState.getNumFailedCalls(this.props.Key) >
-    (this.props.waypoints.length / 2))
   }
 
   fetchPath () {
@@ -122,18 +109,15 @@ class Routing extends MapLayer {
       const isLineRoutePresent = tspState.getVancouverLineRoute().hasOwnProperty(i)
       const isFirstRoundRoutingCall = tspState.getIsFirstRoundRoutingCall(Key)
 
-      if ((!isLineRoutePresent &&
-        (isFirstRoundRoutingCall || this.moreThanHalfCallsFailed()) &&
-        !tspState.getCallsPending(Key).has(i))) {
+      if ((!isLineRoutePresent && isFirstRoundRoutingCall && !tspState.getCallsPending(Key).has(i))) {
         tspState.getCallsPending(Key).add(i)
 
         if (i === waypoints.length - 1) {
-          tspState.setNumFailedCalls(Key, 0)
           tspState.setIsFirstRoundRoutingCall(Key, false)
         }
 
         const line = null
-        const blueLineStyles = TSPutils.getStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
+        const blueLineStyles = TSPutils.getRoutingLineStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
 
         const callback = (err, routes) => {
           const callbackParams = {
@@ -165,15 +149,8 @@ class Routing extends MapLayer {
             continue
           }
 
-          let lineStyles = null
-          if (tspState.getSolvedRouteIndexes(Key).has(i)) {
-            lineStyles = TSPutils.getStyles('redPane', TSPutils.getGeeringupSecondaryColor())
-          } else {
-            lineStyles = TSPutils.getStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
-          }
-
           line = L.Routing.line(lineRoutes, {
-            styles: lineStyles
+            styles: this.getLineStyles(i)
           })
         }
 
@@ -186,8 +163,22 @@ class Routing extends MapLayer {
     }
   }
 
+  getLineStyles (index) {
+    const tspState = TSPstate.getInstance()
+    const { Key } = this.props
+
+    let lineStyles = null
+    if (tspState.getSolvedRouteIndexes(Key).has(index)) {
+      lineStyles = TSPutils.getRoutingLineStyles('redPane', TSPutils.getGeeringupSecondaryColor())
+    } else {
+      lineStyles = TSPutils.getRoutingLineStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
+    }
+
+    return lineStyles
+  }
+
   /**
-   * Initis the panes the different map components will be placed on.
+   * Inits the panes that the different map components will be placed on.
    * The panes specify the z-Index of the component hence different components
    * using different panes results in certain components rendering over others
    */
@@ -436,7 +427,6 @@ class Routing extends MapLayer {
       map.leafletElement.removeLayer(line)
     }
     if (err) {
-      tspState.setNumFailedCalls(Key, tspState.getNumFailedCalls(Key) + 1)
       console.log(`Error in routing line ${i} for graph ${Key}: ${err.message}`)
     } else {
       tspState.getLineRoute(Key)[i] = routes[0]
