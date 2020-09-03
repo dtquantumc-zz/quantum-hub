@@ -344,7 +344,17 @@ export default class TSPutils {
     return '#D96262'
   }
 
-  static getStyles (pane, color) {
+  /**
+   *
+   * @param {string} pane specifies the map pane; refer to
+   * https://leafletjs.com/reference-1.6.0.html#map-pane for more
+   * information
+   * @param {string} color specifies the color of the line
+   * @returns {object} returns the styling information for an L.Routing.line;
+   * refer to https://www.liedman.net/leaflet-routing-machine/api/#l-routing-line
+   * for more information
+   */
+  static getRoutingLineStyles (pane, color) {
     return [
       { pane: pane, color: 'black', opacity: 0.15, weight: 9 },
       { pane: pane, color: 'white', opacity: 0.8, weight: 6 },
