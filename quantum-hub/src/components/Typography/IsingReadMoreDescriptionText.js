@@ -68,7 +68,7 @@ export default function TSPreadMoreDescriptionText () {
         when this process is done slowly enough, the system will stay in the lowest energy state.
       </Typography>
       <div>
-        <img src={require('../../images/anneal_schedule.png')} />
+        <img className='readmore-img' src={require('../../images/anneal_schedule.png')} />
       </div>
       <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         <b>Math</b>
@@ -84,7 +84,7 @@ export default function TSPreadMoreDescriptionText () {
       <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         <b>QUBO vs Ising</b>
       </Typography>
-      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
+      <Typography align='left' paragraph variant='body2'>
         There are two functionally equivalent models based on this equation:
         <ul>
           <li><b>QUBO:</b> Quadratic Unconstrained Binary Optimization
