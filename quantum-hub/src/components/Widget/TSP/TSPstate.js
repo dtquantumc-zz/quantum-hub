@@ -54,12 +54,33 @@ class TSPstate {
     zoom: 10
   }
 
+  /**
+   * These objects (...Route) map waypointKeys (in RoutingMachine.js)
+   * i.e. "["UBC campus","SFU campus"]"
+   * to L.Routing.plan objects
+   *
+   * L.Routing.plan documentation:
+   * https://www.liedman.net/leaflet-routing-machine/api/#l-routing-plan
+   */
   citiesRoute = {}
   vancouverRoute = {}
 
+  /**
+   * These objects (...LineRoute) map numbers (as indexes)
+   * to the primary route received in the callback from the
+   * PersistentGraph.js > requestRoute() call
+   * (accessed like <IRoute[]>[0] in RoutingMachine.js > getRoutingCallback())
+   *
+   * IRoute documentation:
+   * https://www.liedman.net/leaflet-routing-machine/api/#iroute
+   */
   citiesLineRoute = {}
   vancouverLineRoute = {}
 
+  /**
+   * These objects (...Lines) map numbers (as indexes)
+   * to L.Routing.line instances
+   */
   citiesLines = {}
   vancouverLines = {}
 
@@ -106,9 +127,6 @@ class TSPstate {
    * 2. TravellingSalesperson.js > waypoints
    */
   componentsThatNeedUpdating = 2
-
-  numFailedCitiesCalls = 0
-  numFailedVancouverCalls = 0
 
   static getInstance () {
     if (TSPstate.instance === null) {
@@ -468,29 +486,6 @@ class TSPstate {
     return this.componentsThatNeedUpdating
   }
 
-  getNumFailedCalls (key) {
-    let numFailedCalls = null
-    switch (key) {
-      case Keys.CITIES:
-        numFailedCalls = this.getNumFailedCitiesCalls()
-        break
-      case Keys.VANCOUVER:
-        numFailedCalls = this.getNumFailedVancouverCalls()
-        break
-      default:
-        break
-    }
-    return numFailedCalls
-  }
-
-  getNumFailedCitiesCalls () {
-    return this.numFailedCitiesCalls
-  }
-
-  getNumFailedVancouverCalls () {
-    return this.numFailedVancouverCalls
-  }
-
   getFirstRoute (key) {
     let firstRoute = null
     switch (key) {
@@ -744,27 +739,6 @@ class TSPstate {
     this.componentsThatNeedUpdating = value
   }
 
-  setNumFailedCalls (graphKey, value) {
-    switch (graphKey) {
-      case Keys.CITIES:
-        this.setNumFailedCitiesCalls(value)
-        break
-      case Keys.VANCOUVER:
-        this.setNumFailedVancouverCalls(value)
-        break
-      default:
-        break
-    }
-  }
-
-  setNumFailedCitiesCalls (value) {
-    this.numFailedCitiesCalls = value
-  }
-
-  setNumFailedVancouverCalls (value) {
-    this.numFailedVancouverCalls = value
-  }
-
   /**
    * This is the event handler for the 'reset' event. The event
    * listener is attached to newly created red lines in TSPstate.js > onTSPsolved().
@@ -789,7 +763,7 @@ class TSPstate {
     map.leafletElement.removeLayer(oldLine)
 
     let newLine = L.Routing.line(this.getLineRoute(key)[index], {
-      styles: TSPutils.getStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
+      styles: TSPutils.getRoutingLineStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
     })
 
     const tspSolvedEventListener = (waypointsInSolution) => {
@@ -845,7 +819,7 @@ class TSPstate {
         map.leafletElement.removeLayer(line)
 
         let newLine = L.Routing.line(routes, {
-          styles: TSPutils.getStyles('redPane', TSPutils.getGeeringupSecondaryColor())
+          styles: TSPutils.getRoutingLineStyles('redPane', TSPutils.getGeeringupSecondaryColor())
         })
         const tspSolvedEventFn = (waypointsInSolution) => {
           const lineInfo = {
