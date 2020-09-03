@@ -409,6 +409,12 @@ class Routing extends MapLayer {
     correspondingMarkerOnMainMap.fire('updating', icon)
   }
 
+  /**
+   * Function structure derived from source:
+   *
+   * “How to Initialize Leaflet Routing Line - Routing.”
+   *     Developer Reference: Html Css Asp.net Node.js Angularjs, www.developreference.com.
+   */
   getRoutingCallback (callbackParams, lineParams) {
     const { map, Key, waypoints, setLoading, fullScreen } = this.props
     const err = callbackParams.err
