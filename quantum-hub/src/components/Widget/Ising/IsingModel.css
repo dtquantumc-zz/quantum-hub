@@ -65,6 +65,8 @@
 .resultText{
   color: black;
   padding: 0px;
+  padding-left: 16px;
+  min-width: 130px;
 }
 
 .inside{
@@ -77,6 +79,13 @@
   font-family: sans-serif;
   display: flex;
   justify-content: space-between;
+}
+
+.newcontain{
+  color: gray;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .moveUp{

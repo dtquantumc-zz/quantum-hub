@@ -179,7 +179,7 @@ function IsingModel (props) {
       <div>
         <Grid className={classes.gridContainer} container spacing={2}>
           <Grid item xs={9}>
-            <div className='contain'>
+            <div className='newcontain'>
               <Button
                 disabled={simulating}
                 className={classes.detailButton}
@@ -193,11 +193,8 @@ function IsingModel (props) {
               </Button>
               <div
                 className='resultText'
-                style={{
-                  display: (result !== -1 ? '' : 'none')
-                }}
               >
-                Latest result: {result ? '|1\u232a' : '|0\u232a'}
+                Latest result: {result === -1 ? '|?\u232a' : (result ? '|1\u232a' : '|0\u232a')}
               </div>
             </div>
             <div className='contain'>

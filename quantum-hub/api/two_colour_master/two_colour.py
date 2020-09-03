@@ -91,4 +91,4 @@ def main(token='', n_vertices=0, neighbours=None, filename=None, local=False):
 
 
 if __name__ == "__main__":
-    insp.show( main(token, local=True) )
+    insp.show( main('', local=True) )

@@ -32,6 +32,13 @@ def create_app():
 
 app = create_app()
 
+# The front-end LongRequest connects here to request a Dwave solve, or
+# any other kind of time/resource-intensive process.
+# If in development, the process is run locally.
+# If in deployment mode (Gunicorn), the process is sent to the Redis server,
+# which redistributes to an rq worker.
+#
+# To add a new app, add a line in the 3 marked locations:
 @app.route('/make_worker', methods=['POST'])
 def make_worker():
 
@@ -64,6 +71,8 @@ def make_worker():
         args = [token, raw_data['n_vertices'], raw_data['neighbours']]
     elif raw_data['typeOfProblem'] == 'tspSolving':
         args = [raw_data['selectedEdges'], token]
+    # elif raw_data['typeOfProblem'] == 'newTypeOfProblem':
+    #     args = [whatever your arguments are for the called function]
 
     if app.is_live:
         if raw_data['typeOfProblem'] == 'nurseScheduling':
@@ -74,6 +83,8 @@ def make_worker():
             job = app.task_queue.enqueue('two_colour_master.two_colour.main', args=args)
         elif raw_data['typeOfProblem'] == 'tspSolving':
             job = app.task_queue.enqueue('TSP.TravelingSalesPerson.main', args=args)
+        # elif raw_data['typeOfProblem'] == 'newTypeOfProblem':
+        #     job = app.task_queue.enqueue('Location of your function', args=args)
 
         return {'jobStatus':'enqueued', 'jobID':job.get_id()}
 
@@ -86,11 +97,14 @@ def make_worker():
             res = two_colour.main(*args)
         elif raw_data['typeOfProblem'] == 'tspSolving':
             res = TravelingSalesPerson.main(*args)
+        # elif raw_data['typeOfProblem'] == 'newTypeOfProblem':
+        #     res = newProblemFunction(*args)
 
         res['jobStatus'] = 'finished'
         return res
 
-
+# The front-end's LongRequest connects to this to query whether the calculation
+# results are in yet, and the current status (in queue, in progress, finished, etc.)
 @app.route('/check_worker', methods=['POST'])
 def check_worker():
     # Get relevant request data
@@ -116,27 +130,30 @@ def check_worker():
     res['jobID'] = job.get_id()
     return res
 
-
+# Routes the most basic website connection
 @app.route('/')
 def my_index():
     return app.send_static_file('index.html')
 
-
+# This routes all website connections, sending them to the compiled React webpage
 @app.route('/app/')
 @app.route('/app/<string:game>')
 def app_page(game):
 	print(game)
 	return app.send_static_file("index.html")
 
+# This was for testing purposes, to mirror the request's token back at the sender
 @app.route('/api_token', methods=['GET', 'POST'])
 def set_api_token():
     return {'given_token': request.get_json()['token']}
 
+# For the Console in-app, just gets IP of sender :P
 @app.route('/get_ip', methods=['GET'])
 def get_ip():
     print(request.remote_addr)
     return {'ip': request.remote_addr}
 
+# Load and return the complete TSP graph
 @app.route('/get_persistent_graph', methods=['GET'])
 def get_graph():
     print("wants routes")
