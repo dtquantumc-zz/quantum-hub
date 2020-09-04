@@ -8,6 +8,17 @@ import PersistentGraph from './PersistentGraph'
 
 import Graph from './Graph.js'
 
+/**
+ * Key structure of this class was based on the Routing Machine solution
+ * cited here:
+ *
+ * Source:
+ *    Ghimire, A (2019) React leaflet-routing-machine example [Source Code].
+ *    https://github.com/arjunghimire/react-leaflet-routing-machine-example.
+ *
+ * For more context, this solution is also linked in this discussion:
+ * https://github.com/perliedman/leaflet-routing-machine/issues/400
+ */
 class Routing extends MapLayer {
   componentDidUpdate () {
     this.resetFullScreenMarkerSourceKeys()
@@ -42,6 +53,11 @@ class Routing extends MapLayer {
       this.props.switchingGraphs.key === this.props.Key)
   }
 
+  /**
+   * Refer to this documentation for more information
+   * regarding the structure of this function:
+   * Source: https://react-leaflet.js.org/docs/en/custom-components.html
+   */
   createLeafletElement () {
     const { fullScreen, Key, setLoading } = this.props
     const tspState = TSPstate.getInstance()
