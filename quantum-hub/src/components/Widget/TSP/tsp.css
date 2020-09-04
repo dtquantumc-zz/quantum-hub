@@ -1,3 +1,11 @@
 .MuiDialogContent-root {
     height: 100%
 }
+
+.attributionText {
+    font-size: x-small;
+    color: grey;
+    margin: auto;
+    width: auto;
+    text-align: center;
+}

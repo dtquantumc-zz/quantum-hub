@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# (2020)
+# Modifications have been made
+# by Diversifying Talent in Quantum Computing, Geering Up, UBC
+#
+# Modifications were made to enable the tool to be callable
+# as a background process
+
 from __future__ import print_function
 
 import dimod

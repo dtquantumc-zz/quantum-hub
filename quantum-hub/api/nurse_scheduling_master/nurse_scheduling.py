@@ -20,6 +20,13 @@
 # License (To view a copy of this license, visit
 # http://creativecommons.org/licenses/by/4.0/).
 
+# (2020)
+# Modifications have been made
+# by Diversifying Talent in Quantum Computing, Geering Up, UBC
+#
+# Modifications were made to enable the tool to be callable
+# as a background process
+
 from dwave.system import LeapHybridSampler, DWaveSampler
 from dimod import BinaryQuadraticModel
 from collections import defaultdict
