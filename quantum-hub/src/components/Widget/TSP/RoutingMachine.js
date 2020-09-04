@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: MIT
+/*
+ * (C) Copyright 2020
+ * Diversifying Talent in Quantum Computing, Geering Up, UBC
+ */
 
 import 'leaflet-routing-machine'
 import { MapLayer, withLeaflet } from 'react-leaflet'
@@ -8,20 +13,31 @@ import PersistentGraph from './PersistentGraph'
 
 import Graph from './Graph.js'
 
+/**
+ * Key structure of this class was based on the Routing Machine solution
+ * cited here:
+ *
+ * Source:
+ *    Ghimire, A (2019) React leaflet-routing-machine example [Source Code].
+ *    https://github.com/arjunghimire/react-leaflet-routing-machine-example.
+ *
+ * For more context, this solution is also linked in this discussion:
+ * https://github.com/perliedman/leaflet-routing-machine/issues/400
+ */
 class Routing extends MapLayer {
   componentDidUpdate () {
-    this.resetFullScreenMarkerLatLons()
+    this.resetFullScreenMarkerSourceKeys()
     this.checkToLoadNewGraph()
   }
 
-  resetFullScreenMarkerLatLons () {
+  resetFullScreenMarkerSourceKeys () {
     const tspState = TSPstate.getInstance()
-    tspState.setFullScreenMarkerLatLons(this.props.Key, new Set())
+    tspState.setFullScreenMarkerSourceKeys(this.props.Key, new Set())
   }
 
   checkToLoadNewGraph () {
     if (this.graphTabIsBeingSwitched()) {
-      this.switchToNewGraph ()
+      this.switchToNewGraph()
     }
   }
 
@@ -42,18 +58,23 @@ class Routing extends MapLayer {
       this.props.switchingGraphs.key === this.props.Key)
   }
 
+  /**
+   * Refer to this documentation for more information
+   * regarding the structure of this function:
+   * Source: https://react-leaflet.js.org/docs/en/custom-components.html
+   */
   createLeafletElement () {
+    const { fullScreen, Key, setLoading } = this.props
     const tspState = TSPstate.getInstance()
-    tspState.setFullScreen(this.props.fullScreen) // used in Marker callbacks
+    tspState.setFullScreen(fullScreen) // used in Marker callbacks
 
-    if (this.isFirstRoundRoutingCallForMainGraph() ||
-    this.moreThanHalfCallsFailedForMainGraph()) {
-      this.props.setLoading(true)
+    if (this.isFirstRoundRoutingCallForMainGraph()) {
+      setLoading(true)
       tspState.setIsLoading(true)
     }
     this.fetchPath()
 
-    return tspState.getFirstRoute(this.props.Key)
+    return tspState.getFirstRoute(Key)
   }
 
   isFirstRoundRoutingCallForMainGraph () {
@@ -62,37 +83,31 @@ class Routing extends MapLayer {
     tspState.getIsFirstRoundRoutingCall(this.props.Key))
   }
 
-  moreThanHalfCallsFailedForMainGraph () {
-    const tspState = TSPstate.getInstance()
-    return this.moreThanHalfCallsFailed() && !tspState.getFullScreen()
-  }
-
-  moreThanHalfCallsFailed () {
-    const tspState = TSPstate.getInstance()
-
-    return (tspState.getNumFailedCalls(this.props.Key) >
-    (this.props.waypoints.length / 2))
-  }
-
   fetchPath () {
     const tspState = TSPstate.getInstance()
 
     this.initPanes()
 
-    const { map, waypoints, currentGraph, Key } = this.props
+    const { map, waypoints, currentGraph, Key, fullScreen } = this.props
 
     PersistentGraph.loadGraph()
 
     tspState.setCallsPending(Key, new Set())
+    /**
+     * waypoints is an array of objects containing two key-value pairs
+     * 1. waypoint: an array of two L.latLng objects representing
+     * the source and destination waypoints respectively
+     * 2. names: an array of two strings corresponding to the source and destination
+     * waypoints respectively
+     *
+     * Refer to TSPutils.js > getGraphWaypoints() or getWaypointsSinglePath()
+     * to see where such an array is created
+     */
     for (let i = 0; i < waypoints.length; i++) {
       const name = waypoints[i].names[0]
       const id = currentGraph.nameMapping[name]
 
-      const popup = L.popup({
-        pane: 'customPopupPane',
-        closeOnClick: true,
-        closeButton: false
-      }).setContent(name)
+      const popup = TSPutils.getPopup(name)
 
       const waypointSource = { latLng: waypoints[i].waypoint[0] }
       const waypointDest = { latLng: waypoints[i].waypoint[1] }
@@ -106,27 +121,24 @@ class Routing extends MapLayer {
 
       const routingPlan = L.Routing.plan(waypoints[i].waypoint, routingPlanOptions)
 
-      if (TSPutils.isMainGraph(this.props.Key)) {
+      if (TSPutils.isMainGraph(Key)) {
         // used in tspState.getFirstRoute()
-        tspState.getRoute(this.props.Key)[waypointKey] = routingPlan
+        tspState.getRoute(Key)[waypointKey] = routingPlan
       }
       routingPlan.addTo(map.leafletElement)
 
-      const isLineRoutePresent = tspState.getVancouverLineRoute().hasOwnProperty(i) && !!tspState.getVancouverLineRoute() // eslint-disable-line no-prototype-builtins
+      const isLineRoutePresent = tspState.getVancouverLineRoute().hasOwnProperty(i)
       const isFirstRoundRoutingCall = tspState.getIsFirstRoundRoutingCall(Key)
 
-      if ((!isLineRoutePresent &&
-        (isFirstRoundRoutingCall || this.moreThanHalfCallsFailed()) &&
-        !tspState.getCallsPending(Key).has(i))) {
+      if ((!isLineRoutePresent && isFirstRoundRoutingCall && !tspState.getCallsPending(Key).has(i))) {
         tspState.getCallsPending(Key).add(i)
 
         if (i === waypoints.length - 1) {
-          tspState.setNumFailedCalls(Key, 0)
           tspState.setIsFirstRoundRoutingCall(Key, false)
         }
 
         const line = null
-        const blueLineStyles = TSPutils.getStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
+        const blueLineStyles = TSPutils.getRoutingLineStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
 
         const callback = (err, routes) => {
           const callbackParams = {
@@ -150,7 +162,7 @@ class Routing extends MapLayer {
         }
 
         let line
-        if (!this.props.fullScreen) {
+        if (!fullScreen) {
           line = tspState.getLines(Key)[i]
         } else {
           const lineRoutes = tspState.getLineRoute(Key)[i]
@@ -158,15 +170,8 @@ class Routing extends MapLayer {
             continue
           }
 
-          let lineStyles = null
-          if (tspState.getSolvedRouteIndexes(Key).has(i)) {
-            lineStyles = TSPutils.getStyles('redPane', TSPutils.getGeeringupSecondaryColor())
-          } else {
-            lineStyles = TSPutils.getStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
-          }
-
           line = L.Routing.line(lineRoutes, {
-            styles: lineStyles
+            styles: this.getLineStyles(i)
           })
         }
 
@@ -179,17 +184,37 @@ class Routing extends MapLayer {
     }
   }
 
+  getLineStyles (index) {
+    const tspState = TSPstate.getInstance()
+    const { Key } = this.props
+
+    let lineStyles = null
+    if (tspState.getSolvedRouteIndexes(Key).has(index)) {
+      lineStyles = TSPutils.getRoutingLineStyles('redPane', TSPutils.getGeeringupSecondaryColor())
+    } else {
+      lineStyles = TSPutils.getRoutingLineStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
+    }
+
+    return lineStyles
+  }
+
+  /**
+   * Inits the panes that the different map components will be placed on.
+   * The panes specify the z-Index of the component hence different components
+   * using different panes results in certain components rendering over others
+   */
   initPanes () {
-    if (!this.props.map.leafletElement.getPane('bluePane')) {
+    const { map } = this.props
+    if (!map.leafletElement.getPane('bluePane')) {
       this.initBluePane()
     }
-    if (!this.props.map.leafletElement.getPane('redPane')) {
+    if (!map.leafletElement.getPane('redPane')) {
       this.initRedPane()
     }
-    if (!this.props.map.leafletElement.getPane('customMarkerPane')) {
+    if (!map.leafletElement.getPane('customMarkerPane')) {
       this.initMarkerPane()
     }
-    if (!this.props.map.leafletElement.getPane('customPopupPane')) {
+    if (!map.leafletElement.getPane('customPopupPane')) {
       this.initPopupPane()
     }
   }
@@ -226,8 +251,7 @@ class Routing extends MapLayer {
         const routingMachineParams = {
           sourceKey: sourceKey,
           popup: popup,
-          id: id,
-          Key: this.props.Key
+          id: id
         }
         return this.createMarker(markerParams, routingMachineParams)
       }
@@ -236,43 +260,23 @@ class Routing extends MapLayer {
 
   createMarker (markerParams, routingMachineParams) {
     const tspState = TSPstate.getInstance()
+    const { Key } = this.props
 
     const wp = markerParams.wp
 
     const sourceKey = routingMachineParams.sourceKey
     const popup = routingMachineParams.popup
     const id = routingMachineParams.id
-    const Key = routingMachineParams.Key
 
-    /** Don't want to create a marker for a graph that
-     * is not the current graph */
-    if (!Graph[Key].nameMapping.hasOwnProperty(sourceKey)) { // eslint-disable-line no-prototype-builtins
+    if (this.isInvalidCreateMarkerCall(sourceKey)) {
       return false
     }
 
-    if (!tspState.getFullScreen()) {
-      if (tspState.getMarkerLatLons(Key).has(sourceKey)) {
-        return false
-      }
-      tspState.getMarkerLatLons(Key).add(sourceKey)
-    } else {
-      if (tspState.getFullScreenMarkerLatLons(Key).has(sourceKey)) {
-        return false
-      }
-      tspState.getFullScreenMarkerLatLons(Key).add(sourceKey)
-    }
-
-    let marker = null
-    if (tspState.getSelectedMarkers(Key).has(sourceKey)) {
-      marker = TSPutils.getRedMarker(wp.latLng, popup)
-    } else {
-      marker = TSPutils.getBlueMarker(wp.latLng, popup)
-    }
+    const marker = this.getAppropriateColoredMarker(sourceKey, wp.latLng, popup)
 
     const onClick = () => {
       this.onMarkerClick(sourceKey, marker, id)
     }
-
     marker.addEventListener('click', onClick)
 
     if (!tspState.getFullScreen()) {
@@ -281,55 +285,157 @@ class Routing extends MapLayer {
       }
       marker.addEventListener('updating', onUpdating)
 
-      if (!(tspState.getMainMapMarkers(Key).hasOwnProperty(sourceKey) && !!tspState.getMainMapMarkers(Key)[sourceKey])) { // eslint-disable-line no-prototype-builtins
-        tspState.getMainMapMarkers(Key)[sourceKey] = marker
+      const mainMapMarkers = tspState.getMainMapMarkers(Key)
+      if (!(mainMapMarkers.hasOwnProperty(sourceKey))) {
+        mainMapMarkers[sourceKey] = marker
       }
     }
 
     return marker
   }
 
+  isInvalidCreateMarkerCall (sourceKey) {
+    const { Key } = this.props
+    /** Don't want to create a marker for a graph that
+     * is not the current graph */
+    const sourceKeyIsForCurrentGraph = Graph[Key].nameMapping.hasOwnProperty(sourceKey)
+    const markerAlreadyCreated = this.updateMarkerSourceKeys(sourceKey)
+
+    return !sourceKeyIsForCurrentGraph || markerAlreadyCreated
+  }
+
+  getAppropriateColoredMarker (sourceKey, latLng, popup) {
+    const tspState = TSPstate.getInstance()
+    const { Key } = this.props
+
+    let marker = null
+    if (tspState.getSelectedMarkers(Key).has(sourceKey)) {
+      marker = TSPutils.getRedMarker(latLng, popup)
+    } else {
+      marker = TSPutils.getBlueMarker(latLng, popup)
+    }
+
+    return marker
+  }
+
+  updateMarkerSourceKeys (sourceKey) {
+    const tspState = TSPstate.getInstance()
+    const { Key } = this.props
+
+    let markerAlreadyCreated = false
+    const markerLatLon = tspState.getMarkerSourceKeys(Key)
+    if (markerLatLon.has(sourceKey)) {
+      markerAlreadyCreated = true
+    } else {
+      markerLatLon.add(sourceKey)
+    }
+
+    return markerAlreadyCreated
+  }
+
   onMarkerClick (sourceKey, marker, id) {
     marker.closePopup()
 
     const tspState = TSPstate.getInstance()
-
     const { Key, setNumSelectedNodes, outputToConsole } = this.props
 
-    const isMainMapLoading = (!tspState.getFullScreen() && tspState.getIsLoading())
-    if (isMainMapLoading) {
-      outputToConsole('Map is Loading...')
+    const handledInvalidClick = this.checkToHandleInvalidClick()
+    if (handledInvalidClick) {
       return
     }
 
-    if (tspState.getIsPathSolved(Key)) {
-      outputToConsole('A shortes path is already solved for.')
-      outputToConsole("Please 'Reset' the map before selecting a new node")
-      return
-    }
-
-    let icon = TSPutils.getBlueIcon()
-    if (tspState.getSelectedMarkers(Key).has(sourceKey)) {
-      tspState.getSelectedMarkers(Key).delete(sourceKey)
-    } else {
-      tspState.getSelectedMarkers(Key).add(sourceKey)
-      icon = TSPutils.getRedIcon()
-    }
+    const icon = this.getAppropriateColoredIcon(sourceKey)
     marker.setIcon(icon)
+    this.updateSelectedMarkers(sourceKey)
 
     const consoleParams = {
       outputToConsole: outputToConsole,
       nodeName: sourceKey
     }
     TSPutils.onMarkerClick(Key, id, consoleParams)
-    setNumSelectedNodes(tspState.getSelectedNodes(Key).size)
+
+    setNumSelectedNodes(tspState.getSelectedNodeIds(Key).size)
 
     if (tspState.getFullScreen()) {
-      const correspondingMarkerOnMainMap = tspState.getMainMapMarkers(Key)[sourceKey]
-      correspondingMarkerOnMainMap.fire('updating', icon)
+      this.updateCorrespondingMarkerOnMainMap(sourceKey, icon)
     }
   }
 
+  checkToHandleInvalidClick () {
+    const tspState = TSPstate.getInstance()
+    const { Key } = this.props
+
+    let handledInvalidClick = true
+    if (this.getIsMainMapLoading()) {
+      this.handleMainMapLoading()
+    } else if (tspState.getIsPathSolved(Key)) {
+      this.handlePathAlreadySolved()
+    } else {
+      handledInvalidClick = false
+    }
+
+    return handledInvalidClick
+  }
+
+  // TODO: In some cases, while the path is solving,
+  // the markers are clickable. This might have to do
+  // with the isLoading field in TSPstate.js not being
+  // set at the appropriate times and should be looked into
+  getIsMainMapLoading () {
+    const tspState = TSPstate.getInstance()
+    return (!tspState.getFullScreen() && tspState.getIsLoading())
+  }
+
+  handleMainMapLoading () {
+    const { outputToConsole } = this.props
+    outputToConsole('Map is Loading...')
+  }
+
+  handlePathAlreadySolved () {
+    const { outputToConsole } = this.props
+    outputToConsole('A shortest path is already solved for.')
+    outputToConsole("Please 'Reset' the map before selecting a new node")
+  }
+
+  updateSelectedMarkers (sourceKey) {
+    const tspState = TSPstate.getInstance()
+    const { Key } = this.props
+
+    if (tspState.getSelectedMarkers(Key).has(sourceKey)) {
+      tspState.getSelectedMarkers(Key).delete(sourceKey)
+    } else {
+      tspState.getSelectedMarkers(Key).add(sourceKey)
+    }
+  }
+
+  getAppropriateColoredIcon (sourceKey) {
+    const tspState = TSPstate.getInstance()
+    const { Key } = this.props
+
+    let icon
+    if (tspState.getSelectedMarkers(Key).has(sourceKey)) {
+      icon = TSPutils.getBlueIcon()
+    } else {
+      icon = TSPutils.getRedIcon()
+    }
+
+    return icon
+  }
+
+  updateCorrespondingMarkerOnMainMap (sourceKey, icon) {
+    const tspState = TSPstate.getInstance()
+    const { Key } = this.props
+
+    const correspondingMarkerOnMainMap = tspState.getMainMapMarkers(Key)[sourceKey]
+    correspondingMarkerOnMainMap.fire('updating', icon)
+  }
+
+  /**
+   * Function structure derived from source:
+   *
+   * “How to Initialize Leaflet Routing Line - Routing.”
+   *     Developer Reference: Html Css Asp.net Node.js Angularjs, www.developreference.com.
+   */
   getRoutingCallback (callbackParams, lineParams) {
     const { map, Key, waypoints, setLoading, fullScreen } = this.props
     const err = callbackParams.err
@@ -348,7 +454,6 @@ class Routing extends MapLayer {
       map.leafletElement.removeLayer(line)
     }
     if (err) {
-      tspState.setNumFailedCalls(Key, tspState.getNumFailedCalls(Key) + 1)
       console.log(`Error in routing line ${i} for graph ${Key}: ${err.message}`)
     } else {
       tspState.getLineRoute(Key)[i] = routes[0]

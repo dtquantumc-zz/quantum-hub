@@ -50,8 +50,6 @@ function TravellingSalesperson (props) {
     isGraphSwitch: false,
     key: null
   })
-  // const [refresh, setRefresh] = useState(false)
-  // if (refresh) setTimeout(() => { setRefresh(false) }, 500)
 
   const descriptionElementRef = useRef(null)
 
@@ -61,30 +59,6 @@ function TravellingSalesperson (props) {
   const loadingContainerClasses = classNames({
     [classes.loadingContainer]: loading
   })
-
-  function allComponentsAreUpdated () {
-    return tspState.getComponentsThatNeedUpdating() === tspState.getComponentsUpdated()
-  }
-
-  function onAllComponentsUpdated () {
-    tspState.setComponentsUpdated(0)
-    setSwitchingGraphs({
-      isGraphSwitch: true,
-      key: key
-    })
-  }
-
-  // Source1: https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state
-  // Source2: https://usehooks.com/usePrevious/
-  function usePrevious (value) {
-    const ref = useRef()
-
-    useEffect(() => {
-      ref.current = value
-    }, [value])
-
-    return ref.current
-  }
 
   const prevKey = usePrevious(key)
   const prevWaypoints = usePrevious(waypoints)
@@ -103,9 +77,8 @@ function TravellingSalesperson (props) {
       if (allComponentsAreUpdated()) {
         onAllComponentsUpdated()
       }
-    }
-  })
-  // }, [key, prevKey])
+    } // eslint-disable-next-line
+  }, [key, prevKey])
 
   useEffect(() => {
     if (waypoints !== prevWaypoints && prevWaypoints !== undefined) {
@@ -113,9 +86,51 @@ function TravellingSalesperson (props) {
       if (allComponentsAreUpdated()) {
         onAllComponentsUpdated()
       }
+    } // eslint-disable-next-line
+  }, [waypoints, prevWaypoints])
+
+  useEffect(() => {},
+    [numSelectedCitiesNodes, numSelectedVancouverNodes,
+      isCitiesPathSolved, isVancouverPathSolved, switchingGraphs])
+
+  useEffect(() => {
+    if (open) {
+      openDescriptionElement()
     }
-  })
-  // }, [waypoints, prevWaypoints])
+  }, [open])
+
+  const openDescriptionElement = () => {
+    const { current: descriptionElement } = descriptionElementRef
+    if (descriptionElement !== null) {
+      descriptionElement.focus()
+    }
+  }
+
+  useEffect(() => {}, [loading])
+
+  // Source1: https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state
+  // Source2: Ragland, Gabe. “UsePrevious.” UseHooks, 7 Nov. 2018, usehooks.com/usePrevious/.
+  function usePrevious (value) {
+    const ref = useRef()
+
+    useEffect(() => {
+      ref.current = value
+    }, [value])
+
+    return ref.current
+  }
+
+  function allComponentsAreUpdated () {
+    return tspState.getComponentsThatNeedUpdating() === tspState.getComponentsUpdated()
+  }
+
+  function onAllComponentsUpdated () {
+    tspState.setComponentsUpdated(0)
+    setSwitchingGraphs({
+      isGraphSwitch: true,
+      key: key
+    })
+  }
 
   /**
    * NOTE: We use TSPstate.js's getIsPathSolved(key).size since
@@ -140,12 +155,12 @@ function TravellingSalesperson (props) {
   }
 
   /**
-   * NOTE: We use TSPstate.js's getSelectedNodes(key).size since
+   * NOTE: We use TSPstate.js's getSelectedNodeIds(key).size since
    * the state values may not be updated immediately after setNumSelectedNodes()
    * is called since it calls async setters
    */
   function getNumSelectedNodes () {
-    return tspState.getSelectedNodes(key).size
+    return tspState.getSelectedNodeIds(key).size
   }
 
   function setNumSelectedNodes (value) {
@@ -161,24 +176,38 @@ function TravellingSalesperson (props) {
     }
   }
 
-  useEffect(() => {},
-    [numSelectedCitiesNodes, numSelectedVancouverNodes,
-      isCitiesPathSolved, isVancouverPathSolved, switchingGraphs])
+  function onResetClick () {
+    setLoading(true)
+    tspState.setIsLoading(true)
 
-  useEffect(() => {
-    if (open) {
-      openDescriptionElement()
-    }
-  }, [open])
+    props.outputToConsole(`Resetting the ${key.toUpperCase()} graph...`)
+    updateMainMapMarkers(key)
+    resetGraphLines(key)
+    tspState.resetGraphStates(key)
 
-  const openDescriptionElement = () => {
-    const { current: descriptionElement } = descriptionElementRef
-    if (descriptionElement !== null) {
-      descriptionElement.focus()
-    }
+    setLoading(false)
+    tspState.setIsLoading(false)
+
+    setIsPathSolved(false)
+    tspState.setIsPathSolved(key, false)
+
+    setNumSelectedNodes(0)
   }
 
-  useEffect(() => {}, [loading])
+  function updateMainMapMarkers (key) {
+    const mainMapMarkers = tspState.getMainMapMarkers(key)
+    const keys = Object.keys(mainMapMarkers)
+    keys.forEach(index => {
+      mainMapMarkers[index].fire('updating', TSPutils.getBlueIcon())
+    })
+  }
+
+  function resetGraphLines (key) {
+    const graphLines = tspState.getLines(key)
+    Object.keys(graphLines).forEach(index => {
+      graphLines[index].fire('reset')
+    })
+  }
 
   return (
     <div className={classes.root}>
@@ -197,8 +226,6 @@ function TravellingSalesperson (props) {
             switchingGraphs={switchingGraphs}
             setSwitchingGraphs={setSwitchingGraphs}
             outputToConsole={props.outputToConsole}
-            // refresh={refresh}
-            // setRefresh={setRefresh}
           />
         </div>
         <div className={key === Keys.VANCOUVER ? classes.mapContainer : classes.hidingContainer}>
@@ -214,8 +241,6 @@ function TravellingSalesperson (props) {
             switchingGraphs={switchingGraphs}
             setSwitchingGraphs={setSwitchingGraphs}
             outputToConsole={props.outputToConsole}
-            // refresh={refresh}
-            // setRefresh={setRefresh}
           />
         </div>
         <div className='attributionText'>
@@ -283,33 +308,7 @@ function TravellingSalesperson (props) {
         <Button
           color='geeringupPrimary'
           disabled={loading || (getNumSelectedNodes() === 0 && !tspState.getIsPathSolved(key))}
-          onClick={() => {
-            setLoading(true)
-            tspState.setIsLoading(true)
-
-            props.outputToConsole(`Resetting the ${key.toUpperCase()} graph...`)
-
-            const mainMapMarkers = tspState.getMainMapMarkers(key)
-            const keys = Object.keys(mainMapMarkers)
-            keys.forEach(index => {
-              mainMapMarkers[index].fire('updating', TSPutils.getBlueIcon())
-            })
-
-            const graphLines = tspState.getLines(key)
-            Object.keys(graphLines).forEach(index => {
-              graphLines[index].fire('reset')
-            })
-
-            tspState.resetGraphStates(key)
-
-            setLoading(false)
-            tspState.setIsLoading(false)
-
-            setIsPathSolved(false)
-            tspState.setIsPathSolved(key, false)
-
-            setNumSelectedNodes(0)
-          }}
+          onClick={onResetClick}
         >
           Reset
         </Button>
@@ -376,8 +375,6 @@ function TravellingSalesperson (props) {
               switchingGraphs={switchingGraphs}
               setSwitchingGraphs={setSwitchingGraphs}
               outputToConsole={props.outputToConsole}
-              // refresh={refresh}
-              // setRefresh={setRefresh}
             />
           </div>
           <div className={key === Keys.VANCOUVER ? classes.expandedMap : classes.hidingContainer}>
@@ -394,8 +391,6 @@ function TravellingSalesperson (props) {
               switchingGraphs={switchingGraphs}
               setSwitchingGraphs={setSwitchingGraphs}
               outputToConsole={props.outputToConsole}
-              // refresh={refresh}
-              // setRefresh={setRefresh}
             />
           </div>
         </DialogContent>

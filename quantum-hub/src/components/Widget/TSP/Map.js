@@ -14,6 +14,18 @@ import TSPutils from './TSPutils'
 import { makeStyles } from '@material-ui/core/styles'
 import styles from '../../../assets/jss/material-kit-react/components/travellingSalespersonStyle.js'
 
+/**
+ * Key structure of this file was based on the Routing Machine solution
+ * cited here:
+ *
+ * Source:
+ *    Ghimire, A (2019) React leaflet-routing-machine example [Source Code].
+ *    https://github.com/arjunghimire/react-leaflet-routing-machine-example.
+ *
+ * For more context, this solution is also linked in this discussion:
+ * https://github.com/perliedman/leaflet-routing-machine/issues/400
+ */
+
 export default function MapComponent (props) {
   const useStyles = makeStyles(styles)
   const classes = useStyles()

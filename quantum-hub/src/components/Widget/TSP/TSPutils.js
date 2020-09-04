@@ -83,6 +83,15 @@ export default class TSPutils {
     return TSPutils.getGraphWaypoints(Graph[Keys.VANCOUVER])
   }
 
+  /**
+   *
+   * @param {object} graph from Graph.js
+   * @returns {object} an array of objects containing two key-value pairs
+   * 1. waypoint: an array of two L.latLng objects representing
+   * the source and destination waypoints respectively
+   * 2. names: an array of two strings corresponding to the source and destination
+   * waypoints respectively
+   */
   static getGraphWaypoints (graph) {
     const edgeList = graph.edgeList
     const latLong = graph.latLong
@@ -90,16 +99,26 @@ export default class TSPutils {
 
     const waypoints = []
     for (let i = 0; i < edgeList.length; i++) {
+      /**
+       * Example of an Edge in the edgeList:
+       * [0, 1, 2230]
+       *
+       * Each array follows the pattern: [sourceId, destId, edgeWeight]
+       */
       const sourceId = edgeList[i][0]
       const destId = edgeList[i][1]
 
       const sourceName = idMapping[sourceId]
       const destName = idMapping[destId]
 
-      const sourceLatLng = latLong[sourceName]
-      const destLatLng = latLong[destName]
+      /**
+       * LatLongs here refer to an array of numbers
+       * i.e. [49.2666656, -123.249999]
+       */
+      const sourceLatLong = latLong[sourceName]
+      const destLatLong = latLong[destName]
 
-      const waypoint = TSPutils.getWaypointsfromCoords(sourceLatLng, destLatLng)
+      const waypoint = TSPutils.getWaypointsfromCoords(sourceLatLong, destLatLong)
       const names = [sourceName, destName]
 
       const waypointData = {
@@ -113,18 +132,37 @@ export default class TSPutils {
     return waypoints
   }
 
-  static getWaypointsfromCoords (sourceLatLng, destLatLng) {
-    const sourceLat = sourceLatLng[0]
-    const sourceLng = sourceLatLng[1]
-    const destLat = destLatLng[0]
-    const destLng = destLatLng[1]
+  /**
+   *
+   * @param {object} sourceLatLong an array of numbers
+   * representing a latitude and longitude respectively
+   * @param {object} destLatLong an array of numbers
+   * representing a latitude and longitude respectively
+   * @returns {object} an array of two L.latLng objects representing
+   * the source and destination waypoints respectively
+   */
+  static getWaypointsfromCoords (sourceLatLong, destLatLong) {
+    const sourceLat = sourceLatLong[0]
+    const sourceLong = sourceLatLong[1]
+    const destLat = destLatLong[0]
+    const destLong = destLatLong[1]
 
-    const sourceWaypoint = L.latLng(sourceLat, sourceLng)
-    const destWaypoint = L.latLng(destLat, destLng)
+    const sourceWaypoint = L.latLng(sourceLat, sourceLong)
+    const destWaypoint = L.latLng(destLat, destLong)
 
     return [sourceWaypoint, destWaypoint]
   }
 
+  /**
+   *
+   * @param {object} graph from Graph.js
+   * @param {object} nodes an array of all source nodes
+   * @returns {object} an array of objects containing two key-value pairs
+   * 1. waypoint: an array of two L.latLng objects representing
+   * the source and destination waypoints respectively
+   * 2. names: an array of two strings corresponding to the source and destination
+   * waypoints respectively
+   */
   static getWaypointsSinglePath (graph, nodes) {
     const latLong = graph.latLong
     const idMapping = graph.idMapping // TODO: Currently the Flower graph does not have these
@@ -212,12 +250,12 @@ export default class TSPutils {
 
   static isValInSelectedNodes (graphKey, val) {
     const tspState = TSPstate.getInstance()
-    return tspState.getSelectedNodes(graphKey).has(val)
+    return tspState.getSelectedNodeIds(graphKey).has(val)
   }
 
   static outputSendingToSolveToConsole (graphKey, currentGraph, outputToConsole) {
     const tspState = TSPstate.getInstance()
-    const selectedNodes = tspState.getSelectedNodes(graphKey)
+    const selectedNodes = tspState.getSelectedNodeIds(graphKey)
 
     outputToConsole('Finding the shortest path between the following nodes:')
 
@@ -247,16 +285,16 @@ export default class TSPutils {
     const tspState = TSPstate.getInstance()
     if (TSPutils.isMarkerDeselect(graphKey, nodeId)) {
       consoleParams.outputToConsole(`- Deselecting: ${consoleParams.nodeName}`)
-      tspState.getSelectedNodes(graphKey).delete(nodeId)
+      tspState.getSelectedNodeIds(graphKey).delete(nodeId)
     } else {
       consoleParams.outputToConsole(`Selecting: ${consoleParams.nodeName}`)
-      tspState.getSelectedNodes(graphKey).add(nodeId)
+      tspState.getSelectedNodeIds(graphKey).add(nodeId)
     }
   }
 
   static isMarkerDeselect (graphKey, nodeId) {
     const tspState = TSPstate.getInstance()
-    return tspState.getSelectedNodes(graphKey).has(nodeId)
+    return tspState.getSelectedNodeIds(graphKey).has(nodeId)
   }
 
   static isMainGraph (key) {
@@ -306,7 +344,17 @@ export default class TSPutils {
     return '#D96262'
   }
 
-  static getStyles (pane, color) {
+  /**
+   *
+   * @param {string} pane specifies the map pane; refer to
+   * https://leafletjs.com/reference-1.6.0.html#map-pane for more
+   * information
+   * @param {string} color specifies the color of the line
+   * @returns {object} returns the styling information for an L.Routing.line;
+   * refer to https://www.liedman.net/leaflet-routing-machine/api/#l-routing-line
+   * for more information
+   */
+  static getRoutingLineStyles (pane, color) {
     return [
       { pane: pane, color: 'black', opacity: 0.15, weight: 9 },
       { pane: pane, color: 'white', opacity: 0.8, weight: 6 },
@@ -396,6 +444,14 @@ export default class TSPutils {
     return marker
   }
 
+  static getPopup (content) {
+    return L.popup({
+      pane: 'customPopupPane',
+      closeOnClick: true,
+      closeButton: false
+    }).setContent(content)
+  }
+
   static createBluePane (map) {
     const bluePane = map.leafletElement.createPane('bluePane')
     bluePane.style.zIndex = ''
@@ -425,38 +481,54 @@ export default class TSPutils {
     TSPutils.doesEndWaypointMatch(lineWaypoints, endWaypoint))
   }
 
+  /**
+   *
+   * @param {object} lineWaypoints an array of two L.latLng objects representing the
+   * start and end waypoints of the line respectively
+   * @param {object} startWaypoint an L.latLng object
+   * @returns true if the startWaypoint matches with either the start or end waypoint
+   * of the line (lineWaypoints)
+   */
   static doesStartWaypointMatch (lineWaypoints, startWaypoint) {
     const lineStartWaypoint = lineWaypoints[0]
     const lineStartLat = lineStartWaypoint.lat
-    const lineStartLng = lineStartWaypoint.lng
+    const lineStartLong = lineStartWaypoint.lng
 
     const lineEndWaypoint = lineWaypoints[1]
     const lineEndLat = lineEndWaypoint.lat
-    const lineEndLng = lineEndWaypoint.lng
+    const lineEndLong = lineEndWaypoint.lng
 
     const startLat = startWaypoint.lat
-    const startLng = startWaypoint.lng
+    const startLong = startWaypoint.lng
 
-    const startWaypointMatches = ((lineStartLat === startLat && lineStartLng === startLng) ||
-    (lineEndLat === startLat && lineEndLng === startLng))
+    const startWaypointMatches = ((lineStartLat === startLat && lineStartLong === startLong) ||
+    (lineEndLat === startLat && lineEndLong === startLong))
 
     return startWaypointMatches
   }
 
+  /**
+   *
+   * @param {object} lineWaypoints an array of two L.latLng objects representing the
+   * start and end waypoints of the line respectively
+   * @param {object} endWaypoint an L.latLng object
+   * @returns true if the endWaypoint matches with either the start or end waypoint
+   * of the line (lineWaypoints)
+   */
   static doesEndWaypointMatch (lineWaypoints, endWaypoint) {
     const lineStartWaypoint = lineWaypoints[0]
     const lineStartLat = lineStartWaypoint.lat
-    const lineStartLng = lineStartWaypoint.lng
+    const lineStartLong = lineStartWaypoint.lng
 
     const lineEndWaypoint = lineWaypoints[1]
     const lineEndLat = lineEndWaypoint.lat
-    const lineEndLng = lineEndWaypoint.lng
+    const lineEndLong = lineEndWaypoint.lng
 
     const endLat = endWaypoint.lat
-    const endLng = endWaypoint.lng
+    const endLong = endWaypoint.lng
 
-    const endWaypointMatches = ((lineStartLat === endLat && lineStartLng === endLng) ||
-    (lineEndLat === endLat && lineEndLng === endLng))
+    const endWaypointMatches = ((lineStartLat === endLat && lineStartLong === endLong) ||
+    (lineEndLat === endLat && lineEndLong === endLong))
 
     return endWaypointMatches
   }

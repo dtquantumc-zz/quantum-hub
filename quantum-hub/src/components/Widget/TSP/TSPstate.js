@@ -24,6 +24,18 @@ class TSPstate {
   citiesCallsPending = new Set()
   vancouverCallsPending = new Set()
 
+  /**
+   * 'Main Map Markers' refers to the Markers
+   * that are drawn onto the 'Main Map' which
+   * is the non-fullScreen map for TSP.
+   *
+   * These objects (...MainMapMarkers) map sourceKeys
+   * (i.e. "UBC campus" which is an example given in RoutingMachine.js)
+   * to L.marker objects
+   *
+   * L.marker documentation:
+   * https://leafletjs.com/reference-1.6.0.html#marker
+   */
   citiesMainMapMarkers = {}
   vancouverMainMapMarkers = {}
 
@@ -42,26 +54,65 @@ class TSPstate {
     zoom: 10
   }
 
+  /**
+   * These objects (...Route) map waypointKeys (in RoutingMachine.js)
+   * i.e. "["UBC campus","SFU campus"]"
+   * to L.Routing.plan objects
+   *
+   * L.Routing.plan documentation:
+   * https://www.liedman.net/leaflet-routing-machine/api/#l-routing-plan
+   */
   citiesRoute = {}
   vancouverRoute = {}
 
+  /**
+   * These objects (...LineRoute) map numbers (as indexes)
+   * to the primary route received in the callback from the
+   * PersistentGraph.js > requestRoute() call
+   * (accessed like <IRoute[]>[0] in RoutingMachine.js > getRoutingCallback())
+   *
+   * IRoute documentation:
+   * https://www.liedman.net/leaflet-routing-machine/api/#iroute
+   */
   citiesLineRoute = {}
   vancouverLineRoute = {}
 
+  /**
+   * These objects (...Lines) map numbers (as indexes)
+   * to L.Routing.line instances
+   */
   citiesLines = {}
   vancouverLines = {}
 
-  citiesSelectedNodes = new Set()
-  vancouverSelectedNodes = new Set()
+  /**
+   * These Sets (...SelectedNodeIds) store the
+   * (number) nodeIds of the markers that are
+   * selected on the TSP map
+   */
+  citiesSelectedNodeIds = new Set()
+  vancouverSelectedNodeIds = new Set()
 
+  /**
+   * These Sets (...SelectedMarkers) store the
+   * (string) sourceKeys
+   * (i.e. "UBC campus" which is an example given in RoutingMachine.js)
+   * of the markers that are selected on the
+   * TSP map
+   */
   citiesSelectedMarkers = new Set()
   vancouverSelectedMarkers = new Set()
 
-  citiesMarkerLatLons = new Set()
-  vancouverMarkerLatLons = new Set()
+  /**
+   * These Sets (...MarkerSourceKeys) store
+   * the (string) sourceKeys
+   * (i.e. "UBC campus" which is an example given in RoutingMachine.js)
+   * of markers that are created
+   */
+  citiesMainMapMarkerSourceKeys = new Set()
+  vancouverMainMapMarkerSourceKeys = new Set()
 
-  fullScreenCitiesMarkerLatLons = new Set()
-  fullScreenVancouverMarkerLatLons = new Set()
+  fullScreenCitiesMarkerSourceKeys = new Set()
+  fullScreenVancouverMarkerSourceKeys = new Set()
 
   fullScreen = false
 
@@ -69,14 +120,13 @@ class TSPstate {
   vancouverSolvedRouteIndexes = new Set()
 
   componentsUpdated = 0
+
   /**
-   * 1. TravellingSalesperson.js: keys
-   * 2. TravellingSalesperson.js: waypoints
+   * The components referred to are the below:
+   * 1. TravellingSalesperson.js > keys
+   * 2. TravellingSalesperson.js > waypoints
    */
   componentsThatNeedUpdating = 2
-
-  numFailedCitiesCalls = 0
-  numFailedVancouverCalls = 0
 
   static getInstance () {
     if (TSPstate.instance === null) {
@@ -294,14 +344,14 @@ class TSPstate {
     return this.vancouverLines
   }
 
-  getSelectedNodes (key) {
+  getSelectedNodeIds (key) {
     let selectedNodes = null
     switch (key) {
       case Keys.CITIES:
-        selectedNodes = this.getCitiesSelectedNodes()
+        selectedNodes = this.getCitiesSelectedNodeIds()
         break
       case Keys.VANCOUVER:
-        selectedNodes = this.getVancouverSelectedNodes()
+        selectedNodes = this.getVancouverSelectedNodeIds()
         break
       default:
         break
@@ -310,12 +360,12 @@ class TSPstate {
     return selectedNodes
   }
 
-  getCitiesSelectedNodes () {
-    return this.citiesSelectedNodes
+  getCitiesSelectedNodeIds () {
+    return this.citiesSelectedNodeIds
   }
 
-  getVancouverSelectedNodes () {
-    return this.vancouverSelectedNodes
+  getVancouverSelectedNodeIds () {
+    return this.vancouverSelectedNodeIds
   }
 
   getSelectedMarkers (key) {
@@ -342,52 +392,63 @@ class TSPstate {
     return this.vancouverSelectedMarkers
   }
 
-  getMarkerLatLons (key) {
-    let markerLatLons = null
+  getMarkerSourceKeys (key) {
+    let markerSourceKeys = null
+    if (this.getFullScreen()) {
+      markerSourceKeys = this.getFullScreenMarkerSourceKeys(key)
+    } else {
+      markerSourceKeys = this.getMainMapMarkerSourceKeys(key)
+    }
+
+    return markerSourceKeys
+  }
+
+  getMainMapMarkerSourceKeys (key) {
+    let markerSourceKeys = null
     switch (key) {
       case Keys.CITIES:
-        markerLatLons = this.getCitiesMarkerLatLons()
+        markerSourceKeys = this.getCitiesMainMapMarkerSourceKeys()
         break
       case Keys.VANCOUVER:
-        markerLatLons = this.getVancouverMarkerLatLons()
+        markerSourceKeys = this.getVancouverMainMapMarkerSourceKeys()
         break
       default:
         break
     }
 
-    return markerLatLons
+    return markerSourceKeys
   }
 
-  getCitiesMarkerLatLons () {
-    return this.citiesMarkerLatLons
+  getCitiesMainMapMarkerSourceKeys () {
+    return this.citiesMainMapMarkerSourceKeys
   }
 
-  getVancouverMarkerLatLons () {
-    return this.vancouverMarkerLatLons
+  getVancouverMainMapMarkerSourceKeys () {
+    return this.vancouverMainMapMarkerSourceKeys
   }
 
-  getFullScreenMarkerLatLons (key) {
-    let fullScreenMarkerLatLons = null
+  getFullScreenMarkerSourceKeys (key) {
+    let fullScreenMarkerSourceKeys = null
     switch (key) {
       case Keys.CITIES:
-        fullScreenMarkerLatLons = this.getFullScreenCitiesMarkerLatLons()
+        fullScreenMarkerSourceKeys = this.getFullScreenCitiesMarkerSourceKeys()
         break
       case Keys.VANCOUVER:
-        fullScreenMarkerLatLons = this.getFullScreenVancouverMarkerLatLons()
+        fullScreenMarkerSourceKeys = this.getFullScreenVancouverMarkerSourceKeys()
         break
       default:
         break
     }
 
-    return fullScreenMarkerLatLons
+    return fullScreenMarkerSourceKeys
   }
 
-  getFullScreenCitiesMarkerLatLons () {
-    return this.fullScreenCitiesMarkerLatLons
+  getFullScreenCitiesMarkerSourceKeys () {
+    return this.fullScreenCitiesMarkerSourceKeys
   }
 
-  getFullScreenVancouverMarkerLatLons () {
-    return this.fullScreenVancouverMarkerLatLons
+  getFullScreenVancouverMarkerSourceKeys () {
+    return this.fullScreenVancouverMarkerSourceKeys
   }
 
   getFullScreen () {
@@ -423,29 +484,6 @@ class TSPstate {
 
   getComponentsThatNeedUpdating () {
     return this.componentsThatNeedUpdating
-  }
-
-  getNumFailedCalls (key) {
-    let numFailedCalls = null
-    switch (key) {
-      case Keys.CITIES:
-        numFailedCalls = this.getNumFailedCitiesCalls()
-        break
-      case Keys.VANCOUVER:
-        numFailedCalls = this.getNumFailedVancouverCalls()
-        break
-      default:
-        break
-    }
-    return numFailedCalls
-  }
-
-  getNumFailedCitiesCalls () {
-    return this.numFailedCitiesCalls
-  }
-
-  getNumFailedVancouverCalls () {
-    return this.numFailedVancouverCalls
   }
 
   getFirstRoute (key) {
@@ -605,25 +643,25 @@ class TSPstate {
     this.vancouverLines = value
   }
 
-  setSelectedNodes (graphKey, value) {
+  setSelectedNodeIds (graphKey, value) {
     switch (graphKey) {
       case Keys.CITIES:
-        this.setCitiesSelectedNodes(value)
+        this.setCitiesSelectedNodeIds(value)
         break
       case Keys.VANCOUVER:
-        this.setVancouverSelectedNodes(value)
+        this.setVancouverSelectedNodeIds(value)
         break
       default:
         break
     }
   }
 
-  setCitiesSelectedNodes (value) {
-    this.citiesSelectedNodes = value
+  setCitiesSelectedNodeIds (value) {
+    this.citiesSelectedNodeIds = value
   }
 
-  setVancouverSelectedNodes (value) {
-    this.vancouverSelectedNodes = value
+  setVancouverSelectedNodeIds (value) {
+    this.vancouverSelectedNodeIds = value
   }
 
   setSelectedMarkers (graphKey, value) {
@@ -647,46 +685,25 @@ class TSPstate {
     this.vancouverSelectedMarkers = value
   }
 
-  setMarkerLatLons (graphKey, value) {
+  setFullScreenMarkerSourceKeys (graphKey, value) {
     switch (graphKey) {
       case Keys.CITIES:
-        this.setCitiesMarkerLatLons(value)
+        this.setFullScreenCitiesMarkerSourceKeys(value)
         break
       case Keys.VANCOUVER:
-        this.setVancouverMarkerLatLons(value)
+        this.setFullScreenVancouverMarkerSourceKeys(value)
         break
       default:
         break
     }
   }
 
-  setCitiesMarkerLatLons (value) {
-    this.citiesMarkerLatLons = value
+  setFullScreenCitiesMarkerSourceKeys (value) {
+    this.fullScreenCitiesMarkerSourceKeys = value
   }
 
-  setVancouverMarkerLatLons (value) {
-    this.vancouverMarkerLatLons = value
-  }
-
-  setFullScreenMarkerLatLons (graphKey, value) {
-    switch (graphKey) {
-      case Keys.CITIES:
-        this.setFullScreenCitiesMarkerLatLons(value)
-        break
-      case Keys.VANCOUVER:
-        this.setFullScreenVancouverMarkerLatLons(value)
-        break
-      default:
-        break
-    }
-  }
-
-  setFullScreenCitiesMarkerLatLons (value) {
-    this.fullScreenCitiesMarkerLatLons = value
-  }
-
-  setFullScreenVancouverMarkerLatLons (value) {
-    this.fullScreenVancouverMarkerLatLons = value
+  setFullScreenVancouverMarkerSourceKeys (value) {
+    this.fullScreenVancouverMarkerSourceKeys = value
   }
 
   setFullScreen (value) {
@@ -722,27 +739,6 @@ class TSPstate {
     this.componentsThatNeedUpdating = value
   }
 
-  setNumFailedCalls (graphKey, value) {
-    switch (graphKey) {
-      case Keys.CITIES:
-        this.setNumFailedCitiesCalls(value)
-        break
-      case Keys.VANCOUVER:
-        this.setNumFailedVancouverCalls(value)
-        break
-      default:
-        break
-    }
-  }
-
-  setNumFailedCitiesCalls (value) {
-    this.numFailedCitiesCalls = value
-  }
-
-  setNumFailedVancouverCalls (value) {
-    this.numFailedVancouverCalls = value
-  }
-
   /**
    * This is the event handler for the 'reset' event. The event
    * listener is attached to newly created red lines in TSPstate.js > onTSPsolved().
@@ -754,7 +750,7 @@ class TSPstate {
    * @param {object} tspSolvedEventListenerInfo contains values needed to pass to the
    * 'tspSolvedEvent' event listener
    * @param {string} key one of the keys from Keys.js to identify the type of graph
-   *  (i.e. 'cities')
+   * (i.e. 'cities')
    */
   onReset (lineInfo, tspSolvedEventListenerInfo, key) {
     const oldLine = lineInfo.oldLine
@@ -767,7 +763,7 @@ class TSPstate {
     map.leafletElement.removeLayer(oldLine)
 
     let newLine = L.Routing.line(this.getLineRoute(key)[index], {
-      styles: TSPutils.getStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
+      styles: TSPutils.getRoutingLineStyles('bluePane', TSPutils.getGeeringupPrimaryColor())
     })
 
     const tspSolvedEventListener = (waypointsInSolution) => {
@@ -823,7 +819,7 @@ class TSPstate {
         map.leafletElement.removeLayer(line)
 
         let newLine = L.Routing.line(routes, {
-          styles: TSPutils.getStyles('redPane', TSPutils.getGeeringupSecondaryColor())
+          styles: TSPutils.getRoutingLineStyles('redPane', TSPutils.getGeeringupSecondaryColor())
         })
         const tspSolvedEventFn = (waypointsInSolution) => {
           const lineInfo = {
@@ -859,7 +855,7 @@ class TSPstate {
   }
 
   resetGraphStates (key) {
-    this.setSelectedNodes(key, new Set())
+    this.setSelectedNodeIds(key, new Set())
     this.setSelectedMarkers(key, new Set())
     this.setSolvedRouteIndexes(key, new Set())
   }

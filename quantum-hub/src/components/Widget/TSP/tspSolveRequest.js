@@ -52,7 +52,11 @@ function tspSolveRequest (graphParams, setters, consoleFns) {
       console.log(xhr.response.jobStatus)
     },
     (xhr) => {
-      postSolve(xhr, key, setters, consoleFns)
+      const tspSolveRequestObjects = {
+        setters: setters,
+        consoleFns: consoleFns
+      }
+      postSolve(xhr, key, tspSolveRequestObjects)
     },
     (xhr) => {
       consoleFns.outputToConsole('Something went wrong')
@@ -69,10 +73,17 @@ function tspSolveRequest (graphParams, setters, consoleFns) {
  * postSolve is called after the call to the server is completed.
  * It will handle any (most) errors, set the grid to a solved state if solved,
  * and report back to the user through the console.
+ * @param {object} xhr
+ * @param {string} key one of the keys from Keys.js to identify the type of graph
+ * (i.e. 'cities')
+ * @param {object} functions contains functions such as setters and console functions
  */
-function postSolve (xhr, key, setters, consoleFns) {
+function postSolve (xhr, key, functions) {
   const tspState = TSPstate.getInstance()
   const responseRoute = xhr.response.route
+
+  const setters = functions.setters
+  const consoleFns = functions.consoleFns
 
   if (xhr.status === 200) {
     if (responseRoute.length === 0 && xhr.response.output_message) {
