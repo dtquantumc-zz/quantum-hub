@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: MIT
+/*
+ * (C) Copyright 2020
+ * Diversifying Talent in Quantum Computing, Geering Up, UBC
+ */
 
 import 'leaflet-routing-machine'
 import { MapLayer, withLeaflet } from 'react-leaflet'
