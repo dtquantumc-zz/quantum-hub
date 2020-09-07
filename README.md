@@ -14,7 +14,7 @@ Authors:
 Listed alphabetically, the authors wishing to be credited are:
 - Haris Amiri
 - Ari Blondal (ari.blondal@gmail.com)
-- Tanraj Saran
+- Tanraj Saran (tsaran70@gmail.com)
 
 Project Information:
 ====================
