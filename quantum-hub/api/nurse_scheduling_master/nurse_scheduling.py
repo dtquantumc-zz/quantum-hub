@@ -222,7 +222,7 @@ def main(token=None, n_nurses=3, n_days=11, nurses_per_day=1):
     
     endpoint = 'https://cloud.dwavesys.com/sapi/'
     client = 'qpu'
-    solver = 'DW_2000Q_6'
+    solver = 'DW_2000Q_5'
     try:
         qpu_sampler = DWaveSampler(
             client=client,

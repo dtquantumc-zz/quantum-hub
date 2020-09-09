@@ -357,7 +357,7 @@ def TSP_solver(G, token=None):
     """
     endpoint = 'https://cloud.dwavesys.com/sapi/'
     client = 'qpu'
-    solver = 'DW_2000Q_6'
+    solver = 'DW_2000Q_5'
     try:
         qpu_sampler = DWaveSampler(
             client=client,

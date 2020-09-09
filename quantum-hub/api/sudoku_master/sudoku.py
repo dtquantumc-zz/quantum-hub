@@ -136,7 +136,7 @@ def main(matrix=None, token=None):
 
     endpoint = 'https://cloud.dwavesys.com/sapi/'
     client = 'qpu'
-    solver = 'DW_2000Q_6'
+    solver = 'DW_2000Q_5' # Consider changing this dynamically
     try:
         qpu_sampler = DWaveSampler(
             client=client,
