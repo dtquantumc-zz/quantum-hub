@@ -357,13 +357,13 @@ def TSP_solver(G, token=None):
     """
     endpoint = 'https://cloud.dwavesys.com/sapi/'
     client = 'qpu'
-    solver = 'DW_2000Q_5'
+    #solver = 'DW_2000Q_5' # Use this to specify a solver, but leave commented out to let D-Wave's system autochoose a solver
     try:
         qpu_sampler = DWaveSampler(
             client=client,
             endpoint=endpoint,
-            token=token,
-            solver=solver)
+            token=token)
+            #solver=solver)
     except Exception as e:
         print(e)
         return {'error':'Token not accepted'}

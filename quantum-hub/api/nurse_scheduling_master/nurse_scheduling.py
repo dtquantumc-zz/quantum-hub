@@ -222,13 +222,13 @@ def main(token=None, n_nurses=3, n_days=11, nurses_per_day=1):
     
     endpoint = 'https://cloud.dwavesys.com/sapi/'
     client = 'qpu'
-    solver = 'DW_2000Q_5'
+    #solver = 'DW_2000Q_5' # Use this to specify a solver, but leave commented out to let D-Wave's system autochoose a solver
     try:
         qpu_sampler = DWaveSampler(
             client=client,
             endpoint=endpoint,
-            token=token,
-            solver=solver)
+            token=token)
+            #solver=solver)
     except:
         return {'error':'Token not accepted'}
     sampler = LeapHybridSampler(token=token)
