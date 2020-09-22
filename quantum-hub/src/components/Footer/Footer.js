@@ -42,7 +42,7 @@ export default function Footer (props) {
           {leftLinks}
         </div>
         <div className={classes.right}>
-          &copy; 2020 Diversifying Talent in Quantum Computing, UBC, Geering Up
+          &copy; DTQC, Geering Up, UBC
         </div>
       </div>
     </footer>

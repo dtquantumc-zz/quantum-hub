@@ -16,6 +16,7 @@ import UBC from '../../images/ubc-logo-2018-crest-blue-rgb72.svg'
 import supercluster from '../../images/DTS_Dark_00.svg'
 import geeringupLogo from '../../images/GU_Icon_Blue.svg'
 import microsoftLogo from '../../images/msft.svg'
+import dwaveLogo from '../../images/dwave.svg'
 
 // core components
 import Button from '../../components/CustomButtons/Button.js'
@@ -43,6 +44,10 @@ export default function FooterLinks () {
   const microsoftTitle = 'Microsoft'
   const microsoftLink = 'https://www.microsoft.com/en-ca/'
   const microsoftDescription = 'Image of Microsoft\'s logo'
+
+  const dwaveTitle = 'D-Wave'
+  const dwaveLink = 'https://www.dwavesys.com/'
+  const dwaveDescription = 'Image of D-Wave\'s logo'
 
   return (
     <List className={classes.list}>
@@ -96,6 +101,24 @@ export default function FooterLinks () {
             className={classes.navLink}
           >
             <img src={geeringupLogo} alt={geeringupDescription} style={{ height: '42px' }} />
+          </Button>
+        </Tooltip>
+      </ListItem>
+
+      <ListItem className={classes.listItem}>
+        <Tooltip
+          id='dwave-tooltip'
+          title={dwaveTitle}
+          placement={window.innerWidth > 959 ? 'top' : 'left'}
+          classes={{ tooltip: classes.tooltip }}
+        >
+          <Button
+            color='transparent'
+            href={dwaveLink}
+            target='_blank'
+            className={classes.navLink}
+          >
+            <img src={dwaveLogo} alt={dwaveDescription} style={{ height: '34px', paddingTop: '5px' }} />
           </Button>
         </Tooltip>
       </ListItem>
