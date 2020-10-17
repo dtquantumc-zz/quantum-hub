@@ -45,11 +45,10 @@ Partners
 --------
 Thank you to our project partners:
 - UBC Geering Up
-- DTQC
 - Canadian Digital Technology Supercluster
-- The University of British Columbia
 - D-Wave Systems
 - Microsoft
+- The University of British Columbia 
 
 How To Install / Develop:
 =========================
