@@ -21,7 +21,7 @@ Project Information:
 
 Quantum Hub
 -----------
-The Quantum Hub is a website with a backend connecting to D-wave's Quantum Annealer.
+The [Quantum Hub](http://quantum-hub-dev.us-west-2.elasticbeanstalk.com/) is a website with a backend connecting to D-wave's Quantum Annealer.
 It will be used for educational purposes as well as Geering Up workshops and camps.
 
 DTQC
@@ -46,7 +46,7 @@ Partners
 Thank you to our project partners:
 - UBC Geering Up
 - DTQC
-- Digital Technology Supercluster
+- Canadian Digital Technology Supercluster
 - The University of British Columbia
 - D-Wave Systems
 - Microsoft
