@@ -1,44 +1,44 @@
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 16px;
+  list-style-type: none;
+  margin: 0;
+  padding: 16px;
 }
 
 .scroll_console {
-    overflow-y: visible;
-    overflow-x: hidden;
-    background-color: #67cfee;
-    color: #ffffff;
-    font-family: monospace;
-    text-emphasis-color: #ffffff;
-    height: calc((466px + 30px) - (18px + 2px));
-    list-style-type: none;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    scroll-padding-bottom: 16px;
+  overflow-y: visible;
+  overflow-x: hidden;
+  background: linear-gradient(#2a3f43, #1d5561);
+  color: #ffffff;
+  font-family: monospace;
+  text-emphasis-color: #ffffff;
+  height: calc((466px + 30px) - (18px + 2px));
+  list-style-type: none;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border: 1px solid #000000;
+  scroll-padding-bottom: 16px;
 }
 
 .scroll_console::selection {
-    background-color: #ffffff;
-    color: #67cfee;
+  background-color: #ffffff;
+  color: #67cfee;
 }
 
 .scroll_console::-moz-selection {
-    background-color: #ffffff;
-    color: #67cfee;
+  background-color: #ffffff;
+  color: #67cfee;
 }
 
 .scroll_head {
-    background-color: #67cfee;
-    color: #ffffff;
-    font-family: monospace;
-    text-emphasis-color: #ffffff;
-    height: 16px;
-    list-style-type: none;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-bottom-right-radius: 1px solid rgba(0, 0, 0, 0.5);
-    text-align: center;
+  background-color: #1d5561;
+  color: #ffffff;
+  font-family: monospace;
+  text-emphasis-color: #ffffff;
+  height: 16px;
+  list-style-type: none;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border: 1px solid #1a444e;
+  border-bottom-right-radius: 1px solid rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
