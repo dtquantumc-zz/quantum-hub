@@ -110,7 +110,7 @@ function App (props) {
       key='howItWorksCard'
     />
 
-  const gridContainerChildren = [terminalWindow, widgetComponent, howItWorksCard]
+  const gridContainerChildren = [howItWorksCard, widgetComponent, terminalWindow]
 
   return (
     <div>
