@@ -1,49 +1,49 @@
 ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 16px;
+    list-style-type: none;
+    margin: 0;
+    padding: 16px;
 }
 
 .scroll_console,
 .scroll_head {
-  color: #ffffff;
-  text-emphasis-color: #ffffff;
-  font-family: Menlo;
-  list-style-type: none;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: #ffffff;
+    text-emphasis-color: #ffffff;
+    font-family: Menlo;
+    list-style-type: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .scroll_console {
-  overflow-y: visible;
-  overflow-x: hidden;
-  background: linear-gradient(300deg, #1d5561, #1b383e);
-  height: 250px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  border: 1px solid #000000;
-  scroll-padding-bottom: 16px;
-  font-size: 12px;
-  line-height: 17px;
-  letter-spacing: 0.045em;
+    overflow-y: visible;
+    overflow-x: hidden;
+    background: linear-gradient(300deg, #1d5561, #1b383e);
+    height: 250px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid #000000;
+    scroll-padding-bottom: 16px;
+    font-size: 12px;
+    line-height: 17px;
+    letter-spacing: 0.045em;
 }
 
 .scroll_console::selection {
-  background-color: #ffffff;
-  color: #67cfee;
+    background-color: #ffffff;
+    color: #67cfee;
 }
 
 .scroll_console::-moz-selection {
-  background-color: #ffffff;
-  color: #67cfee;
+    background-color: #ffffff;
+    color: #67cfee;
 }
 
 .scroll_head {
-  background-color: #1d5561;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border: 1px solid #1a444e;
-  border-bottom-right-radius: 1px solid rgba(0, 0, 0, 0.5);
-  text-align: right;
-  font-weight: bold;
-  font-size: 11px;
+    background-color: #1d5561;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 1px solid #1a444e;
+    border-bottom-right-radius: 1px solid rgba(0, 0, 0, 0.5);
+    text-align: right;
+    font-weight: bold;
+    font-size: 11px;
 }
