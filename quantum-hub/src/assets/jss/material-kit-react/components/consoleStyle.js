@@ -6,13 +6,24 @@
 
 const consoleStyle = theme => ({
   console: {
-    width: '286.97px',
-    // width: 'calc(((1140px - (462.047px + 2 * 8px)) / 2) - 2 * 8px)',
+    width: '340px',
     margin: theme.spacing(1)
     // '& > *': {
     //   // width: 'calc(314.9765px - (2 * 15px))',
     //   margin: 'auto'
     // }
+  },
+  toolbar: {
+    minHeight: 5,
+    padding: 0,
+  },
+  consoleButton: {
+    padding: 0,
+    paddingLeft: 20,
+  },
+  consoleTitle: {
+    paddingRight: 20,
+    flexGrow: 1,
   }
 })
 

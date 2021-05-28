@@ -145,7 +145,7 @@ const headerStyle = {
   },
   geeringupPrimary: {
     color: '#fff',
-    backgroundColor: '#50c8eb'
+    backgroundColor: '#87D3E4'
   },
   drawerPaper: {
     border: 'none',

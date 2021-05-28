@@ -27,7 +27,7 @@ const latticeStyle = theme => ({
     marginRight: '0'
   },
   instructions: {
-    color: 'rgba(0, 0, 0, 0.87)',
+    color: 'rgba(29, 85, 97, 1)',
     textAlign: 'center'
   },
   dialogContent: {

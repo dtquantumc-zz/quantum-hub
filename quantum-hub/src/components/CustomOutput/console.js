@@ -6,6 +6,9 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar'
+import RemoveIcon from '@material-ui/icons/Remove';
 import PropTypes from 'prop-types'
 import XMLHttpRequest from 'xhr2'
 
@@ -81,12 +84,20 @@ function Console (props) {
   return (
     <div className={classes.console}>
       <div id='console_head' className='scroll_head'>
-        {props.title ? props.title : 'Console'}{IP ? `@${IP}` : ''}
+        <Toolbar className={classes.toolbar}>
+          <IconButton className={classes.consoleButton} edge="start" color="inherit">
+            <RemoveIcon />
+          </IconButton>
+          <div className={classes.consoleTitle}>
+            {props.title ? props.title : 'Console'}{IP ? `@${IP}` : ''}
+          </div>
+        </Toolbar>
       </div>
       <div id='console' className='scroll_console' ref={scrollRef}>
         <ul>
+          <li>> Quantum Application Console</li>
           {lines.map((line, index) => {
-            return <li key={index}>{line}</li>
+            return <li key={index}>> {line}</li>
           })}
           <li ref={divBotRef} />
         </ul>

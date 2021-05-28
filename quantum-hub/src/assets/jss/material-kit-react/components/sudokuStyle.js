@@ -9,7 +9,7 @@ const sudokuStyle = theme => ({
     width: '476px',
     margin: theme.spacing(1),
     '& > *': {
-      color: 'rgba(0, 0, 0, 0.87)'
+      color: 'rgba(29, 85, 97, 1)'
     }
   },
   sudokuInput: {
