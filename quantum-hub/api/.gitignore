@@ -1,3 +1,6 @@
 # Pythonic Gitignores
 venv
 __pycache__
+
+# API Token
+token.txt

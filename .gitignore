@@ -8,3 +8,6 @@
 
 # Deployment local script
 dump.rdb
+
+# Python virtual environment
+venv
