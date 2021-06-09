@@ -17,12 +17,12 @@ ul {
     overflow-y: visible;
     overflow-x: hidden;
     background: linear-gradient(300deg, #1d5561, #1b383e);
-    height: 250px;
+    height: 270px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     border: 1px solid #000000;
     scroll-padding-bottom: 16px;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 17px;
     letter-spacing: 0.045em;
 }
@@ -45,5 +45,5 @@ ul {
     border-bottom-right-radius: 1px solid rgba(0, 0, 0, 0.5);
     text-align: right;
     font-weight: bold;
-    font-size: 11px;
+    font-size: 12px;
 }

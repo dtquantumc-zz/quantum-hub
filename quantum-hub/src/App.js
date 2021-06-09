@@ -96,21 +96,21 @@ function App (props) {
       )
     })
 
-  const terminalWindow =
-    <Console
+  const terminalWindowAndGameInfo =
+    <div>
+      <Console
       textLines={textLines}
       title={widgetList[widget].name}
       key='terminalWindow'
       getIP={props.live}
     />
+      <DescriptionCard
+        widget={widget}
+        key='howItWorksCard'
+      />
+    </div>
 
-  const howItWorksCard =
-    <DescriptionCard
-      widget={widget}
-      key='howItWorksCard'
-    />
-
-  const gridContainerChildren = [howItWorksCard, widgetComponent, terminalWindow]
+  const gridContainerChildren = [widgetComponent, terminalWindowAndGameInfo]
 
   return (
     <div>
