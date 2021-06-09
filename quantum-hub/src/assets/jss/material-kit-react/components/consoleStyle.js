@@ -6,12 +6,6 @@
 
 const consoleStyle = theme => ({
   console: {
-    [theme.breakpoints.up('md')]: {
-      width: '340px',
-    },
-    [theme.breakpoints.up('lg')]: {
-      width: '440px',
-    },
     margin: theme.spacing(3)
     // '& > *': {
     //   // width: 'calc(314.9765px - (2 * 15px))',

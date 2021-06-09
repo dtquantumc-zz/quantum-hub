@@ -97,7 +97,7 @@ function App (props) {
     })
 
   const terminalWindowAndGameInfo =
-    <div>
+    <div className={classes.rightColumn}>
       <Console
       textLines={textLines}
       title={widgetList[widget].name}
