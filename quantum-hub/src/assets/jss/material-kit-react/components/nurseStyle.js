@@ -7,7 +7,7 @@
 const nurseStyle = theme => ({
   nurseRoot: {
     width: '476px',
-    margin: theme.spacing(1)
+    margin: theme.spacing(3)
   },
   nurseInput: {
     display: 'flex',

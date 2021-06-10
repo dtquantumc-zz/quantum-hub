@@ -9,7 +9,7 @@
 const IsingStyle = theme => ({
   isingRoot: {
     width: '476px',
-    margin: theme.spacing(1)
+    margin: theme.spacing(3)
   },
   isingInput: {
     display: 'flex',
