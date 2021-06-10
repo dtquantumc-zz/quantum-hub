@@ -8,9 +8,8 @@ import { cardTitle } from '../../material-kit-react.js'
 
 const descriptionCardStyle = theme => ({
   container: {
-    width: '286.97px',
     // width: 'calc(((1140px - (462.047px + 2 * 8px)) / 2) - 2 * 8px)',
-    margin: theme.spacing(1)
+    margin: theme.spacing(3)
   },
   descriptionCard: {
     margin: '0',

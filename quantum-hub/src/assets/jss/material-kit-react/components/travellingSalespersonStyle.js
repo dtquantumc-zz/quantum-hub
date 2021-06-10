@@ -10,7 +10,7 @@ const travellingSalespersonStyle = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     '& > *': {
-      margin: theme.spacing(1),
+      margin: theme.spacing(3),
       boxShadow: 'none'
     }
   },

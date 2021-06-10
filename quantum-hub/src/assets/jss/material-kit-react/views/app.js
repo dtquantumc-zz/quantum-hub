@@ -16,7 +16,7 @@
 
 import { container, title } from '../../material-kit-react.js'
 
-const appStyle = {
+const appStyle = theme => ({
   container: {
     zIndex: '12',
     color: '#FFFFFF',
@@ -54,6 +54,14 @@ const appStyle = {
       marginTop: '8px'
     }
   },
+  rightColumn: {
+    [theme.breakpoints.up('md')]: {
+      width: '340px',
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '440px',
+    },
+  },
   nurseSchedulingInput: {
     justifyContent: 'center'
   },
@@ -78,6 +86,6 @@ const appStyle = {
       backgroundColor: '#D96262'
     }
   }
-}
+})
 
 export default appStyle

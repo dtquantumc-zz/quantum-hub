@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 
 // core components
 // import QPUswitch from './components/Switch/QPUswitch.js'
+import ButtonGroup from './components/ButtonGroup/ButtonGroup.js'
 import Console from './components/CustomOutput/console.js'
 import DescriptionCard from './components/Card/DescriptionCard.js'
 
@@ -75,6 +76,12 @@ function App (props) {
     setTextLines([...textLines])
   }
 
+  const gameMenu =
+    <ButtonGroup
+      key='gameMenu'
+      setWidget={setWidget}
+    />
+
   const widgetComponent =
     Object.keys(widgetList).map((wid) => {
       const WidC = widgetList[wid].component
@@ -96,21 +103,21 @@ function App (props) {
       )
     })
 
-  const terminalWindow =
-    <Console
+  const terminalWindowAndGameInfo =
+    <div className={classes.rightColumn}>
+      <Console
       textLines={textLines}
       title={widgetList[widget].name}
       key='terminalWindow'
       getIP={props.live}
     />
+      <DescriptionCard
+        widget={widget}
+        key='howItWorksCard'
+      />
+    </div>
 
-  const howItWorksCard =
-    <DescriptionCard
-      widget={widget}
-      key='howItWorksCard'
-    />
-
-  const gridContainerChildren = [howItWorksCard, widgetComponent, terminalWindow]
+  const gridContainerChildren = [gameMenu, widgetComponent, terminalWindowAndGameInfo]
 
   return (
     <div>
