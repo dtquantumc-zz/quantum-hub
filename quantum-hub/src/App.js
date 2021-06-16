@@ -78,7 +78,7 @@ function App (props) {
   }
 
   const resetConsole = () => {
-    textLines = []
+    textLines.length = 0
     setTextLines(textLines)
   }
 
