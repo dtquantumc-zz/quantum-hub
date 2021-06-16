@@ -18,7 +18,7 @@ const buttonGroupStyle = theme => ({
   root: {
     display: 'flex',
     '& > *': {
-      margin: theme.spacing(3),
+      margin: theme.spacing(3)
     },
   },
   menuItem: {
@@ -26,8 +26,8 @@ const buttonGroupStyle = theme => ({
     textTransform: 'none',
     color: '#43413E',
     fontWeight: '400',
-    fontSize: '16px',
-    padding: '0.5rem 1.5rem',
+    fontSize: '15px',
+    padding: '0.5rem 1.3rem',
   },
 });
 

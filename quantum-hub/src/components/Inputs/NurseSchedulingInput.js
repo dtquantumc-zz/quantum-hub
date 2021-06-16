@@ -121,7 +121,10 @@ export default function NurseSchedulingInput (props) {
       {/* </CardBody> */}
       <div className={classes.cardFooter}>
         <Button
+          className={classes.detailButton}
           color='geeringupSecondary'
+          size='md'
+          round
           onClick={props.onSolve}
           disabled={numNursesError || numDaysError || props.disabled}
         >

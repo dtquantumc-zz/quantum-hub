@@ -6,7 +6,15 @@
 
 const nurseStyle = theme => ({
   nurseRoot: {
-    width: '476px',
+    [theme.breakpoints.up('md')]: {
+      width: '470px'
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '540px'
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: '600px'
+    },
     margin: theme.spacing(3)
   },
   nurseInput: {
@@ -23,17 +31,23 @@ const nurseStyle = theme => ({
     color: '#50c8eb'
   },
   buttonContainer: {
-    display: 'flex'
+    display: 'flex',
+    marginTop: '25px',
   },
   detailButton: {
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
+    width: '200px',
+    height: '45px'
   },
   instructions: {
-    color: 'rgba(0, 0, 0, 0.87)',
+    color: 'rgba(29, 85, 97, 1)',
     textAlign: 'center',
     padding: '0.9375rem',
-    paddingBottom: '0'
+    paddingBottom: '0',
+    fontSize: '17px',
+    fontWeight: '600',
+    letterSpacing: '0.045em'
   },
   loading: {
     '&$instructions': {

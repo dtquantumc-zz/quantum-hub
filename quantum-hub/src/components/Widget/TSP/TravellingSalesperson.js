@@ -306,14 +306,20 @@ function TravellingSalesperson (props) {
       </div>
       <div className={classes.tspInput}>
         <Button
-          color='geeringupPrimary'
+          className={classes.detailButton}
+          color='geeringupSecondary'
+          size='md'
+          round
           disabled={loading || (getNumSelectedNodes() === 0 && !tspState.getIsPathSolved(key))}
           onClick={onResetClick}
         >
           Reset
         </Button>
         <Button
+          className={classes.detailButton}
           color='geeringupSecondary'
+          size='md'
+          round
           disabled={loading || (getNumSelectedNodes() < 3 && getNumSelectedNodes() !== 0) || getIsPathSolved()}
           onClick={() => {
             setLoading(true)
@@ -336,7 +342,10 @@ function TravellingSalesperson (props) {
           Solve
         </Button>
         <Button
-          color='geeringupPrimary'
+          className={classes.detailButton}
+          color='geeringupSecondary'
+          size='md'
+          round
           disabled={loading}
           onClick={() => {
             setLoading(true)

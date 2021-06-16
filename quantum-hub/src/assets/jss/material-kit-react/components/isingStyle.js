@@ -8,7 +8,15 @@
 
 const IsingStyle = theme => ({
   isingRoot: {
-    width: '476px',
+    [theme.breakpoints.up('md')]: {
+      width: '470px'
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '540px'
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: '600px'
+    },
     margin: theme.spacing(3)
   },
   isingInput: {
@@ -26,11 +34,14 @@ const IsingStyle = theme => ({
     marginLeft: '0',
     marginRight: '0',
     marginTop: '0',
-    marginBottom: '0'
+    marginBottom: '0',
+    width: '145px',
+    height: '45px'
   },
   instructions: {
     color: 'rgba(0, 0, 0, 0.87)',
-    textAlign: 'center'
+    textAlign: 'center',
+    letterSpacing: '0.045em'
   },
   dialogContent: {
     ' & > *': {

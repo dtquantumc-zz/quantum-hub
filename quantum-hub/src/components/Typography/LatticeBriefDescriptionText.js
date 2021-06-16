@@ -11,16 +11,16 @@ import Typography from '@material-ui/core/Typography'
 export default function LatticeBriefDescriptionText () {
   return (
     <>
-      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
+      <Typography align='left' paragraph variant='body1' color='textSecondary' component='p'>
         This is a two-colouring problem on a hexagonal lattice.
         With only two colours, make the fewest possible neighbours share the same colour.
       </Typography>
-      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
+      <Typography align='left' paragraph variant='body1' color='textSecondary' component='p'>
         To play, you design your own grid or use a randomly generated one.
         After "locking in" your grid, try to minimize neighbouring nodes
         with the same colour!
       </Typography>
-      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
+      <Typography align='left' paragraph variant='body1' color='textSecondary' component='p'>
         After trying to optimize your own grid, you can then give the layout
         to D-wave's quantum computer, which will run this optimization problem
         50 times on its quantum computer and return the best result.

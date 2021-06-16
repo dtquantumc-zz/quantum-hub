@@ -33,7 +33,7 @@ const headerStyle = {
     display: 'flex',
     border: '0',
     borderRadius: '0',
-    padding: '6px 0',
+    padding: '12px 0',
     marginBottom: '12px',
     color: '#555',
     width: '100%',

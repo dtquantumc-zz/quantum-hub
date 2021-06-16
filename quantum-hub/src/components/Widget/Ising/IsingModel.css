@@ -56,15 +56,20 @@
 }
 
 .timeText{
-  color: black;
+  color: rgba(29, 85, 97, 1);
+  font-weight: 600;
   padding: 8px 0;
   padding-right: 16px;
   width: min-content;
+  letter-spacing: 0.045em;
 }
 
 .resultText{
-  color: black;
-  padding: 0px;
+  color: rgba(29, 85, 97, 1);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 0.045em;
+  padding: 10px 0px;
   padding-left: 16px;
   min-width: 130px;
 }
@@ -72,6 +77,10 @@
 .inside{
   width: min-content;
   align-self: flex-start;
+  color: rgba(29, 85, 97, 1);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 0.045em;
 }
 
 .contain{
@@ -93,6 +102,6 @@
 }
 
 .sliderContainer{
-  margin-top: 3px;
+  margin-top: 4px;
   width: 100%;
 }

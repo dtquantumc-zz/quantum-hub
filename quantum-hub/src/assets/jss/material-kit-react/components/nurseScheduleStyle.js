@@ -23,7 +23,7 @@ const nurseScheduleStyle = {
       },
       MuiPickersToolbar: {
         toolbar: {
-          backgroundColor: '#50c8eb'
+          backgroundColor: '#87d3e4'
         }
       },
       MuiPickersToolbarButton: {
@@ -40,7 +40,7 @@ const nurseScheduleStyle = {
         },
         daySelected: {
           '&, &:hover': {
-            backgroundColor: '#50c8eb'
+            backgroundColor: '#87d3e4'
           }
         },
         dayDisabled: {

@@ -132,7 +132,8 @@ function LatticeColourer (props) {
         <Button
           className={classes.detailButton}
           color='geeringupSecondary'
-          size='sm'
+          size='md'
+          round
           onClick={() => {
             if (mode === 'grid') {
               setMode('marble')
@@ -149,7 +150,8 @@ function LatticeColourer (props) {
         <Button
           className={classes.detailButton}
           color='geeringupSecondary'
-          size='sm'
+          size='md'
+          round
           disabled={false}
           onClick={() => {
             if (mode === 'marble') {
@@ -176,7 +178,8 @@ function LatticeColourer (props) {
         <Button
           className={classes.detailButton}
           color='geeringupSecondary'
-          size='sm'
+          size='md'
+          round
           disabled={mode !== 'marble'}
           onClick={() => {
             setLattice(LatticeVars.bestLattice[0].map((row) => [...row]))
@@ -187,7 +190,8 @@ function LatticeColourer (props) {
         <Button
           className={classes.detailButton}
           color='geeringupSecondary'
-          size='sm'
+          size='md'
+          round
           disabled={mode !== 'marble' || LatticeVars.quantumLattice[0].length === 0}
           onClick={() => {
             setLattice(LatticeVars.quantumLattice[0].map((row) => [...row]))

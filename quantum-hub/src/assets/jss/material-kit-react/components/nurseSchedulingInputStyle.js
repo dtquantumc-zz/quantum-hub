@@ -106,6 +106,12 @@ const nurseSchedulingInputStyle = {
     borderRadius: '6px',
     justifyContent: 'center !important'
   },
+  detailButton: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: '200px',
+    height: '45px'
+  },
   socialLine: {
     marginTop: '1rem',
     textAlign: 'center',

@@ -184,7 +184,8 @@ function IsingModel (props) {
                 disabled={simulating}
                 className={classes.detailButton}
                 color='geeringupSecondary'
-                size='sm'
+                size='md'
+                round
                 onClick={() => {
                   startSim()
                 }}

@@ -20,15 +20,22 @@ const latticeStyle = theme => ({
   },
   buttonContainer: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-around',
+    paddingBottom: '5px'
   },
   detailButton: {
     marginLeft: '0',
-    marginRight: '0'
+    marginRight: '0',
+    width: '200px',
+    height: '45px'
   },
   instructions: {
     color: 'rgba(29, 85, 97, 1)',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: '600',
+    fontSize: '17px',
+    letterSpacing: '0.045em',
+    paddingBottom: '25px'
   },
   dialogContent: {
     ' & > *': {

@@ -13,8 +13,7 @@ const descriptionCardStyle = theme => ({
   },
   descriptionCard: {
     margin: '0',
-    boxShadow: 'none',
-    border: '1px solid rgba(0, 0, 0, 0.12)'
+    boxShadow: 'none'
   },
   form: {
     margin: '0'

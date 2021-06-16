@@ -15,7 +15,16 @@ const travellingSalespersonStyle = theme => ({
     }
   },
   mapContainer: {
-    width: '492px'
+    [theme.breakpoints.up('md')]: {
+      width: '470px'
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '540px'
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: '600px'
+    },
+    margin: theme.spacing(3)
   },
   loadingContainer: {
     position: 'relative',
@@ -52,10 +61,16 @@ const travellingSalespersonStyle = theme => ({
   },
   tspInput: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     '& > *': {
       margin: theme.spacing(1)
     }
+  },
+  detailButton: {
+    marginLeft: '0',
+    marginRight: '0',
+    width: '145px',
+    height: '45px'
   },
   dialogContent: {
     overflowY: 'hidden'

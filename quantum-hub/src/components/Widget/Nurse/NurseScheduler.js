@@ -120,7 +120,8 @@ function NurseScheduler (props) {
         <Button
           className={classes.detailButton}
           color='geeringupSecondary'
-          size='sm'
+          size='md'
+          round
           onClick={handleClickOpen('paper')}
           disabled={loading}
         >
