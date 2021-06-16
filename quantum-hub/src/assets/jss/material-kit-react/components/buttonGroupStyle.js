@@ -20,6 +20,9 @@ const buttonGroupStyle = theme => ({
     '& > *': {
       margin: theme.spacing(3)
     },
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   },
   menuItem: {
     justifyContent: 'flex-start',
