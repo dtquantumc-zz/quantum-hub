@@ -52,6 +52,7 @@ function App (props) {
     }
     window.history.replaceState({ app: wid }, widgetList[wid].brand, widgetList[wid].route)
     overrideWidget(wid)
+    resetConsole()
   }
 
   if (widgetOverride && widgetList[widgetOverride]) {
@@ -74,6 +75,11 @@ function App (props) {
   const appendToConsole = function (word) {
     textLines[textLines.length - 1] += word
     setTextLines([...textLines])
+  }
+
+  const resetConsole = () => {
+    textLines = []
+    setTextLines(textLines)
   }
 
   const gameMenu =
