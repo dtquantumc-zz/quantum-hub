@@ -19,9 +19,6 @@ const buttonGroupStyle = theme => ({
     display: 'flex',
     '& > *': {
       margin: theme.spacing(3)
-    },
-    [theme.breakpoints.down('sm')]: {
-      display: 'none'
     }
   },
   menuItem: {

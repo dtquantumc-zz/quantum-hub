@@ -222,6 +222,15 @@ const buttonStyle = {
       backgroundColor: 'rgba(29, 85, 97, 0.3)'
     }
   },
+  geeringupSecondaryModified: {
+    color: '#FFF',
+    border: '3px solid #1D5561',
+    backgroundColor: '#1D5561',
+    '&:hover,&:focus': {
+      color: '#1D5561',
+      backgroundColor: 'rgba(29, 85, 97, 0.3)'
+    }
+  },
   simple: {
     '&,&:focus,&:hover,&:visited': {
       color: '#FFFFFF',
