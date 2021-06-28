@@ -3,6 +3,8 @@
  * (C) Copyright 2020
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
+const breakpoints = createBreakpoints({})
 
 const nurseScheduleStyle = {
   badge: {
@@ -18,12 +20,16 @@ const nurseScheduleStyle = {
       MuiPickersStaticWrapper: {
         staticWrapperRoot: {
           borderRadius: '6px',
-          border: '1px solid rgba(0, 0, 0, 0.12)'
+          border: '1px solid rgba(0, 0, 0, 0.12)',
+          overflow: 'scroll'
         }
       },
       MuiPickersToolbar: {
         toolbar: {
-          backgroundColor: '#87d3e4'
+          backgroundColor: '#87d3e4',
+          [breakpoints.down('sm')]: {
+            display: 'none'
+          }
         }
       },
       MuiPickersToolbarButton: {

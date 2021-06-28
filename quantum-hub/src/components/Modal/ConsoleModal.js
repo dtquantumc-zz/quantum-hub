@@ -20,42 +20,14 @@ import Modal from '@material-ui/core/Modal';
 import Button from '../../components/CustomButtons/Button.js'
 import Console from '../../components/CustomOutput/console.js'
 import widgetList from '../../components/Widget/widgetList'
+import styles from '../../assets/jss/material-kit-react/components/consoleModalStyle.js'
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    position: 'absolute',
-    width: '70%'
-  },
-  buttonContainer: {
-    display: 'flex'
-  },
-  detailButton: {
-    marginLeft: '7.5%',
-    marginRight: '7.5%',
-    height: '45px',
-    width: '85%'
-  },
-}));
+const useStyles = makeStyles(styles)
 
 function ConsoleModal (props) {
   const classes = useStyles()
-  const [modalStyle] = React.useState(getModalStyle)
-  const [open, setOpen] = React.useState(false)
+
+  const [open, setOpen] = useState(false)
 
   const handleOpen = () => {
     setOpen(true);
@@ -66,7 +38,7 @@ function ConsoleModal (props) {
   };
 
   const body = (
-    <div style={modalStyle} className={classes.paper}>
+    <div className={classes.modalContainer}>
       <Console
         textLines={props.textLines}
         title={widgetList[props.widget].name}
@@ -90,8 +62,6 @@ function ConsoleModal (props) {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
       >
         {body}
       </Modal>

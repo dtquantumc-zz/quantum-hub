@@ -4,7 +4,7 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // core components
 // import QPUswitch from './components/Switch/QPUswitch.js'
@@ -43,17 +43,24 @@ function App (props) {
   const [widgetOverride, overrideWidget] = useState('')
   var [textLines, setTextLines] = useState([])
   const [loading, setLoading] = useState(false)
-  const [width, setWidth] = React.useState(window.innerWidth);
-  const breakpoint = 990;
+  const breakpoint = 600;
+  const [width, setWidth] = useState(window.innerWidth);
 
-  React.useEffect(() => {
-    const handleWindowResize = () => setWidth(window.innerWidth)
-    /* event listener that updates the "width" state variable when the window size changes */
-    window.addEventListener("resize", handleWindowResize);
+  function handleWindowResize() {
+    setWidth(window.innerWidth);
+  }
 
-    // Return a function from the effect that removes the event listener
-    return () => window.removeEventListener("resize", handleWindowResize);
+  useEffect(() => {
+    // event listener that updates the "width" state variable when the window size changes 
+    window.addEventListener('resize', handleWindowResize);
+
+    // return a function from the effect that removes the event listener
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    }
   }, []);
+
+  let isMobile = (width <= breakpoint)
 
   const resetConsole = () => {
     textLines.length = 0
@@ -96,7 +103,7 @@ function App (props) {
 
   const gameMenu =
     <div>
-      {width >= breakpoint && (<ButtonGroup
+      {!isMobile && (<ButtonGroup
         key='gameMenu'
         setWidget={setWidget}
       />)}
@@ -118,8 +125,9 @@ function App (props) {
             loading={loading}
             setLoading={setLoading}
             key={wid + 'Widget'}
+            isMobile={isMobile}
           />
-          {width < breakpoint && (<ConsoleModal 
+          {isMobile && (<ConsoleModal 
             widget={widget}
             textLines={textLines}
             title={widgetList[widget].name}
@@ -132,7 +140,7 @@ function App (props) {
 
   const terminalWindowAndGameInfo =
     <div className={classes.rightColumn}>
-      {width >= breakpoint && (<Console
+      {!isMobile && (<Console
         textLines={textLines}
         title={widgetList[widget].name}
         key='terminalWindow'

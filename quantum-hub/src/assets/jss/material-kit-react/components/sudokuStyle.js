@@ -6,6 +6,9 @@
 
 const sudokuStyle = theme => ({
   sudokuRoot: {
+    [theme.breakpoints.down('md')]: {
+      width: '340px'
+    },
     [theme.breakpoints.up('md')]: {
       width: '470px'
     },
@@ -15,7 +18,8 @@ const sudokuStyle = theme => ({
     [theme.breakpoints.up('xl')]: {
       width: '600px'
     },
-    margin: theme.spacing(3),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
     '& > *': {
       color: 'rgba(29, 85, 97, 1)'
     }
@@ -23,6 +27,9 @@ const sudokuStyle = theme => ({
   sudokuInput: {
     display: 'flex',
     justifyContent: 'space-evenly',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'space-between'
+    },
     '& > *': {
       margin: theme.spacing(1)
     }
@@ -31,7 +38,11 @@ const sudokuStyle = theme => ({
     marginLeft: '0',
     marginRight: '0',
     width: '145px',
-    height: '45px'
+    height: '45px',
+    [theme.breakpoints.down('sm')]: {
+      width: '105px',
+      height: '35px'
+    }
   },
   instructions: {
     color: 'rgba(29, 85, 97, 1)',

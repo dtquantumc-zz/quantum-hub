@@ -55,6 +55,9 @@ const appStyle = theme => ({
     }
   },
   rightColumn: {
+    [theme.breakpoints.down('md')]: {
+      width: '330px'
+    },
     [theme.breakpoints.up('md')]: {
       width: '350px',
     },

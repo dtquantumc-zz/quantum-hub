@@ -6,6 +6,9 @@
 
 const nurseStyle = theme => ({
   nurseRoot: {
+    [theme.breakpoints.down('md')]: {
+      width: '330px'
+    },
     [theme.breakpoints.up('md')]: {
       width: '470px'
     },
@@ -15,7 +18,8 @@ const nurseStyle = theme => ({
     [theme.breakpoints.up('xl')]: {
       width: '600px'
     },
-    margin: theme.spacing(3)
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1)
   },
   nurseInput: {
     display: 'flex',
@@ -38,7 +42,10 @@ const nurseStyle = theme => ({
     marginLeft: 'auto',
     marginRight: 'auto',
     width: '200px',
-    height: '45px'
+    height: '45px',
+    [theme.breakpoints.down('md')]: {
+      height: '35px'
+    }
   },
   instructions: {
     color: 'rgba(29, 85, 97, 1)',

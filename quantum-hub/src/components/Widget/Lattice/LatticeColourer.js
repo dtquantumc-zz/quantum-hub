@@ -119,7 +119,7 @@ function LatticeColourer (props) {
           setLattice={setLattice}
           conflicts={conflicts}
           mode={mode}
-          width={476}
+          width={props.isMobile ? 300 : 476}
         />
         {loading && <CircularProgress size={68} className={classes.latticeProgress} />}
       </div>

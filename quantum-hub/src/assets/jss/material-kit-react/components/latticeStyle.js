@@ -8,8 +8,16 @@
 
 const latticeStyle = theme => ({
   latticeRoot: {
-    width: '476px',
-    margin: theme.spacing(3)
+    [theme.breakpoints.down('sm')]: {
+      width: '330px'
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '476px',
+      marginLeft: theme.spacing(4),
+      marginRight: theme.spacing(4)
+    },
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1)
   },
   latticeInput: {
     display: 'flex',
@@ -21,13 +29,20 @@ const latticeStyle = theme => ({
   buttonContainer: {
     display: 'flex',
     justifyContent: 'space-around',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'space-between'
+    },
     paddingBottom: '5px'
   },
   detailButton: {
     marginLeft: '0',
     marginRight: '0',
     width: '200px',
-    height: '45px'
+    height: '45px',
+    [theme.breakpoints.down('sm')]: {
+      width: '160px',
+      height: '35px'
+    }
   },
   instructions: {
     color: 'rgba(29, 85, 97, 1)',

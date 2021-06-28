@@ -24,7 +24,8 @@ const travellingSalespersonStyle = theme => ({
     [theme.breakpoints.up('xl')]: {
       width: '600px'
     },
-    margin: theme.spacing(3)
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1)
   },
   loadingContainer: {
     position: 'relative',
@@ -62,6 +63,9 @@ const travellingSalespersonStyle = theme => ({
   tspInput: {
     display: 'flex',
     justifyContent: 'space-evenly',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'space-between'
+    },
     '& > *': {
       margin: theme.spacing(1)
     }
@@ -70,7 +74,11 @@ const travellingSalespersonStyle = theme => ({
     marginLeft: '0',
     marginRight: '0',
     width: '145px',
-    height: '45px'
+    height: '45px',
+    [theme.breakpoints.down('sm')]: {
+      width: '105px',
+      height: '35px'
+    }
   },
   dialogContent: {
     overflowY: 'hidden'

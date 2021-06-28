@@ -16,7 +16,7 @@
 
 import { container } from '../../material-kit-react.js'
 
-const nurseSchedulingInputStyle = {
+const nurseSchedulingInputStyle = theme => ({
   gridContainer: {
     paddingTop: '0'
   },
@@ -110,7 +110,10 @@ const nurseSchedulingInputStyle = {
     marginLeft: 'auto',
     marginRight: 'auto',
     width: '200px',
-    height: '45px'
+    height: '45px',
+    [theme.breakpoints.down('md')]: {
+      height: '35px'
+    }
   },
   socialLine: {
     marginTop: '1rem',
@@ -120,6 +123,6 @@ const nurseSchedulingInputStyle = {
   inputIconsColor: {
     color: '#495057'
   }
-}
+})
 
 export default nurseSchedulingInputStyle

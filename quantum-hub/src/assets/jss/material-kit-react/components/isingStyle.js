@@ -8,6 +8,9 @@
 
 const IsingStyle = theme => ({
   isingRoot: {
+    [theme.breakpoints.down('sm')]: {
+      width: '330px'
+    },
     [theme.breakpoints.up('md')]: {
       width: '470px'
     },
@@ -17,7 +20,8 @@ const IsingStyle = theme => ({
     [theme.breakpoints.up('xl')]: {
       width: '600px'
     },
-    margin: theme.spacing(3)
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1)
   },
   isingInput: {
     display: 'flex',
@@ -36,7 +40,10 @@ const IsingStyle = theme => ({
     marginTop: '0',
     marginBottom: '0',
     width: '145px',
-    height: '45px'
+    height: '45px',
+    [theme.breakpoints.down('md')]: {
+      height: '35px'
+    }
   },
   instructions: {
     color: 'rgba(0, 0, 0, 0.87)',
@@ -54,6 +61,9 @@ const IsingStyle = theme => ({
     bottom: 'calc((307px / 2) - (68px / 2))',
     left: 'calc(50% - (68px / 2))',
     color: '#50c8eb'
+  },
+  slider: {
+    color: '#87D3E4'
   }
 })
 
