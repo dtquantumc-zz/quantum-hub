@@ -110,7 +110,7 @@ function IsingModel (props) {
 
   return (
     <div className={classes.isingRoot}>
-      <svg height='315' width='476'>
+      <svg height={props.isMobile ? '220' : '315'} width={props.isMobile ? '300' : '476'}>
         <g // Curve
           fill='none'
           strokeLinecap='round'
@@ -120,8 +120,8 @@ function IsingModel (props) {
           <IsingModelCurve
             x={50}
             y={25}
-            width={376}
-            height={250}
+            width={props.isMobile ? 245 : 376}
+            height={props.isMobile ? 150 : 250}
             leftHeight={leftH}
             rightHeight={rightH}
             time={timeSliderVal}
@@ -133,10 +133,10 @@ function IsingModel (props) {
         >
           <path
             strokeLinecap='round'
-            d='M25,25 25,275'
+            d={props.isMobile ? 'M25,25 25,175' : 'M25,25 25,275'}
           />
           <polygon
-            points='20,273 30,273 25,280'
+            points={props.isMobile ? '20,173 30,173 25,180' : '20,273 30,273 25,280'}
             fill='gray'
           />
         </g>
@@ -149,10 +149,10 @@ function IsingModel (props) {
           <text x='0' y='12'>
             High Energy
           </text>
-          <text x='0' y='300'>
+          <text x='0' y={props.isMobile ? '200' : '300'}>
             Low Energy
           </text>
-          <text x='400' y='250'>
+          <text x={props.isMobile ? '250' : '400'} y={props.isMobile ? '180' : '250'}>
             {Math.floor(timeSliderVal * annealTime) + ' μs'}
           </text>
         </g>
@@ -160,17 +160,17 @@ function IsingModel (props) {
           opacity={timeSliderVal}
         >
           <Ket
-            x={238 - 14 - 32 - timeSliderVal * 62}
-            y={125}
-            size={32}
+            x={props.isMobile ? 211 - 14 - 32 - timeSliderVal * 62 : 238 - 14 - 32 - timeSliderVal * 62}
+            y={props.isMobile ? 85 : 125}
+            size={props.isMobile ? 20 : 32}
             content='0'
             isSelected={result === 0}
           />
 
           <Ket
-            x={238 - 14 + 32 + timeSliderVal * 62}
-            y={125}
-            size={32}
+            x={props.isMobile ? 146 - 14 + 32 + timeSliderVal * 62 : 238 - 14 + 32 + timeSliderVal * 62}
+            y={props.isMobile ? 85 : 125}
+            size={props.isMobile ? 20 : 32}
             content='1'
             isSelected={result === 1}
           />
@@ -178,13 +178,14 @@ function IsingModel (props) {
       </svg>
       <div>
         <Grid className={classes.gridContainer} container spacing={2}>
-          <Grid item xs={9}>
+          <Grid item xs={12}>
             <div className='newcontain'>
               <Button
                 disabled={simulating}
                 className={classes.detailButton}
                 color='geeringupSecondary'
-                size='sm'
+                size='md'
+                round
                 onClick={() => {
                   startSim()
                 }}
@@ -197,24 +198,9 @@ function IsingModel (props) {
                 Latest result: {result === -1 ? '|?\u232a' : (result ? '|1\u232a' : '|0\u232a')}
               </div>
             </div>
-            <div className='contain'>
-              <div className='timeText'>
-                Time:
-              </div>
-              <div className='sliderContainer'>
-                <Slider
-                  disabled={simulating}
-                  defaultValue={0}
-                  value={sliderVal}
-                  onChange={(e, val) => {
-                    setSliderVal(val)
-                  }}
-                />
-              </div>
-            </div>
           </Grid>
-          <Grid item xs={3}>
-            <CustomInput
+          <Grid item xs={4}>
+              <CustomInput
               labelText='Anneal Time (μs)'
               id='t_input'
               formControlProps={{
@@ -238,7 +224,27 @@ function IsingModel (props) {
               }}
             />
           </Grid>
-          <Grid item xs={3}> {/* H-value input */}
+          <Grid item xs={8}>
+            <div className='contain'>
+              <div className='timeText'>
+                Time:
+              </div>
+            </div>
+            <div className='contain'>
+              <div className='sliderContainer'>
+                <Slider
+                  disabled={simulating}
+                  defaultValue={0}
+                  value={sliderVal}
+                  onChange={(e, val) => {
+                    setSliderVal(val)
+                  }}
+                  className={classes.slider}
+                />
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={4}> {/* H-value input */}
             <div className='moveUp'>
               <CustomInput
                 labelText='H-value'
@@ -272,7 +278,7 @@ function IsingModel (props) {
               />
             </div>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={8}>
             <div className='contain'>
               <div className='inside'>
                 |0&#9002;
@@ -297,6 +303,7 @@ function IsingModel (props) {
                 newHVal *= (val < 0 ? 1 : -1)
                 setHVal(Math.round(newHVal))
               }}
+              className={classes.slider}
             />
           </Grid>
         </Grid>

@@ -8,8 +8,20 @@
 
 const IsingStyle = theme => ({
   isingRoot: {
-    width: '476px',
-    margin: theme.spacing(3)
+    [theme.breakpoints.down('sm')]: {
+      width: '330px'
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '470px'
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '540px'
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: '600px'
+    },
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1)
   },
   isingInput: {
     display: 'flex',
@@ -26,11 +38,17 @@ const IsingStyle = theme => ({
     marginLeft: '0',
     marginRight: '0',
     marginTop: '0',
-    marginBottom: '0'
+    marginBottom: '0',
+    width: '145px',
+    height: '45px',
+    [theme.breakpoints.down('md')]: {
+      height: '35px'
+    }
   },
   instructions: {
     color: 'rgba(0, 0, 0, 0.87)',
-    textAlign: 'center'
+    textAlign: 'center',
+    letterSpacing: '0.045em'
   },
   dialogContent: {
     ' & > *': {
@@ -43,6 +61,9 @@ const IsingStyle = theme => ({
     bottom: 'calc((307px / 2) - (68px / 2))',
     left: 'calc(50% - (68px / 2))',
     color: '#50c8eb'
+  },
+  slider: {
+    color: '#87D3E4'
   }
 })
 

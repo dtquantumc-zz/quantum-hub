@@ -13,18 +13,23 @@ import IsingModel from './Ising/IsingModel'
 import TSP from './TSP/TravellingSalesperson'
 import Widget from './EmptyWidget/EmptyWidget'
 
+import NurseIntroText from '../Typography/NurseIntroText'
 import NurseBriefDescriptionText from '../Typography/NurseBriefDescriptionText'
 import NurseReadMoreDescriptionText from '../Typography/NurseReadMoreDescriptionText'
 
+import SudokuIntroText from '../Typography/SudokuIntroText'
 import SudokuBriefDescriptionText from '../Typography/SudokuBriefDescriptionText'
 import SudokuReadMoreDescriptionText from '../Typography/SudokuReadMoreDescriptionText'
 
+import LatticeIntroText from '../Typography/LatticeIntroText'
 import LatticeBriefDescriptionText from '../Typography/LatticeBriefDescriptionText'
 import LatticeReadMoreDescriptionText from '../Typography/LatticeReadMoreDescriptionText'
 
+import TSPIntroText from '../Typography/TSPIntroText'
 import TSPbriefDescriptionText from '../Typography/TSPbriefDescriptionText'
 import TSPreadMoreDescriptionText from '../Typography/TSPreadMoreDescriptionText'
 
+import IsingIntroText from '../Typography/IsingIntroText'
 import IsingBriefDescriptionText from '../Typography/IsingBriefDescriptionText'
 import IsingReadMoreDescriptionText from '../Typography/IsingReadMoreDescriptionText'
 
@@ -34,6 +39,7 @@ const widgetList = {
     route: '/app/nurse',
     name: 'nurse-scheduler',
     title: 'The Nurse Scheduling Problem',
+    introText: <NurseIntroText />,
     briefDescriptionText: <NurseBriefDescriptionText />,
     readMoreDescriptionText: <NurseReadMoreDescriptionText />,
     brand: 'Nurse Scheduler',
@@ -45,6 +51,7 @@ const widgetList = {
     route: '/app/sudoku',
     name: 'sudoku-solver',
     title: 'The Sudoku Problem',
+    introText: <SudokuIntroText />,
     briefDescriptionText: <SudokuBriefDescriptionText />,
     readMoreDescriptionText: <SudokuReadMoreDescriptionText />,
     brand: 'Sudoku Solver',
@@ -56,6 +63,7 @@ const widgetList = {
     route: '/app/lattice',
     name: 'lattice-colourer',
     title: 'Lattice Two-Colouring',
+    introText: <LatticeIntroText />,
     briefDescriptionText: <LatticeBriefDescriptionText />,
     readMoreDescriptionText: <LatticeReadMoreDescriptionText />,
     brand: 'Lattice Two-Colouring',
@@ -67,6 +75,7 @@ const widgetList = {
     route: '/app/ising',
     name: 'ising-model',
     title: 'Ising Model Visualiser',
+    introText: <IsingIntroText />,
     briefDescriptionText: <IsingBriefDescriptionText />,
     readMoreDescriptionText: <IsingReadMoreDescriptionText />,
     brand: 'Ising Model Visualiser',
@@ -78,6 +87,7 @@ const widgetList = {
     route: '/app/tsp',
     name: 'tsp',
     title: 'Travelling Salesperson',
+    introText: <TSPIntroText />,
     briefDescriptionText: <TSPbriefDescriptionText />,
     readMoreDescriptionText: <TSPreadMoreDescriptionText />,
     brand: 'Travelling Salesperson',
@@ -89,6 +99,7 @@ const widgetList = {
     route: '/app/default',
     name: 'no-app',
     title: 'No Title Found',
+    introText: 'No Intro Text Found',
     briefDescriptionText: 'No Brief Description Found',
     readMoreDescriptionText: 'No Read More Description Text Found',
     brand: 'No game found',

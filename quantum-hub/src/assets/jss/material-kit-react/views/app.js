@@ -20,7 +20,7 @@ const appStyle = theme => ({
   container: {
     zIndex: '12',
     color: '#FFFFFF',
-    marginTop: '74px',
+    marginTop: '90px',
     ...container
   },
   title: {
@@ -55,11 +55,17 @@ const appStyle = theme => ({
     }
   },
   rightColumn: {
+    [theme.breakpoints.down('md')]: {
+      width: '330px'
+    },
     [theme.breakpoints.up('md')]: {
-      width: '340px',
+      width: '350px',
     },
     [theme.breakpoints.up('lg')]: {
-      width: '440px',
+      width: '410px',
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: '550px',
     },
   },
   nurseSchedulingInput: {

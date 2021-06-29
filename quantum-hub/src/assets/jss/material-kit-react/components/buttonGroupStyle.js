@@ -18,16 +18,18 @@ const buttonGroupStyle = theme => ({
   root: {
     display: 'flex',
     '& > *': {
-      margin: theme.spacing(3),
-    },
+      marginTop: theme.spacing(3),
+      marginRight: theme.spacing(3),
+      marginLeft: theme.spacing(1)
+    }
   },
   menuItem: {
     justifyContent: 'flex-start',
     textTransform: 'none',
     color: '#43413E',
     fontWeight: '400',
-    fontSize: '16px',
-    padding: '0.5rem 1.5rem',
+    fontSize: '15px',
+    padding: '0.5rem 1.3rem',
   },
 });
 

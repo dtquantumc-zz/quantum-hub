@@ -24,16 +24,11 @@ import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
-import Button from '@material-ui/core/Button'
 import Hidden from '@material-ui/core/Hidden'
 import Drawer from '@material-ui/core/Drawer'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
 // @material-ui/icons
 import MenuIcon from '@material-ui/icons/Menu'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 // core components
-import widgetList from '../Widget/widgetList'
 import styles from '../../assets/jss/material-kit-react/components/headerStyle.js'
 
 const useStyles = makeStyles(styles)
@@ -41,7 +36,6 @@ const useStyles = makeStyles(styles)
 export default function Header (props) {
   const classes = useStyles()
   const [mobileOpen, setMobileOpen] = React.useState(false)
-  const [appMenuAnchor, setAppMenuAnchor] = React.useState(null)
 
   React.useEffect(() => {
     if (props.changeColorOnScroll) {
@@ -56,12 +50,6 @@ export default function Header (props) {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
-  }
-  const handleAppMenuClick = (event) => {
-    setAppMenuAnchor(event.currentTarget)
-  }
-  const handleAppMenuClose = () => {
-    setAppMenuAnchor(null)
   }
 
   const headerColorChange = () => {
@@ -83,64 +71,19 @@ export default function Header (props) {
         .classList.remove(classes[changeColorOnScroll.color])
     }
   }
-  const { color, rightLinks, leftLinks, brand, fixed, absolute, setWidget, loading } = props
+  const { color, rightLinks, leftLinks, fixed, absolute} = props
   const appBarClasses = classNames({
     [classes.appBar]: true,
     [classes[color]]: color,
     [classes.absolute]: absolute,
     [classes.fixed]: fixed
   })
-  const brandComponent =
-    <>
-      <Button
-        className={classes.title}
-        onClick={handleAppMenuClick}
 
-      >
-        {loading ? '' : (
-          <>
-            <ExpandMoreIcon />
-            <div className={classes.lPad} />
-          </>
-        )}
-        {brand}
-      </Button>
-      <Menu
-        disabled={loading}
-        id='AppMenu'
-        // variant='temporary'
-        anchorEl={appMenuAnchor}
-        open={Boolean(appMenuAnchor)}
-        onClose={handleAppMenuClose}
-        className={classes.menu}
-        keepMounted
-      >
-        {Object.keys(widgetList).map((widget) => {
-          if (widgetList[widget].visible === false) return ''
-          return (
-            <MenuItem
-              key={widget}
-              onClick={() => {
-                setWidget(widget)
-                handleAppMenuClose()
-              }}
-            >
-              {widgetList[widget].brand}
-            </MenuItem>
-          )
-        })}
-      </Menu>
-    </>
-
-  const leftLinksComponent = <Hidden smDown implementation='css'>{leftLinks}</Hidden>
   return (
     <AppBar className={appBarClasses}>
       <Toolbar className={classes.container}>
         <div className={classes.leftLinks}>
-          {leftLinks !== undefined ? leftLinksComponent : null}
-        </div>
-        <div className={classes.flex}>
-          {brandComponent}
+          {leftLinks !== undefined ? leftLinks : null}
         </div>
         <div className={classes.rightLinks}>
           <Hidden smDown implementation='css'>
@@ -196,7 +139,6 @@ Header.propTypes = {
   ]),
   rightLinks: PropTypes.node,
   leftLinks: PropTypes.node,
-  brand: PropTypes.string,
   fixed: PropTypes.bool,
   absolute: PropTypes.bool,
   // this will cause the sidebar to change the color from

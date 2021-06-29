@@ -144,11 +144,14 @@ function SudokuGame (props) {
         </div>
         {loading && <CircularProgress size={68} className={classes.sudokuProgress} />}
       </div>
-      <p>Click on the cells and use your keyboard numbers to fill them in!</p>
+      <p className={classes.instructions}>Click on the cells and use your keyboard numbers to fill them in!</p>
       <div className={classes.sudokuInput}>
         <Button
+          className={classes.detailButton}
           color='geeringupPrimary'
           // color='primary'
+          size='md'
+          round
           disabled={(empty || !enabled)}
           onClick={() => {
             emptySudokuGrid(sudokuState)
@@ -158,7 +161,10 @@ function SudokuGame (props) {
           Reset
         </Button>
         <Button
+          className={classes.detailButton}
           color='geeringupSecondary'
+          size='md'
+          round
           disabled={!enabled}
           onClick={() => {
             // TODO: Consider setting it to nothing instead of top-left
@@ -172,7 +178,10 @@ function SudokuGame (props) {
           Solve
         </Button>
         <Button
+          className={classes.detailButton}
           color='geeringupPrimary'
+          size='md'
+          round
           disabled={!enabled}
           onClick={() => {
             const newRand = getRandSolvableBoard()

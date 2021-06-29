@@ -206,7 +206,7 @@ const buttonStyle = {
   },
   geeringupPrimary: {
     color: '#1D5561',
-    border: '2px solid #1D5561',
+    border: '3px solid #1D5561',
     backgroundColor: '#FFF',
     '&:hover,&:focus': {
       color: '#1D5561',
@@ -215,8 +215,17 @@ const buttonStyle = {
   },
   geeringupSecondary: {
     color: '#1D5561',
-    border: '2px solid #1D5561',
+    border: '3px solid #1D5561',
     backgroundColor: '#FFF',
+    '&:hover,&:focus': {
+      color: '#1D5561',
+      backgroundColor: 'rgba(29, 85, 97, 0.3)'
+    }
+  },
+  geeringupSecondaryModified: {
+    color: '#FFF',
+    border: '3px solid #1D5561',
+    backgroundColor: '#1D5561',
     '&:hover,&:focus': {
       color: '#1D5561',
       backgroundColor: 'rgba(29, 85, 97, 0.3)'

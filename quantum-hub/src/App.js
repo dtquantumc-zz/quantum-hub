@@ -4,12 +4,13 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // core components
 // import QPUswitch from './components/Switch/QPUswitch.js'
 import ButtonGroup from './components/ButtonGroup/ButtonGroup.js'
 import Console from './components/CustomOutput/console.js'
+import IntroCard from './components/Card/IntroCard.js'
 import DescriptionCard from './components/Card/DescriptionCard.js'
 
 import Header from './components/Header/Header.js'
@@ -29,6 +30,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import styles from './assets/jss/material-kit-react/views/app.js'
 
 import widgetList from './components/Widget/widgetList'
+import ConsoleModal from './components/Modal/ConsoleModal.js'
 
 /**
  *
@@ -42,6 +44,29 @@ function App (props) {
   const [widgetOverride, overrideWidget] = useState('')
   var [textLines, setTextLines] = useState([])
   const [loading, setLoading] = useState(false)
+  const breakpoint = 600;
+  const [width, setWidth] = useState(window.innerWidth);
+
+  function handleWindowResize() {
+    setWidth(window.innerWidth);
+  }
+
+  useEffect(() => {
+    // event listener that updates the "width" state variable when the window size changes 
+    window.addEventListener('resize', handleWindowResize);
+
+    // return a function from the effect that removes the event listener
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    }
+  }, []);
+
+  let isMobile = (width <= breakpoint)
+
+  const resetConsole = () => {
+    textLines.length = 0
+    setTextLines(textLines)
+  }
 
   // widget is a string, a key to the widgetList object describing the widget
   let widget
@@ -52,6 +77,7 @@ function App (props) {
     }
     window.history.replaceState({ app: wid }, widgetList[wid].brand, widgetList[wid].route)
     overrideWidget(wid)
+    resetConsole()
   }
 
   if (widgetOverride && widgetList[widgetOverride]) {
@@ -77,10 +103,12 @@ function App (props) {
   }
 
   const gameMenu =
-    <ButtonGroup
-      key='gameMenu'
-      setWidget={setWidget}
-    />
+    <div>
+      {!isMobile && (<ButtonGroup
+        key='gameMenu'
+        setWidget={setWidget}
+      />)}
+    </div>
 
   const widgetComponent =
     Object.keys(widgetList).map((wid) => {
@@ -90,6 +118,14 @@ function App (props) {
           style={{ display: (wid === widget ? null : 'none') }}
           key={wid + 'Div'}
         >
+          <IntroCard
+            color='geeringupPrimary'
+            brand={appBrand}
+            setWidget={setWidget}
+            widget={widget}
+            isMobile={isMobile}
+            key='myWidgetIntro'
+          />
           <WidC
             id='myWidget'
             getAPIKey={() => ''}
@@ -98,19 +134,27 @@ function App (props) {
             loading={loading}
             setLoading={setLoading}
             key={wid + 'Widget'}
+            isMobile={isMobile}
           />
+          {isMobile && (<ConsoleModal 
+            widget={widget}
+            textLines={textLines}
+            title={widgetList[widget].name}
+            key='terminalWindow'
+            getIP={props.live}
+          />)}
         </div>
       )
     })
 
   const terminalWindowAndGameInfo =
     <div className={classes.rightColumn}>
-      <Console
-      textLines={textLines}
-      title={widgetList[widget].name}
-      key='terminalWindow'
-      getIP={props.live}
-    />
+      {!isMobile && (<Console
+        textLines={textLines}
+        title={widgetList[widget].name}
+        key='terminalWindow'
+        getIP={props.live}
+      />)}
       <DescriptionCard
         widget={widget}
         key='howItWorksCard'
@@ -123,14 +167,10 @@ function App (props) {
     <div>
       <Header
         color='geeringupPrimary'
-        brand={appBrand}
         rightLinks={<RightHeaderLinks />}
         leftLinks={<LeftHeaderLinks />}
         fixed
         key='myHeader'
-        setWidget={setWidget}
-        // loading={loading}
-        loading={false}
       />
       <div className={classes.container}>
         <GridContainer

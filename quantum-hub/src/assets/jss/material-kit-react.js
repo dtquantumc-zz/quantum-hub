@@ -30,7 +30,7 @@ const conatinerFluid = {
   paddingLeft: '15px',
   marginRight: 'auto',
   marginLeft: 'auto',
-  width: '100%'
+  width: '90%'
 }
 const container = {
   ...conatinerFluid,
@@ -44,7 +44,7 @@ const container = {
     maxWidth: '960px'
   },
   '@media (min-width: 1200px)': {
-    maxWidth: '1300px'
+    maxWidth: '1450px'
   }
 }
 
@@ -172,7 +172,9 @@ const title = {
   margin: '1.75rem 0 0.875rem',
   textDecoration: 'none',
   fontWeight: '700',
-  fontFamily: '"Roboto Slab", "Times New Roman", serif'
+  fontSize: '19px',
+  letterSpacing: '0.008em',
+  fontFamily: '"Roboto", "Times New Roman", serif'
 }
 
 const cardTitle = {

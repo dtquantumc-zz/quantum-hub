@@ -6,7 +6,7 @@
 
 const consoleStyle = theme => ({
   console: {
-    margin: theme.spacing(3)
+    margin: theme.spacing(3),
     // '& > *': {
     //   // width: 'calc(314.9765px - (2 * 15px))',
     //   margin: 'auto'

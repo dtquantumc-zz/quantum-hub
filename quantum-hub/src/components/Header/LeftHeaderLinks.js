@@ -43,7 +43,7 @@ export default function LeftHeaderLinks() {
             target='_blank'
             className={classes.leftNavLink}
           >
-            <img src={dtqcLogo} style={{ height: '38px', borderRadius: '3px'}}/>
+            <img src={dtqcLogo} style={{ height: '43px', borderRadius: '3px'}}/>
           </Button>
         </Tooltip>
       </ListItem>
