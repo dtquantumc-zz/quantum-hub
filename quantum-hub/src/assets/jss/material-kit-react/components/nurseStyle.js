@@ -52,7 +52,7 @@ const nurseStyle = theme => ({
     textAlign: 'center',
     padding: '0.9375rem',
     paddingBottom: '0',
-    fontSize: '17px',
+    fontSize: '16px',
     fontWeight: '600',
     letterSpacing: '0.045em'
   },

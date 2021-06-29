@@ -58,9 +58,16 @@ export default function DescriptionCard (props) {
         <Card className={classes.descriptionCard}>
           <form className={classes.form}>
             <CardBody>
-              <h4 className={classes.cardTitle}>{widgetInfo.title}</h4>
+              <h4 className={classes.cardTitle}>Game Overview</h4>
               {widgetInfo.briefDescriptionText}
-              <Button color='geeringupSecondary' onClick={handleClickOpen('paper')}>Read More</Button>
+              <Button 
+                color='geeringupSecondary' 
+                size='md'
+                round 
+                onClick={handleClickOpen('paper')}
+              >
+                Read More
+              </Button>
             </CardBody>
           </form>
         </Card>
@@ -83,7 +90,11 @@ export default function DescriptionCard (props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color='geeringupSecondary'>
+          <Button
+            color='geeringupSecondary'
+            size='md'
+            round 
+            onClick={handleClose} color='geeringupSecondary'>
             Close
           </Button>
         </DialogActions>

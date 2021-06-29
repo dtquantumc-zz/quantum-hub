@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react'
 // import QPUswitch from './components/Switch/QPUswitch.js'
 import ButtonGroup from './components/ButtonGroup/ButtonGroup.js'
 import Console from './components/CustomOutput/console.js'
+import IntroCard from './components/Card/IntroCard.js'
 import DescriptionCard from './components/Card/DescriptionCard.js'
 
 import Header from './components/Header/Header.js'
@@ -117,6 +118,14 @@ function App (props) {
           style={{ display: (wid === widget ? null : 'none') }}
           key={wid + 'Div'}
         >
+          <IntroCard
+            color='geeringupPrimary'
+            brand={appBrand}
+            setWidget={setWidget}
+            widget={widget}
+            isMobile={isMobile}
+            key='myWidgetIntro'
+          />
           <WidC
             id='myWidget'
             getAPIKey={() => ''}
@@ -158,14 +167,10 @@ function App (props) {
     <div>
       <Header
         color='geeringupPrimary'
-        brand={appBrand}
         rightLinks={<RightHeaderLinks />}
         leftLinks={<LeftHeaderLinks />}
         fixed
         key='myHeader'
-        setWidget={setWidget}
-        // loading={loading}
-        loading={false}
       />
       <div className={classes.container}>
         <GridContainer

@@ -62,7 +62,7 @@ const appStyle = theme => ({
       width: '350px',
     },
     [theme.breakpoints.up('lg')]: {
-      width: '430px',
+      width: '410px',
     },
     [theme.breakpoints.up('xl')]: {
       width: '550px',

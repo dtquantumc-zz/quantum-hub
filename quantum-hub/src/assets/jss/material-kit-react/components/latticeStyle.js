@@ -48,7 +48,7 @@ const latticeStyle = theme => ({
     color: 'rgba(29, 85, 97, 1)',
     textAlign: 'center',
     fontWeight: '600',
-    fontSize: '17px',
+    fontSize: '16px',
     letterSpacing: '0.045em',
     paddingBottom: '25px'
   },

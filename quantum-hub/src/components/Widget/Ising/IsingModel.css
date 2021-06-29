@@ -58,6 +58,7 @@
 .timeText{
   color: rgba(29, 85, 97, 1);
   font-weight: 600;
+  font-size: 16px;
   padding: 8px 0;
   padding-right: 16px;
   width: min-content;
@@ -67,7 +68,7 @@
 .resultText{
   color: rgba(29, 85, 97, 1);
   font-weight: 600;
-  font-size: 17px;
+  font-size: 16px;
   letter-spacing: 0.045em;
   padding: 5px 0px;
   padding-left: 16px;
@@ -79,7 +80,7 @@
   align-self: flex-start;
   color: rgba(29, 85, 97, 1);
   font-weight: 600;
-  font-size: 17px;
+  font-size: 16px;
   letter-spacing: 0.045em;
 }
 

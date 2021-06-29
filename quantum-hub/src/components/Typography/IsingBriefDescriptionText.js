@@ -12,10 +12,6 @@ export default function TSPbriefDescriptionText () {
   return (
     <>
       <Typography align='left' paragraph variant='body1' color='textSecondary' component='p'>
-            This is a graphical representation of the Ising Model of a qubit and the annealing
-            process as used in Dwave's quantum annealer.
-      </Typography>
-      <Typography align='left' paragraph variant='body1' color='textSecondary' component='p'>
             The qubit is initially in an equal superposition of states <b>1</b> and <b>0</b>.
             Then, a "hamiltonian" is slowly applied, changing the energy of the states.
             This is annealing.

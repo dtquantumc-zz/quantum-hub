@@ -172,7 +172,9 @@ const title = {
   margin: '1.75rem 0 0.875rem',
   textDecoration: 'none',
   fontWeight: '700',
-  fontFamily: '"Roboto Slab", "Times New Roman", serif'
+  fontSize: '19px',
+  letterSpacing: '0.008em',
+  fontFamily: '"Roboto", "Times New Roman", serif'
 }
 
 const cardTitle = {

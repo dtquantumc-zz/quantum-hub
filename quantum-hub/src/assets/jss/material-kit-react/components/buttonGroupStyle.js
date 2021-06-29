@@ -18,7 +18,9 @@ const buttonGroupStyle = theme => ({
   root: {
     display: 'flex',
     '& > *': {
-      margin: theme.spacing(3)
+      marginTop: theme.spacing(3),
+      marginRight: theme.spacing(3),
+      marginLeft: theme.spacing(1)
     }
   },
   menuItem: {

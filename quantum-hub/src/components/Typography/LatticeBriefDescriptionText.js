@@ -12,10 +12,6 @@ export default function LatticeBriefDescriptionText () {
   return (
     <>
       <Typography align='left' paragraph variant='body1' color='textSecondary' component='p'>
-        This is a two-colouring problem on a hexagonal lattice.
-        With only two colours, make the fewest possible neighbours share the same colour.
-      </Typography>
-      <Typography align='left' paragraph variant='body1' color='textSecondary' component='p'>
         To play, you design your own grid or use a randomly generated one.
         After "locking in" your grid, try to minimize neighbouring nodes
         with the same colour!
