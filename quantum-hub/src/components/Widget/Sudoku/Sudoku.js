@@ -148,7 +148,7 @@ function SudokuGame (props) {
       <div className={classes.sudokuInput}>
         <Button
           className={classes.detailButton}
-          color='geeringupPrimary'
+          color='geeringupSecondary'
           // color='primary'
           size='md'
           round
@@ -179,7 +179,7 @@ function SudokuGame (props) {
         </Button>
         <Button
           className={classes.detailButton}
-          color='geeringupPrimary'
+          color='geeringupSecondary'
           size='md'
           round
           disabled={!enabled}

@@ -30,17 +30,15 @@ const buttonStyle = {
     minWidth: 'auto',
     backgroundColor: grayColor,
     color: '#FFFFFF',
-    boxShadow:
-      '0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12)',
     border: 'none',
     borderRadius: '3px',
     position: 'relative',
-    padding: '12px 30px',
+    padding: '10px 30px',
     margin: '.3125rem 1px',
-    fontSize: '12px',
-    fontWeight: '400',
-    textTransform: 'uppercase',
-    letterSpacing: '0',
+    fontSize: '13px',
+    fontWeight: '700',
+    textTransform: 'none',
+    letterSpacing: '0.1em',
     willChange: 'box-shadow, transform',
     transition:
       'box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -52,9 +50,7 @@ const buttonStyle = {
     cursor: 'pointer',
     '&:hover,&:focus': {
       color: '#FFFFFF',
-      backgroundColor: grayColor,
-      boxShadow:
-        '0 14px 26px -12px rgba(153, 153, 153, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(153, 153, 153, 0.2)'
+      backgroundColor: grayColor
     },
     '& .fab,& .fas,& .far,& .fal,& .material-icons': {
       position: 'relative',
@@ -205,12 +201,12 @@ const buttonStyle = {
     }
   },
   geeringupPrimary: {
-    color: '#1D5561',
-    border: '3px solid #1D5561',
-    backgroundColor: '#FFF',
+    color: '#FFF',
+    border: 'none',
+    backgroundColor: '#C3872B',
     '&:hover,&:focus': {
-      color: '#1D5561',
-      backgroundColor: 'rgba(29, 85, 97, 0.3)'
+      color: '#FFF',
+      backgroundColor: 'rgba(234, 167, 64, 1)'
     }
   },
   geeringupSecondary: {
