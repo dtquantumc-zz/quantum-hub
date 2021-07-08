@@ -28,7 +28,9 @@ import Hidden from '@material-ui/core/Hidden'
 import Drawer from '@material-ui/core/Drawer'
 // @material-ui/icons
 import MenuIcon from '@material-ui/icons/Menu'
+import CloseIcon from '@material-ui/icons/Close'
 // core components
+import RightHeaderLinksMobile from './RightHeaderLinksMobile.js'
 import styles from '../../assets/jss/material-kit-react/components/headerStyle.js'
 
 const useStyles = makeStyles(styles)
@@ -37,40 +39,10 @@ export default function Header (props) {
   const classes = useStyles()
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
-  React.useEffect(() => {
-    if (props.changeColorOnScroll) {
-      window.addEventListener('scroll', headerColorChange)
-    }
-    return function cleanup () {
-      if (props.changeColorOnScroll) {
-        window.removeEventListener('scroll', headerColorChange)
-      }
-    }
-  })
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
 
-  const headerColorChange = () => {
-    const { color, changeColorOnScroll } = props
-    const windowsScrollTop = window.pageYOffset
-    if (windowsScrollTop > changeColorOnScroll.height) {
-      document.body
-        .getElementsByTagName('header')[0]
-        .classList.remove(classes[color])
-      document.body
-        .getElementsByTagName('header')[0]
-        .classList.add(classes[changeColorOnScroll.color])
-    } else {
-      document.body
-        .getElementsByTagName('header')[0]
-        .classList.add(classes[color])
-      document.body
-        .getElementsByTagName('header')[0]
-        .classList.remove(classes[changeColorOnScroll.color])
-    }
-  }
   const { color, rightLinks, leftLinks, fixed, absolute} = props
   const appBarClasses = classNames({
     [classes.appBar]: true,
@@ -80,11 +52,11 @@ export default function Header (props) {
   })
 
   return (
-    <AppBar className={appBarClasses}>
+    <AppBar className={appBarClasses} position="fixed">
       <Toolbar className={classes.container}>
         <div className={classes.leftLinks}>
           {leftLinks !== undefined ? leftLinks : null}
-        </div>
+        </div>        
         <div className={classes.rightLinks}>
           <Hidden smDown implementation='css'>
             {rightLinks}
@@ -111,8 +83,8 @@ export default function Header (props) {
           onClose={handleDrawerToggle}
         >
           <div className={classes.appResponsive}>
-            {leftLinks}
-            {rightLinks}
+              <CloseIcon className={classes.closeIcon} onClick={handleDrawerToggle} />
+            <RightHeaderLinksMobile handleDrawerToggle={handleDrawerToggle}/>
           </div>
         </Drawer>
       </Hidden>

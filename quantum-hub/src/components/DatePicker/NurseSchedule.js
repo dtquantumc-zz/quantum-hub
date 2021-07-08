@@ -19,7 +19,7 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import { Badge, createMuiTheme } from '@material-ui/core'
+import { Badge, createTheme } from '@material-ui/core'
 import DateFnsUtils from '@date-io/date-fns'
 import { ThemeProvider } from '@material-ui/styles'
 import NursesOnDayDialog from '../Dialog/NursesOnDayDialog.js'
@@ -31,7 +31,7 @@ const useStyles = makeStyles(styles)
 
 const NurseSchedule = (props) => {
   const classes = useStyles()
-  const geeringupTheme = createMuiTheme(styles.geeringupTheme)
+  const geeringupTheme = createTheme(styles.geeringupTheme)
 
   const [date, changeDate] = useState(new Date())
   const [open, setOpen] = React.useState(false)

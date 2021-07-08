@@ -13,12 +13,11 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
  */
-import backgroundImage from '../../../../images/bg.jpg';
-import { container } from '../../material-kit-react.js'
+import backgroundImage from '../../../../images/bg.jpg'
 
 const homeStyle = theme => ({
   root: {
-      background: '#fff'
+    background: '#fff'
   },
   heroContainer: {
     backgroundImage: `url(${backgroundImage})`,

@@ -12,32 +12,24 @@ import ButtonGroup from '../components/ButtonGroup/ButtonGroup.js'
 import Console from '../components/CustomOutput/console.js'
 import IntroCard from '../components/Card/IntroCard.js'
 import DescriptionCard from '../components/Card/DescriptionCard.js'
-
-import Header from '../components/Header/Header.js'
-import RightHeaderLinks from '../components/Header/RightHeaderLinks.js'
-import LeftHeaderLinks from '../components/Header/LeftHeaderLinks.js'
+import widgetList from '../components/Widget/widgetList'
+import ConsoleModal from '../components/Modal/ConsoleModal.js'
 
 import GridContainer from '../components/Grid/GridContainer.js'
-
-import Footer from '../components/Footer/Footer.js'
-import FooterLinks from '../components/Footer/FooterLinks.js'
 
 // import Button from './components/CustomButtons/Button.js'
 // import GridItem from './components/Grid/GridItem.js'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import styles from '../assets/jss/material-kit-react/views/app.js'
-
-import widgetList from '../components/Widget/widgetList'
-import ConsoleModal from '../components/Modal/ConsoleModal.js'
+import styles from '../assets/jss/material-kit-react/views/game.js'
 
 /**
  *
- * @param {object} props properties for the App
+ * @param {object} props properties for the Game
  * @returns {object} React Component
  */
-function App (props) {
+function Game (props) {
   const useStyles = makeStyles(styles)
   const classes = useStyles()
   // const [APIKey, setAPIKey] = useState('')
@@ -81,7 +73,9 @@ function App (props) {
   }
 
   if (widgetOverride && widgetList[widgetOverride]) {
-    widget = widgetOverride
+    const route = window.location.pathname
+    widget = route.substr(5, route.length)
+    //widget = widgetOverride
   } else if (widgetList[props.widget]) {
     widget = props.widget
   } else {
@@ -164,27 +158,14 @@ function App (props) {
   const gridContainerChildren = [gameMenu, widgetComponent, terminalWindowAndGameInfo]
 
   return (
-    <div>
-      <Header
-        color='geeringupPrimary'
-        rightLinks={<RightHeaderLinks />}
-        leftLinks={<LeftHeaderLinks />}
-        fixed
-        key='myHeader'
-      />
-      <div className={classes.container}>
-        <GridContainer
-          className={classes.gridContainer}
-          children={gridContainerChildren}
-          key='myGridContainer'
-        />
-      </div>
-      <Footer
-        leftLinks={<FooterLinks />}
-        key='myFooter'
+    <div className={classes.container}>
+      <GridContainer
+        className={classes.gridContainer}
+        children={gridContainerChildren}
+        key='myGridContainer'
       />
     </div>
   )
 }
 
-export default App
+export default Game

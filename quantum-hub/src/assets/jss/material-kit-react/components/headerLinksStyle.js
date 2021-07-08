@@ -38,19 +38,8 @@ const headerLinksStyle = theme => ({
     margin: '0',
     padding: '0',
     [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      '&:after': {
-        width: 'calc(100% - 30px)',
-        content: '""',
-        display: 'block',
-        height: '1px',
-        marginLeft: '15px',
-        backgroundColor: '#e5e5e5'
-      }
+      width: '100%'
     }
-  },
-  listItemText: {
-    padding: '0 !important'
   },
   navLink: {
     color: 'inherit',
@@ -105,50 +94,77 @@ const headerLinksStyle = theme => ({
       }
     }
   },
-  notificationNavLink: {
-    color: 'inherit',
-    padding: '0.9375rem',
-    fontWeight: '400',
-    fontSize: '12px',
+  rightNavLink: {
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    fontSize: '18px',
+    letterSpacing: '0.115em',
+    borderRadius: '3px',
     textTransform: 'uppercase',
-    lineHeight: '20px',
-    textDecoration: 'none',
-    margin: '0px',
-    display: 'inline-flex',
-    top: '4px'
+    color: 'white',
+    padding: '8px 16px',
+    '&:hover,&:focus': {
+      color: '#1D5561',
+      background: 'transparent'
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '8px 0px',
+      '&:hover,&:focus': {
+        color: '#fff'
+    },
+    }
   },
-  registerNavLink: {
-    top: '3px',
-    position: 'relative',
-    fontWeight: '400',
-    fontSize: '12px',
+  menu: {
+    '& .MuiPaper-root': {
+      backgroundColor: 'rgba(135, 211, 228, 0.9)',
+      boxShadow: 'none',
+      paddingTop: '14px',
+      borderRadius: '0'
+    }
+  },
+  menuItem: {
+    '&:hover,&:focus': {
+      background: 'transparent'
+    }
+  },
+  dropdownLink: {
+    fontFamily: 'Roboto',
+    lineHeight: '30px',
+    fontWeight: 'bold',
+    fontSize: '18px',
     textTransform: 'uppercase',
-    lineHeight: '20px',
     textDecoration: 'none',
-    margin: '0px',
-    display: 'inline-flex'
+    color: 'white',
+    '&:hover,&:focus': {
+      color: '#1D5561'
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '16px',
+      textTransform: 'capitalize'
+    }
   },
-  navLinkActive: {
-    color: 'inherit',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)'
+  accordion: {
+    background: 'transparent',
+    border: 'none'
+  },
+  accordionSummary: {
+    borderTop: '.5px solid #e5e5e5',
+    borderBottom: '.5px solid #e5e5e5',
+    paddingLeft: '20px'
+  },
+  accordionDetails: {
+    borderBottom: '.5px solid #e5e5e5',
+    padding: '16px 18px'
   },
   icons: {
-    width: '20px',
-    height: '20px',
-    marginRight: '3px'
+    color: '#fff',
+    width: '25px',
+    height: '25px'
   },
   socialIcons: {
     position: 'relative',
     fontSize: '20px !important',
     marginRight: '4px'
-  },
-  dropdownLink: {
-    '&,&:hover,&:focus': {
-      color: 'inherit',
-      textDecoration: 'none',
-      display: 'block',
-      padding: '10px 20px'
-    }
   },
   ...tooltip,
   marginRight5: {

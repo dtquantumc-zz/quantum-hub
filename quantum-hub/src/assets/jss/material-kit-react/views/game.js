@@ -16,7 +16,7 @@
 
 import { container, title } from '../../material-kit-react.js'
 
-const appStyle = theme => ({
+const gameStyle = theme => ({
   container: {
     zIndex: '12',
     color: '#FFFFFF',
@@ -94,4 +94,4 @@ const appStyle = theme => ({
   }
 })
 
-export default appStyle
+export default gameStyle

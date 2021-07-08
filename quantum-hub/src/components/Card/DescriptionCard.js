@@ -94,7 +94,7 @@ export default function DescriptionCard (props) {
             color='geeringupSecondary'
             size='md'
             round 
-            onClick={handleClose} color='geeringupSecondary'>
+            onClick={handleClose}>
             Close
           </Button>
         </DialogActions>

@@ -33,7 +33,7 @@ const headerStyle = theme => ({
     display: 'flex',
     border: '0',
     borderRadius: '0',
-    padding: '12px 0',
+    padding: '8px 0',
     marginBottom: '12px',
     color: '#555',
     width: '100%',
@@ -46,6 +46,13 @@ const headerStyle = theme => ({
     justifyContent: 'flex-start',
     position: 'relative',
     zIndex: 'unset'
+  },
+  closeIcon: {
+    color: '#fff',
+    width: '25px',
+    height: '25px',
+    padding: '12px 16px',
+    marginBottom: '14px'
   },
   absolute: {
     position: 'absolute',
@@ -79,7 +86,7 @@ const headerStyle = theme => ({
     }
   },
   appResponsive: {
-    margin: '20px 10px'
+    marginTop: '20px'
   },
   primary: {
     backgroundColor: primaryColor,
@@ -162,6 +169,7 @@ const headerStyle = theme => ({
     textAlign: 'left',
     paddingRight: '0px',
     paddingLeft: '0',
+    backgroundColor: 'rgba(135, 211, 228, 1)',
     ...transition
   },
   leftLinks: {
@@ -174,9 +182,8 @@ const headerStyle = theme => ({
   },
   rightLinks: {
     marginRight: '24px',
-    display: 'flex',
-    flexDirection: 'row-reverse',
-    width: '200px'
+    //display: 'flex',
+    flexDirection: 'row-reverse'
   }
 })
 
