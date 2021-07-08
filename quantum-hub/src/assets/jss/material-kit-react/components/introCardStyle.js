@@ -4,8 +4,6 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import { cardTitle } from '../../material-kit-react.js'
-
 const introCardStyle = theme => ({
   descriptionCard: {
     margin: '0',

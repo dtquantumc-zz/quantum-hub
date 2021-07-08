@@ -6,22 +6,10 @@ import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <React.StrictMode>
-    <GenericApp />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 )
-
-/**
- * Routes to different components based on window pathname
- */
-function GenericApp () {
-  const route = window.location.pathname
-  if (route.startsWith('/app/')) {
-    return (<App widget={route.substr(5, route.length)} live />)
-  } else {
-    return (<App live />)
-  }
-}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

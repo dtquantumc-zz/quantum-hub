@@ -6,12 +6,10 @@
 
 /*eslint-disable*/
 import React from "react";
+import { Link } from 'react-router-dom';
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Tooltip from "@material-ui/core/Tooltip";
 
 // core components
 import Button from "../../components/CustomButtons/Button.js";
@@ -25,28 +23,19 @@ const useStyles = makeStyles(styles);
 export default function LeftHeaderLinks() {
   const classes = useStyles();
 
-  const dtqcTitle = "More about DTQC"
-  const dtqcLink = "https://quantumcomputing.ubc.ca/education/k-12-education"
-
   return (
-    <List className={classes.list}>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="dtqc-tooltip"
-          title={dtqcTitle}
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            color="transparent"
-            href={dtqcLink}
-            target='_blank'
-            className={classes.leftNavLink}
-          >
-            <img src={dtqcLogo} style={{ height: '43px', borderRadius: '3px'}}/>
-          </Button>
-        </Tooltip>
-      </ListItem>
-    </List>
+    <Button
+      color="transparent"
+      className={classes.leftNavLink}
+    >
+      <Link 
+        to={{
+              pathname: '/',
+              state: false,
+            }}
+      >
+        <img src={dtqcLogo} style={{ height: '56px', borderRadius: '3px' }} />
+      </Link>
+    </Button> 
   );
 }
