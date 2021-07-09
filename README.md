@@ -15,6 +15,7 @@ Listed alphabetically, the authors wishing to be credited are:
 - Haris Amiri
 - Ari Blondal (ari.blondal@gmail.com)
 - Tanraj Saran (tsaran70@gmail.com)
+- Andrea Tang (andreamtang@gmail.com)
 
 Project Information:
 ====================
