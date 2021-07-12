@@ -27,6 +27,9 @@ const useStyles = makeStyles(styles)
 
 export default function Hero () {
   const classes = useStyles()
+  
+  const heroTitle = "Welcome to the DTQC Quantum Hub"
+  const heroSubtitle = "A powerful gallery of web applications that run on a real quantum computer! Engage with quantum computing in an accessible, gamified way. Each application runs on D-Wave's 5000-qubit quantum annealers, providing you with the optimal solutions."
 
   const dtqcLink = 'https://quantumcomputing.ubc.ca/education/k-12-education'
 
@@ -34,8 +37,8 @@ export default function Hero () {
       <section className={classes.heroContainer}>
         <Fade direction="right" in={true} timeout={4000} mountOnEnter unmountOnExit>
             <Grid container direction="column" className={classes.hero}>
-                <Grid item xs={12}><h1 className={classes.heroHeading}>Welcome to the <br /> DTQC Quantum Hub</h1></Grid>
-                <Grid item xs={12}><p className={classes.heroSubheading}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus ut pellentesque nisl pretium blandit aliquam senectus adipiscing. Mi scelerisque aliquam sapien, cum ultrices nunc.</p></Grid>
+                <Grid item xs={12}><h1 className={classes.heroHeading}>{heroTitle}</h1></Grid>
+                <Grid item xs={12}><p className={classes.heroSubheading}>{heroSubtitle}</p></Grid>
                 <Grid item xs={12} className={classes.buttonContainer}>
                   <Button
                     href={dtqcLink}

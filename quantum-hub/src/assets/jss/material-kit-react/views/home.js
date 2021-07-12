@@ -30,7 +30,7 @@ const homeStyle = theme => ({
   hero: {
     display: 'flex',
     marginLeft: '5%',
-    maxWidth: '85%',
+    maxWidth: '75%',
     [theme.breakpoints.down('md')]: {
       marginLeft: 'auto',
       marginRight: 'auto',
@@ -77,6 +77,60 @@ const homeStyle = theme => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: '15px',
       padding: '12px 40px'
+    }
+  },
+  descriptionContainer: {
+    padding: '150px 0px',
+    [theme.breakpoints.down('sm')]: {
+      padding: '60px 0px'
+    }
+  },
+  gridItemLeft: {
+    order: 1,
+    [theme.breakpoints.down('md')]: {
+      order: 2
+    }
+  },
+  gridItemRight: {
+    order: 2,
+    [theme.breakpoints.down('md')]: {
+      order: 1
+    }
+  },
+  subheading: {
+    fontFamily: 'Roboto',
+    color: '#1D5561',
+    fontSize: '36px',
+    textAlign: 'left',
+    textTransform: 'uppercase',
+    letterSpacing: '0.2em',
+    marginTop: '0',
+    lineHeight: '130%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '18px',
+    }
+  },
+  descriptionText: {
+    fontFamily: 'Roboto Slab',
+    fontSize: '18px',
+    textAlign: 'left',
+    color: '#63696D',
+    lineHeight: '160%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '13px',
+    }
+  },
+  image: {
+    width: '75%', 
+    borderRadius: '50px'
+  },
+  caption: {
+    fontFamily: 'Roboto',
+    fontSize: '16px',
+    color: '#63696D',
+    lineHeight: '160%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '12px',
     }
   }
 })
