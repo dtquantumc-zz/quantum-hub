@@ -94,7 +94,8 @@ const homeStyle = theme => ({
   gridItemRight: {
     order: 2,
     [theme.breakpoints.down('md')]: {
-      order: 1
+      order: 1,
+      paddingBottom: theme.spacing(5)
     }
   },
   subheading: {
