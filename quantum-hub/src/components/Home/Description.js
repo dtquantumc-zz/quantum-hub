@@ -34,7 +34,7 @@ export default function Description () {
 
   return (
       <section className={classes.descriptionContainer}>
-        <Grid container justifyContent='center' alignItems='center' align='center' spacing={5}>
+        <Grid container justifyContent='center' alignItems='center' align='center'>
           <Grid item xs={10} sm={9} md={8} lg={5} xl={4} className={classes.gridItemLeft}>
             <img src={quantumComputer} className={classes.image} />
             <p className={classes.caption}>{imageCredit}<a href="https://larrygoldstein.pixieset.com/d_wave/" target='_blank'>Pixieset</a></p>
