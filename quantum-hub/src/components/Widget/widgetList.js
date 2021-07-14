@@ -16,22 +16,27 @@ import Widget from './EmptyWidget/EmptyWidget'
 import NurseIntroText from '../Typography/NurseIntroText'
 import NurseBriefDescriptionText from '../Typography/NurseBriefDescriptionText'
 import NurseReadMoreDescriptionText from '../Typography/NurseReadMoreDescriptionText'
+import NurseIcon from '../../images/nurse_icon.svg'
 
 import SudokuIntroText from '../Typography/SudokuIntroText'
 import SudokuBriefDescriptionText from '../Typography/SudokuBriefDescriptionText'
 import SudokuReadMoreDescriptionText from '../Typography/SudokuReadMoreDescriptionText'
+import SudokuIcon from '../../images/sudoku_icon.svg'
 
 import LatticeIntroText from '../Typography/LatticeIntroText'
 import LatticeBriefDescriptionText from '../Typography/LatticeBriefDescriptionText'
 import LatticeReadMoreDescriptionText from '../Typography/LatticeReadMoreDescriptionText'
+import LatticeIcon from '../../images/lattice_icon.svg'
 
 import TSPIntroText from '../Typography/TSPIntroText'
 import TSPbriefDescriptionText from '../Typography/TSPbriefDescriptionText'
 import TSPreadMoreDescriptionText from '../Typography/TSPreadMoreDescriptionText'
+import TSPIcon from '../../images/tsp_icon.svg'
 
 import IsingIntroText from '../Typography/IsingIntroText'
 import IsingBriefDescriptionText from '../Typography/IsingBriefDescriptionText'
 import IsingReadMoreDescriptionText from '../Typography/IsingReadMoreDescriptionText'
+import IsingIcon from '../../images/ising_icon.svg'
 
 const widgetList = {
   nurse: {
@@ -44,7 +49,8 @@ const widgetList = {
     readMoreDescriptionText: <NurseReadMoreDescriptionText />,
     brand: 'Nurse Scheduler',
     visible: true,
-    component: NurseScheduler
+    component: NurseScheduler,
+    image: NurseIcon
   },
   sudoku: {
     enabler: 'isSudokuSolver',
@@ -56,7 +62,8 @@ const widgetList = {
     readMoreDescriptionText: <SudokuReadMoreDescriptionText />,
     brand: 'Sudoku Solver',
     visible: true,
-    component: SudokuGame
+    component: SudokuGame,
+    image: SudokuIcon
   },
   lattice: {
     enabler: 'isLatticeColourer',
@@ -68,7 +75,8 @@ const widgetList = {
     readMoreDescriptionText: <LatticeReadMoreDescriptionText />,
     brand: 'Lattice Two-Colouring',
     visible: true,
-    component: LatticeColourer
+    component: LatticeColourer,
+    image: LatticeIcon
   },
   ising: {
     enabler: 'isIsingModel',
@@ -80,7 +88,8 @@ const widgetList = {
     readMoreDescriptionText: <IsingReadMoreDescriptionText />,
     brand: 'Ising Model Visualiser',
     visible: true,
-    component: IsingModel
+    component: IsingModel,
+    image: IsingIcon
   },
   tsp: {
     enabler: 'isTSP',
@@ -92,7 +101,8 @@ const widgetList = {
     readMoreDescriptionText: <TSPreadMoreDescriptionText />,
     brand: 'Travelling Salesperson',
     visible: true,
-    component: TSP
+    component: TSP,
+    image: TSPIcon
   },
   default: {
     enabler: 'isNothing',

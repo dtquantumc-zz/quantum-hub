@@ -36,11 +36,11 @@ export default function Description () {
       <section className={classes.descriptionContainer}>
         <Grid container justifyContent='center' alignItems='center' align='center'>
           <Grid item xs={10} sm={9} md={8} lg={5} xl={4} className={classes.gridItemLeft}>
-            <img src={quantumComputer} className={classes.image} />
-            <p className={classes.caption}>{imageCredit}<a href="https://larrygoldstein.pixieset.com/d_wave/" target='_blank'>Pixieset</a></p>
+            <img src={quantumComputer} alt='D-Wave Quantum Computer' className={classes.image} />
+            <p className={classes.caption}>{imageCredit}<a href="https://larrygoldstein.pixieset.com/d_wave/" target='_blank' rel='noopener noreferrer'>Pixieset</a></p>
           </Grid>
           <Grid item xs={10} sm={9} md={8} lg={4} xl={3} className={classes.gridItemRight}>
-            <h1 className={classes.subheading}>{subheading}</h1>
+            <h1 className={classes.subheadingBlue}>{subheading}</h1>
             <p className={classes.descriptionText}>{descriptionText}</p>
           </Grid>
         </Grid>
