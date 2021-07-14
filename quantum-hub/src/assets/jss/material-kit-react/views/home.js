@@ -98,9 +98,22 @@ const homeStyle = theme => ({
       paddingBottom: theme.spacing(5)
     }
   },
-  subheading: {
+  subheadingBlue: {
     fontFamily: 'Roboto',
     color: '#1D5561',
+    fontSize: '36px',
+    textAlign: 'left',
+    textTransform: 'uppercase',
+    letterSpacing: '0.2em',
+    marginTop: '0',
+    lineHeight: '130%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '18px',
+    }
+  },
+  subheadingYellow: {
+    fontFamily: 'Roboto',
+    color: '#C3872B',
     fontSize: '36px',
     textAlign: 'left',
     textTransform: 'uppercase',
@@ -132,6 +145,70 @@ const homeStyle = theme => ({
     lineHeight: '160%',
     [theme.breakpoints.down('sm')]: {
       fontSize: '12px',
+    }
+  },
+  sliderContainer: {
+    padding: '0px 100px 100px',
+    [theme.breakpoints.down('sm')]: {
+      padding: '40px'
+    }
+  },
+  gameCard: {
+    width: '300px',
+    height: '300px',
+    background: '#FBFBFB',
+    borderRadius: '15px',
+    border: '0.5px solid #C7C7C7',
+    marginTop: '10px',
+    '&:hover': {
+      transform: 'translateY(-1%)',
+      boxShadow: '0 5px 15px 0 rgba(64,62,61,0.05)',
+      transition: '.45s cubic-bezier(.19,1,.4,1)'
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '14px',
+      width: '200px',
+      height: '200px'
+    }
+  },
+  gameLink: {
+    textDecoration: 'none'
+  },
+  slider: {
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(3),
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '0'
+    }
+  },
+  arrowIcons: {
+    color: '#C3872B',
+    fontSize: '2.5rem',
+    '&:hover,&:focus': {
+      cursor: 'pointer'
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.5rem',
+    }
+  },
+  gameCardText: {
+    textTransform: 'uppercase',
+    color: '#63696D',
+    fontWeight: 'bold',
+    fontSize: '18px',
+    letterSpacing: '0.025em',
+    margin: '10px 25px 5px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '14px',
+    }
+  },
+  gameCardImage: {
+    height: '160px', 
+    margin: 'auto', 
+    padding: '25px 25px 15px',
+    [theme.breakpoints.down('sm')]: {
+      height: '100px',
+      padding: '15px 15px 5px'
     }
   }
 })
