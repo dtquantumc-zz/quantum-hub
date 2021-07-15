@@ -22,15 +22,15 @@ const homeStyle = theme => ({
   heroContainer: {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
-    padding: '390px 0 150px',
-    [theme.breakpoints.down('sm')]: {
+    padding: '350px 0 190px',
+    [theme.breakpoints.down('md')]: {
       padding: '165px 0 135px'
     }
   },
   hero: {
     display: 'flex',
-    marginLeft: '5%',
-    maxWidth: '75%',
+    marginLeft: '7%',
+    maxWidth: '70%',
     [theme.breakpoints.down('md')]: {
       marginLeft: 'auto',
       marginRight: 'auto',
@@ -80,20 +80,21 @@ const homeStyle = theme => ({
     }
   },
   descriptionContainer: {
-    padding: '150px 0px',
+    padding: '150px 100px',
+    background: '#F4F4F4',
     [theme.breakpoints.down('sm')]: {
-      padding: '60px 0px'
+      padding: '60px 40px'
     }
   },
   gridItemLeft: {
     order: 1,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('xs')]: {
       order: 2
     }
   },
   gridItemRight: {
     order: 2,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('xs')]: {
       order: 1,
       paddingBottom: theme.spacing(5)
     }
@@ -148,7 +149,7 @@ const homeStyle = theme => ({
     }
   },
   sliderContainer: {
-    padding: '0px 100px 100px',
+    padding: '150px 100px',
     [theme.breakpoints.down('sm')]: {
       padding: '40px'
     }
@@ -176,7 +177,7 @@ const homeStyle = theme => ({
   },
   slider: {
     marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
       marginTop: '0'
     }
@@ -210,6 +211,50 @@ const homeStyle = theme => ({
       height: '100px',
       padding: '15px 15px 5px'
     }
+  },
+  featureContainer: {
+    background: '#E7F3F6',
+    padding: theme.spacing(5),
+    paddingLeft: '100px',
+    overflow: 'hidden',
+    [theme.breakpoints.down('sm')]: {
+      padding: '40px'
+    }
+  },
+  featureImage: {
+    width: '125%',
+    maxWidth: '800px',
+    [theme.breakpoints.down('sm')]: {
+      width: '150%',
+      marginLeft: '45px',
+      zIndex: '-1'
+    }
+  },
+  featureDescription: {
+    marginTop: theme.spacing(12),
+    overflow: 'hidden',
+    [theme.breakpoints.down('md')]: {
+      marginTop: theme.spacing(6)
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(3)
+    }
+  },
+  linkText: {
+    color: '#C3872B',
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    fontSize: '17px',
+    textAlign: 'left',
+    letterSpacing: '0.1em',
+    marginTop: theme.spacing(5),
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '13px'
+    }
+  },
+  links: {
+    color: '#C3872B'
   }
 })
 
