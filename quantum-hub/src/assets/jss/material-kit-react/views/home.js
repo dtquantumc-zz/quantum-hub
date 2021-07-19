@@ -29,11 +29,13 @@ const homeStyle = theme => ({
   },
   hero: {
     display: 'flex',
-    marginLeft: '7%',
-    maxWidth: '70%',
+    maxWidth: '80%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    [theme.breakpoints.up('xl')]: {
+      maxWidth: '1288px'
+    },
     [theme.breakpoints.down('md')]: {
-      marginLeft: 'auto',
-      marginRight: 'auto',
       maxWidth: '75%'
     }
   },
@@ -86,6 +88,11 @@ const homeStyle = theme => ({
       padding: '60px 40px'
     }
   },
+  gridContainer: {
+    maxWidth: '1288px',
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  },
   gridItemLeft: {
     order: 1,
     [theme.breakpoints.down('xs')]: {
@@ -94,6 +101,7 @@ const homeStyle = theme => ({
   },
   gridItemRight: {
     order: 2,
+    paddingBottom: '25px',
     [theme.breakpoints.down('xs')]: {
       order: 1,
       paddingBottom: theme.spacing(5)
@@ -137,19 +145,24 @@ const homeStyle = theme => ({
   },
   image: {
     width: '75%', 
-    borderRadius: '50px'
+    borderRadius: '50px',
+    maxWidth: '430px'
   },
   caption: {
     fontFamily: 'Roboto',
-    fontSize: '16px',
+    fontSize: '14px',
     color: '#63696D',
     lineHeight: '160%',
+    marginTop: '5px',
     [theme.breakpoints.down('sm')]: {
       fontSize: '12px',
     }
   },
   sliderContainer: {
     padding: '150px 100px',
+    maxWidth: '1288px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
     [theme.breakpoints.down('sm')]: {
       padding: '40px'
     }
@@ -214,8 +227,7 @@ const homeStyle = theme => ({
   },
   featureContainer: {
     background: '#E7F3F6',
-    padding: theme.spacing(5),
-    paddingLeft: '100px',
+    padding: '100px',
     overflow: 'hidden',
     [theme.breakpoints.down('sm')]: {
       padding: '40px'
@@ -234,10 +246,9 @@ const homeStyle = theme => ({
     marginTop: theme.spacing(12),
     overflow: 'hidden',
     [theme.breakpoints.down('md')]: {
-      marginTop: theme.spacing(6)
+      marginTop: theme.spacing(2)
     },
     [theme.breakpoints.down('sm')]: {
-      marginTop: theme.spacing(2),
       marginBottom: theme.spacing(3)
     }
   },
@@ -254,7 +265,38 @@ const homeStyle = theme => ({
     }
   },
   links: {
-    color: '#C3872B'
+    color: '#C3872B',
+    '&:hover': {
+      color: '#EAA740'
+    }
+  },
+  resourcesContainer: {
+    background: '#fff',
+    padding: '100px',
+    maxWidth: '1288px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      padding: '40px'
+    }
+  },
+  resourceLinkText: {
+    color: '#63696D',
+    fontFamily: 'Roboto Slab',
+    fontWeight: 'bold',
+    fontSize: '17px',
+    textAlign: 'center',
+    letterSpacing: '0.1em',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '13px'
+    }
+  },
+  resourceLinks: {
+    color: '#63696D',
+    textDecoration: 'none',
+    '&:hover': {
+      color: '#959799'
+    }
   }
 })
 
