@@ -29,13 +29,13 @@ export default function Feature () {
   const classes = useStyles()
   
   const subheading = "Quantum Arcade Mobile Application"
-  const descriptionText = "Quantum Arcade is an educational cross-platform mobile application that introduces the general public to quantum computing in a gamified way. Test your mental skills with optimization-based puzzle games, and if you get stuck, you can ask a quantum computer to solve the puzzle for you!"
+  const descriptionText = "Quantum Arcade is an educational cross-platform mobile application that introduces the general public to quantum computing in a gamified way. Test your mental skills with optimization-based puzzle games and, if you get stuck, you can ask a quantum computer to solve the puzzle for you!"
   const iosLink = "https://testflight.apple.com/join/FEkCriwb"
   const androidLink = "https://drive.google.com/file/d/1UHmBISGQhBeF3n1feego2Cloy0zErajy/view?usp=sharing"
 
   return (
       <section className={classes.featureContainer}>
-        <Grid container justifyContent='center' alignItems='flex-start' align='center'>
+        <Grid container justifyContent='center' alignItems='flex-start' align='center' className={classes.gridContainer}>
           <Grid item xs={12} sm={6} className={classes.featureDescription}>
             <h1 className={classes.subheadingBlue}>{subheading}</h1>
             <p className={classes.descriptionText}>{descriptionText}</p>

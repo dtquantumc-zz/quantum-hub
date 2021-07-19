@@ -10,6 +10,7 @@ import Hero from '../components/Home/Hero.js'
 import Description from '../components/Home/Description.js'
 import GamesSlider from '../components/Home/GamesSlider.js'
 import Feature from '../components/Home/Feature.js'
+import Resources from '../components/Home/Resources.js'
 
 import { makeStyles } from '@material-ui/core/styles'
 import styles from '../assets/jss/material-kit-react/views/home.js'
@@ -24,6 +25,7 @@ function Home() {
       <Description />
       <GamesSlider />
       <Feature />
+      <Resources />
     </div>
   )
 }
