@@ -27,7 +27,6 @@ const homeStyle = theme => ({
   },
   hero: {
     display: 'flex',
-    paddingTop: '1rem',
     maxWidth: '90%',
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -57,10 +56,11 @@ const homeStyle = theme => ({
     marginTop: theme.spacing(3),
     marginRight: theme.spacing(2),
     fontSize: '16px',
-    width: '160px',
-    height: '50px',
+    padding: '15px 20px',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '15px'
+      fontSize: '15px',
+      width: '100%',
+      marginTop: '1rem'
     }
   },
   heroImage: {

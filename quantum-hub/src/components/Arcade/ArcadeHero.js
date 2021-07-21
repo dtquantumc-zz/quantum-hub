@@ -21,6 +21,8 @@ import Fade from '@material-ui/core/Fade'
 import { makeStyles } from '@material-ui/core/styles'
 
 import appMockup from '../../images/app_mockup_group.png'
+import appleLogo from '../../images/apple_logo.svg'
+import playLogo from '../../images/google_play_logo.svg'
 
 import Button from '../CustomButtons/Button.js'
 import styles from '../../assets/jss/material-kit-react/views/arcade.js'
@@ -58,6 +60,7 @@ export default function ArcadeHero () {
                     color='quantumArcadePurple'
                     round
                     >
+                    <img src={appleLogo} style={{ height: '20px', paddingRight: '0.7em' }} />
                     iOS Beta
                   </Button>
                   <Button
@@ -67,6 +70,7 @@ export default function ArcadeHero () {
                     color='quantumArcadePurple'
                     round
                     >
+                    <img src={playLogo} style={{ height: '24px', paddingRight: '0.7em' }} />
                     Android Beta
                   </Button>
                 </Grid>
