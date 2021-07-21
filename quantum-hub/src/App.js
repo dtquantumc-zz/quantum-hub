@@ -16,6 +16,7 @@ import FooterLinks from './components/Footer/FooterLinks.js';
 
 import Home from "./views/Home";
 import Game from "./views/Game";
+import Arcade from "./views/Arcade";
 
 function App() {
   /**
@@ -43,6 +44,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/app/" component={GenericApp} />
+          <Route path="/arcade" component={Arcade} />
         </Switch>
         <Footer
           leftLinks={<FooterLinks />}

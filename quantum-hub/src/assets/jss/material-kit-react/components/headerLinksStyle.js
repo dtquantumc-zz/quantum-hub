@@ -27,7 +27,10 @@ const headerLinksStyle = theme => ({
     listStyle: 'none',
     paddingTop: '0',
     paddingBottom: '0',
-    color: 'inherit'
+    color: 'inherit',
+    [theme.breakpoints.down('sm')]: {
+      borderTop: '.5px solid #e5e5e5'
+    }
   },
   listItem: {
     float: 'left',
@@ -36,9 +39,10 @@ const headerLinksStyle = theme => ({
     display: 'block',
     width: 'auto',
     margin: '0',
-    padding: '0',
+    padding: '0 8px',
     [theme.breakpoints.down('sm')]: {
-      width: '100%'
+      width: '100%',
+      borderBottom: '.5px solid #e5e5e5'
     }
   },
   navLink: {
@@ -96,22 +100,17 @@ const headerLinksStyle = theme => ({
   },
   rightNavLink: {
     fontFamily: 'Roboto',
-    fontWeight: 'bold',
+    fontWeight: '400',
     fontSize: '18px',
-    letterSpacing: '0.115em',
     borderRadius: '3px',
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
     color: 'white',
     padding: '8px 16px',
     '&:hover,&:focus': {
-      color: '#1D5561',
       background: 'transparent'
     },
     [theme.breakpoints.down('sm')]: {
-      padding: '8px 0px',
-      '&:hover,&:focus': {
-        color: '#fff'
-    },
+      padding: '8px 0px'
     }
   },
   menu: {
@@ -123,24 +122,20 @@ const headerLinksStyle = theme => ({
     }
   },
   menuItem: {
-    '&:hover,&:focus': {
-      background: 'transparent'
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: '0px'
     }
   },
   dropdownLink: {
     fontFamily: 'Roboto',
-    lineHeight: '30px',
-    fontWeight: 'bold',
+    fontWeight: '400',
     fontSize: '18px',
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
     textDecoration: 'none',
     color: 'white',
-    '&:hover,&:focus': {
-      color: '#1D5561'
-    },
     [theme.breakpoints.down('sm')]: {
-      fontSize: '16px',
-      textTransform: 'capitalize'
+      textTransform: 'capitalize',
+      padding: '12px 20px',
     }
   },
   accordion: {
@@ -148,13 +143,10 @@ const headerLinksStyle = theme => ({
     border: 'none'
   },
   accordionSummary: {
-    borderTop: '.5px solid #e5e5e5',
-    borderBottom: '.5px solid #e5e5e5',
     paddingLeft: '20px'
   },
   accordionDetails: {
-    borderBottom: '.5px solid #e5e5e5',
-    padding: '16px 18px'
+    padding: '0px 18px 16px'
   },
   icons: {
     color: '#fff',

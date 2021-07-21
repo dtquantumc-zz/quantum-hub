@@ -51,6 +51,9 @@ export default function RightHeaderLinks() {
 
   const instagramTitle = "Follow us on instagram"
   const instagramLink = "https://www.instagram.com/geeringup/?hl=en"
+
+  const arcadeTitle = "Quantum Arcade"
+  const arcadeLink = "/arcade"
   
   const popupState = usePopupState({ variant: 'popover', popupId: 'gamesMenu' })
 
@@ -98,6 +101,18 @@ export default function RightHeaderLinks() {
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
         {gamesDropdown}
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <Button
+        className={classes.rightNavLink}
+        >
+          <Link
+            to={{ pathname: arcadeLink }}
+            className={classes.dropdownLink}
+          >
+            {arcadeTitle}
+          </Link>
+        </Button>
       </ListItem>
       <ListItem className={classes.listItem}>
         <Tooltip

@@ -227,6 +227,13 @@ const buttonStyle = {
       backgroundColor: 'rgba(29, 85, 97, 0.3)'
     }
   },
+  quantumArcadePurple: {
+    color: '#fff',
+    backgroundColor: '#3B3376',
+    '&:hover,&:focus': {
+      backgroundColor: '#594EAC'
+    }
+  },
   simple: {
     '&,&:focus,&:hover,&:visited': {
       color: '#FFFFFF',

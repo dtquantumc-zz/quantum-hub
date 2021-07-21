@@ -39,6 +39,9 @@ const useStyles = makeStyles(styles);
 export default function RightHeaderLinks(props) {
   const classes = useStyles();
 
+  const arcadeTitle = "Quantum Arcade"
+  const arcadeLink = "/arcade"
+
   const gamesDropdownMobile =
     <Accordion
       className={classes.accordion}
@@ -55,7 +58,7 @@ export default function RightHeaderLinks(props) {
       </AccordionSummary>
       <AccordionDetails
         className={classes.accordionDetails}>
-        <List className={classes.list}>
+        <List>
           {Object.keys(widgetList).map((widget) => {
             if (widgetList[widget].visible === false) return ''
             return (
@@ -81,6 +84,19 @@ export default function RightHeaderLinks(props) {
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
         {gamesDropdownMobile}
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <Button
+        className={classes.rightNavLink}
+        >
+          <Link
+            to={{ pathname: arcadeLink }}
+            onClick={() => { props.handleDrawerToggle() }}
+            className={classes.dropdownLink}
+          >
+            {arcadeTitle}
+          </Link>
+        </Button>
       </ListItem>
     </List>
   );
