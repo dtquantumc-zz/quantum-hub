@@ -15,16 +15,14 @@
  */
 
 import React from 'react'
+import ArcadeButtons from './ArcadeButtons'
 // @material-ui/core components
 import Grid from '@material-ui/core/Grid'
 import Fade from '@material-ui/core/Fade'
 import { makeStyles } from '@material-ui/core/styles'
 
 import appMockup from '../../images/app_mockup_group.png'
-import appleLogo from '../../images/apple_logo.svg'
-import playLogo from '../../images/google_play_logo.svg'
 
-import Button from '../CustomButtons/Button.js'
 import styles from '../../assets/jss/material-kit-react/views/arcade.js'
 
 // styling
@@ -39,9 +37,6 @@ export default function ArcadeHero () {
   const heroTitle2 = "Arcade"
   const heroSubtitle = "Feel the power of a quantum computer in the palm of your hand."
 
-  const iosLink = "https://testflight.apple.com/join/FEkCriwb"
-  const androidLink = "https://drive.google.com/file/d/1UHmBISGQhBeF3n1feego2Cloy0zErajy/view?usp=sharing"
-
   return (
       <section className={classes.heroContainer}>
         <Fade direction="right" in={true} timeout={4000} mountOnEnter unmountOnExit>
@@ -53,26 +48,7 @@ export default function ArcadeHero () {
                     {heroTitle2}
                   </h1>
                   <p className={classes.heroSubheading}>{heroSubtitle}</p>
-                  <Button
-                    href={iosLink}
-                    target='_blank'
-                    className={classes.detailButton}
-                    color='quantumArcadePurple'
-                    round
-                    >
-                    <img src={appleLogo} style={{ height: '20px', paddingRight: '0.7em' }} />
-                    iOS Beta
-                  </Button>
-                  <Button
-                    href={androidLink}
-                    target='_blank'
-                    className={classes.detailButton}
-                    color='quantumArcadePurple'
-                    round
-                    >
-                    <img src={playLogo} style={{ height: '24px', paddingRight: '0.7em' }} />
-                    Android Beta
-                  </Button>
+                  {/* <ArcadeButtons/> */}
                 </Grid>
                 <Grid item xs={12} md={7}>
                   <img src={appMockup} alt='Quantum Arcade Mobile App' className={classes.heroImage} />

@@ -233,6 +233,11 @@ const homeStyle = theme => ({
       padding: '40px'
     }
   },
+  smallButton: {
+    marginTop: theme.spacing(4),
+    fontSize: '15px',
+    padding: '10px 30px'
+  },
   featureImage: {
     width: '125%',
     maxWidth: '800px',
@@ -266,6 +271,7 @@ const homeStyle = theme => ({
   },
   links: {
     color: '#C3872B',
+    textDecoration: 'none',
     '&:hover': {
       color: '#EAA740'
     }
