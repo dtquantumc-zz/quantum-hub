@@ -4,8 +4,8 @@
  * Diversifying Talent in Quantum Computing, Geering Up, UBC
  */
 
-import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch, useLocation, withRouter } from "react-router-dom";
 
 import Header from './components/Header/Header.js';
 import RightHeaderLinks from './components/Header/RightHeaderLinks.js';
@@ -17,6 +17,18 @@ import FooterLinks from './components/Footer/FooterLinks.js';
 import Home from "./views/Home";
 import Game from "./views/Game";
 import Arcade from "./views/Arcade";
+
+function _ScrollToTop(props) {
+    const { pathname } = useLocation();
+    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+    
+    return props.children
+}
+
+const ScrollToTop = withRouter(_ScrollToTop)
 
 function App() {
   /**
@@ -34,6 +46,7 @@ function App() {
   return (
     <div className="App">
       <Router>
+        <ScrollToTop>
         <Header
           color='geeringupPrimary'
           rightLinks={<RightHeaderLinks />}
@@ -50,6 +63,7 @@ function App() {
           leftLinks={<FooterLinks />}
           key='myFooter'
         />
+        </ScrollToTop>
       </Router>
     </div>
   );
