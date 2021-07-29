@@ -5,6 +5,7 @@
  */
 
 import React from 'react'
+import Fade from 'react-reveal/Fade'
 
 import ArcadeHero from '../components/Arcade/ArcadeHero.js'
 import SectionTech from '../components/Arcade/SectionTech.js'
@@ -21,11 +22,13 @@ function Arcade() {
 
   return (
     <div className={classes.root}>
-      <ArcadeHero />
-      <SectionTech />
-      <SectionPuzzles />
-      <SectionPoints />
-      <Download />
+      <Fade delay={350}>
+        <ArcadeHero />
+        <SectionTech />
+        <SectionPuzzles />
+        <SectionPoints />
+        <Download />
+      </Fade>
     </div>
   )
 }

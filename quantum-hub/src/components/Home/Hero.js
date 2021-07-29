@@ -15,9 +15,9 @@
  */
 
 import React from 'react'
+import Fade from 'react-reveal/Fade'
 // @material-ui/core components
 import Grid from '@material-ui/core/Grid'
-import Fade from '@material-ui/core/Fade'
 import { makeStyles } from '@material-ui/core/styles'
 
 import Button from '../CustomButtons/Button.js'
@@ -36,31 +36,35 @@ export default function Hero () {
 
   return (
       <section className={classes.heroContainer}>
-        <Fade direction="right" in={true} timeout={4000} mountOnEnter unmountOnExit>
-            <Grid container direction="column" className={classes.hero}>
-                <Grid item xs={12}>
-                  <h1 className={classes.heroHeading}>
-                    {heroTitle1}
-                    <br/>
-                    {heroTitle2}
-                  </h1>
-                </Grid>
-                <Grid item xs={12}>
-                  <p className={classes.heroSubheading}>{heroSubtitle}</p>
-                </Grid>
-                <Grid item xs={12} className={classes.buttonContainer}>
-                  <Button
-                    href={dtqcLink}
-                    target='_blank'
-                    className={classes.detailButton}
-                    color='geeringupPrimary'
-                    round
-                    >
-                    Learn More
-                  </Button>
-                </Grid>
-            </Grid>
-        </Fade>
+        <Grid container direction="column" className={classes.hero}>
+          <Grid item xs={12}>
+            <Fade delay={550}>
+              <h1 className={classes.heroHeading}>
+                {heroTitle1}
+                <br/>
+                {heroTitle2}
+              </h1>
+            </Fade>
+          </Grid>
+          <Grid item xs={12}>
+            <Fade delay={850}>
+              <p className={classes.heroSubheading}>{heroSubtitle}</p>
+            </Fade>
+          </Grid>
+          <Grid item xs={12} className={classes.buttonContainer}>
+            <Fade delay={1250}>
+              <Button
+                href={dtqcLink}
+                target='_blank'
+                className={classes.detailButton}
+                color='geeringupPrimary'
+                round
+                >
+                Learn More
+              </Button>
+            </Fade>
+          </Grid>
+        </Grid>
       </section>
   )
 }

@@ -47,22 +47,22 @@ function App() {
     <div className="App">
       <Router>
         <ScrollToTop>
-        <Header
-          color='geeringupPrimary'
-          rightLinks={<RightHeaderLinks />}
-          leftLinks={<LeftHeaderLinks />}
-          fixed
-          key='myHeader'
-        />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/app/" component={GenericApp} />
-          <Route path="/arcade" component={Arcade} />
-        </Switch>
-        <Footer
-          leftLinks={<FooterLinks />}
-          key='myFooter'
-        />
+          <Header
+            color='geeringupPrimary'
+            rightLinks={<RightHeaderLinks />}
+            leftLinks={<LeftHeaderLinks />}
+            fixed
+            key='myHeader'
+          />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/app/" component={GenericApp} />
+            <Route path="/arcade" component={Arcade} />
+          </Switch>
+          <Footer
+            leftLinks={<FooterLinks />}
+            key='myFooter'
+          />
         </ScrollToTop>
       </Router>
     </div>

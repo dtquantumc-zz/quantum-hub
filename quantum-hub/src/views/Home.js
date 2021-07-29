@@ -5,6 +5,7 @@
  */
 
 import React from 'react'
+import Fade from 'react-reveal/Fade'
 
 import Hero from '../components/Home/Hero.js'
 import Description from '../components/Home/Description.js'
@@ -21,11 +22,13 @@ function Home() {
 
   return (
     <div className={classes.root}>
-      <Hero />
-      <Description />
-      <GamesSlider />
-      <Feature />
-      <Resources />
+      <Fade delay={350}>
+        <Hero />
+        <Description />
+        <GamesSlider />
+        <Feature />
+        <Resources />
+      </Fade>
     </div>
   )
 }

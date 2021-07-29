@@ -16,6 +16,7 @@
 
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Fade from 'react-reveal/Fade'
 // @material-ui/core components
 import Grid from '@material-ui/core/Grid'
 import Button from '../CustomButtons/Button.js'
@@ -56,7 +57,9 @@ export default function Feature () {
             </Link>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <img src={appMockup} alt='Quantum Arcade Mobile App' className={classes.featureImage} />
+            <Fade delay={550}>
+              <img src={appMockup} alt='Quantum Arcade Mobile App' className={classes.featureImage} />
+            </Fade>
           </Grid>
         </Grid>
       </section>

@@ -15,6 +15,7 @@
  */
 
 import React from 'react'
+import Fade from 'react-reveal/Fade'
 // @material-ui/core components
 import ArcadeButtons from './ArcadeButtons'
 import Button from '../CustomButtons/Button.js'
@@ -39,22 +40,24 @@ export default function Download () {
       <section className={classes.sectionDownload}>
         <div className={classes.downloadContainer}>
           <img src={appIcon} alt='Quantum Arcade Puzzles' className={classes.appIcon} width={135} height={135}/>
-          <div className={classes.downloadText}>
-            <h1 className={classes.downloadHeadingText}>
-              {headingText}
-            </h1>
-            <p className={classes.downloadBodyText}>{bodyText}</p>
-            <Button
-              href={mailingListLink}
-              target='_blank'
-              className={classes.detailButton}
-              color='quantumArcadePurple'
-              round
-            >
-              Get on the List
-            </Button>
-            {/* <ArcadeButtons/> */}
-          </div>
+          <Fade delay={500}>
+            <div className={classes.downloadText}>
+              <h1 className={classes.downloadHeadingText}>
+                {headingText}
+              </h1>
+              <p className={classes.downloadBodyText}>{bodyText}</p>
+              <Button
+                href={mailingListLink}
+                target='_blank'
+                className={classes.detailButton}
+                color='quantumArcadePurple'
+                round
+              >
+                Get on the List
+              </Button>
+              {/* <ArcadeButtons/> */}
+            </div>
+          </Fade>
         </div>
       </section>
   )

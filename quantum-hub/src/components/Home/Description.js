@@ -15,6 +15,7 @@
  */
 
 import React from 'react'
+import Fade from 'react-reveal/Fade'
 // @material-ui/core components
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
@@ -38,8 +39,10 @@ export default function Description () {
       <section className={classes.descriptionContainer}>
         <Grid container justifyContent='center' alignItems='center' align='center' className={classes.gridContainer}>
           <Grid item xs={12} sm={5} className={classes.gridItemLeft}>
-            <img src={quantumComputer} alt='D-Wave Quantum Computer' className={classes.image} />
-            <p className={classes.caption}>{imageCredit}<a href="https://larrygoldstein.pixieset.com/d_wave/" target='_blank' rel='noopener noreferrer' className={classes.links}>Pixieset</a></p>
+            <Fade delay={550}>
+              <img src={quantumComputer} alt='D-Wave Quantum Computer' className={classes.image} />
+              <p className={classes.caption}>{imageCredit}<a href="https://larrygoldstein.pixieset.com/d_wave/" target='_blank' rel='noopener noreferrer' className={classes.links}>Pixieset</a></p>
+            </Fade>
           </Grid>
           <Grid item xs={12} sm={7} className={classes.gridItemRight}>
             <h1 className={classes.subheadingBlue}>{subheading}</h1>

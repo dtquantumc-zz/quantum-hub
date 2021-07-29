@@ -15,6 +15,7 @@
  */
 
 import React from 'react'
+import Fade from 'react-reveal/Fade'
 // @material-ui/core components
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
@@ -35,7 +36,9 @@ export default function SectionTech () {
       <section className={classes.section}>
         <Grid container className={classes.gridContainer} alignItems='center' justifyContent='space-between' align='center'>
           <Grid item xs={12} sm={6} lg={6} className={classes.gridItemLeft}>
-            <img src={quantumPhysics} alt='Quantum Physics' className={classes.imageBlock} />
+            <Fade delay={550}>
+              <img src={quantumPhysics} alt='Quantum Physics' className={classes.imageBlock} />
+            </Fade>
           </Grid>
           <Grid item xs={12} sm={6} xl={5} className={classes.gridItemRight}>
             <div className={classes.textBlock}>

@@ -15,12 +15,14 @@
  */
 
 import React from 'react'
+import Fade from 'react-reveal/Fade'
 import ArcadeButtons from './ArcadeButtons'
+import Button from '../CustomButtons/Button.js'
 // @material-ui/core components
 import Grid from '@material-ui/core/Grid'
-import Fade from '@material-ui/core/Fade'
 import { makeStyles } from '@material-ui/core/styles'
 
+import MailOutlineIcon from '@material-ui/icons/MailOutline'
 import appMockup from '../../images/app_mockup_group.png'
 
 import styles from '../../assets/jss/material-kit-react/views/arcade.js'
@@ -37,24 +39,37 @@ export default function ArcadeHero () {
   const heroTitle2 = "Arcade"
   const heroSubtitle = "Feel the power of a quantum computer in the palm of your hand."
 
+  const mailingListLink = "https://ubc.ca1.qualtrics.com/jfe/form/SV_bxrzDqMxEMzEB0i"
+
   return (
       <section className={classes.heroContainer}>
-        <Fade direction="right" in={true} timeout={4000} mountOnEnter unmountOnExit>
-            <Grid container direction="column" className={classes.hero}>
-                <Grid item xs={12} md={5}>
-                  <h1 className='hero_heading'>
-                    {heroTitle1}
-                    <br/>
-                    {heroTitle2}
-                  </h1>
-                  <p className={classes.heroSubheading}>{heroSubtitle}</p>
-                  {/* <ArcadeButtons/> */}
-                </Grid>
-                <Grid item xs={12} md={7}>
-                  <img src={appMockup} alt='Quantum Arcade Mobile App' className={classes.heroImage} />
-                </Grid>
-            </Grid>
-        </Fade>
+        <Grid container className={classes.hero}>
+          <Grid item xs={12} md={5}>
+            <h1 className='hero_heading'>
+              {heroTitle1}
+              <br/>
+              {heroTitle2}
+            </h1>
+            <p className={classes.heroSubheading}>{heroSubtitle}</p>
+            <p className={classes.comingSoonText}>Be the first to know when Quantum Arcade launches.</p>
+            <Button
+                href={mailingListLink}
+                target='_blank'
+                className={classes.detailButton}
+                color='quantumArcadePurple'
+                round
+              >
+                <MailOutlineIcon style={{ height: '24px', paddingRight: '0.5em' }} />
+                Sign Up
+              </Button>
+            {/* <ArcadeButtons/> */}
+          </Grid>
+          <Grid item xs={12} md={7}>
+            <Fade delay={550}>
+              <img src={appMockup} alt='Quantum Arcade Mobile App' className={classes.heroImage} />
+            </Fade>
+          </Grid>
+        </Grid>
       </section>
   )
 }

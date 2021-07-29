@@ -16,6 +16,7 @@
 
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Fade from 'react-reveal/Fade'
 // core components
 import widgetList from '../Widget/widgetList'
 // @material-ui/core components
@@ -118,9 +119,11 @@ class GamesSlider extends React.Component {
               <ChevronRightIcon className={classes.arrowIcons} onClick={this.next}/>
             </Grid>
           </Grid>
+          <Fade delay={550}>
           <Slider ref={c => (this.slider = c)} {...settings} className={classes.slider}>
             {gameCard}
           </Slider>
+          </Fade>
         </div>
     )
   }

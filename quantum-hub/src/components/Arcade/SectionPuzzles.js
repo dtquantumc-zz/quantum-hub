@@ -15,6 +15,7 @@
  */
 
 import React from 'react'
+import Fade from 'react-reveal/Fade'
 // @material-ui/core components
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
@@ -43,7 +44,9 @@ export default function SectionPuzzles () {
             </div>
           </Grid>
           <Grid item xs={12} sm={6} xl={6}>
-            <img src={puzzles} alt='Quantum Arcade Puzzles' className={classes.imageBlock} />
+            <Fade delay={550}>
+              <img src={puzzles} alt='Quantum Arcade Puzzles' className={classes.imageBlock} />
+            </Fade>
           </Grid>
         </Grid>
       </section>

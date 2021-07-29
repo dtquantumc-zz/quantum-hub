@@ -173,10 +173,10 @@ const homeStyle = theme => ({
     background: '#FBFBFB',
     borderRadius: '15px',
     border: '0.5px solid #C7C7C7',
-    marginTop: '10px',
+    margin: '10px',
     '&:hover': {
       transform: 'translateY(-1%)',
-      boxShadow: '0 5px 15px 0 rgba(64,62,61,0.05)',
+      boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
       transition: '.45s cubic-bezier(.19,1,.4,1)'
     },
     [theme.breakpoints.down('sm')]: {

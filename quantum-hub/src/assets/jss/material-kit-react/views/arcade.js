@@ -20,7 +20,8 @@ const homeStyle = theme => ({
   },
   heroContainer: {
     background: '#E7F3F6',
-    padding: '8.5rem 0 4.5rem',
+    padding: '8.5rem 0 6.5rem',
+    marginBottom: '3rem',
     overflow: 'hidden',
     [theme.breakpoints.down('sm')]: {
       padding: '5.5rem 1.5rem 3.5rem'
@@ -28,7 +29,7 @@ const homeStyle = theme => ({
   },
   hero: {
     display: 'flex',
-    maxWidth: '1272px',
+    maxWidth: '1080px',
     marginLeft: 'auto',
     marginRight: 'auto',
     textAlign: 'left',
@@ -55,8 +56,24 @@ const homeStyle = theme => ({
       fontSize: '1.25rem'
     }
   },
+  comingSoonText: {
+    color: '#3D3D46',
+    fontSize: '16px',
+    fontWeight: '700',
+    lineHeight: '150%',
+    letterSpacing: '0.045em',
+    fontFamily: 'Roboto',
+    textAlign: 'left',
+    marginTop: '20px',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center'
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '15px'
+    }
+  },
   detailButton: {
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(2),
     marginRight: theme.spacing(2),
     fontSize: '16px',
     padding: '15px 20px',
@@ -68,12 +85,13 @@ const homeStyle = theme => ({
   },
   heroImage: {
     width: '95%',
+    height: 'auto',
     [theme.breakpoints.down('xs')]: {
       width: '130%'
     }
   },
   section: {
-    paddingTop: '9.5rem',
+    paddingTop: '7.5rem',
     paddingBottom: '9.5rem',
     margin: '0px auto',
     [theme.breakpoints.up('lg')]: {
