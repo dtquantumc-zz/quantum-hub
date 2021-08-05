@@ -16,6 +16,8 @@
 
 import { defaultFont } from '../../material-kit-react.js'
 
+import tooltip from '../tooltipsStyle.js'
+
 // TODO: Copied from headerLinksStyle.js, should instead re-use
 const footerLinksStyle = theme => ({
   list: {
@@ -26,28 +28,34 @@ const footerLinksStyle = theme => ({
     listStyle: 'none',
     paddingTop: '0',
     paddingBottom: '0',
-    color: 'inherit'
+    color: 'inherit',
+    display: 'inline-table'
   },
   listItem: {
-    float: 'left',
     color: 'inherit',
     position: 'relative',
-    display: 'block',
+    display: 'contents',
     width: 'auto',
     margin: '0',
-    padding: '0',
+    padding: '0'
+  },
+  footerLink: {
+    padding: '15px 30px',
     [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      '&:after': {
-        width: 'calc(100% - 30px)',
-        content: '""',
-        display: 'block',
-        height: '1px',
-        marginLeft: '15px',
-        backgroundColor: '#e5e5e5'
-      }
+      padding: '10px 15px',
     }
-  }
+  },
+  socialLink: {
+    padding: '15px 10px',
+    [theme.breakpoints.down('sm')]: {
+      padding: '15px 4px',
+    }
+  },
+  socialIcons: {
+    color: '#87D3E4',
+    fontSize: '20px !important'
+  },
+  ...tooltip
 })
 
 export default footerLinksStyle

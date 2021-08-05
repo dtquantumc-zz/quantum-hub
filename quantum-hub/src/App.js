@@ -12,7 +12,8 @@ import RightHeaderLinks from './components/Header/RightHeaderLinks.js';
 import LeftHeaderLinks from './components/Header/LeftHeaderLinks.js';
 
 import Footer from './components/Footer/Footer.js';
-import FooterLinks from './components/Footer/FooterLinks.js';
+import RightFooterLinks from './components/Footer/RightFooterLinks.js';
+import PartnerLinks from './components/Footer/PartnerLinks.js';
 
 import Home from "./views/Home";
 import Game from "./views/Game";
@@ -60,7 +61,8 @@ function App() {
             <Route path="/arcade" component={Arcade} />
           </Switch>
           <Footer
-            leftLinks={<FooterLinks />}
+            partnerLinks={<PartnerLinks />}
+            rightLinks={<RightFooterLinks />}
             key='myFooter'
           />
         </ScrollToTop>

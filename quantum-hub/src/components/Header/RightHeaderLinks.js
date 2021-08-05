@@ -22,7 +22,6 @@ import { Link } from 'react-router-dom'
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from '@material-ui/core/MenuItem'
 
 // material-ui-popup-state components and hooks
@@ -42,15 +41,6 @@ const useStyles = makeStyles(styles);
 
 export default function RightHeaderLinks() {
   const classes = useStyles();
-
-  const githubTitle = "Check out our github"
-  const githubLink = "https://github.com/dtquantumc/sw"
-
-  const youtubeTitle = "Subscribe on youtube"
-  const youtubeLink = "https://www.youtube.com/user/GEERingUp"
-
-  const instagramTitle = "Follow us on instagram"
-  const instagramLink = "https://www.instagram.com/geeringup/?hl=en"
 
   const arcadeTitle = "Quantum Arcade"
   const arcadeLink = "/arcade"
@@ -113,57 +103,6 @@ export default function RightHeaderLinks() {
             {arcadeTitle}
           </Link>
         </Button>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="github-tooltip"
-          title={githubTitle}
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            href={githubLink}
-            target="_blank"
-            color="transparent"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-github"} />
-          </Button>
-        </Tooltip>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="youtube-tooltip"
-          title={youtubeTitle}
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            color="transparent"
-            href={youtubeLink}
-            target="_blank"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-youtube"} />
-          </Button>
-        </Tooltip>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="instagram-tooltip"
-          title={instagramTitle}
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            color="transparent"
-            href={instagramLink}
-            target="_blank"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-instagram"} />
-          </Button>
-        </Tooltip>
       </ListItem>
     </List>
   );

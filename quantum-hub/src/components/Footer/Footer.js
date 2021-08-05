@@ -21,6 +21,7 @@ import PropTypes from 'prop-types'
 // nodejs library that concatenates classes
 import classNames from 'classnames'
 // material-ui core components
+import Divider from '@material-ui/core/Divider'
 import { makeStyles } from '@material-ui/core/styles'
 
 import styles from '../../assets/jss/material-kit-react/components/footerStyle.js'
@@ -29,7 +30,7 @@ const useStyles = makeStyles(styles)
 
 export default function Footer (props) {
   const classes = useStyles()
-  const { whiteFont, leftLinks } = props
+  const { whiteFont, partnerLinks, rightLinks } = props
   const footerClasses = classNames({
     [classes.footer]: true,
     [classes.footerWhiteFont]: whiteFont
@@ -37,12 +38,17 @@ export default function Footer (props) {
 
   return (
     <footer className={footerClasses}>
-      <div className={classes.container}>
-        <div className={classes.left}>
-          {leftLinks}
-        </div>
-        <div className={classes.right}>
+      <h1 className={classes.subheadingBlue}>Project Partners</h1>
+      <div className={classes.partnerLinks}>
+        {partnerLinks}
+      </div>
+      <Divider />
+      <div className={classes.footerLinks} >
+        <div className={classes.left} >
           &copy; DTQC, Geering Up, UBC
+        </div>
+        <div className={classes.right} >
+          {rightLinks}
         </div>
       </div>
     </footer>

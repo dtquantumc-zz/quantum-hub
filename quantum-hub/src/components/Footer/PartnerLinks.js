@@ -19,13 +19,13 @@ import microsoftLogo from '../../images/msft.svg'
 import dwaveLogo from '../../images/dwave.svg'
 
 // core components
-import Button from '../../components/CustomButtons/Button.js'
+import Button from '../CustomButtons/Button.js'
 
 import styles from '../../assets/jss/material-kit-react/components/footerLinksStyle.js'
 
 const useStyles = makeStyles(styles)
 
-export default function FooterLinks () {
+export default function PartnerLinks () {
   const classes = useStyles()
 
   const ubcTitle = 'UBC'
@@ -62,7 +62,7 @@ export default function FooterLinks () {
             color='transparent'
             href={ubcLink}
             target='_blank'
-            className={classes.navLink}
+            className={classes.footerLink}
           >
             <img src={UBC} alt={ubcDescription} style={{ height: '42px' }} />
           </Button>
@@ -80,7 +80,7 @@ export default function FooterLinks () {
             color='transparent'
             href={superclusterLink}
             target='_blank'
-            className={classes.navLink}
+            className={classes.footerLink}
           >
             <img src={supercluster} alt={superclusterDescription} style={{ height: '42px' }} />
           </Button>
@@ -98,7 +98,7 @@ export default function FooterLinks () {
             color='transparent'
             href={geeringupLink}
             target='_blank'
-            className={classes.navLink}
+            className={classes.footerLink}
           >
             <img src={geeringupLogo} alt={geeringupDescription} style={{ height: '42px' }} />
           </Button>
@@ -116,7 +116,7 @@ export default function FooterLinks () {
             color='transparent'
             href={dwaveLink}
             target='_blank'
-            className={classes.navLink}
+            className={classes.footerLink}
           >
             <img src={dwaveLogo} alt={dwaveDescription} style={{ height: '34px', paddingTop: '5px' }} />
           </Button>
@@ -134,7 +134,7 @@ export default function FooterLinks () {
             color='transparent'
             href={microsoftLink}
             target='_blank'
-            className={classes.navLink}
+            className={classes.footerLink}
           >
             <img src={microsoftLogo} alt={microsoftDescription} style={{ height: '34px' }} />
           </Button>
