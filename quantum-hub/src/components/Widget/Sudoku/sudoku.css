@@ -1,5 +1,17 @@
 div, p {margin:0px; padding:0px;}
 
+@media (max-width: 990px){
+  .gridGrid .gridSquare{
+  height: 34px;
+  }
+}
+
+@media (min-width: 991px){
+  .gridGrid .gridSquare{
+  min-height: 45px;
+  }
+}
+
 .gridGrid .gridSquare{
   display: block;
   flex: 1;
@@ -12,7 +24,6 @@ div, p {margin:0px; padding:0px;}
   font-weight: normal;
   font-size: 24px;
   margin: 0;
-  min-height: 5vh;
 }
 
 .gridGrid .gridSquare:disabled{
