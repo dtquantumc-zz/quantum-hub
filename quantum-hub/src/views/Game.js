@@ -135,7 +135,7 @@ function Game (props) {
             textLines={textLines}
             title={widgetList[widget].name}
             key='terminalWindow'
-            getIP={props.live}
+            live
           />)}
         </div>
       )
