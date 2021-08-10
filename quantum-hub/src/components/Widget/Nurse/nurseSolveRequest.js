@@ -12,14 +12,16 @@ import nurseVars from './NurseVariables'
  * This is a function to send a solve request to the backend.
  * Uses LongRequest to achieve this with background processes.
  * @param {Function} setSchedule - Sets the Schedule
+ * @param {Function} openModal - Opens Console in Mobile
  * @param {Function} outputToConsole - Output to Console
  * @param {Function} appendToConsole - Append to Console
  * @param {Function} getAPIKey - Get the API Key
  * @param {Function} setLoading - Hook to set the Nurse App's loading state
  */
-function nurseSolveRequest (setSchedule, outputToConsole, appendToConsole, getAPIKey, setLoading) {
+function nurseSolveRequest (setSchedule, openModal, outputToConsole, appendToConsole, getAPIKey, setLoading) {
   if (nurseVars.xhr) return
 
+  openModal()
   setLoading(true)
   outputToConsole(`Scheduling ${nurseVars.numNurses} nurses across ${nurseVars.numDays} days:`)
 

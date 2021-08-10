@@ -14,9 +14,9 @@
 
  */
 
-import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Modal from '@material-ui/core/Modal'
 import Button from '../../components/CustomButtons/Button.js'
 import Console from '../../components/CustomOutput/console.js'
 import widgetList from '../../components/Widget/widgetList'
@@ -27,16 +27,6 @@ const useStyles = makeStyles(styles)
 function ConsoleModal (props) {
   const classes = useStyles()
 
-  const [open, setOpen] = useState(false)
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const body = (
     <div className={classes.modalContainer}>
       <Console
@@ -44,6 +34,7 @@ function ConsoleModal (props) {
         title={widgetList[props.widget].name}
         key='terminalWindow'
         getIP={props.live}
+        closeModal={props.closeModal}
       />
     </div>
   );
@@ -55,13 +46,14 @@ function ConsoleModal (props) {
         color='geeringupSecondaryModified'
         size='md'
         round
-        onClick={() => handleOpen()}
+        onClick={props.openModal}
       >
         View Console
       </Button>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={props.showModal}
+        onClose={props.closeModal} 
+        className={classes.paper}
       >
         {body}
       </Modal>

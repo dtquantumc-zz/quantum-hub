@@ -18,6 +18,7 @@ import {
  * @param {Array(81)} sudokuGrid - This is the current Sudoku GameState grid
  * @param {Function} setSudokuGrid - Hook to update Sudoku Grid
  * @param {Function} setEnabled - Hook to update Enabled status of the whole widget
+ * @param {Function} openModal - Opens Console in Mobile
  * @param {Function} outputToConsole - Hook to add a line of text to the Console (output)
  * @param {Function} appendToConsole - Append to Console
  * @param {Function} getAPIKey - Returns the user's current API Key. If empty, assume
@@ -26,7 +27,7 @@ import {
  * @param {Function} gridValidator - Function to validate the Sudoku Grid's state
  * @param {Function} setLoading - Hook to update the Sudoku Grid's loading state
  */
-function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToConsole, appendToConsole, getAPIKey, setEmpty, gridValidator, setLoading) {
+function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, openModal, outputToConsole, appendToConsole, getAPIKey, setEmpty, gridValidator, setLoading) {
   if (sudokuVars.xhr) return
   var sudokuArray = []
   for (var y = 0; y < 9; y++) {
@@ -36,6 +37,7 @@ function sudokuSolveRequest (sudokuGrid, setSudokuGrid, setEnabled, outputToCons
     }
   }
   setEnabled(false)
+  openModal()
   setLoading(true)
   outputToConsole('Sending in this grid:')
   sudokuArray.map((row) => outputToConsole(row.join(' ')))

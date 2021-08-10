@@ -161,6 +161,7 @@ function LatticeColourer (props) {
                   LatticeVars.setQuantum(newLattice, (calculateConflicts(newLattice)).length)
                   setLattice(newLattice)
                 },
+                props.openModal,
                 props.outputToConsole,
                 props.appendToConsole,
                 props.getAPIKey,

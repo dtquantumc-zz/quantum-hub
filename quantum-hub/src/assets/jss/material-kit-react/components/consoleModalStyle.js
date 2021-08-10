@@ -18,7 +18,7 @@ const consoleModalStyle = theme => ({
   detailButton: {
     height: '35px',
     width: '100%'
-  },
+  }
 })
 
 export default consoleModalStyle

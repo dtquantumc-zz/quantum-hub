@@ -44,7 +44,7 @@ export default function ArcadeButtons () {
           color='quantumArcadePurple'
           round
         >
-          <img src={appleLogo} style={{ height: '20px', paddingRight: '0.7em' }} />
+          <img src={appleLogo} alt='Apple App Store' style={{ height: '20px', paddingRight: '0.7em' }} />
           {iosText}
         </Button>
         <Button
@@ -54,7 +54,7 @@ export default function ArcadeButtons () {
           color='quantumArcadePurple'
           round
         >
-          <img src={playLogo} style={{ height: '24px', paddingRight: '0.7em' }} />
+          <img src={playLogo} alt='Google Play Store' style={{ height: '24px', paddingRight: '0.7em' }} />
           {androidText}
         </Button>
     </>

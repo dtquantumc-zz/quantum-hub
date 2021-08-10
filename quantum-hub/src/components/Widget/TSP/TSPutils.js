@@ -204,6 +204,7 @@ export default class TSPutils {
       selectedEdges: selectedEdges,
       key: key
     }
+    consoleFns.openModal()
     tspSolveRequest(tspSolveRequestGraphParams, setters, consoleFns)
   }
 

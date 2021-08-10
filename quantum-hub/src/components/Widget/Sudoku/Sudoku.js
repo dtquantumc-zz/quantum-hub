@@ -170,7 +170,7 @@ function SudokuGame (props) {
             // TODO: Consider setting it to nothing instead of top-left
             setCurrentSquare([0, 0])
             sudokuSolveRequest(sudokuGrid, setSudokuGrid, setEnabled,
-              props.outputToConsole, props.appendToConsole, props.getAPIKey, setEmpty,
+              props.openModal, props.outputToConsole, props.appendToConsole, props.getAPIKey, setEmpty,
               (sudokuGrid) => { SudokuValidationUtils.validateKeyPress(invalidStateSetters, sudokuGrid) },
               setLoading)
           }}

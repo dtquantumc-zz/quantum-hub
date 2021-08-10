@@ -13,11 +13,12 @@ import LatticeVars from './latticeVars'
  * Uses LongRequest to achieve this with background processes.
  * @param {Array} lattice - The lattice
  * @param {Function} setLattice - Sets the Schedule
+ * @param {Function} openModal - Opens Console in Mobile
  * @param {Function} outputToConsole - Output to Console
  * @param {Function} appendToConsole - Append to Console
  * @param {Function} getAPIKey - Get the API Key
  */
-function latticeSolveRequest (lattice, setLattice, outputToConsole, appendToConsole, getAPIKey, setLoading) {
+function latticeSolveRequest (lattice, setLattice, openModal, outputToConsole, appendToConsole, getAPIKey, setLoading) {
   var dict = {}
   var arr = []
   var conns = []
@@ -59,6 +60,8 @@ function latticeSolveRequest (lattice, setLattice, outputToConsole, appendToCons
 
   // console.log(dict)
   // console.log(conns)
+
+  openModal()
 
   outputToConsole(`Colouring ${index} Lattice points for minimum conflicts:`)
 

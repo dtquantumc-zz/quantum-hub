@@ -36,6 +36,7 @@ function Game (props) {
   const [widgetOverride, overrideWidget] = useState('')
   var [textLines, setTextLines] = useState([])
   const [loading, setLoading] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const breakpoint = 600;
   const [width, setWidth] = useState(window.innerWidth);
 
@@ -86,6 +87,14 @@ function Game (props) {
   const appBrand = widgetList[widget].brand
   // const WidgetTag = widgetList[widget].component
 
+  const handleOpenModal = () => {
+    setShowModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(false)
+  }
+
   const outputToConsole = (line) => {
     setTextLines(textLines.concat(line))
     textLines = textLines.concat(line)
@@ -104,7 +113,7 @@ function Game (props) {
       />)}
     </div>
 
-  const widgetComponent =
+  const gameWidget =
     Object.keys(widgetList).map((wid) => {
       const WidC = widgetList[wid].component
       return (
@@ -112,14 +121,6 @@ function Game (props) {
           style={{ display: (wid === widget ? null : 'none') }}
           key={wid + 'Div'}
         >
-          <IntroCard
-            color='geeringupPrimary'
-            brand={appBrand}
-            setWidget={setWidget}
-            widget={widget}
-            isMobile={isMobile}
-            key='myWidgetIntro'
-          />
           <WidC
             id='myWidget'
             getAPIKey={() => ''}
@@ -129,17 +130,36 @@ function Game (props) {
             setLoading={setLoading}
             key={wid + 'Widget'}
             isMobile={isMobile}
+            showModal={showModal}
+            openModal={handleOpenModal}
+            closeModal={handleCloseModal}
           />
-          {isMobile && (<ConsoleModal 
-            widget={widget}
-            textLines={textLines}
-            title={widgetList[widget].name}
-            key='terminalWindow'
-            live
-          />)}
         </div>
       )
     })
+  
+  const widgetComponent =
+    <div>
+      <IntroCard
+        color='geeringupPrimary'
+        brand={appBrand}
+        setWidget={setWidget}
+        widget={widget}
+        isMobile={isMobile}
+        key='myWidgetIntro'
+      />
+      {gameWidget}
+      {isMobile && (<ConsoleModal 
+        widget={widget}
+        textLines={textLines}
+        title={widgetList[widget].name}
+        key='terminalWindow'
+        showModal={showModal}
+        openModal={handleOpenModal}
+        closeModal={handleCloseModal}
+        live
+      />)}
+    </div>
 
   const terminalWindowAndGameInfo =
     <div className={classes.rightColumn}>

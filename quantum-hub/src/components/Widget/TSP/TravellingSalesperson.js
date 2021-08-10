@@ -333,6 +333,7 @@ function TravellingSalesperson (props) {
               setLoading: setLoading
             }
             const consoleFns = {
+              openModal: props.openModal,
               outputToConsole: props.outputToConsole,
               appendToConsole: props.appendToConsole
             }

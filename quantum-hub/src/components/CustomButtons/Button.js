@@ -84,6 +84,7 @@ RegularButton.propTypes = {
     'google',
     'github',
     'geeringupSecondary',
+    'geeringupSecondaryModified',
     'geeringupPrimary',
     'transparent'
   ]),

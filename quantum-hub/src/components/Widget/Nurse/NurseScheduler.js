@@ -136,7 +136,7 @@ function NurseScheduler (props) {
         setNumNurses={nurseVars.setNumNurses}
         setNursesPerDay={nurseVars.setNursesPerDay}
         onSolve={
-          () => nurseSolveRequest(setSchedule, props.outputToConsole, props.appendToConsole, props.getAPIKey, setLoading)
+          () => nurseSolveRequest(setSchedule, props.openModal, props.outputToConsole, props.appendToConsole, props.getAPIKey, setLoading)
         }
         disabled={loading}
       />
