@@ -41,12 +41,11 @@ export default function IntroCard (props) {
       <Button
         className={classes.title}
         onClick={handleAppMenuClick}
-        disabled={!props.isMobile}
       >
         {brand}
         {loading ? '' : (
           <>
-            <Hidden smUp implementation='css'>
+            <Hidden mdUp>
                 <ExpandMoreIcon
                     style={{ fontSize: 40 }}
                 />

@@ -17,6 +17,7 @@ import ConsoleModal from '../components/Modal/ConsoleModal.js'
 
 import GridContainer from '../components/Grid/GridContainer.js'
 
+import Hidden from '@material-ui/core/Hidden'
 // import Button from './components/CustomButtons/Button.js'
 // import GridItem from './components/Grid/GridItem.js'
 
@@ -106,12 +107,12 @@ function Game (props) {
   }
 
   const gameMenu =
-    <div>
-      {!isMobile && (<ButtonGroup
+    <Hidden mdDown>
+      <ButtonGroup
         key='gameMenu'
         setWidget={setWidget}
-      />)}
-    </div>
+      />
+    </Hidden>
 
   const gameWidget =
     Object.keys(widgetList).map((wid) => {

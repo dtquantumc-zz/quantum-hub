@@ -13,19 +13,19 @@ import Link from '@material-ui/core/Link'
 export default function LatticeReadMoreDescriptionText () {
   return (
     <>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         <b>Objective</b>
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         The objective of the game is to minimize the number of conflicts between neighbouring
         cells. Two cells are in conflict if their colour is the same. You can tell if
         a conflict arises, because a thick line will appear to connect the two
         centers of the cells.
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         <b>Instructions</b>
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         <ol>
           <li>
             Design your grid: Click on the hexagons to turn them on or off
@@ -38,26 +38,26 @@ export default function LatticeReadMoreDescriptionText () {
           <li>Click "Get Quantum Solution" to send the problem to a quantum computer</li>
         </ol>
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         <b>Quantum Randomness</b>
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         Make a full grid, and try getting the quantum solution a couple of times.
         The solution was probably different each time!
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         This is one of the cool things about quantum computing, it's random!
         Whenever there are many optimal solutions, the quantum computer will
         find one of them at random.
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         <b>Problem Background</b>
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         In condensed matter physics, this problem occurs in the context of finding
         the ground state of the antiferromagnetic Ising model on a triangular lattice.
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         This problem is an easier version of the general problem of graph two-colouring,
         which is equivalent to
         the <Link href='https://en.wikipedia.org/wiki/Maximum_cut' style={{ color: '#1599bf' }}>Maximum Cut</Link> problem,
@@ -68,7 +68,7 @@ export default function LatticeReadMoreDescriptionText () {
         which basically means that computers take a very long time to solve large
         versions of it.
       </Typography>
-      <Typography align='left' paragraph>
+      <Typography align='left' paragraph variant='body2' color='textSecondary' component='p'>
         This two colouring problem is a special case of the optimization problem
         implemented by D-Wave's quantum annealer. The annealer
         uses <Link href='https://en.wikipedia.org/wiki/Quantum_tunnelling' style={{ color: '#1599bf' }}>Quantum Tunnelling</Link> to

@@ -44,7 +44,7 @@ const footerStyle = theme => ({
     display: 'block'
   },
   footer: {
-    padding: '72px 48px 0px',
+    padding: '100px 48px 0px',
     textAlign: 'center',
     maxWidth: '1450px',
     margin: '0 auto',
