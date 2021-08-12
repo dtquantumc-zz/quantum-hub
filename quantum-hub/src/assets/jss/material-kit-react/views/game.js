@@ -56,16 +56,13 @@ const gameStyle = theme => ({
   },
   rightColumn: {
     [theme.breakpoints.down('md')]: {
-      width: '330px'
+      width: '370px'
     },
     [theme.breakpoints.up('md')]: {
-      width: '350px',
-    },
-    [theme.breakpoints.up('lg')]: {
-      width: '410px',
+      width: '400px',
     },
     [theme.breakpoints.up('xl')]: {
-      width: '550px',
+      width: '480px',
     },
   },
   nurseSchedulingInput: {
