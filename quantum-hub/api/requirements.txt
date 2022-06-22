@@ -22,7 +22,7 @@ Jinja2==2.11.2
 MarkupSafe==1.1.1
 minorminer==0.1.9
 networkx==2.4
-numpy==1.18.4
+numpy==1.22.0
 ortools==7.6.7691
 penaltymodel==0.16.3
 penaltymodel-cache==0.4.1
